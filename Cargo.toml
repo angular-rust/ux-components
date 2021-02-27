@@ -2,10 +2,21 @@
 name = "ux-components"
 version = "0.1.0"
 authors = ["Victor Dudochkin <dudochkin.victor@gmail.com>"]
+readme = "README.md"
+homepage = "https://angular-rust.github.io/ux-components"
+repository = "https://github.com/angular-rust/ux-components"
+documentation = "https://docs.rs/ux-components"
+description = "Backend agnostic GUI framework"
+keywords = ["wasm", "web", "material", "webassembly", "awesome", "material-design", "material-components", "gtk"]
+categories = ["wasm", "web-programming", "gui"]
 edition = "2018"
+license = "MPL-2.0"
+
+[badges]
+maintenance = { status = "actively-developed" }
 
 [features]
-web = ["wasm-bindgen", "wasm-bindgen-futures", "wasm-logger", "gloo", "js-sys", "wasm-bindgen-test"]
+web = ["wasm-bindgen", "wasm-bindgen-futures", "wasm-logger", "gloo", "js-sys", "wasm-bindgen-test", "web-sys"]
 cairo = ["cairo-rs", "png"]
 default = ["cairo"]
 
