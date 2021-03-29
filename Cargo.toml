@@ -20,13 +20,31 @@ name = "components"
 
 [features]
 web = ["wasm-bindgen", "wasm-bindgen-futures", "wasm-logger", "gloo", "js-sys", "wasm-bindgen-test", "web-sys"]
-cairo = ["cairo-rs", "png"]
+cairo = ["cairo-rs"]
 default = ["cairo"]
 
 [dependencies]
 log = "0.4"
-png = { version = "0.16", optional = true }
-cairo-rs = { version = "0.9", features = ["png"], optional = true }
+cairo-rs = { version = "0.9", optional = true }
+
+bitflags = "1.0"
+
+atk = "0.9"
+glib-sys = "0.10"
+gdk-sys = "0.10"
+gio-sys = "0.10"
+gobject-sys = "0.10"
+cairo-sys-rs = "0.10"
+gdk-pixbuf = "0.9"
+gio = "0.9"
+glib = "0.10"
+pango = "0.9"
+
+cogl-rs = "0.1.2"
+# clutter-rs = "0.1.0"
+
+# starup notifications
+notify-rust = "4"
 
 wasm-bindgen = { version = "0.2", optional = true }
 wasm-bindgen-futures = { version = "0.4", optional = true }
@@ -50,13 +68,3 @@ features = [
 ]
 
 [dev-dependencies]
-
-
-# [[example]]
-# name = "web-example"
-# # crate-type = ["staticlib"]
-# required-features = ["web"]
-
-# [[example]]
-# name = "cairo-example"
-# required-features = ["cairo"]
