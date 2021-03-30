@@ -1,4 +1,7 @@
+#![allow(unused_variables)]
+
 use super::Widget;
+use crate::prelude::*;
 use std::fmt;
 
 // @extends Widget, clutter::Actor;
@@ -6,6 +9,15 @@ use std::fmt;
 pub struct FloatingWidget {}
 
 impl FloatingWidget {}
+
+impl UxObject for FloatingWidget {}
+impl Is<FloatingWidget> for FloatingWidget {}
+
+impl AsRef<FloatingWidget> for FloatingWidget {
+    fn as_ref(&self) -> &FloatingWidget {
+        unimplemented!()
+    }
+}
 
 pub const NONE_FLOATING_WIDGET: Option<&FloatingWidget> = None;
 

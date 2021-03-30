@@ -1,3 +1,5 @@
+#![allow(unused_variables)]
+
 use crate::prelude::*;
 use std::fmt;
 
@@ -8,6 +10,15 @@ impl TextureCache {
     pub fn get_default() -> Option<TextureCache> {
         // assert_initialized_main_thread!();
         // unsafe { from_glib_none(ffi::texture_cache_get_default()) }
+        unimplemented!()
+    }
+}
+
+impl UxObject for TextureCache {}
+impl Is<TextureCache> for TextureCache {}
+
+impl AsRef<TextureCache> for TextureCache {
+    fn as_ref(&self) -> &TextureCache {
         unimplemented!()
     }
 }
@@ -32,49 +43,52 @@ pub trait TextureCacheExt: 'static {
     fn load_cache(&self, filename: &str);
 }
 
-// impl<O: Is<TextureCache>> TextureCacheExt for O {
-//     fn contains(&self, uri: &str) -> bool {
-//         unsafe {
-//             from_glib(ffi::texture_cache_contains(
-//                 self.as_ref().to_glib_none().0,
-//                 uri.to_glib_none().0,
-//             ))
-//         }
-//     }
+impl<O: Is<TextureCache>> TextureCacheExt for O {
+    fn contains(&self, uri: &str) -> bool {
+        // unsafe {
+        //     from_glib(ffi::texture_cache_contains(
+        //         self.as_ref().to_glib_none().0,
+        //         uri.to_glib_none().0,
+        //     ))
+        // }
+        unimplemented!()
+    }
 
-//     //fn contains_meta(&self, uri: &str, ident: /*Unimplemented*/Option<Fundamental: Pointer>) -> bool {
-//     //    unsafe { TODO: call ffi:texture_cache_contains_meta() }
-//     //}
+    //fn contains_meta(&self, uri: &str, ident: /*Unimplemented*/Option<Fundamental: Pointer>) -> bool {
+    //    unsafe { TODO: call ffi:texture_cache_contains_meta() }
+    //}
 
-//     //fn get_cogl_texture(&self, uri: &str) -> /*Ignored*/Option<cogl::Handle> {
-//     //    unsafe { TODO: call ffi:texture_cache_get_cogl_texture() }
-//     //}
+    //fn get_cogl_texture(&self, uri: &str) -> /*Ignored*/Option<cogl::Handle> {
+    //    unsafe { TODO: call ffi:texture_cache_get_cogl_texture() }
+    //}
 
-//     //fn get_meta_cogl_texture(&self, uri: &str, ident: /*Unimplemented*/Option<Fundamental: Pointer>) -> /*Ignored*/Option<cogl::Handle> {
-//     //    unsafe { TODO: call ffi:texture_cache_get_meta_cogl_texture() }
-//     //}
+    //fn get_meta_cogl_texture(&self, uri: &str, ident: /*Unimplemented*/Option<Fundamental: Pointer>) -> /*Ignored*/Option<cogl::Handle> {
+    //    unsafe { TODO: call ffi:texture_cache_get_meta_cogl_texture() }
+    //}
 
-//     fn get_size(&self) -> i32 {
-//         unsafe { ffi::texture_cache_get_size(self.as_ref().to_glib_none().0) }
-//     }
+    fn get_size(&self) -> i32 {
+        // unsafe { ffi::texture_cache_get_size(self.as_ref().to_glib_none().0) }
+        unimplemented!()
+    }
 
-//     //fn insert(&self, uri: &str, texture: /*Ignored*/cogl::Handle) {
-//     //    unsafe { TODO: call ffi:texture_cache_insert() }
-//     //}
+    //fn insert(&self, uri: &str, texture: /*Ignored*/cogl::Handle) {
+    //    unsafe { TODO: call ffi:texture_cache_insert() }
+    //}
 
-//     //fn insert_meta(&self, uri: &str, ident: /*Unimplemented*/Option<Fundamental: Pointer>, texture: /*Ignored*/cogl::Handle) {
-//     //    unsafe { TODO: call ffi:texture_cache_insert_meta() }
-//     //}
+    //fn insert_meta(&self, uri: &str, ident: /*Unimplemented*/Option<Fundamental: Pointer>, texture: /*Ignored*/cogl::Handle) {
+    //    unsafe { TODO: call ffi:texture_cache_insert_meta() }
+    //}
 
-//     fn load_cache(&self, filename: &str) {
-//         unsafe {
-//             ffi::texture_cache_load_cache(
-//                 self.as_ref().to_glib_none().0,
-//                 filename.to_glib_none().0,
-//             );
-//         }
-//     }
-// }
+    fn load_cache(&self, filename: &str) {
+        // unsafe {
+        //     ffi::texture_cache_load_cache(
+        //         self.as_ref().to_glib_none().0,
+        //         filename.to_glib_none().0,
+        //     );
+        // }
+        unimplemented!()
+    }
+}
 
 impl fmt::Display for TextureCache {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {

@@ -25,7 +25,7 @@ pub mod prelude {
     //     pub height: f64,
     // }
 
-    // impl UxComponent for Widget {}
+    // impl UxObject for Widget {}
     // impl Is<Widget> for Widget {}
 
     // impl AsRef<Widget> for Widget {
@@ -36,7 +36,7 @@ pub mod prelude {
 
     // #[derive(Clone, Debug)]
     // pub struct ButtonComponent();
-    // impl UxComponent for ButtonComponent {
+    // impl UxObject for ButtonComponent {
     //     // fn get_props(&self) -> &Self {
     //     //     self
     //     // }
@@ -70,7 +70,7 @@ pub mod prelude {
 
     // #[derive(Clone, Debug)]
     // pub struct WindowComponent();
-    // impl UxComponent for WindowComponent {}
+    // impl UxObject for WindowComponent {}
     // impl Is<Widget> for WindowComponent {}
     // impl AsRef<Widget> for WindowComponent {
     //     fn as_ref(&self) -> &Widget {
@@ -107,10 +107,10 @@ pub mod prelude {
     //     app.add(Box::new(c));
     // }
 
-    pub trait UxComponent: std::fmt::Debug + Clone + 'static {
+    pub trait UxObject: std::fmt::Debug + Clone + 'static {
         // fn get_props(&self) -> &Self;
     }
-    pub trait Is<T: UxComponent>: AsRef<T> + 'static {}
+    pub trait Is<T: UxObject>: AsRef<T> + 'static {}
 }
 
-impl prelude::UxComponent for clutter::Actor {}
+impl prelude::UxObject for clutter::Actor {}

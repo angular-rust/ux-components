@@ -1,8 +1,8 @@
 #![allow(unused_variables)]
-#![allow(dead_code)]
 
 // use std::mem::transmute;
 
+use crate::prelude::*;
 use glib::signal::SignalHandlerId;
 use std::boxed::Box as Box_;
 use std::fmt;
@@ -86,6 +86,15 @@ impl Default for Action {
     }
 }
 
+impl UxObject for Action {}
+impl Is<Action> for Action {}
+
+impl AsRef<Action> for Action {
+    fn as_ref(&self) -> &Action {
+        unimplemented!()
+    }
+}
+
 pub const NONE_ACTION: Option<&Action> = None;
 
 pub trait ActionExt: 'static {
@@ -116,148 +125,148 @@ pub trait ActionExt: 'static {
     fn connect_property_icon_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
 }
 
-// impl<O: Is<Action>> ActionExt for O {
-//     fn get_active(&self) -> bool {
-//         // unsafe { from_glib(ffi::action_get_active(self.as_ref().to_glib_none().0)) }
-//         unimplemented!()
-//     }
+impl<O: Is<Action>> ActionExt for O {
+    fn get_active(&self) -> bool {
+        // unsafe { from_glib(ffi::action_get_active(self.as_ref().to_glib_none().0)) }
+        unimplemented!()
+    }
 
-//     fn get_display_name(&self) -> Option<String> {
-//         // unsafe {
-//         //     from_glib_none(ffi::action_get_display_name(
-//         //         self.as_ref().to_glib_none().0,
-//         //     ))
-//         // }
-//         unimplemented!()
-//     }
+    fn get_display_name(&self) -> Option<String> {
+        // unsafe {
+        //     from_glib_none(ffi::action_get_display_name(
+        //         self.as_ref().to_glib_none().0,
+        //     ))
+        // }
+        unimplemented!()
+    }
 
-//     fn get_icon(&self) -> Option<String> {
-//         // unsafe { from_glib_none(ffi::action_get_icon(self.as_ref().to_glib_none().0)) }
-//         unimplemented!()
-//     }
+    fn get_icon(&self) -> Option<String> {
+        // unsafe { from_glib_none(ffi::action_get_icon(self.as_ref().to_glib_none().0)) }
+        unimplemented!()
+    }
 
-//     fn get_name(&self) -> Option<String> {
-//         // unsafe { from_glib_none(ffi::action_get_name(self.as_ref().to_glib_none().0)) }
-//         unimplemented!()
-//     }
+    fn get_name(&self) -> Option<String> {
+        // unsafe { from_glib_none(ffi::action_get_name(self.as_ref().to_glib_none().0)) }
+        unimplemented!()
+    }
 
-//     fn set_active(&self, active: bool) {
-//         // unsafe {
-//         //     ffi::action_set_active(self.as_ref().to_glib_none().0, active.to_glib());
-//         // }
-//         unimplemented!()
-//     }
+    fn set_active(&self, active: bool) {
+        // unsafe {
+        //     ffi::action_set_active(self.as_ref().to_glib_none().0, active.to_glib());
+        // }
+        unimplemented!()
+    }
 
-//     fn set_display_name(&self, name: &str) {
-//         // unsafe {
-//         //     ffi::action_set_display_name(
-//         //         self.as_ref().to_glib_none().0,
-//         //         name.to_glib_none().0,
-//         //     );
-//         // }
-//         unimplemented!()
-//     }
+    fn set_display_name(&self, name: &str) {
+        // unsafe {
+        //     ffi::action_set_display_name(
+        //         self.as_ref().to_glib_none().0,
+        //         name.to_glib_none().0,
+        //     );
+        // }
+        unimplemented!()
+    }
 
-//     fn set_icon(&self, name: &str) {
-//         // unsafe {
-//         //     ffi::action_set_icon(self.as_ref().to_glib_none().0, name.to_glib_none().0);
-//         // }
-//         unimplemented!()
-//     }
+    fn set_icon(&self, name: &str) {
+        // unsafe {
+        //     ffi::action_set_icon(self.as_ref().to_glib_none().0, name.to_glib_none().0);
+        // }
+        unimplemented!()
+    }
 
-//     fn set_name(&self, name: &str) {
-//         // unsafe {
-//         //     ffi::action_set_name(self.as_ref().to_glib_none().0, name.to_glib_none().0);
-//         // }
-//         unimplemented!()
-//     }
+    fn set_name(&self, name: &str) {
+        // unsafe {
+        //     ffi::action_set_name(self.as_ref().to_glib_none().0, name.to_glib_none().0);
+        // }
+        unimplemented!()
+    }
 
-//     fn connect_activate<F: Fn(&Self, Option<&glib::Variant>) + 'static>(
-//         &self,
-//         f: F,
-//     ) -> SignalHandlerId {
-//         // unsafe extern "C" fn activate_trampoline<P, F: Fn(&P, Option<&glib::Variant>) + 'static>(
-//         //     this: *mut ffi::Action,
-//         //     parameter: *mut glib_sys::GVariant,
-//         //     f: glib_sys::gpointer,
-//         // ) where
-//         //     P: Is<Action>,
-//         // {
-//         //     let f: &F = &*(f as *const F);
-//         //     f(
-//         //         &Action::from_glib_borrow(this).unsafe_cast_ref(),
-//         //         Option::<glib::Variant>::from_glib_borrow(parameter)
-//         //             .as_ref()
-//         //             .as_ref(),
-//         //     )
-//         // }
-//         // unsafe {
-//         //     let f: Box_<F> = Box_::new(f);
-//         //     connect_raw(
-//         //         self.as_ptr() as *mut _,
-//         //         b"activate\0".as_ptr() as *const _,
-//         //         Some(transmute::<_, unsafe extern "C" fn()>(
-//         //             activate_trampoline::<Self, F> as *const (),
-//         //         )),
-//         //         Box_::into_raw(f),
-//         //     )
-//         // }
-//         unimplemented!()
-//     }
+    fn connect_activate<F: Fn(&Self, Option<&glib::Variant>) + 'static>(
+        &self,
+        f: F,
+    ) -> SignalHandlerId {
+        // unsafe extern "C" fn activate_trampoline<P, F: Fn(&P, Option<&glib::Variant>) + 'static>(
+        //     this: *mut ffi::Action,
+        //     parameter: *mut glib_sys::GVariant,
+        //     f: glib_sys::gpointer,
+        // ) where
+        //     P: Is<Action>,
+        // {
+        //     let f: &F = &*(f as *const F);
+        //     f(
+        //         &Action::from_glib_borrow(this).unsafe_cast_ref(),
+        //         Option::<glib::Variant>::from_glib_borrow(parameter)
+        //             .as_ref()
+        //             .as_ref(),
+        //     )
+        // }
+        // unsafe {
+        //     let f: Box_<F> = Box_::new(f);
+        //     connect_raw(
+        //         self.as_ptr() as *mut _,
+        //         b"activate\0".as_ptr() as *const _,
+        //         Some(transmute::<_, unsafe extern "C" fn()>(
+        //             activate_trampoline::<Self, F> as *const (),
+        //         )),
+        //         Box_::into_raw(f),
+        //     )
+        // }
+        unimplemented!()
+    }
 
-//     fn connect_property_display_name_notify<F: Fn(&Self) + 'static>(
-//         &self,
-//         f: F,
-//     ) -> SignalHandlerId {
-//         // unsafe extern "C" fn notify_display_name_trampoline<P, F: Fn(&P) + 'static>(
-//         //     this: *mut ffi::Action,
-//         //     _param_spec: glib_sys::gpointer,
-//         //     f: glib_sys::gpointer,
-//         // ) where
-//         //     P: Is<Action>,
-//         // {
-//         //     let f: &F = &*(f as *const F);
-//         //     f(&Action::from_glib_borrow(this).unsafe_cast_ref())
-//         // }
-//         // unsafe {
-//         //     let f: Box_<F> = Box_::new(f);
-//         //     connect_raw(
-//         //         self.as_ptr() as *mut _,
-//         //         b"notify::display-name\0".as_ptr() as *const _,
-//         //         Some(transmute::<_, unsafe extern "C" fn()>(
-//         //             notify_display_name_trampoline::<Self, F> as *const (),
-//         //         )),
-//         //         Box_::into_raw(f),
-//         //     )
-//         // }
-//         unimplemented!()
-//     }
+    fn connect_property_display_name_notify<F: Fn(&Self) + 'static>(
+        &self,
+        f: F,
+    ) -> SignalHandlerId {
+        // unsafe extern "C" fn notify_display_name_trampoline<P, F: Fn(&P) + 'static>(
+        //     this: *mut ffi::Action,
+        //     _param_spec: glib_sys::gpointer,
+        //     f: glib_sys::gpointer,
+        // ) where
+        //     P: Is<Action>,
+        // {
+        //     let f: &F = &*(f as *const F);
+        //     f(&Action::from_glib_borrow(this).unsafe_cast_ref())
+        // }
+        // unsafe {
+        //     let f: Box_<F> = Box_::new(f);
+        //     connect_raw(
+        //         self.as_ptr() as *mut _,
+        //         b"notify::display-name\0".as_ptr() as *const _,
+        //         Some(transmute::<_, unsafe extern "C" fn()>(
+        //             notify_display_name_trampoline::<Self, F> as *const (),
+        //         )),
+        //         Box_::into_raw(f),
+        //     )
+        // }
+        unimplemented!()
+    }
 
-//     fn connect_property_icon_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
-//         // unsafe extern "C" fn notify_icon_trampoline<P, F: Fn(&P) + 'static>(
-//         //     this: *mut ffi::Action,
-//         //     _param_spec: glib_sys::gpointer,
-//         //     f: glib_sys::gpointer,
-//         // ) where
-//         //     P: Is<Action>,
-//         // {
-//         //     let f: &F = &*(f as *const F);
-//         //     f(&Action::from_glib_borrow(this).unsafe_cast_ref())
-//         // }
-//         // unsafe {
-//         //     let f: Box_<F> = Box_::new(f);
-//         //     connect_raw(
-//         //         self.as_ptr() as *mut _,
-//         //         b"notify::icon\0".as_ptr() as *const _,
-//         //         Some(transmute::<_, unsafe extern "C" fn()>(
-//         //             notify_icon_trampoline::<Self, F> as *const (),
-//         //         )),
-//         //         Box_::into_raw(f),
-//         //     )
-//         // }
-//         unimplemented!()
-//     }
-// }
+    fn connect_property_icon_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+        // unsafe extern "C" fn notify_icon_trampoline<P, F: Fn(&P) + 'static>(
+        //     this: *mut ffi::Action,
+        //     _param_spec: glib_sys::gpointer,
+        //     f: glib_sys::gpointer,
+        // ) where
+        //     P: Is<Action>,
+        // {
+        //     let f: &F = &*(f as *const F);
+        //     f(&Action::from_glib_borrow(this).unsafe_cast_ref())
+        // }
+        // unsafe {
+        //     let f: Box_<F> = Box_::new(f);
+        //     connect_raw(
+        //         self.as_ptr() as *mut _,
+        //         b"notify::icon\0".as_ptr() as *const _,
+        //         Some(transmute::<_, unsafe extern "C" fn()>(
+        //             notify_icon_trampoline::<Self, F> as *const (),
+        //         )),
+        //         Box_::into_raw(f),
+        //     )
+        // }
+        unimplemented!()
+    }
+}
 
 impl fmt::Display for Action {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {

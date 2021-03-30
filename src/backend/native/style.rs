@@ -1,3 +1,5 @@
+#![allow(unused_variables)]
+
 // use std::boxed::Box as Box_;
 // use std::mem::transmute;
 // use std::ptr;
@@ -29,7 +31,14 @@ impl Default for Style {
     }
 }
 
-impl UxComponent for Style {}
+impl UxObject for Style {}
+impl Is<Style> for Style {}
+
+impl AsRef<Style> for Style {
+    fn as_ref(&self) -> &Style {
+        unimplemented!()
+    }
+}
 
 pub const NONE_STYLE: Option<&Style> = None;
 
@@ -49,91 +58,95 @@ pub trait StyleExt: 'static {
     fn connect_changed<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
 }
 
-// impl<O: Is<Style>> StyleExt for O {
-//     //fn get(&self, stylable: /*Ignored*/&Stylable, first_property_name: &str, : /*Unknown conversion*//*Unimplemented*/Fundamental: VarArgs) {
-//     //    unsafe { TODO: call ffi:style_get() }
-//     //}
+impl<O: Is<Style>> StyleExt for O {
+    //fn get(&self, stylable: /*Ignored*/&Stylable, first_property_name: &str, : /*Unknown conversion*//*Unimplemented*/Fundamental: VarArgs) {
+    //    unsafe { TODO: call ffi:style_get() }
+    //}
 
-//     //fn get_property(&self, stylable: /*Ignored*/&Stylable, pspec: /*Ignored*/&glib::ParamSpec) -> glib::Value {
-//     //    unsafe { TODO: call ffi:style_get_property() }
-//     //}
+    //fn get_property(&self, stylable: /*Ignored*/&Stylable, pspec: /*Ignored*/&glib::ParamSpec) -> glib::Value {
+    //    unsafe { TODO: call ffi:style_get_property() }
+    //}
 
-//     //fn get_valist(&self, stylable: /*Ignored*/&Stylable, first_property_name: &str, va_args: /*Unknown conversion*//*Unimplemented*/Unsupported) {
-//     //    unsafe { TODO: call ffi:style_get_valist() }
-//     //}
+    //fn get_valist(&self, stylable: /*Ignored*/&Stylable, first_property_name: &str, va_args: /*Unknown conversion*//*Unimplemented*/Unsupported) {
+    //    unsafe { TODO: call ffi:style_get_valist() }
+    //}
 
-//     fn load_from_data(&self, id: &str, data: &str) -> Result<(), glib::Error> {
-//         unsafe {
-//             let mut error = ptr::null_mut();
-//             let _ = ffi::style_load_from_data(
-//                 self.as_ref().to_glib_none().0,
-//                 id.to_glib_none().0,
-//                 data.to_glib_none().0,
-//                 &mut error,
-//             );
-//             if error.is_null() {
-//                 Ok(())
-//             } else {
-//                 Err(from_glib_full(error))
-//             }
-//         }
-//     }
+    fn load_from_data(&self, id: &str, data: &str) -> Result<(), glib::Error> {
+        // unsafe {
+        //     let mut error = ptr::null_mut();
+        //     let _ = ffi::style_load_from_data(
+        //         self.as_ref().to_glib_none().0,
+        //         id.to_glib_none().0,
+        //         data.to_glib_none().0,
+        //         &mut error,
+        //     );
+        //     if error.is_null() {
+        //         Ok(())
+        //     } else {
+        //         Err(from_glib_full(error))
+        //     }
+        // }
+        unimplemented!()
+    }
 
-//     fn load_from_file(&self, filename: &str) -> Result<(), glib::Error> {
-//         unsafe {
-//             let mut error = ptr::null_mut();
-//             let _ = ffi::style_load_from_file(
-//                 self.as_ref().to_glib_none().0,
-//                 filename.to_glib_none().0,
-//                 &mut error,
-//             );
-//             if error.is_null() {
-//                 Ok(())
-//             } else {
-//                 Err(from_glib_full(error))
-//             }
-//         }
-//     }
+    fn load_from_file(&self, filename: &str) -> Result<(), glib::Error> {
+        // unsafe {
+        //     let mut error = ptr::null_mut();
+        //     let _ = ffi::style_load_from_file(
+        //         self.as_ref().to_glib_none().0,
+        //         filename.to_glib_none().0,
+        //         &mut error,
+        //     );
+        //     if error.is_null() {
+        //         Ok(())
+        //     } else {
+        //         Err(from_glib_full(error))
+        //     }
+        // }
+        unimplemented!()
+    }
 
-//     fn load_from_resource(&self, path: &str) -> Result<(), glib::Error> {
-//         unsafe {
-//             let mut error = ptr::null_mut();
-//             let _ = ffi::style_load_from_resource(
-//                 self.as_ref().to_glib_none().0,
-//                 path.to_glib_none().0,
-//                 &mut error,
-//             );
-//             if error.is_null() {
-//                 Ok(())
-//             } else {
-//                 Err(from_glib_full(error))
-//             }
-//         }
-//     }
+    fn load_from_resource(&self, path: &str) -> Result<(), glib::Error> {
+        // unsafe {
+        //     let mut error = ptr::null_mut();
+        //     let _ = ffi::style_load_from_resource(
+        //         self.as_ref().to_glib_none().0,
+        //         path.to_glib_none().0,
+        //         &mut error,
+        //     );
+        //     if error.is_null() {
+        //         Ok(())
+        //     } else {
+        //         Err(from_glib_full(error))
+        //     }
+        // }
+        unimplemented!()
+    }
 
-//     fn connect_changed<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
-//         unsafe extern "C" fn changed_trampoline<P, F: Fn(&P) + 'static>(
-//             this: *mut ffi::Style,
-//             f: glib_sys::gpointer,
-//         ) where
-//             P: Is<Style>,
-//         {
-//             let f: &F = &*(f as *const F);
-//             f(&Style::from_glib_borrow(this).unsafe_cast_ref())
-//         }
-//         unsafe {
-//             let f: Box_<F> = Box_::new(f);
-//             connect_raw(
-//                 self.as_ptr() as *mut _,
-//                 b"changed\0".as_ptr() as *const _,
-//                 Some(transmute::<_, unsafe extern "C" fn()>(
-//                     changed_trampoline::<Self, F> as *const (),
-//                 )),
-//                 Box_::into_raw(f),
-//             )
-//         }
-//     }
-// }
+    fn connect_changed<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+        // unsafe extern "C" fn changed_trampoline<P, F: Fn(&P) + 'static>(
+        //     this: *mut ffi::Style,
+        //     f: glib_sys::gpointer,
+        // ) where
+        //     P: Is<Style>,
+        // {
+        //     let f: &F = &*(f as *const F);
+        //     f(&Style::from_glib_borrow(this).unsafe_cast_ref())
+        // }
+        // unsafe {
+        //     let f: Box_<F> = Box_::new(f);
+        //     connect_raw(
+        //         self.as_ptr() as *mut _,
+        //         b"changed\0".as_ptr() as *const _,
+        //         Some(transmute::<_, unsafe extern "C" fn()>(
+        //             changed_trampoline::<Self, F> as *const (),
+        //         )),
+        //         Box_::into_raw(f),
+        //     )
+        // }
+        unimplemented!()
+    }
+}
 
 impl fmt::Display for Style {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {

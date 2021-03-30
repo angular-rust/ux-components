@@ -1,3 +1,5 @@
+#![allow(unused_variables)]
+
 use super::{Action, Widget};
 use crate::prelude::*;
 use std::fmt;
@@ -27,58 +29,67 @@ impl Default for Dialog {
     }
 }
 
+impl UxObject for Dialog {}
+impl Is<Dialog> for Dialog {}
+
+impl AsRef<Dialog> for Dialog {
+    fn as_ref(&self) -> &Dialog {
+        unimplemented!()
+    }
+}
+
 pub const NONE_DIALOG: Option<&Dialog> = None;
 
 pub trait DialogExt: 'static {
-    // fn add_action<P: Is<Action>>(&self, action: &P);
+    fn add_action<P: Is<Action>>(&self, action: &P);
 
     fn get_actions(&self) -> Vec<Action>;
 
-    // fn remove_action<P: Is<Action>>(&self, action: &P);
+    fn remove_action<P: Is<Action>>(&self, action: &P);
 
-    // fn set_transient_parent<P: Is<clutter::Actor>>(&self, actor: &P);
+    fn set_transient_parent<P: Is<clutter::Actor>>(&self, actor: &P);
 }
 
-// impl<O: Is<Dialog>> DialogExt for O {
-//     fn add_action<P: Is<Action>>(&self, action: &P) {
-//         // unsafe {
-//         //     ffi::dialog_add_action(
-//         //         self.as_ref().to_glib_none().0,
-//         //         action.as_ref().to_glib_none().0,
-//         //     );
-//         // }
-//         unimplemented!()
-//     }
+impl<O: Is<Dialog>> DialogExt for O {
+    fn add_action<P: Is<Action>>(&self, action: &P) {
+        // unsafe {
+        //     ffi::dialog_add_action(
+        //         self.as_ref().to_glib_none().0,
+        //         action.as_ref().to_glib_none().0,
+        //     );
+        // }
+        unimplemented!()
+    }
 
-//     fn get_actions(&self) -> Vec<Action> {
-//         // unsafe {
-//         //     FromGlibPtrContainer::from_glib_container(ffi::dialog_get_actions(
-//         //         self.as_ref().to_glib_none().0,
-//         //     ))
-//         // }
-//         unimplemented!()
-//     }
+    fn get_actions(&self) -> Vec<Action> {
+        // unsafe {
+        //     FromGlibPtrContainer::from_glib_container(ffi::dialog_get_actions(
+        //         self.as_ref().to_glib_none().0,
+        //     ))
+        // }
+        unimplemented!()
+    }
 
-//     fn remove_action<P: Is<Action>>(&self, action: &P) {
-//         // unsafe {
-//         //     ffi::dialog_remove_action(
-//         //         self.as_ref().to_glib_none().0,
-//         //         action.as_ref().to_glib_none().0,
-//         //     );
-//         // }
-//         unimplemented!()
-//     }
+    fn remove_action<P: Is<Action>>(&self, action: &P) {
+        // unsafe {
+        //     ffi::dialog_remove_action(
+        //         self.as_ref().to_glib_none().0,
+        //         action.as_ref().to_glib_none().0,
+        //     );
+        // }
+        unimplemented!()
+    }
 
-//     fn set_transient_parent<P: Is<clutter::Actor>>(&self, actor: &P) {
-//         // unsafe {
-//         //     ffi::dialog_set_transient_parent(
-//         //         self.as_ref().to_glib_none().0,
-//         //         actor.as_ref().to_glib_none().0,
-//         //     );
-//         // }
-//         unimplemented!()
-//     }
-// }
+    fn set_transient_parent<P: Is<clutter::Actor>>(&self, actor: &P) {
+        // unsafe {
+        //     ffi::dialog_set_transient_parent(
+        //         self.as_ref().to_glib_none().0,
+        //         actor.as_ref().to_glib_none().0,
+        //     );
+        // }
+        unimplemented!()
+    }
+}
 
 impl fmt::Display for Dialog {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {

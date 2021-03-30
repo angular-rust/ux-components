@@ -1,4 +1,7 @@
+#![allow(unused_variables)]
+
 use super::Widget;
+use crate::prelude::*;
 use std::fmt;
 
 // @extends Widget, clutter::Actor;
@@ -23,6 +26,15 @@ impl Frame {
 impl Default for Frame {
     fn default() -> Self {
         Self::new()
+    }
+}
+
+impl UxObject for Frame {}
+impl Is<Frame> for Frame {}
+
+impl AsRef<Frame> for Frame {
+    fn as_ref(&self) -> &Frame {
+        unimplemented!()
     }
 }
 
