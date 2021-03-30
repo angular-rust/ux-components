@@ -1,24 +1,24 @@
-// use clutter;
+use crate::prelude::*;
 // use glib::object::Cast;
-// use glib::object::IsA;
 // use glib::signal::connect_raw;
 // use glib::signal::SignalHandlerId;
 // use glib::translate::*;
-// use glib_sys;
-// use ffi;
+
+
 // use std::boxed::Box as Box_;
 use std::fmt;
 // use std::mem::transmute;
 // use super::Widget;
 
 // glib_wrapper! {
-//     pub struct BoxLayout(Object<ffi::MxBoxLayout, ffi::MxBoxLayoutClass, BoxLayoutClass>) @extends Widget, clutter::Actor;
+//     pub struct BoxLayout(Object<ffi::BoxLayout, ffi::BoxLayoutClass, BoxLayoutClass>) @extends Widget, clutter::Actor;
 
 //     match fn {
-//         get_type => || ffi::mx_box_layout_get_type(),
+//         get_type => || ffi::box_layout_get_type(),
 //     }
 // }
 
+#[derive(Clone, Debug)]
 pub struct BoxLayout {
 
 }
@@ -26,7 +26,7 @@ pub struct BoxLayout {
 impl BoxLayout {
     pub fn new() -> BoxLayout {
         // assert_initialized_main_thread!();
-        // unsafe { clutter::Actor::from_glib_none(ffi::mx_box_layout_new()).unsafe_cast() }
+        // unsafe { clutter::Actor::from_glib_none(ffi::box_layout_new()).unsafe_cast() }
         unimplemented!()
     }
 
@@ -102,7 +102,7 @@ pub const NONE_BOX_LAYOUT: Option<&BoxLayout> = None;
 // impl<O: IsA<BoxLayout>> BoxLayoutExt for O {
 //     fn child_get_expand<P: IsA<clutter::Actor>>(&self, child: &P) -> bool {
 //         // unsafe {
-//         //     from_glib(ffi::mx_box_layout_child_get_expand(
+//         //     from_glib(ffi::box_layout_child_get_expand(
 //         //         self.as_ref().to_glib_none().0,
 //         //         child.as_ref().to_glib_none().0,
 //         //     ))
@@ -116,7 +116,7 @@ pub const NONE_BOX_LAYOUT: Option<&BoxLayout> = None;
 
 //     fn child_get_x_fill<P: IsA<clutter::Actor>>(&self, child: &P) -> bool {
 //         // unsafe {
-//         //     from_glib(ffi::mx_box_layout_child_get_x_fill(
+//         //     from_glib(ffi::box_layout_child_get_x_fill(
 //         //         self.as_ref().to_glib_none().0,
 //         //         child.as_ref().to_glib_none().0,
 //         //     ))
@@ -130,7 +130,7 @@ pub const NONE_BOX_LAYOUT: Option<&BoxLayout> = None;
 
 //     fn child_get_y_fill<P: IsA<clutter::Actor>>(&self, child: &P) -> bool {
 //         // unsafe {
-//         //     from_glib(ffi::mx_box_layout_child_get_y_fill(
+//         //     from_glib(ffi::box_layout_child_get_y_fill(
 //         //         self.as_ref().to_glib_none().0,
 //         //         child.as_ref().to_glib_none().0,
 //         //     ))
@@ -140,7 +140,7 @@ pub const NONE_BOX_LAYOUT: Option<&BoxLayout> = None;
 
 //     fn child_set_expand<P: IsA<clutter::Actor>>(&self, child: &P, expand: bool) {
 //         // unsafe {
-//         //     ffi::mx_box_layout_child_set_expand(
+//         //     ffi::box_layout_child_set_expand(
 //         //         self.as_ref().to_glib_none().0,
 //         //         child.as_ref().to_glib_none().0,
 //         //         expand.to_glib(),
@@ -155,7 +155,7 @@ pub const NONE_BOX_LAYOUT: Option<&BoxLayout> = None;
 
 //     fn child_set_x_fill<P: IsA<clutter::Actor>>(&self, child: &P, x_fill: bool) {
 //         // unsafe {
-//         //     ffi::mx_box_layout_child_set_x_fill(
+//         //     ffi::box_layout_child_set_x_fill(
 //         //         self.as_ref().to_glib_none().0,
 //         //         child.as_ref().to_glib_none().0,
 //         //         x_fill.to_glib(),
@@ -170,7 +170,7 @@ pub const NONE_BOX_LAYOUT: Option<&BoxLayout> = None;
 
 //     fn child_set_y_fill<P: IsA<clutter::Actor>>(&self, child: &P, y_fill: bool) {
 //         // unsafe {
-//         //     ffi::mx_box_layout_child_set_y_fill(
+//         //     ffi::box_layout_child_set_y_fill(
 //         //         self.as_ref().to_glib_none().0,
 //         //         child.as_ref().to_glib_none().0,
 //         //         y_fill.to_glib(),
@@ -181,7 +181,7 @@ pub const NONE_BOX_LAYOUT: Option<&BoxLayout> = None;
 
 //     fn get_enable_animations(&self) -> bool {
 //         // unsafe {
-//         //     from_glib(ffi::mx_box_layout_get_enable_animations(
+//         //     from_glib(ffi::box_layout_get_enable_animations(
 //         //         self.as_ref().to_glib_none().0,
 //         //     ))
 //         // }
@@ -194,7 +194,7 @@ pub const NONE_BOX_LAYOUT: Option<&BoxLayout> = None;
 
 //     fn get_scroll_to_focused(&self) -> bool {
 //         // unsafe {
-//         //     from_glib(ffi::mx_box_layout_get_scroll_to_focused(
+//         //     from_glib(ffi::box_layout_get_scroll_to_focused(
 //         //         self.as_ref().to_glib_none().0,
 //         //     ))
 //         // }
@@ -202,13 +202,13 @@ pub const NONE_BOX_LAYOUT: Option<&BoxLayout> = None;
 //     }
 
 //     fn get_spacing(&self) -> u32 {
-//         // unsafe { ffi::mx_box_layout_get_spacing(self.as_ref().to_glib_none().0) }
+//         // unsafe { ffi::box_layout_get_spacing(self.as_ref().to_glib_none().0) }
 //         unimplemented!()
 //     }
 
 //     fn insert_actor<P: IsA<clutter::Actor>>(&self, actor: &P, position: i32) {
 //         // unsafe {
-//         //     ffi::mx_box_layout_insert_actor(
+//         //     ffi::box_layout_insert_actor(
 //         //         self.as_ref().to_glib_none().0,
 //         //         actor.as_ref().to_glib_none().0,
 //         //         position,
@@ -223,7 +223,7 @@ pub const NONE_BOX_LAYOUT: Option<&BoxLayout> = None;
 
 //     fn set_enable_animations(&self, enable_animations: bool) {
 //         // unsafe {
-//         //     ffi::mx_box_layout_set_enable_animations(
+//         //     ffi::box_layout_set_enable_animations(
 //         //         self.as_ref().to_glib_none().0,
 //         //         enable_animations.to_glib(),
 //         //     );
@@ -237,7 +237,7 @@ pub const NONE_BOX_LAYOUT: Option<&BoxLayout> = None;
 
 //     fn set_scroll_to_focused(&self, scroll_to_focused: bool) {
 //         // unsafe {
-//         //     ffi::mx_box_layout_set_scroll_to_focused(
+//         //     ffi::box_layout_set_scroll_to_focused(
 //         //         self.as_ref().to_glib_none().0,
 //         //         scroll_to_focused.to_glib(),
 //         //     );
@@ -247,7 +247,7 @@ pub const NONE_BOX_LAYOUT: Option<&BoxLayout> = None;
 
 //     fn set_spacing(&self, spacing: u32) {
 //         // unsafe {
-//         //     ffi::mx_box_layout_set_spacing(self.as_ref().to_glib_none().0, spacing);
+//         //     ffi::box_layout_set_spacing(self.as_ref().to_glib_none().0, spacing);
 //         // }
 //         unimplemented!()
 //     }
@@ -257,7 +257,7 @@ pub const NONE_BOX_LAYOUT: Option<&BoxLayout> = None;
 //         f: F,
 //     ) -> SignalHandlerId {
 //         // unsafe extern "C" fn notify_enable_animations_trampoline<P, F: Fn(&P) + 'static>(
-//         //     this: *mut ffi::MxBoxLayout,
+//         //     this: *mut ffi::BoxLayout,
 //         //     _param_spec: glib_sys::gpointer,
 //         //     f: glib_sys::gpointer,
 //         // ) where
@@ -282,7 +282,7 @@ pub const NONE_BOX_LAYOUT: Option<&BoxLayout> = None;
 
 //     fn connect_property_orientation_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
 //         // unsafe extern "C" fn notify_orientation_trampoline<P, F: Fn(&P) + 'static>(
-//         //     this: *mut ffi::MxBoxLayout,
+//         //     this: *mut ffi::BoxLayout,
 //         //     _param_spec: glib_sys::gpointer,
 //         //     f: glib_sys::gpointer,
 //         // ) where
@@ -310,7 +310,7 @@ pub const NONE_BOX_LAYOUT: Option<&BoxLayout> = None;
 //         f: F,
 //     ) -> SignalHandlerId {
 //         // unsafe extern "C" fn notify_scroll_to_focused_trampoline<P, F: Fn(&P) + 'static>(
-//         //     this: *mut ffi::MxBoxLayout,
+//         //     this: *mut ffi::BoxLayout,
 //         //     _param_spec: glib_sys::gpointer,
 //         //     f: glib_sys::gpointer,
 //         // ) where
@@ -335,7 +335,7 @@ pub const NONE_BOX_LAYOUT: Option<&BoxLayout> = None;
 
 //     fn connect_property_spacing_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
 //         // unsafe extern "C" fn notify_spacing_trampoline<P, F: Fn(&P) + 'static>(
-//         //     this: *mut ffi::MxBoxLayout,
+//         //     this: *mut ffi::BoxLayout,
 //         //     _param_spec: glib_sys::gpointer,
 //         //     f: glib_sys::gpointer,
 //         // ) where

@@ -1,24 +1,25 @@
-// use glib;
+use crate::prelude::*;
+
 // use glib::object::Cast;
-// use glib::object::IsA;
 // use glib::signal::connect_raw;
 // use glib::signal::SignalHandlerId;
 // use glib::translate::*;
-// use glib_sys;
-// use ffi;
+
+
 // use std::boxed::Box as Box_;
 use std::fmt;
 // use std::mem::transmute;
 // use std::ptr;
 
 // glib_wrapper! {
-//     pub struct Style(Object<ffi::MxStyle, ffi::MxStyleClass, StyleClass>);
+//     pub struct Style(Object<ffi::Style, ffi::StyleClass, StyleClass>);
 
 //     match fn {
-//         get_type => || ffi::mx_style_get_type(),
+//         get_type => || ffi::style_get_type(),
 //     }
 // }
 
+#[derive(Clone, Debug)]
 pub struct Style {
     
 }
@@ -26,13 +27,13 @@ pub struct Style {
 impl Style {
     pub fn new() -> Style {
         // assert_initialized_main_thread!();
-        // unsafe { from_glib_full(ffi::mx_style_new()) }
+        // unsafe { from_glib_full(ffi::style_new()) }
         unimplemented!()
     }
 
     pub fn get_default() -> Option<Style> {
         // assert_initialized_main_thread!();
-        // unsafe { from_glib_none(ffi::mx_style_get_default()) }
+        // unsafe { from_glib_none(ffi::style_get_default()) }
         unimplemented!()
     }
 }
@@ -42,6 +43,8 @@ impl Default for Style {
         Self::new()
     }
 }
+
+impl UxComponent for Style {}
 
 pub const NONE_STYLE: Option<&Style> = None;
 
@@ -77,7 +80,7 @@ pub const NONE_STYLE: Option<&Style> = None;
 //     fn load_from_data(&self, id: &str, data: &str) -> Result<(), glib::Error> {
 //         unsafe {
 //             let mut error = ptr::null_mut();
-//             let _ = ffi::mx_style_load_from_data(
+//             let _ = ffi::style_load_from_data(
 //                 self.as_ref().to_glib_none().0,
 //                 id.to_glib_none().0,
 //                 data.to_glib_none().0,
@@ -94,7 +97,7 @@ pub const NONE_STYLE: Option<&Style> = None;
 //     fn load_from_file(&self, filename: &str) -> Result<(), glib::Error> {
 //         unsafe {
 //             let mut error = ptr::null_mut();
-//             let _ = ffi::mx_style_load_from_file(
+//             let _ = ffi::style_load_from_file(
 //                 self.as_ref().to_glib_none().0,
 //                 filename.to_glib_none().0,
 //                 &mut error,
@@ -110,7 +113,7 @@ pub const NONE_STYLE: Option<&Style> = None;
 //     fn load_from_resource(&self, path: &str) -> Result<(), glib::Error> {
 //         unsafe {
 //             let mut error = ptr::null_mut();
-//             let _ = ffi::mx_style_load_from_resource(
+//             let _ = ffi::style_load_from_resource(
 //                 self.as_ref().to_glib_none().0,
 //                 path.to_glib_none().0,
 //                 &mut error,
@@ -125,7 +128,7 @@ pub const NONE_STYLE: Option<&Style> = None;
 
 //     fn connect_changed<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
 //         unsafe extern "C" fn changed_trampoline<P, F: Fn(&P) + 'static>(
-//             this: *mut ffi::MxStyle,
+//             this: *mut ffi::Style,
 //             f: glib_sys::gpointer,
 //         ) where
 //             P: IsA<Style>,

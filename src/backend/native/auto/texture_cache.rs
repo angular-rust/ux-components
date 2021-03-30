@@ -1,16 +1,17 @@
-// use glib::object::IsA;
+use crate::prelude::*;
 // use glib::translate::*;
-// use ffi;
+
 use std::fmt;
 
 // glib_wrapper! {
-//     pub struct TextureCache(Object<ffi::MxTextureCache, ffi::MxTextureCacheClass, TextureCacheClass>);
+//     pub struct TextureCache(Object<ffi::TextureCache, ffi::TextureCacheClass, TextureCacheClass>);
 
 //     match fn {
-//         get_type => || ffi::mx_texture_cache_get_type(),
+//         get_type => || ffi::texture_cache_get_type(),
 //     }
 // }
 
+#[derive(Clone, Debug)]
 pub struct TextureCache {
 
 }
@@ -18,7 +19,7 @@ pub struct TextureCache {
 impl TextureCache {
     pub fn get_default() -> Option<TextureCache> {
         // assert_initialized_main_thread!();
-        // unsafe { from_glib_none(ffi::mx_texture_cache_get_default()) }
+        // unsafe { from_glib_none(ffi::texture_cache_get_default()) }
         unimplemented!()
     }
 }
@@ -46,7 +47,7 @@ pub const NONE_TEXTURE_CACHE: Option<&TextureCache> = None;
 // impl<O: IsA<TextureCache>> TextureCacheExt for O {
 //     fn contains(&self, uri: &str) -> bool {
 //         unsafe {
-//             from_glib(ffi::mx_texture_cache_contains(
+//             from_glib(ffi::texture_cache_contains(
 //                 self.as_ref().to_glib_none().0,
 //                 uri.to_glib_none().0,
 //             ))
@@ -66,7 +67,7 @@ pub const NONE_TEXTURE_CACHE: Option<&TextureCache> = None;
 //     //}
 
 //     fn get_size(&self) -> i32 {
-//         unsafe { ffi::mx_texture_cache_get_size(self.as_ref().to_glib_none().0) }
+//         unsafe { ffi::texture_cache_get_size(self.as_ref().to_glib_none().0) }
 //     }
 
 //     //fn insert(&self, uri: &str, texture: /*Ignored*/cogl::Handle) {
@@ -79,7 +80,7 @@ pub const NONE_TEXTURE_CACHE: Option<&TextureCache> = None;
 
 //     fn load_cache(&self, filename: &str) {
 //         unsafe {
-//             ffi::mx_texture_cache_load_cache(
+//             ffi::texture_cache_load_cache(
 //                 self.as_ref().to_glib_none().0,
 //                 filename.to_glib_none().0,
 //             );

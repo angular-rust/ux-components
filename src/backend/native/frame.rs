@@ -9,6 +9,6 @@ impl Frame {
         unimplemented!() // TODO: complete it
 
         // assert_initialized_main_thread!();
-        // unsafe { from_glib_full(ffi::mx_frame_new()) }
+        // unsafe { from_glib_full(ffi::frame_new()) }
     }
 }

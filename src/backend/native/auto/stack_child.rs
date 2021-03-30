@@ -1,25 +1,26 @@
+use crate::prelude::*;
 // use glib::object::Cast;
-// use glib::object::IsA;
 // use glib::signal::connect_raw;
 // use glib::signal::SignalHandlerId;
 // use glib::translate::*;
 // use glib::StaticType;
 // use glib::Value;
-// use glib_sys;
-// use gobject_sys;
-// use ffi;
+
+
+
 // use std::boxed::Box as Box_;
 use std::fmt;
 // use std::mem::transmute;
 
 // glib_wrapper! {
-//     pub struct StackChild(Object<ffi::MxStackChild, ffi::MxStackChildClass, StackChildClass>);
+//     pub struct StackChild(Object<ffi::StackChild, ffi::StackChildClass, StackChildClass>);
 
 //     match fn {
-//         get_type => || ffi::mx_stack_child_get_type(),
+//         get_type => || ffi::stack_child_get_type(),
 //     }
 // }
 
+#[derive(Clone, Debug)]
 pub struct StackChild {
 
 }
@@ -195,7 +196,7 @@ pub const NONE_STACK_CHILD: Option<&StackChild> = None;
 
 //     fn connect_property_crop_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
 //         unsafe extern "C" fn notify_crop_trampoline<P, F: Fn(&P) + 'static>(
-//             this: *mut ffi::MxStackChild,
+//             this: *mut ffi::StackChild,
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where
@@ -219,7 +220,7 @@ pub const NONE_STACK_CHILD: Option<&StackChild> = None;
 
 //     fn connect_property_fit_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
 //         unsafe extern "C" fn notify_fit_trampoline<P, F: Fn(&P) + 'static>(
-//             this: *mut ffi::MxStackChild,
+//             this: *mut ffi::StackChild,
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where
@@ -243,7 +244,7 @@ pub const NONE_STACK_CHILD: Option<&StackChild> = None;
 
 //     fn connect_property_x_align_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
 //         unsafe extern "C" fn notify_x_align_trampoline<P, F: Fn(&P) + 'static>(
-//             this: *mut ffi::MxStackChild,
+//             this: *mut ffi::StackChild,
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where
@@ -267,7 +268,7 @@ pub const NONE_STACK_CHILD: Option<&StackChild> = None;
 
 //     fn connect_property_x_fill_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
 //         unsafe extern "C" fn notify_x_fill_trampoline<P, F: Fn(&P) + 'static>(
-//             this: *mut ffi::MxStackChild,
+//             this: *mut ffi::StackChild,
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where
@@ -291,7 +292,7 @@ pub const NONE_STACK_CHILD: Option<&StackChild> = None;
 
 //     fn connect_property_y_align_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
 //         unsafe extern "C" fn notify_y_align_trampoline<P, F: Fn(&P) + 'static>(
-//             this: *mut ffi::MxStackChild,
+//             this: *mut ffi::StackChild,
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where
@@ -315,7 +316,7 @@ pub const NONE_STACK_CHILD: Option<&StackChild> = None;
 
 //     fn connect_property_y_fill_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
 //         unsafe extern "C" fn notify_y_fill_trampoline<P, F: Fn(&P) + 'static>(
-//             this: *mut ffi::MxStackChild,
+//             this: *mut ffi::StackChild,
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where

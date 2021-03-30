@@ -10,13 +10,13 @@ impl BoxLayout {
         unimplemented!(); // TODO: complete it
 
         // assert_initialized_main_thread!();
-        // unsafe { from_glib_full(ffi::mx_box_layout_new()) }
+        // unsafe { from_glib_full(ffi::box_layout_new()) }
     }
 
     // pub fn with_orientation(orientation: /*Ignored*/ Orientation) -> BoxLayout {
     //     unimplemented!(); // TODO: complete it
 
     //     // assert_initialized_main_thread!();
-    //     // unsafe { from_glib_full(ffi::mx_box_layout_new_with_orientation()) }
+    //     // unsafe { from_glib_full(ffi::box_layout_new_with_orientation()) }
     // }
 }

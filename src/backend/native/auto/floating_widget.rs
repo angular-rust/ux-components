@@ -1,17 +1,17 @@
-// use clutter;
 // use glib::translate::*;
-// use ffi;
+
 use std::fmt;
 // use Widget;
 
 // glib_wrapper! {
-//     pub struct FloatingWidget(Object<ffi::MxFloatingWidget, ffi::MxFloatingWidgetClass, FloatingWidgetClass>) @extends Widget, clutter::Actor;
+//     pub struct FloatingWidget(Object<ffi::FloatingWidget, ffi::FloatingWidgetClass, FloatingWidgetClass>) @extends Widget, clutter::Actor;
 
 //     match fn {
-//         get_type => || ffi::mx_floating_widget_get_type(),
+//         get_type => || ffi::floating_widget_get_type(),
 //     }
 // }
 
+#[derive(Clone, Debug)]
 pub struct FloatingWidget {
 
 }

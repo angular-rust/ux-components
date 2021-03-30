@@ -1,26 +1,25 @@
-// use clutter;
-// use clutter_sys;
-// use glib;
+use crate::prelude::*;
+
 // use glib::object::Cast;
-// use glib::object::IsA;
 // use glib::signal::connect_raw;
 // use glib::signal::SignalHandlerId;
 // use glib::translate::*;
-// use glib_sys;
+
 // use libc;
-// use ffi;
+
 // use std::boxed::Box as Box_;
 use std::fmt;
 // use std::mem::transmute;
 
 // glib_wrapper! {
-//     pub struct ActorManager(Object<ffi::MxActorManager, ffi::MxActorManagerClass, ActorManagerClass>);
+//     pub struct ActorManager(Object<ffi::ActorManager, ffi::ActorManagerClass, ActorManagerClass>);
 
 //     match fn {
-//         get_type => || ffi::mx_actor_manager_get_type(),
+//         get_type => || ffi::actor_manager_get_type(),
 //     }
 // }
 
+#[derive(Clone, Debug)]
 pub struct ActorManager {
 
 }
@@ -118,7 +117,7 @@ pub const NONE_ACTOR_MANAGER: Option<&ActorManager> = None;
 //         actor: &Q,
 //     ) -> libc::c_ulong {
 //         // unsafe {
-//         //     ffi::mx_actor_manager_add_actor(
+//         //     ffi::actor_manager_add_actor(
 //         //         self.as_ref().to_glib_none().0,
 //         //         container.as_ref().to_glib_none().0,
 //         //         actor.as_ref().to_glib_none().0,
@@ -129,14 +128,14 @@ pub const NONE_ACTOR_MANAGER: Option<&ActorManager> = None;
 
 //     fn cancel_operation(&self, id: libc::c_ulong) {
 //         // unsafe {
-//         //     ffi::mx_actor_manager_cancel_operation(self.as_ref().to_glib_none().0, id);
+//         //     ffi::actor_manager_cancel_operation(self.as_ref().to_glib_none().0, id);
 //         // }
 //         unimplemented!()
 //     }
 
 //     fn cancel_operations<P: IsA<clutter::Actor>>(&self, actor: &P) {
 //         // unsafe {
-//         //     ffi::mx_actor_manager_cancel_operations(
+//         //     ffi::actor_manager_cancel_operations(
 //         //         self.as_ref().to_glib_none().0,
 //         //         actor.as_ref().to_glib_none().0,
 //         //     );
@@ -149,7 +148,7 @@ pub const NONE_ACTOR_MANAGER: Option<&ActorManager> = None;
 //     //}
 
 //     fn get_n_operations(&self) -> u32 {
-//         // unsafe { ffi::mx_actor_manager_get_n_operations(self.as_ref().to_glib_none().0) }
+//         // unsafe { ffi::actor_manager_get_n_operations(self.as_ref().to_glib_none().0) }
 //         unimplemented!()
 //     }
 
@@ -158,7 +157,7 @@ pub const NONE_ACTOR_MANAGER: Option<&ActorManager> = None;
 //     //}
 
 //     fn get_time_slice(&self) -> u32 {
-//         // unsafe { ffi::mx_actor_manager_get_time_slice(self.as_ref().to_glib_none().0) }
+//         // unsafe { ffi::actor_manager_get_time_slice(self.as_ref().to_glib_none().0) }
 //         unimplemented!()
 //     }
 
@@ -168,7 +167,7 @@ pub const NONE_ACTOR_MANAGER: Option<&ActorManager> = None;
 //         actor: &Q,
 //     ) -> libc::c_ulong {
 //         // unsafe {
-//         //     ffi::mx_actor_manager_remove_actor(
+//         //     ffi::actor_manager_remove_actor(
 //         //         self.as_ref().to_glib_none().0,
 //         //         container.as_ref().to_glib_none().0,
 //         //         actor.as_ref().to_glib_none().0,
@@ -179,7 +178,7 @@ pub const NONE_ACTOR_MANAGER: Option<&ActorManager> = None;
 
 //     fn remove_container<P: IsA<clutter::Actor>>(&self, container: &P) {
 //         // unsafe {
-//         //     ffi::mx_actor_manager_remove_container(
+//         //     ffi::actor_manager_remove_container(
 //         //         self.as_ref().to_glib_none().0,
 //         //         container.as_ref().to_glib_none().0,
 //         //     );
@@ -189,7 +188,7 @@ pub const NONE_ACTOR_MANAGER: Option<&ActorManager> = None;
 
 //     fn set_time_slice(&self, msecs: u32) {
 //         // unsafe {
-//         //     ffi::mx_actor_manager_set_time_slice(self.as_ref().to_glib_none().0, msecs);
+//         //     ffi::actor_manager_set_time_slice(self.as_ref().to_glib_none().0, msecs);
 //         // }
 //         unimplemented!()
 //     }
@@ -204,7 +203,7 @@ pub const NONE_ACTOR_MANAGER: Option<&ActorManager> = None;
 //         //     P,
 //         //     F: Fn(&P, libc::c_ulong, &clutter::Actor, &clutter::Actor) + 'static,
 //         // >(
-//         //     this: *mut ffi::MxActorManager,
+//         //     this: *mut ffi::ActorManager,
 //         //     id: libc::c_ulong,
 //         //     container: *mut clutter_sys::ClutterActor,
 //         //     actor: *mut clutter_sys::ClutterActor,
@@ -242,7 +241,7 @@ pub const NONE_ACTOR_MANAGER: Option<&ActorManager> = None;
 //         //     P,
 //         //     F: Fn(&P, libc::c_ulong, &clutter::Actor) + 'static,
 //         // >(
-//         //     this: *mut ffi::MxActorManager,
+//         //     this: *mut ffi::ActorManager,
 //         //     id: libc::c_ulong,
 //         //     actor: *mut clutter_sys::ClutterActor,
 //         //     f: glib_sys::gpointer,
@@ -275,7 +274,7 @@ pub const NONE_ACTOR_MANAGER: Option<&ActorManager> = None;
 //         f: F,
 //     ) -> SignalHandlerId {
 //         // unsafe extern "C" fn actor_finished_trampoline<P, F: Fn(&P, &clutter::Actor) + 'static>(
-//         //     this: *mut ffi::MxActorManager,
+//         //     this: *mut ffi::ActorManager,
 //         //     actor: *mut clutter_sys::ClutterActor,
 //         //     f: glib_sys::gpointer,
 //         // ) where
@@ -311,7 +310,7 @@ pub const NONE_ACTOR_MANAGER: Option<&ActorManager> = None;
 //         //     P,
 //         //     F: Fn(&P, libc::c_ulong, &clutter::Actor, &clutter::Actor) + 'static,
 //         // >(
-//         //     this: *mut ffi::MxActorManager,
+//         //     this: *mut ffi::ActorManager,
 //         //     id: libc::c_ulong,
 //         //     container: *mut clutter_sys::ClutterActor,
 //         //     actor: *mut clutter_sys::ClutterActor,
@@ -346,7 +345,7 @@ pub const NONE_ACTOR_MANAGER: Option<&ActorManager> = None;
 //         f: F,
 //     ) -> SignalHandlerId {
 //         // unsafe extern "C" fn operation_cancelled_trampoline<P, F: Fn(&P, libc::c_ulong) + 'static>(
-//         //     this: *mut ffi::MxActorManager,
+//         //     this: *mut ffi::ActorManager,
 //         //     id: libc::c_ulong,
 //         //     f: glib_sys::gpointer,
 //         // ) where
@@ -374,7 +373,7 @@ pub const NONE_ACTOR_MANAGER: Option<&ActorManager> = None;
 //         f: F,
 //     ) -> SignalHandlerId {
 //         // unsafe extern "C" fn operation_completed_trampoline<P, F: Fn(&P, libc::c_ulong) + 'static>(
-//         //     this: *mut ffi::MxActorManager,
+//         //     this: *mut ffi::ActorManager,
 //         //     id: libc::c_ulong,
 //         //     f: glib_sys::gpointer,
 //         // ) where
@@ -405,7 +404,7 @@ pub const NONE_ACTOR_MANAGER: Option<&ActorManager> = None;
 //         //     P,
 //         //     F: Fn(&P, libc::c_ulong, &glib::Error) + 'static,
 //         // >(
-//         //     this: *mut ffi::MxActorManager,
+//         //     this: *mut ffi::ActorManager,
 //         //     id: libc::c_ulong,
 //         //     error: *mut glib_sys::GError,
 //         //     f: glib_sys::gpointer,
@@ -438,7 +437,7 @@ pub const NONE_ACTOR_MANAGER: Option<&ActorManager> = None;
 //         f: F,
 //     ) -> SignalHandlerId {
 //         // unsafe extern "C" fn notify_n_operations_trampoline<P, F: Fn(&P) + 'static>(
-//         //     this: *mut ffi::MxActorManager,
+//         //     this: *mut ffi::ActorManager,
 //         //     _param_spec: glib_sys::gpointer,
 //         //     f: glib_sys::gpointer,
 //         // ) where
@@ -463,7 +462,7 @@ pub const NONE_ACTOR_MANAGER: Option<&ActorManager> = None;
 
 //     fn connect_property_time_slice_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
 //         // unsafe extern "C" fn notify_time_slice_trampoline<P, F: Fn(&P) + 'static>(
-//         //     this: *mut ffi::MxActorManager,
+//         //     this: *mut ffi::ActorManager,
 //         //     _param_spec: glib_sys::gpointer,
 //         //     f: glib_sys::gpointer,
 //         // ) where

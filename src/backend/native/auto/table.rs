@@ -1,24 +1,24 @@
-// use clutter;
+use crate::prelude::*;
 // use glib::object::Cast;
-// use glib::object::IsA;
 // use glib::signal::connect_raw;
 // use glib::signal::SignalHandlerId;
 // use glib::translate::*;
-// use glib_sys;
-// use ffi;
+
+
 // use std::boxed::Box as Box_;
 use std::fmt;
 // use std::mem::transmute;
 // use Widget;
 
 // glib_wrapper! {
-//     pub struct Table(Object<ffi::MxTable, ffi::MxTableClass, TableClass>) @extends Widget, clutter::Actor;
+//     pub struct Table(Object<ffi::Table, ffi::TableClass, TableClass>) @extends Widget, clutter::Actor;
 
 //     match fn {
-//         get_type => || ffi::mx_table_get_type(),
+//         get_type => || ffi::table_get_type(),
 //     }
 // }
 
+#[derive(Clone, Debug)]
 pub struct Table {
 
 }
@@ -26,7 +26,7 @@ pub struct Table {
 impl Table {
     pub fn new() -> Table {
         // assert_initialized_main_thread!();
-        // unsafe { clutter::Actor::from_glib_none(ffi::mx_table_new()).unsafe_cast() }
+        // unsafe { clutter::Actor::from_glib_none(ffi::table_new()).unsafe_cast() }
         unimplemented!()
     }
 }
@@ -114,7 +114,7 @@ pub const NONE_TABLE: Option<&Table> = None;
 // impl<O: IsA<Table>> TableExt for O {
 //     fn child_get_column<P: IsA<clutter::Actor>>(&self, child: &P) -> i32 {
 //         unsafe {
-//             ffi::mx_table_child_get_column(
+//             ffi::table_child_get_column(
 //                 self.as_ref().to_glib_none().0,
 //                 child.as_ref().to_glib_none().0,
 //             )
@@ -123,7 +123,7 @@ pub const NONE_TABLE: Option<&Table> = None;
 
 //     fn child_get_column_span<P: IsA<clutter::Actor>>(&self, child: &P) -> i32 {
 //         unsafe {
-//             ffi::mx_table_child_get_column_span(
+//             ffi::table_child_get_column_span(
 //                 self.as_ref().to_glib_none().0,
 //                 child.as_ref().to_glib_none().0,
 //             )
@@ -132,7 +132,7 @@ pub const NONE_TABLE: Option<&Table> = None;
 
 //     fn child_get_row<P: IsA<clutter::Actor>>(&self, child: &P) -> i32 {
 //         unsafe {
-//             ffi::mx_table_child_get_row(
+//             ffi::table_child_get_row(
 //                 self.as_ref().to_glib_none().0,
 //                 child.as_ref().to_glib_none().0,
 //             )
@@ -141,7 +141,7 @@ pub const NONE_TABLE: Option<&Table> = None;
 
 //     fn child_get_row_span<P: IsA<clutter::Actor>>(&self, child: &P) -> i32 {
 //         unsafe {
-//             ffi::mx_table_child_get_row_span(
+//             ffi::table_child_get_row_span(
 //                 self.as_ref().to_glib_none().0,
 //                 child.as_ref().to_glib_none().0,
 //             )
@@ -154,7 +154,7 @@ pub const NONE_TABLE: Option<&Table> = None;
 
 //     fn child_get_x_expand<P: IsA<clutter::Actor>>(&self, child: &P) -> bool {
 //         unsafe {
-//             from_glib(ffi::mx_table_child_get_x_expand(
+//             from_glib(ffi::table_child_get_x_expand(
 //                 self.as_ref().to_glib_none().0,
 //                 child.as_ref().to_glib_none().0,
 //             ))
@@ -163,7 +163,7 @@ pub const NONE_TABLE: Option<&Table> = None;
 
 //     fn child_get_x_fill<P: IsA<clutter::Actor>>(&self, child: &P) -> bool {
 //         unsafe {
-//             from_glib(ffi::mx_table_child_get_x_fill(
+//             from_glib(ffi::table_child_get_x_fill(
 //                 self.as_ref().to_glib_none().0,
 //                 child.as_ref().to_glib_none().0,
 //             ))
@@ -176,7 +176,7 @@ pub const NONE_TABLE: Option<&Table> = None;
 
 //     fn child_get_y_expand<P: IsA<clutter::Actor>>(&self, child: &P) -> bool {
 //         unsafe {
-//             from_glib(ffi::mx_table_child_get_y_expand(
+//             from_glib(ffi::table_child_get_y_expand(
 //                 self.as_ref().to_glib_none().0,
 //                 child.as_ref().to_glib_none().0,
 //             ))
@@ -185,7 +185,7 @@ pub const NONE_TABLE: Option<&Table> = None;
 
 //     fn child_get_y_fill<P: IsA<clutter::Actor>>(&self, child: &P) -> bool {
 //         unsafe {
-//             from_glib(ffi::mx_table_child_get_y_fill(
+//             from_glib(ffi::table_child_get_y_fill(
 //                 self.as_ref().to_glib_none().0,
 //                 child.as_ref().to_glib_none().0,
 //             ))
@@ -194,7 +194,7 @@ pub const NONE_TABLE: Option<&Table> = None;
 
 //     fn child_set_column<P: IsA<clutter::Actor>>(&self, child: &P, col: i32) {
 //         unsafe {
-//             ffi::mx_table_child_set_column(
+//             ffi::table_child_set_column(
 //                 self.as_ref().to_glib_none().0,
 //                 child.as_ref().to_glib_none().0,
 //                 col,
@@ -204,7 +204,7 @@ pub const NONE_TABLE: Option<&Table> = None;
 
 //     fn child_set_column_span<P: IsA<clutter::Actor>>(&self, child: &P, span: i32) {
 //         unsafe {
-//             ffi::mx_table_child_set_column_span(
+//             ffi::table_child_set_column_span(
 //                 self.as_ref().to_glib_none().0,
 //                 child.as_ref().to_glib_none().0,
 //                 span,
@@ -214,7 +214,7 @@ pub const NONE_TABLE: Option<&Table> = None;
 
 //     fn child_set_row<P: IsA<clutter::Actor>>(&self, child: &P, row: i32) {
 //         unsafe {
-//             ffi::mx_table_child_set_row(
+//             ffi::table_child_set_row(
 //                 self.as_ref().to_glib_none().0,
 //                 child.as_ref().to_glib_none().0,
 //                 row,
@@ -224,7 +224,7 @@ pub const NONE_TABLE: Option<&Table> = None;
 
 //     fn child_set_row_span<P: IsA<clutter::Actor>>(&self, child: &P, span: i32) {
 //         unsafe {
-//             ffi::mx_table_child_set_row_span(
+//             ffi::table_child_set_row_span(
 //                 self.as_ref().to_glib_none().0,
 //                 child.as_ref().to_glib_none().0,
 //                 span,
@@ -238,7 +238,7 @@ pub const NONE_TABLE: Option<&Table> = None;
 
 //     fn child_set_x_expand<P: IsA<clutter::Actor>>(&self, child: &P, expand: bool) {
 //         unsafe {
-//             ffi::mx_table_child_set_x_expand(
+//             ffi::table_child_set_x_expand(
 //                 self.as_ref().to_glib_none().0,
 //                 child.as_ref().to_glib_none().0,
 //                 expand.to_glib(),
@@ -248,7 +248,7 @@ pub const NONE_TABLE: Option<&Table> = None;
 
 //     fn child_set_x_fill<P: IsA<clutter::Actor>>(&self, child: &P, fill: bool) {
 //         unsafe {
-//             ffi::mx_table_child_set_x_fill(
+//             ffi::table_child_set_x_fill(
 //                 self.as_ref().to_glib_none().0,
 //                 child.as_ref().to_glib_none().0,
 //                 fill.to_glib(),
@@ -262,7 +262,7 @@ pub const NONE_TABLE: Option<&Table> = None;
 
 //     fn child_set_y_expand<P: IsA<clutter::Actor>>(&self, child: &P, expand: bool) {
 //         unsafe {
-//             ffi::mx_table_child_set_y_expand(
+//             ffi::table_child_set_y_expand(
 //                 self.as_ref().to_glib_none().0,
 //                 child.as_ref().to_glib_none().0,
 //                 expand.to_glib(),
@@ -272,7 +272,7 @@ pub const NONE_TABLE: Option<&Table> = None;
 
 //     fn child_set_y_fill<P: IsA<clutter::Actor>>(&self, child: &P, fill: bool) {
 //         unsafe {
-//             ffi::mx_table_child_set_y_fill(
+//             ffi::table_child_set_y_fill(
 //                 self.as_ref().to_glib_none().0,
 //                 child.as_ref().to_glib_none().0,
 //                 fill.to_glib(),
@@ -282,7 +282,7 @@ pub const NONE_TABLE: Option<&Table> = None;
 
 //     fn get_actor_at(&self, row: i32, column: i32) -> Option<clutter::Actor> {
 //         unsafe {
-//             from_glib_none(ffi::mx_table_get_actor_at(
+//             from_glib_none(ffi::table_get_actor_at(
 //                 self.as_ref().to_glib_none().0,
 //                 row,
 //                 column,
@@ -291,24 +291,24 @@ pub const NONE_TABLE: Option<&Table> = None;
 //     }
 
 //     fn get_column_count(&self) -> i32 {
-//         unsafe { ffi::mx_table_get_column_count(self.as_ref().to_glib_none().0) }
+//         unsafe { ffi::table_get_column_count(self.as_ref().to_glib_none().0) }
 //     }
 
 //     fn get_column_spacing(&self) -> i32 {
-//         unsafe { ffi::mx_table_get_column_spacing(self.as_ref().to_glib_none().0) }
+//         unsafe { ffi::table_get_column_spacing(self.as_ref().to_glib_none().0) }
 //     }
 
 //     fn get_row_count(&self) -> i32 {
-//         unsafe { ffi::mx_table_get_row_count(self.as_ref().to_glib_none().0) }
+//         unsafe { ffi::table_get_row_count(self.as_ref().to_glib_none().0) }
 //     }
 
 //     fn get_row_spacing(&self) -> i32 {
-//         unsafe { ffi::mx_table_get_row_spacing(self.as_ref().to_glib_none().0) }
+//         unsafe { ffi::table_get_row_spacing(self.as_ref().to_glib_none().0) }
 //     }
 
 //     fn insert_actor<P: IsA<clutter::Actor>>(&self, actor: &P, row: i32, column: i32) {
 //         unsafe {
-//             ffi::mx_table_insert_actor(
+//             ffi::table_insert_actor(
 //                 self.as_ref().to_glib_none().0,
 //                 actor.as_ref().to_glib_none().0,
 //                 row,
@@ -323,13 +323,13 @@ pub const NONE_TABLE: Option<&Table> = None;
 
 //     fn set_column_spacing(&self, spacing: i32) {
 //         unsafe {
-//             ffi::mx_table_set_column_spacing(self.as_ref().to_glib_none().0, spacing);
+//             ffi::table_set_column_spacing(self.as_ref().to_glib_none().0, spacing);
 //         }
 //     }
 
 //     fn set_row_spacing(&self, spacing: i32) {
 //         unsafe {
-//             ffi::mx_table_set_row_spacing(self.as_ref().to_glib_none().0, spacing);
+//             ffi::table_set_row_spacing(self.as_ref().to_glib_none().0, spacing);
 //         }
 //     }
 
@@ -338,7 +338,7 @@ pub const NONE_TABLE: Option<&Table> = None;
 //         f: F,
 //     ) -> SignalHandlerId {
 //         unsafe extern "C" fn notify_column_count_trampoline<P, F: Fn(&P) + 'static>(
-//             this: *mut ffi::MxTable,
+//             this: *mut ffi::Table,
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where
@@ -365,7 +365,7 @@ pub const NONE_TABLE: Option<&Table> = None;
 //         f: F,
 //     ) -> SignalHandlerId {
 //         unsafe extern "C" fn notify_column_spacing_trampoline<P, F: Fn(&P) + 'static>(
-//             this: *mut ffi::MxTable,
+//             this: *mut ffi::Table,
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where
@@ -389,7 +389,7 @@ pub const NONE_TABLE: Option<&Table> = None;
 
 //     fn connect_property_row_count_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
 //         unsafe extern "C" fn notify_row_count_trampoline<P, F: Fn(&P) + 'static>(
-//             this: *mut ffi::MxTable,
+//             this: *mut ffi::Table,
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where
@@ -413,7 +413,7 @@ pub const NONE_TABLE: Option<&Table> = None;
 
 //     fn connect_property_row_spacing_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
 //         unsafe extern "C" fn notify_row_spacing_trampoline<P, F: Fn(&P) + 'static>(
-//             this: *mut ffi::MxTable,
+//             this: *mut ffi::Table,
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where

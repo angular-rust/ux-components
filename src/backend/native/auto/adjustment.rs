@@ -1,24 +1,25 @@
+use crate::prelude::*;
 // use glib::object::Cast;
-// use glib::object::IsA;
 // use glib::signal::connect_raw;
 // use glib::signal::SignalHandlerId;
 // use glib::translate::*;
-// use glib_sys;
+
 // use libc;
-// use ffi;
+
 // use std::boxed::Box as Box_;
 use std::fmt;
 // use std::mem;
 // use std::mem::transmute;
 
 // glib_wrapper! {
-//     pub struct Adjustment(Object<ffi::MxAdjustment, ffi::MxAdjustmentClass, AdjustmentClass>);
+//     pub struct Adjustment(Object<ffi::Adjustment, ffi::AdjustmentClass, AdjustmentClass>);
 
 //     match fn {
-//         get_type => || ffi::mx_adjustment_get_type(),
+//         get_type => || ffi::adjustment_get_type(),
 //     }
 // }
 
+#[derive(Clone, Debug)]
 pub struct Adjustment {
 
 }
@@ -26,7 +27,7 @@ pub struct Adjustment {
 impl Adjustment {
     pub fn new() -> Adjustment {
         // assert_initialized_main_thread!();
-        // unsafe { from_glib_full(ffi::mx_adjustment_new()) }
+        // unsafe { from_glib_full(ffi::adjustment_new()) }
         unimplemented!()
     }
 
@@ -40,7 +41,7 @@ impl Adjustment {
     ) -> Adjustment {
         // assert_initialized_main_thread!();
         // unsafe {
-        //     from_glib_full(ffi::mx_adjustment_new_with_values(
+        //     from_glib_full(ffi::adjustment_new_with_values(
         //         value,
         //         lower,
         //         upper,
@@ -142,7 +143,7 @@ pub const NONE_ADJUSTMENT: Option<&Adjustment> = None;
 // impl<O: IsA<Adjustment>> AdjustmentExt for O {
 //     fn get_clamp_value(&self) -> bool {
 //         // unsafe {
-//         //     from_glib(ffi::mx_adjustment_get_clamp_value(
+//         //     from_glib(ffi::adjustment_get_clamp_value(
 //         //         self.as_ref().to_glib_none().0,
 //         //     ))
 //         // }
@@ -151,7 +152,7 @@ pub const NONE_ADJUSTMENT: Option<&Adjustment> = None;
 
 //     fn get_elastic(&self) -> bool {
 //         // unsafe {
-//         //     from_glib(ffi::mx_adjustment_get_elastic(
+//         //     from_glib(ffi::adjustment_get_elastic(
 //         //         self.as_ref().to_glib_none().0,
 //         //     ))
 //         // }
@@ -159,32 +160,32 @@ pub const NONE_ADJUSTMENT: Option<&Adjustment> = None;
 //     }
 
 //     fn get_lower(&self) -> f64 {
-//         // unsafe { ffi::mx_adjustment_get_lower(self.as_ref().to_glib_none().0) }
+//         // unsafe { ffi::adjustment_get_lower(self.as_ref().to_glib_none().0) }
 //         unimplemented!()
 //     }
 
 //     fn get_page_increment(&self) -> f64 {
-//         // unsafe { ffi::mx_adjustment_get_page_increment(self.as_ref().to_glib_none().0) }
+//         // unsafe { ffi::adjustment_get_page_increment(self.as_ref().to_glib_none().0) }
 //         unimplemented!()
 //     }
 
 //     fn get_page_size(&self) -> f64 {
-//         // unsafe { ffi::mx_adjustment_get_page_size(self.as_ref().to_glib_none().0) }
+//         // unsafe { ffi::adjustment_get_page_size(self.as_ref().to_glib_none().0) }
 //         unimplemented!()
 //     }
 
 //     fn get_step_increment(&self) -> f64 {
-//         // unsafe { ffi::mx_adjustment_get_step_increment(self.as_ref().to_glib_none().0) }
+//         // unsafe { ffi::adjustment_get_step_increment(self.as_ref().to_glib_none().0) }
 //         unimplemented!()
 //     }
 
 //     fn get_upper(&self) -> f64 {
-//         // unsafe { ffi::mx_adjustment_get_upper(self.as_ref().to_glib_none().0) }
+//         // unsafe { ffi::adjustment_get_upper(self.as_ref().to_glib_none().0) }
 //         unimplemented!()
 //     }
 
 //     fn get_value(&self) -> f64 {
-//         // unsafe { ffi::mx_adjustment_get_value(self.as_ref().to_glib_none().0) }
+//         // unsafe { ffi::adjustment_get_value(self.as_ref().to_glib_none().0) }
 //         unimplemented!()
 //     }
 
@@ -196,7 +197,7 @@ pub const NONE_ADJUSTMENT: Option<&Adjustment> = None;
 //         //     let mut step_increment = mem::MaybeUninit::uninit();
 //         //     let mut page_increment = mem::MaybeUninit::uninit();
 //         //     let mut page_size = mem::MaybeUninit::uninit();
-//         //     ffi::mx_adjustment_get_values(
+//         //     ffi::adjustment_get_values(
 //         //         self.as_ref().to_glib_none().0,
 //         //         value.as_mut_ptr(),
 //         //         lower.as_mut_ptr(),
@@ -225,7 +226,7 @@ pub const NONE_ADJUSTMENT: Option<&Adjustment> = None;
 
 //     fn interpolate(&self, value: f64, duration: u32, mode: libc::c_ulong) {
 //         // unsafe {
-//         //     ffi::mx_adjustment_interpolate(
+//         //     ffi::adjustment_interpolate(
 //         //         self.as_ref().to_glib_none().0,
 //         //         value,
 //         //         duration,
@@ -237,7 +238,7 @@ pub const NONE_ADJUSTMENT: Option<&Adjustment> = None;
 
 //     fn interpolate_relative(&self, offset: f64, duration: u32, mode: libc::c_ulong) {
 //         // unsafe {
-//         //     ffi::mx_adjustment_interpolate_relative(
+//         //     ffi::adjustment_interpolate_relative(
 //         //         self.as_ref().to_glib_none().0,
 //         //         offset,
 //         //         duration,
@@ -249,56 +250,56 @@ pub const NONE_ADJUSTMENT: Option<&Adjustment> = None;
 
 //     fn set_clamp_value(&self, clamp: bool) {
 //         // unsafe {
-//         //     ffi::mx_adjustment_set_clamp_value(self.as_ref().to_glib_none().0, clamp.to_glib());
+//         //     ffi::adjustment_set_clamp_value(self.as_ref().to_glib_none().0, clamp.to_glib());
 //         // }
 //         unimplemented!()
 //     }
 
 //     fn set_elastic(&self, elastic: bool) {
 //         // unsafe {
-//         //     ffi::mx_adjustment_set_elastic(self.as_ref().to_glib_none().0, elastic.to_glib());
+//         //     ffi::adjustment_set_elastic(self.as_ref().to_glib_none().0, elastic.to_glib());
 //         // }
 //         unimplemented!()
 //     }
 
 //     fn set_lower(&self, lower: f64) {
 //         // unsafe {
-//         //     ffi::mx_adjustment_set_lower(self.as_ref().to_glib_none().0, lower);
+//         //     ffi::adjustment_set_lower(self.as_ref().to_glib_none().0, lower);
 //         // }
 //         unimplemented!()
 //     }
 
 //     fn set_page_increment(&self, increment: f64) {
 //         // unsafe {
-//         //     ffi::mx_adjustment_set_page_increment(self.as_ref().to_glib_none().0, increment);
+//         //     ffi::adjustment_set_page_increment(self.as_ref().to_glib_none().0, increment);
 //         // }
 //         unimplemented!()
 //     }
 
 //     fn set_page_size(&self, page_size: f64) {
 //         // unsafe {
-//         //     ffi::mx_adjustment_set_page_size(self.as_ref().to_glib_none().0, page_size);
+//         //     ffi::adjustment_set_page_size(self.as_ref().to_glib_none().0, page_size);
 //         // }
 //         unimplemented!()
 //     }
 
 //     fn set_step_increment(&self, increment: f64) {
 //         // unsafe {
-//         //     ffi::mx_adjustment_set_step_increment(self.as_ref().to_glib_none().0, increment);
+//         //     ffi::adjustment_set_step_increment(self.as_ref().to_glib_none().0, increment);
 //         // }
 //         unimplemented!()
 //     }
 
 //     fn set_upper(&self, upper: f64) {
 //         // unsafe {
-//         //     ffi::mx_adjustment_set_upper(self.as_ref().to_glib_none().0, upper);
+//         //     ffi::adjustment_set_upper(self.as_ref().to_glib_none().0, upper);
 //         // }
 //         unimplemented!()
 //     }
 
 //     fn set_value(&self, value: f64) {
 //         // unsafe {
-//         //     ffi::mx_adjustment_set_value(self.as_ref().to_glib_none().0, value);
+//         //     ffi::adjustment_set_value(self.as_ref().to_glib_none().0, value);
 //         // }
 //         unimplemented!()
 //     }
@@ -313,7 +314,7 @@ pub const NONE_ADJUSTMENT: Option<&Adjustment> = None;
 //         page_size: f64,
 //     ) {
 //         // unsafe {
-//         //     ffi::mx_adjustment_set_values(
+//         //     ffi::adjustment_set_values(
 //         //         self.as_ref().to_glib_none().0,
 //         //         value,
 //         //         lower,
@@ -328,7 +329,7 @@ pub const NONE_ADJUSTMENT: Option<&Adjustment> = None;
 
 //     fn connect_changed<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
 //         // unsafe extern "C" fn changed_trampoline<P, F: Fn(&P) + 'static>(
-//         //     this: *mut ffi::MxAdjustment,
+//         //     this: *mut ffi::Adjustment,
 //         //     f: glib_sys::gpointer,
 //         // ) where
 //         //     P: IsA<Adjustment>,
@@ -352,7 +353,7 @@ pub const NONE_ADJUSTMENT: Option<&Adjustment> = None;
 
 //     fn connect_changed_immediate<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
 //         // unsafe extern "C" fn changed_immediate_trampoline<P, F: Fn(&P) + 'static>(
-//         //     this: *mut ffi::MxAdjustment,
+//         //     this: *mut ffi::Adjustment,
 //         //     f: glib_sys::gpointer,
 //         // ) where
 //         //     P: IsA<Adjustment>,
@@ -376,7 +377,7 @@ pub const NONE_ADJUSTMENT: Option<&Adjustment> = None;
 
 //     fn connect_interpolation_completed<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
 //         // unsafe extern "C" fn interpolation_completed_trampoline<P, F: Fn(&P) + 'static>(
-//         //     this: *mut ffi::MxAdjustment,
+//         //     this: *mut ffi::Adjustment,
 //         //     f: glib_sys::gpointer,
 //         // ) where
 //         //     P: IsA<Adjustment>,
@@ -400,7 +401,7 @@ pub const NONE_ADJUSTMENT: Option<&Adjustment> = None;
 
 //     fn connect_property_clamp_value_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
 //         // unsafe extern "C" fn notify_clamp_value_trampoline<P, F: Fn(&P) + 'static>(
-//         //     this: *mut ffi::MxAdjustment,
+//         //     this: *mut ffi::Adjustment,
 //         //     _param_spec: glib_sys::gpointer,
 //         //     f: glib_sys::gpointer,
 //         // ) where
@@ -425,7 +426,7 @@ pub const NONE_ADJUSTMENT: Option<&Adjustment> = None;
 
 //     fn connect_property_elastic_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
 //         // unsafe extern "C" fn notify_elastic_trampoline<P, F: Fn(&P) + 'static>(
-//         //     this: *mut ffi::MxAdjustment,
+//         //     this: *mut ffi::Adjustment,
 //         //     _param_spec: glib_sys::gpointer,
 //         //     f: glib_sys::gpointer,
 //         // ) where
@@ -450,7 +451,7 @@ pub const NONE_ADJUSTMENT: Option<&Adjustment> = None;
 
 //     fn connect_property_lower_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
 //         // unsafe extern "C" fn notify_lower_trampoline<P, F: Fn(&P) + 'static>(
-//         //     this: *mut ffi::MxAdjustment,
+//         //     this: *mut ffi::Adjustment,
 //         //     _param_spec: glib_sys::gpointer,
 //         //     f: glib_sys::gpointer,
 //         // ) where
@@ -478,7 +479,7 @@ pub const NONE_ADJUSTMENT: Option<&Adjustment> = None;
 //         f: F,
 //     ) -> SignalHandlerId {
 //         // unsafe extern "C" fn notify_page_increment_trampoline<P, F: Fn(&P) + 'static>(
-//         //     this: *mut ffi::MxAdjustment,
+//         //     this: *mut ffi::Adjustment,
 //         //     _param_spec: glib_sys::gpointer,
 //         //     f: glib_sys::gpointer,
 //         // ) where
@@ -503,7 +504,7 @@ pub const NONE_ADJUSTMENT: Option<&Adjustment> = None;
 
 //     fn connect_property_page_size_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
 //         // unsafe extern "C" fn notify_page_size_trampoline<P, F: Fn(&P) + 'static>(
-//         //     this: *mut ffi::MxAdjustment,
+//         //     this: *mut ffi::Adjustment,
 //         //     _param_spec: glib_sys::gpointer,
 //         //     f: glib_sys::gpointer,
 //         // ) where
@@ -531,7 +532,7 @@ pub const NONE_ADJUSTMENT: Option<&Adjustment> = None;
 //         f: F,
 //     ) -> SignalHandlerId {
 //         // unsafe extern "C" fn notify_step_increment_trampoline<P, F: Fn(&P) + 'static>(
-//         //     this: *mut ffi::MxAdjustment,
+//         //     this: *mut ffi::Adjustment,
 //         //     _param_spec: glib_sys::gpointer,
 //         //     f: glib_sys::gpointer,
 //         // ) where
@@ -556,7 +557,7 @@ pub const NONE_ADJUSTMENT: Option<&Adjustment> = None;
 
 //     fn connect_property_upper_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
 //         // unsafe extern "C" fn notify_upper_trampoline<P, F: Fn(&P) + 'static>(
-//         //     this: *mut ffi::MxAdjustment,
+//         //     this: *mut ffi::Adjustment,
 //         //     _param_spec: glib_sys::gpointer,
 //         //     f: glib_sys::gpointer,
 //         // ) where
@@ -581,7 +582,7 @@ pub const NONE_ADJUSTMENT: Option<&Adjustment> = None;
 
 //     fn connect_property_value_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
 //         // unsafe extern "C" fn notify_value_trampoline<P, F: Fn(&P) + 'static>(
-//         //     this: *mut ffi::MxAdjustment,
+//         //     this: *mut ffi::Adjustment,
 //         //     _param_spec: glib_sys::gpointer,
 //         //     f: glib_sys::gpointer,
 //         // ) where

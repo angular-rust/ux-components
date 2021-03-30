@@ -1,25 +1,24 @@
-// use clutter;
+use crate::prelude::*;
 // use glib::object::Cast;
-// use glib::object::IsA;
 // use glib::signal::connect_raw;
 // use glib::signal::SignalHandlerId;
 // use glib::translate::*;
-// use glib::GString;
-// use glib_sys;
-// use ffi;
+
+
 // use std::boxed::Box as Box_;
 use std::fmt;
 // use std::mem::transmute;
 // use Widget;
 
 // glib_wrapper! {
-//     pub struct Icon(Object<ffi::MxIcon, ffi::MxIconClass, IconClass>) @extends Widget, clutter::Actor;
+//     pub struct Icon(Object<ffi::Icon, ffi::IconClass, IconClass>) @extends Widget, clutter::Actor;
 
 //     match fn {
-//         get_type => || ffi::mx_icon_get_type(),
+//         get_type => || ffi::icon_get_type(),
 //     }
 // }
 
+#[derive(Clone, Debug)]
 pub struct Icon {
 
 }
@@ -27,7 +26,7 @@ pub struct Icon {
 impl Icon {
     pub fn new() -> Icon {
         // assert_initialized_main_thread!();
-        // unsafe { clutter::Actor::from_glib_none(ffi::mx_icon_new()).unsafe_cast() }
+        // unsafe { clutter::Actor::from_glib_none(ffi::icon_new()).unsafe_cast() }
         unimplemented!()
     }
 }
@@ -41,7 +40,7 @@ impl Default for Icon {
 pub const NONE_ICON: Option<&Icon> = None;
 
 // pub trait IconExt: 'static {
-//     fn get_icon_name(&self) -> Option<GString>;
+//     fn get_icon_name(&self) -> Option<String>;
 
 //     fn get_icon_size(&self) -> i32;
 
@@ -55,21 +54,21 @@ pub const NONE_ICON: Option<&Icon> = None;
 // }
 
 // impl<O: IsA<Icon>> IconExt for O {
-//     fn get_icon_name(&self) -> Option<GString> {
+//     fn get_icon_name(&self) -> Option<String> {
 //         unsafe {
-//             from_glib_none(ffi::mx_icon_get_icon_name(
+//             from_glib_none(ffi::icon_get_icon_name(
 //                 self.as_ref().to_glib_none().0,
 //             ))
 //         }
 //     }
 
 //     fn get_icon_size(&self) -> i32 {
-//         unsafe { ffi::mx_icon_get_icon_size(self.as_ref().to_glib_none().0) }
+//         unsafe { ffi::icon_get_icon_size(self.as_ref().to_glib_none().0) }
 //     }
 
 //     fn set_icon_name(&self, icon_name: &str) {
 //         unsafe {
-//             ffi::mx_icon_set_icon_name(
+//             ffi::icon_set_icon_name(
 //                 self.as_ref().to_glib_none().0,
 //                 icon_name.to_glib_none().0,
 //             );
@@ -78,13 +77,13 @@ pub const NONE_ICON: Option<&Icon> = None;
 
 //     fn set_icon_size(&self, size: i32) {
 //         unsafe {
-//             ffi::mx_icon_set_icon_size(self.as_ref().to_glib_none().0, size);
+//             ffi::icon_set_icon_size(self.as_ref().to_glib_none().0, size);
 //         }
 //     }
 
 //     fn connect_property_icon_name_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
 //         unsafe extern "C" fn notify_icon_name_trampoline<P, F: Fn(&P) + 'static>(
-//             this: *mut ffi::MxIcon,
+//             this: *mut ffi::Icon,
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where
@@ -108,7 +107,7 @@ pub const NONE_ICON: Option<&Icon> = None;
 
 //     fn connect_property_icon_size_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
 //         unsafe extern "C" fn notify_icon_size_trampoline<P, F: Fn(&P) + 'static>(
-//             this: *mut ffi::MxIcon,
+//             this: *mut ffi::Icon,
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where

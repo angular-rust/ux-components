@@ -9,6 +9,6 @@ impl ItemView {
         unimplemented!() // TODO: complete it
 
         // assert_initialized_main_thread!();
-        // unsafe { from_glib_full(ffi::mx_item_view_new()) }
+        // unsafe { from_glib_full(ffi::item_view_new()) }
     }
 }

@@ -9,6 +9,6 @@ impl Notebook {
         unimplemented!() // TODO: complete it
 
         // assert_initialized_main_thread!();
-        // unsafe { from_glib_full(ffi::mx_notebook_new()) }
+        // unsafe { from_glib_full(ffi::notebook_new()) }
     }
 }

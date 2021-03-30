@@ -15,7 +15,7 @@ impl Application {
     pub fn new(application_id: &str, flags: ApplicationFlags) -> Application {
         // assert_initialized_main_thread!();
         unsafe {
-            from_glib_full(ffi::mx_application_new(
+            from_glib_full(ffi::application_new(
                 application_id.to_glib_none().0,
                 flags.to_glib(),
             ))

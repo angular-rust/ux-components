@@ -1,15 +1,14 @@
-// use clutter;
+use crate::prelude::*;
 // use glib::object::Cast;
-// use glib::object::IsA;
 // use glib::signal::connect_raw;
 // use glib::signal::SignalHandlerId;
 // use glib::translate::*;
 // use glib::value::SetValueOptional;
 // use glib::StaticType;
 // use glib::Value;
-// use glib_sys;
-// use gobject_sys;
-// use ffi;
+
+
+
 // use std::boxed::Box as Box_;
 use std::fmt;
 // use std::mem::transmute;
@@ -17,13 +16,14 @@ use std::fmt;
 // use Widget;
 
 // glib_wrapper! {
-//     pub struct Pager(Object<ffi::MxPager, ffi::MxPagerClass, PagerClass>) @extends Stack, Widget, clutter::Actor;
+//     pub struct Pager(Object<ffi::Pager, ffi::PagerClass, PagerClass>) @extends Stack, Widget, clutter::Actor;
 
 //     match fn {
-//         get_type => || ffi::mx_pager_get_type(),
+//         get_type => || ffi::pager_get_type(),
 //     }
 // }
 
+#[derive(Clone, Debug)]
 pub struct Pager {
 
 }
@@ -31,7 +31,7 @@ pub struct Pager {
 impl Pager {
     pub fn new() -> Pager {
         // assert_initialized_main_thread!();
-        // unsafe { from_glib_full(ffi::mx_pager_new()) }
+        // unsafe { from_glib_full(ffi::pager_new()) }
         unimplemented!()
     }
 }
@@ -91,7 +91,7 @@ pub const NONE_PAGER: Option<&Pager> = None;
 // impl<O: IsA<Pager>> PagerExt for O {
 //     fn get_actor_for_page(&self, page: u32) -> Option<clutter::Actor> {
 //         unsafe {
-//             from_glib_none(ffi::mx_pager_get_actor_for_page(
+//             from_glib_none(ffi::pager_get_actor_for_page(
 //                 self.as_ref().to_glib_none().0,
 //                 page,
 //             ))
@@ -99,12 +99,12 @@ pub const NONE_PAGER: Option<&Pager> = None;
 //     }
 
 //     fn get_current_page(&self) -> u32 {
-//         unsafe { ffi::mx_pager_get_current_page(self.as_ref().to_glib_none().0) }
+//         unsafe { ffi::pager_get_current_page(self.as_ref().to_glib_none().0) }
 //     }
 
 //     fn get_current_page_actor(&self) -> Option<clutter::Actor> {
 //         unsafe {
-//             from_glib_none(ffi::mx_pager_get_current_page_actor(
+//             from_glib_none(ffi::pager_get_current_page_actor(
 //                 self.as_ref().to_glib_none().0,
 //             ))
 //         }
@@ -112,19 +112,19 @@ pub const NONE_PAGER: Option<&Pager> = None;
 
 //     fn get_edge_previews(&self) -> bool {
 //         unsafe {
-//             from_glib(ffi::mx_pager_get_edge_previews(
+//             from_glib(ffi::pager_get_edge_previews(
 //                 self.as_ref().to_glib_none().0,
 //             ))
 //         }
 //     }
 
 //     fn get_n_pages(&self) -> u32 {
-//         unsafe { ffi::mx_pager_get_n_pages(self.as_ref().to_glib_none().0) }
+//         unsafe { ffi::pager_get_n_pages(self.as_ref().to_glib_none().0) }
 //     }
 
 //     fn insert_page<P: IsA<clutter::Actor>>(&self, child: &P, position: i32) {
 //         unsafe {
-//             ffi::mx_pager_insert_page(
+//             ffi::pager_insert_page(
 //                 self.as_ref().to_glib_none().0,
 //                 child.as_ref().to_glib_none().0,
 //                 position,
@@ -134,19 +134,19 @@ pub const NONE_PAGER: Option<&Pager> = None;
 
 //     fn next(&self) {
 //         unsafe {
-//             ffi::mx_pager_next(self.as_ref().to_glib_none().0);
+//             ffi::pager_next(self.as_ref().to_glib_none().0);
 //         }
 //     }
 
 //     fn previous(&self) {
 //         unsafe {
-//             ffi::mx_pager_previous(self.as_ref().to_glib_none().0);
+//             ffi::pager_previous(self.as_ref().to_glib_none().0);
 //         }
 //     }
 
 //     fn set_current_page(&self, page: u32, animate: bool) {
 //         unsafe {
-//             ffi::mx_pager_set_current_page(
+//             ffi::pager_set_current_page(
 //                 self.as_ref().to_glib_none().0,
 //                 page,
 //                 animate.to_glib(),
@@ -156,7 +156,7 @@ pub const NONE_PAGER: Option<&Pager> = None;
 
 //     fn set_current_page_by_actor<P: IsA<clutter::Actor>>(&self, actor: &P, animate: bool) {
 //         unsafe {
-//             ffi::mx_pager_set_current_page_by_actor(
+//             ffi::pager_set_current_page_by_actor(
 //                 self.as_ref().to_glib_none().0,
 //                 actor.as_ref().to_glib_none().0,
 //                 animate.to_glib(),
@@ -166,7 +166,7 @@ pub const NONE_PAGER: Option<&Pager> = None;
 
 //     fn set_edge_previews(&self, edge_previews: bool) {
 //         unsafe {
-//             ffi::mx_pager_set_edge_previews(
+//             ffi::pager_set_edge_previews(
 //                 self.as_ref().to_glib_none().0,
 //                 edge_previews.to_glib(),
 //             );
@@ -230,7 +230,7 @@ pub const NONE_PAGER: Option<&Pager> = None;
 //         f: F,
 //     ) -> SignalHandlerId {
 //         unsafe extern "C" fn notify_edge_previews_trampoline<P, F: Fn(&P) + 'static>(
-//             this: *mut ffi::MxPager,
+//             this: *mut ffi::Pager,
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where
@@ -254,7 +254,7 @@ pub const NONE_PAGER: Option<&Pager> = None;
 
 //     fn connect_property_page_actor_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
 //         unsafe extern "C" fn notify_page_actor_trampoline<P, F: Fn(&P) + 'static>(
-//             this: *mut ffi::MxPager,
+//             this: *mut ffi::Pager,
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where
@@ -278,7 +278,7 @@ pub const NONE_PAGER: Option<&Pager> = None;
 
 //     fn connect_property_page_num_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
 //         unsafe extern "C" fn notify_page_num_trampoline<P, F: Fn(&P) + 'static>(
-//             this: *mut ffi::MxPager,
+//             this: *mut ffi::Pager,
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where

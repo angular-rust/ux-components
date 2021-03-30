@@ -9,6 +9,6 @@ impl Spinner {
         unimplemented!() // TODO: complete it
 
         // assert_initialized_main_thread!();
-        // unsafe { from_glib_full(ffi::mx_spinner_new()) }
+        // unsafe { from_glib_full(ffi::spinner_new()) }
     }
 }

@@ -1,24 +1,24 @@
-// use clutter;
+use crate::prelude::*;
 // use glib::object::Cast;
-// use glib::object::IsA;
 // use glib::signal::connect_raw;
 // use glib::signal::SignalHandlerId;
 // use glib::translate::*;
-// use glib_sys;
-// use ffi;
+
+
 // use std::boxed::Box as Box_;
 use std::fmt;
 // use std::mem::transmute;
 // use Widget;
 
 // glib_wrapper! {
-//     pub struct Grid(Object<ffi::MxGrid, ffi::MxGridClass, GridClass>) @extends Widget, clutter::Actor;
+//     pub struct Grid(Object<ffi::Grid, ffi::GridClass, GridClass>) @extends Widget, clutter::Actor;
 
 //     match fn {
-//         get_type => || ffi::mx_grid_get_type(),
+//         get_type => || ffi::grid_get_type(),
 //     }
 // }
 
+#[derive(Clone, Debug)]
 pub struct Grid {
 
 }
@@ -26,7 +26,7 @@ pub struct Grid {
 impl Grid {
     pub fn new() -> Grid {
         // assert_initialized_main_thread!();
-        // unsafe { clutter::Actor::from_glib_none(ffi::mx_grid_new()).unsafe_cast() }
+        // unsafe { clutter::Actor::from_glib_none(ffi::grid_new()).unsafe_cast() }
         unimplemented!()
     }
 }
@@ -123,12 +123,12 @@ pub const NONE_GRID: Option<&Grid> = None;
 //     //}
 
 //     fn get_column_spacing(&self) -> f32 {
-//         unsafe { ffi::mx_grid_get_column_spacing(self.as_ref().to_glib_none().0) }
+//         unsafe { ffi::grid_get_column_spacing(self.as_ref().to_glib_none().0) }
 //     }
 
 //     fn get_homogenous_columns(&self) -> bool {
 //         unsafe {
-//             from_glib(ffi::mx_grid_get_homogenous_columns(
+//             from_glib(ffi::grid_get_homogenous_columns(
 //                 self.as_ref().to_glib_none().0,
 //             ))
 //         }
@@ -136,7 +136,7 @@ pub const NONE_GRID: Option<&Grid> = None;
 
 //     fn get_homogenous_rows(&self) -> bool {
 //         unsafe {
-//             from_glib(ffi::mx_grid_get_homogenous_rows(
+//             from_glib(ffi::grid_get_homogenous_rows(
 //                 self.as_ref().to_glib_none().0,
 //             ))
 //         }
@@ -147,7 +147,7 @@ pub const NONE_GRID: Option<&Grid> = None;
 //     //}
 
 //     fn get_max_stride(&self) -> i32 {
-//         unsafe { ffi::mx_grid_get_max_stride(self.as_ref().to_glib_none().0) }
+//         unsafe { ffi::grid_get_max_stride(self.as_ref().to_glib_none().0) }
 //     }
 
 //     //fn get_orientation(&self) -> /*Ignored*/Orientation {
@@ -155,7 +155,7 @@ pub const NONE_GRID: Option<&Grid> = None;
 //     //}
 
 //     fn get_row_spacing(&self) -> f32 {
-//         unsafe { ffi::mx_grid_get_row_spacing(self.as_ref().to_glib_none().0) }
+//         unsafe { ffi::grid_get_row_spacing(self.as_ref().to_glib_none().0) }
 //     }
 
 //     //fn set_child_x_align(&self, value: /*Ignored*/Align) {
@@ -168,19 +168,19 @@ pub const NONE_GRID: Option<&Grid> = None;
 
 //     fn set_column_spacing(&self, value: f32) {
 //         unsafe {
-//             ffi::mx_grid_set_column_spacing(self.as_ref().to_glib_none().0, value);
+//             ffi::grid_set_column_spacing(self.as_ref().to_glib_none().0, value);
 //         }
 //     }
 
 //     fn set_homogenous_columns(&self, value: bool) {
 //         unsafe {
-//             ffi::mx_grid_set_homogenous_columns(self.as_ref().to_glib_none().0, value.to_glib());
+//             ffi::grid_set_homogenous_columns(self.as_ref().to_glib_none().0, value.to_glib());
 //         }
 //     }
 
 //     fn set_homogenous_rows(&self, value: bool) {
 //         unsafe {
-//             ffi::mx_grid_set_homogenous_rows(self.as_ref().to_glib_none().0, value.to_glib());
+//             ffi::grid_set_homogenous_rows(self.as_ref().to_glib_none().0, value.to_glib());
 //         }
 //     }
 
@@ -190,7 +190,7 @@ pub const NONE_GRID: Option<&Grid> = None;
 
 //     fn set_max_stride(&self, value: i32) {
 //         unsafe {
-//             ffi::mx_grid_set_max_stride(self.as_ref().to_glib_none().0, value);
+//             ffi::grid_set_max_stride(self.as_ref().to_glib_none().0, value);
 //         }
 //     }
 
@@ -200,7 +200,7 @@ pub const NONE_GRID: Option<&Grid> = None;
 
 //     fn set_row_spacing(&self, value: f32) {
 //         unsafe {
-//             ffi::mx_grid_set_row_spacing(self.as_ref().to_glib_none().0, value);
+//             ffi::grid_set_row_spacing(self.as_ref().to_glib_none().0, value);
 //         }
 //     }
 
@@ -209,7 +209,7 @@ pub const NONE_GRID: Option<&Grid> = None;
 //         f: F,
 //     ) -> SignalHandlerId {
 //         unsafe extern "C" fn notify_child_x_align_trampoline<P, F: Fn(&P) + 'static>(
-//             this: *mut ffi::MxGrid,
+//             this: *mut ffi::Grid,
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where
@@ -236,7 +236,7 @@ pub const NONE_GRID: Option<&Grid> = None;
 //         f: F,
 //     ) -> SignalHandlerId {
 //         unsafe extern "C" fn notify_child_y_align_trampoline<P, F: Fn(&P) + 'static>(
-//             this: *mut ffi::MxGrid,
+//             this: *mut ffi::Grid,
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where
@@ -263,7 +263,7 @@ pub const NONE_GRID: Option<&Grid> = None;
 //         f: F,
 //     ) -> SignalHandlerId {
 //         unsafe extern "C" fn notify_column_spacing_trampoline<P, F: Fn(&P) + 'static>(
-//             this: *mut ffi::MxGrid,
+//             this: *mut ffi::Grid,
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where
@@ -290,7 +290,7 @@ pub const NONE_GRID: Option<&Grid> = None;
 //         f: F,
 //     ) -> SignalHandlerId {
 //         unsafe extern "C" fn notify_homogenous_columns_trampoline<P, F: Fn(&P) + 'static>(
-//             this: *mut ffi::MxGrid,
+//             this: *mut ffi::Grid,
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where
@@ -317,7 +317,7 @@ pub const NONE_GRID: Option<&Grid> = None;
 //         f: F,
 //     ) -> SignalHandlerId {
 //         unsafe extern "C" fn notify_homogenous_rows_trampoline<P, F: Fn(&P) + 'static>(
-//             this: *mut ffi::MxGrid,
+//             this: *mut ffi::Grid,
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where
@@ -344,7 +344,7 @@ pub const NONE_GRID: Option<&Grid> = None;
 //         f: F,
 //     ) -> SignalHandlerId {
 //         unsafe extern "C" fn notify_line_alignment_trampoline<P, F: Fn(&P) + 'static>(
-//             this: *mut ffi::MxGrid,
+//             this: *mut ffi::Grid,
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where
@@ -368,7 +368,7 @@ pub const NONE_GRID: Option<&Grid> = None;
 
 //     fn connect_property_max_stride_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
 //         unsafe extern "C" fn notify_max_stride_trampoline<P, F: Fn(&P) + 'static>(
-//             this: *mut ffi::MxGrid,
+//             this: *mut ffi::Grid,
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where
@@ -392,7 +392,7 @@ pub const NONE_GRID: Option<&Grid> = None;
 
 //     fn connect_property_orientation_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
 //         unsafe extern "C" fn notify_orientation_trampoline<P, F: Fn(&P) + 'static>(
-//             this: *mut ffi::MxGrid,
+//             this: *mut ffi::Grid,
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where
@@ -416,7 +416,7 @@ pub const NONE_GRID: Option<&Grid> = None;
 
 //     fn connect_property_row_spacing_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
 //         unsafe extern "C" fn notify_row_spacing_trampoline<P, F: Fn(&P) + 'static>(
-//             this: *mut ffi::MxGrid,
+//             this: *mut ffi::Grid,
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where

@@ -1,25 +1,24 @@
-// use clutter;
+use crate::prelude::*;
 // use glib::object::Cast;
-// use glib::object::IsA;
 // use glib::signal::connect_raw;
 // use glib::signal::SignalHandlerId;
 // use glib::translate::*;
-// use glib::GString;
-// use glib_sys;
-// use ffi;
+
+
 // use std::boxed::Box as Box_;
 use std::fmt;
 // use std::mem::transmute;
 // use Widget;
 
 // glib_wrapper! {
-//     pub struct Label(Object<ffi::MxLabel, ffi::MxLabelClass, LabelClass>) @extends Widget, clutter::Actor;
+//     pub struct Label(Object<ffi::Label, ffi::LabelClass, LabelClass>) @extends Widget, clutter::Actor;
 
 //     match fn {
-//         get_type => || ffi::mx_label_get_type(),
+//         get_type => || ffi::label_get_type(),
 //     }
 // }
 
+#[derive(Clone, Debug)]
 pub struct Label {
 
 }
@@ -27,14 +26,14 @@ pub struct Label {
 impl Label {
     pub fn new() -> Label {
         // assert_initialized_main_thread!();
-        // unsafe { clutter::Actor::from_glib_none(ffi::mx_label_new()).unsafe_cast() }
+        // unsafe { clutter::Actor::from_glib_none(ffi::label_new()).unsafe_cast() }
         unimplemented!()
     }
 
     pub fn with_text(text: &str) -> Label {
         // assert_initialized_main_thread!();
         // unsafe {
-        //     clutter::Actor::from_glib_none(ffi::mx_label_new_with_text(text.to_glib_none().0))
+        //     clutter::Actor::from_glib_none(ffi::label_new_with_text(text.to_glib_none().0))
         //         .unsafe_cast()
         // }
         unimplemented!()
@@ -61,7 +60,7 @@ pub const NONE_LABEL: Option<&Label> = None;
 
 //     fn get_show_tooltip(&self) -> bool;
 
-//     fn get_text(&self) -> Option<GString>;
+//     fn get_text(&self) -> Option<String>;
 
 //     fn get_use_markup(&self) -> bool;
 
@@ -113,7 +112,7 @@ pub const NONE_LABEL: Option<&Label> = None;
 
 //     fn get_clutter_text(&self) -> Option<clutter::Actor> {
 //         unsafe {
-//             from_glib_none(ffi::mx_label_get_clutter_text(
+//             from_glib_none(ffi::label_get_clutter_text(
 //                 self.as_ref().to_glib_none().0,
 //             ))
 //         }
@@ -121,7 +120,7 @@ pub const NONE_LABEL: Option<&Label> = None;
 
 //     fn get_fade_out(&self) -> bool {
 //         unsafe {
-//             from_glib(ffi::mx_label_get_fade_out(
+//             from_glib(ffi::label_get_fade_out(
 //                 self.as_ref().to_glib_none().0,
 //             ))
 //         }
@@ -129,7 +128,7 @@ pub const NONE_LABEL: Option<&Label> = None;
 
 //     fn get_line_wrap(&self) -> bool {
 //         unsafe {
-//             from_glib(ffi::mx_label_get_line_wrap(
+//             from_glib(ffi::label_get_line_wrap(
 //                 self.as_ref().to_glib_none().0,
 //             ))
 //         }
@@ -137,19 +136,19 @@ pub const NONE_LABEL: Option<&Label> = None;
 
 //     fn get_show_tooltip(&self) -> bool {
 //         unsafe {
-//             from_glib(ffi::mx_label_get_show_tooltip(
+//             from_glib(ffi::label_get_show_tooltip(
 //                 self.as_ref().to_glib_none().0,
 //             ))
 //         }
 //     }
 
-//     fn get_text(&self) -> Option<GString> {
-//         unsafe { from_glib_none(ffi::mx_label_get_text(self.as_ref().to_glib_none().0)) }
+//     fn get_text(&self) -> Option<String> {
+//         unsafe { from_glib_none(ffi::label_get_text(self.as_ref().to_glib_none().0)) }
 //     }
 
 //     fn get_use_markup(&self) -> bool {
 //         unsafe {
-//             from_glib(ffi::mx_label_get_use_markup(
+//             from_glib(ffi::label_get_use_markup(
 //                 self.as_ref().to_glib_none().0,
 //             ))
 //         }
@@ -170,19 +169,19 @@ pub const NONE_LABEL: Option<&Label> = None;
 
 //     fn set_fade_out(&self, fade: bool) {
 //         unsafe {
-//             ffi::mx_label_set_fade_out(self.as_ref().to_glib_none().0, fade.to_glib());
+//             ffi::label_set_fade_out(self.as_ref().to_glib_none().0, fade.to_glib());
 //         }
 //     }
 
 //     fn set_line_wrap(&self, line_wrap: bool) {
 //         unsafe {
-//             ffi::mx_label_set_line_wrap(self.as_ref().to_glib_none().0, line_wrap.to_glib());
+//             ffi::label_set_line_wrap(self.as_ref().to_glib_none().0, line_wrap.to_glib());
 //         }
 //     }
 
 //     fn set_show_tooltip(&self, show_tooltip: bool) {
 //         unsafe {
-//             ffi::mx_label_set_show_tooltip(
+//             ffi::label_set_show_tooltip(
 //                 self.as_ref().to_glib_none().0,
 //                 show_tooltip.to_glib(),
 //             );
@@ -191,13 +190,13 @@ pub const NONE_LABEL: Option<&Label> = None;
 
 //     fn set_text(&self, text: &str) {
 //         unsafe {
-//             ffi::mx_label_set_text(self.as_ref().to_glib_none().0, text.to_glib_none().0);
+//             ffi::label_set_text(self.as_ref().to_glib_none().0, text.to_glib_none().0);
 //         }
 //     }
 
 //     fn set_use_markup(&self, use_markup: bool) {
 //         unsafe {
-//             ffi::mx_label_set_use_markup(self.as_ref().to_glib_none().0, use_markup.to_glib());
+//             ffi::label_set_use_markup(self.as_ref().to_glib_none().0, use_markup.to_glib());
 //         }
 //     }
 
@@ -214,7 +213,7 @@ pub const NONE_LABEL: Option<&Label> = None;
 //         f: F,
 //     ) -> SignalHandlerId {
 //         unsafe extern "C" fn notify_clutter_text_trampoline<P, F: Fn(&P) + 'static>(
-//             this: *mut ffi::MxLabel,
+//             this: *mut ffi::Label,
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where
@@ -238,7 +237,7 @@ pub const NONE_LABEL: Option<&Label> = None;
 
 //     fn connect_property_fade_out_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
 //         unsafe extern "C" fn notify_fade_out_trampoline<P, F: Fn(&P) + 'static>(
-//             this: *mut ffi::MxLabel,
+//             this: *mut ffi::Label,
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where
@@ -262,7 +261,7 @@ pub const NONE_LABEL: Option<&Label> = None;
 
 //     fn connect_property_line_wrap_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
 //         unsafe extern "C" fn notify_line_wrap_trampoline<P, F: Fn(&P) + 'static>(
-//             this: *mut ffi::MxLabel,
+//             this: *mut ffi::Label,
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where
@@ -289,7 +288,7 @@ pub const NONE_LABEL: Option<&Label> = None;
 //         f: F,
 //     ) -> SignalHandlerId {
 //         unsafe extern "C" fn notify_show_tooltip_trampoline<P, F: Fn(&P) + 'static>(
-//             this: *mut ffi::MxLabel,
+//             this: *mut ffi::Label,
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where
@@ -313,7 +312,7 @@ pub const NONE_LABEL: Option<&Label> = None;
 
 //     fn connect_property_text_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
 //         unsafe extern "C" fn notify_text_trampoline<P, F: Fn(&P) + 'static>(
-//             this: *mut ffi::MxLabel,
+//             this: *mut ffi::Label,
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where
@@ -337,7 +336,7 @@ pub const NONE_LABEL: Option<&Label> = None;
 
 //     fn connect_property_use_markup_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
 //         unsafe extern "C" fn notify_use_markup_trampoline<P, F: Fn(&P) + 'static>(
-//             this: *mut ffi::MxLabel,
+//             this: *mut ffi::Label,
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where
@@ -361,7 +360,7 @@ pub const NONE_LABEL: Option<&Label> = None;
 
 //     fn connect_property_x_align_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
 //         unsafe extern "C" fn notify_x_align_trampoline<P, F: Fn(&P) + 'static>(
-//             this: *mut ffi::MxLabel,
+//             this: *mut ffi::Label,
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where
@@ -385,7 +384,7 @@ pub const NONE_LABEL: Option<&Label> = None;
 
 //     fn connect_property_y_align_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
 //         unsafe extern "C" fn notify_y_align_trampoline<P, F: Fn(&P) + 'static>(
-//             this: *mut ffi::MxLabel,
+//             this: *mut ffi::Label,
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where

@@ -2,20 +2,20 @@ use glib;
 // use glib::object::{Cast, IsA};
 use glib::signal::{SignalHandlerId}; // connect_raw
 // use glib::translate::*;
-use glib::GString;
-// use glib_sys;
+
 use std::boxed::Box as Box_;
 use std::fmt;
 // use std::mem::transmute;
 
 // glib_wrapper! {
-//     pub struct Action(Object<ffi::MxAction, ffi::MxActionClass, ActionClass>);
+//     pub struct Action(Object<ffi::Action, ffi::ActionClass, ActionClass>);
 
 //     match fn {
-//         get_type => || ffi::mx_action_get_type(),
+//         get_type => || ffi::action_get_type(),
 //     }
 // }
 
+#[derive(Clone, Debug)]
 pub struct Action {
 
 }
@@ -23,7 +23,7 @@ pub struct Action {
 impl Action {
     pub fn new() -> Action {
         // assert_initialized_main_thread!();
-        // unsafe { from_glib_full(ffi::mx_action_new()) }
+        // unsafe { from_glib_full(ffi::action_new()) }
         unimplemented!()
     }
 
@@ -36,7 +36,7 @@ impl Action {
         // let activated_cb_data: Box_<Option<Box_<dyn FnOnce(&Action) + 'static>>> =
         //     Box_::new(activated_cb);
         // unsafe extern "C" fn activated_cb_func(
-        //     action: *mut ffi::MxAction,
+        //     action: *mut ffi::Action,
         //     user_data: glib_sys::gpointer,
         // ) {
         //     let action = from_glib_borrow(action);
@@ -52,7 +52,7 @@ impl Action {
         // };
         // let super_callback0: Box_<Option<Box_<dyn FnOnce(&Action) + 'static>>> = activated_cb_data;
         // unsafe {
-        //     from_glib_full(ffi::mx_action_new_full(
+        //     from_glib_full(ffi::action_new_full(
         //         name.to_glib_none().0,
         //         display_name.to_glib_none().0,
         //         activated_cb,
@@ -69,7 +69,7 @@ impl Action {
     ) -> Action {
         // assert_initialized_main_thread!();
         // unsafe {
-        //     from_glib_none(ffi::mx_action_new_stateful(
+        //     from_glib_none(ffi::action_new_stateful(
         //         name.to_glib_none().0,
         //         parameter_type.to_glib_none().0,
         //         state.to_glib_none().0,
@@ -81,7 +81,7 @@ impl Action {
     pub fn with_parameter(name: &str, parameter_type: Option<&glib::VariantTy>) -> Action {
         // assert_initialized_main_thread!();
         // unsafe {
-        //     from_glib_none(ffi::mx_action_new_with_parameter(
+        //     from_glib_none(ffi::action_new_with_parameter(
         //         name.to_glib_none().0,
         //         parameter_type.to_glib_none().0,
         //     ))
@@ -101,11 +101,11 @@ pub const NONE_ACTION: Option<&Action> = None;
 pub trait ActionExt: 'static {
     fn get_active(&self) -> bool;
 
-    fn get_display_name(&self) -> Option<GString>;
+    fn get_display_name(&self) -> Option<String>;
 
-    fn get_icon(&self) -> Option<GString>;
+    fn get_icon(&self) -> Option<String>;
 
-    fn get_name(&self) -> Option<GString>;
+    fn get_name(&self) -> Option<String>;
 
     fn set_active(&self, active: bool);
 
@@ -128,39 +128,39 @@ pub trait ActionExt: 'static {
 
 // impl<O: IsA<Action>> ActionExt for O {
 //     fn get_active(&self) -> bool {
-//         // unsafe { from_glib(ffi::mx_action_get_active(self.as_ref().to_glib_none().0)) }
+//         // unsafe { from_glib(ffi::action_get_active(self.as_ref().to_glib_none().0)) }
 //         unimplemented!()
 //     }
 
-//     fn get_display_name(&self) -> Option<GString> {
+//     fn get_display_name(&self) -> Option<String> {
 //         // unsafe {
-//         //     from_glib_none(ffi::mx_action_get_display_name(
+//         //     from_glib_none(ffi::action_get_display_name(
 //         //         self.as_ref().to_glib_none().0,
 //         //     ))
 //         // }
 //         unimplemented!()
 //     }
 
-//     fn get_icon(&self) -> Option<GString> {
-//         // unsafe { from_glib_none(ffi::mx_action_get_icon(self.as_ref().to_glib_none().0)) }
+//     fn get_icon(&self) -> Option<String> {
+//         // unsafe { from_glib_none(ffi::action_get_icon(self.as_ref().to_glib_none().0)) }
 //         unimplemented!()
 //     }
 
-//     fn get_name(&self) -> Option<GString> {
-//         // unsafe { from_glib_none(ffi::mx_action_get_name(self.as_ref().to_glib_none().0)) }
+//     fn get_name(&self) -> Option<String> {
+//         // unsafe { from_glib_none(ffi::action_get_name(self.as_ref().to_glib_none().0)) }
 //         unimplemented!()
 //     }
 
 //     fn set_active(&self, active: bool) {
 //         // unsafe {
-//         //     ffi::mx_action_set_active(self.as_ref().to_glib_none().0, active.to_glib());
+//         //     ffi::action_set_active(self.as_ref().to_glib_none().0, active.to_glib());
 //         // }
 //         unimplemented!()
 //     }
 
 //     fn set_display_name(&self, name: &str) {
 //         // unsafe {
-//         //     ffi::mx_action_set_display_name(
+//         //     ffi::action_set_display_name(
 //         //         self.as_ref().to_glib_none().0,
 //         //         name.to_glib_none().0,
 //         //     );
@@ -170,14 +170,14 @@ pub trait ActionExt: 'static {
 
 //     fn set_icon(&self, name: &str) {
 //         // unsafe {
-//         //     ffi::mx_action_set_icon(self.as_ref().to_glib_none().0, name.to_glib_none().0);
+//         //     ffi::action_set_icon(self.as_ref().to_glib_none().0, name.to_glib_none().0);
 //         // }
 //         unimplemented!()
 //     }
 
 //     fn set_name(&self, name: &str) {
 //         // unsafe {
-//         //     ffi::mx_action_set_name(self.as_ref().to_glib_none().0, name.to_glib_none().0);
+//         //     ffi::action_set_name(self.as_ref().to_glib_none().0, name.to_glib_none().0);
 //         // }
 //         unimplemented!()
 //     }
@@ -187,7 +187,7 @@ pub trait ActionExt: 'static {
 //         f: F,
 //     ) -> SignalHandlerId {
 //         // unsafe extern "C" fn activate_trampoline<P, F: Fn(&P, Option<&glib::Variant>) + 'static>(
-//         //     this: *mut ffi::MxAction,
+//         //     this: *mut ffi::Action,
 //         //     parameter: *mut glib_sys::GVariant,
 //         //     f: glib_sys::gpointer,
 //         // ) where
@@ -220,7 +220,7 @@ pub trait ActionExt: 'static {
 //         f: F,
 //     ) -> SignalHandlerId {
 //         // unsafe extern "C" fn notify_display_name_trampoline<P, F: Fn(&P) + 'static>(
-//         //     this: *mut ffi::MxAction,
+//         //     this: *mut ffi::Action,
 //         //     _param_spec: glib_sys::gpointer,
 //         //     f: glib_sys::gpointer,
 //         // ) where
@@ -245,7 +245,7 @@ pub trait ActionExt: 'static {
 
 //     fn connect_property_icon_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
 //         // unsafe extern "C" fn notify_icon_trampoline<P, F: Fn(&P) + 'static>(
-//         //     this: *mut ffi::MxAction,
+//         //     this: *mut ffi::Action,
 //         //     _param_spec: glib_sys::gpointer,
 //         //     f: glib_sys::gpointer,
 //         // ) where

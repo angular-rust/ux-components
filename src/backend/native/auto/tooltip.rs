@@ -1,12 +1,10 @@
-// use clutter;
+use crate::prelude::*;
 // use glib::object::Cast;
-// use glib::object::IsA;
 // use glib::signal::connect_raw;
 // use glib::signal::SignalHandlerId;
 // use glib::translate::*;
-// use glib::GString;
-// use glib_sys;
-// use ffi;
+
+
 // use std::boxed::Box as Box_;
 use std::fmt;
 // use std::mem::transmute;
@@ -14,13 +12,14 @@ use std::fmt;
 // use Widget;
 
 // glib_wrapper! {
-//     pub struct Tooltip(Object<ffi::MxTooltip, ffi::MxTooltipClass, TooltipClass>) @extends FloatingWidget, Widget, clutter::Actor;
+//     pub struct Tooltip(Object<ffi::Tooltip, ffi::TooltipClass, TooltipClass>) @extends FloatingWidget, Widget, clutter::Actor;
 
 //     match fn {
-//         get_type => || ffi::mx_tooltip_get_type(),
+//         get_type => || ffi::tooltip_get_type(),
 //     }
 // }
 
+#[derive(Clone, Debug)]
 pub struct Tooltip {
 
 }
@@ -28,7 +27,7 @@ pub struct Tooltip {
 impl Tooltip {
     pub fn is_in_browse_mode() -> bool {
         // assert_initialized_main_thread!();
-        // unsafe { from_glib(ffi::mx_tooltip_is_in_browse_mode()) }
+        // unsafe { from_glib(ffi::tooltip_is_in_browse_mode()) }
         unimplemented!()
     }
 }
@@ -36,7 +35,7 @@ impl Tooltip {
 pub const NONE_TOOLTIP: Option<&Tooltip> = None;
 
 // pub trait TooltipExt: 'static {
-//     fn get_text(&self) -> Option<GString>;
+//     fn get_text(&self) -> Option<String>;
 
 //     fn get_tip_area(&self) -> Option<clutter::Geometry>;
 
@@ -56,13 +55,13 @@ pub const NONE_TOOLTIP: Option<&Tooltip> = None;
 // }
 
 // impl<O: IsA<Tooltip>> TooltipExt for O {
-//     fn get_text(&self) -> Option<GString> {
-//         unsafe { from_glib_none(ffi::mx_tooltip_get_text(self.as_ref().to_glib_none().0)) }
+//     fn get_text(&self) -> Option<String> {
+//         unsafe { from_glib_none(ffi::tooltip_get_text(self.as_ref().to_glib_none().0)) }
 //     }
 
 //     fn get_tip_area(&self) -> Option<clutter::Geometry> {
 //         unsafe {
-//             from_glib_none(ffi::mx_tooltip_get_tip_area(
+//             from_glib_none(ffi::tooltip_get_tip_area(
 //                 self.as_ref().to_glib_none().0,
 //             ))
 //         }
@@ -70,25 +69,25 @@ pub const NONE_TOOLTIP: Option<&Tooltip> = None;
 
 //     fn hide(&self) {
 //         unsafe {
-//             ffi::mx_tooltip_hide(self.as_ref().to_glib_none().0);
+//             ffi::tooltip_hide(self.as_ref().to_glib_none().0);
 //         }
 //     }
 
 //     fn set_text(&self, text: &str) {
 //         unsafe {
-//             ffi::mx_tooltip_set_text(self.as_ref().to_glib_none().0, text.to_glib_none().0);
+//             ffi::tooltip_set_text(self.as_ref().to_glib_none().0, text.to_glib_none().0);
 //         }
 //     }
 
 //     fn set_tip_area(&self, area: &clutter::Geometry) {
 //         unsafe {
-//             ffi::mx_tooltip_set_tip_area(self.as_ref().to_glib_none().0, area.to_glib_none().0);
+//             ffi::tooltip_set_tip_area(self.as_ref().to_glib_none().0, area.to_glib_none().0);
 //         }
 //     }
 
 //     fn set_tip_area_from_actor<P: IsA<clutter::Actor>>(&self, actor: &P) {
 //         unsafe {
-//             ffi::mx_tooltip_set_tip_area_from_actor(
+//             ffi::tooltip_set_tip_area_from_actor(
 //                 self.as_ref().to_glib_none().0,
 //                 actor.as_ref().to_glib_none().0,
 //             );
@@ -97,13 +96,13 @@ pub const NONE_TOOLTIP: Option<&Tooltip> = None;
 
 //     fn show(&self) {
 //         unsafe {
-//             ffi::mx_tooltip_show(self.as_ref().to_glib_none().0);
+//             ffi::tooltip_show(self.as_ref().to_glib_none().0);
 //         }
 //     }
 
 //     fn connect_property_text_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
 //         unsafe extern "C" fn notify_text_trampoline<P, F: Fn(&P) + 'static>(
-//             this: *mut ffi::MxTooltip,
+//             this: *mut ffi::Tooltip,
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where
@@ -127,7 +126,7 @@ pub const NONE_TOOLTIP: Option<&Tooltip> = None;
 
 //     fn connect_property_tip_area_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
 //         unsafe extern "C" fn notify_tip_area_trampoline<P, F: Fn(&P) + 'static>(
-//             this: *mut ffi::MxTooltip,
+//             this: *mut ffi::Tooltip,
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where

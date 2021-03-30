@@ -1,26 +1,26 @@
+use crate::prelude::*;
 // use glib::object::Cast;
-// use glib::object::IsA;
 // use glib::signal::connect_raw;
 // use glib::signal::SignalHandlerId;
 // use glib::translate::*;
-// use glib::GString;
 // use glib::StaticType;
 // use glib::Value;
-// use glib_sys;
-// use gobject_sys;
-// use ffi;
+
+
+
 // use std::boxed::Box as Box_;
 use std::fmt;
 // use std::mem::transmute;
 
 // glib_wrapper! {
-//     pub struct Settings(Object<ffi::MxSettings, ffi::MxSettingsClass, SettingsClass>);
+//     pub struct Settings(Object<ffi::Settings, ffi::SettingsClass, SettingsClass>);
 
 //     match fn {
-//         get_type => || ffi::mx_settings_get_type(),
+//         get_type => || ffi::settings_get_type(),
 //     }
 // }
 
+#[derive(Clone, Debug)]
 pub struct Settings {
 
 }
@@ -28,7 +28,7 @@ pub struct Settings {
 impl Settings {
     pub fn get_default() -> Option<Settings> {
         // assert_initialized_main_thread!();
-        // unsafe { from_glib_none(ffi::mx_settings_get_default()) }
+        // unsafe { from_glib_none(ffi::settings_get_default()) }
         unimplemented!()
     }
 }
@@ -40,11 +40,11 @@ pub const NONE_SETTINGS: Option<&Settings> = None;
 
 //     fn set_property_drag_threshold(&self, drag_threshold: u32);
 
-//     fn get_property_font_name(&self) -> Option<GString>;
+//     fn get_property_font_name(&self) -> Option<String>;
 
 //     fn set_property_font_name(&self, font_name: Option<&str>);
 
-//     fn get_property_icon_theme(&self) -> Option<GString>;
+//     fn get_property_icon_theme(&self) -> Option<String>;
 
 //     fn set_property_icon_theme(&self, icon_theme: Option<&str>);
 
@@ -106,9 +106,9 @@ pub const NONE_SETTINGS: Option<&Settings> = None;
 //         }
 //     }
 
-//     fn get_property_font_name(&self) -> Option<GString> {
+//     fn get_property_font_name(&self) -> Option<String> {
 //         unsafe {
-//             let mut value = Value::from_type(<GString as StaticType>::static_type());
+//             let mut value = Value::from_type(<String as StaticType>::static_type());
 //             gobject_sys::g_object_get_property(
 //                 self.to_glib_none().0 as *mut gobject_sys::GObject,
 //                 b"font-name\0".as_ptr() as *const _,
@@ -130,9 +130,9 @@ pub const NONE_SETTINGS: Option<&Settings> = None;
 //         }
 //     }
 
-//     fn get_property_icon_theme(&self) -> Option<GString> {
+//     fn get_property_icon_theme(&self) -> Option<String> {
 //         unsafe {
-//             let mut value = Value::from_type(<GString as StaticType>::static_type());
+//             let mut value = Value::from_type(<String as StaticType>::static_type());
 //             gobject_sys::g_object_get_property(
 //                 self.to_glib_none().0 as *mut gobject_sys::GObject,
 //                 b"icon-theme\0".as_ptr() as *const _,
@@ -234,7 +234,7 @@ pub const NONE_SETTINGS: Option<&Settings> = None;
 //         f: F,
 //     ) -> SignalHandlerId {
 //         unsafe extern "C" fn notify_drag_threshold_trampoline<P, F: Fn(&P) + 'static>(
-//             this: *mut ffi::MxSettings,
+//             this: *mut ffi::Settings,
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where
@@ -258,7 +258,7 @@ pub const NONE_SETTINGS: Option<&Settings> = None;
 
 //     fn connect_property_font_name_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
 //         unsafe extern "C" fn notify_font_name_trampoline<P, F: Fn(&P) + 'static>(
-//             this: *mut ffi::MxSettings,
+//             this: *mut ffi::Settings,
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where
@@ -282,7 +282,7 @@ pub const NONE_SETTINGS: Option<&Settings> = None;
 
 //     fn connect_property_icon_theme_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
 //         unsafe extern "C" fn notify_icon_theme_trampoline<P, F: Fn(&P) + 'static>(
-//             this: *mut ffi::MxSettings,
+//             this: *mut ffi::Settings,
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where
@@ -309,7 +309,7 @@ pub const NONE_SETTINGS: Option<&Settings> = None;
 //         f: F,
 //     ) -> SignalHandlerId {
 //         unsafe extern "C" fn notify_long_press_timeout_trampoline<P, F: Fn(&P) + 'static>(
-//             this: *mut ffi::MxSettings,
+//             this: *mut ffi::Settings,
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where
@@ -336,7 +336,7 @@ pub const NONE_SETTINGS: Option<&Settings> = None;
 //         f: F,
 //     ) -> SignalHandlerId {
 //         unsafe extern "C" fn notify_small_screen_trampoline<P, F: Fn(&P) + 'static>(
-//             this: *mut ffi::MxSettings,
+//             this: *mut ffi::Settings,
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where
@@ -360,7 +360,7 @@ pub const NONE_SETTINGS: Option<&Settings> = None;
 
 //     fn connect_property_touch_mode_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
 //         unsafe extern "C" fn notify_touch_mode_trampoline<P, F: Fn(&P) + 'static>(
-//             this: *mut ffi::MxSettings,
+//             this: *mut ffi::Settings,
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where

@@ -1,14 +1,13 @@
-// use clutter;
-// use glib;
+use crate::prelude::*;
+
 // use glib::object::Cast;
-// use glib::object::IsA;
 // use glib::signal::connect_raw;
 // use glib::signal::SignalHandlerId;
 // use glib::translate::*;
 // use glib::Value;
-// use glib_sys;
-// use gobject_sys;
-// use ffi;
+
+
+
 // use std::boxed::Box as Box_;
 use std::fmt;
 // use std::mem::transmute;
@@ -16,13 +15,14 @@ use std::fmt;
 // use Widget;
 
 // glib_wrapper! {
-//     pub struct Image(Object<ffi::MxImage, ffi::MxImageClass, ImageClass>) @extends Widget, clutter::Actor;
+//     pub struct Image(Object<ffi::Image, ffi::ImageClass, ImageClass>) @extends Widget, clutter::Actor;
 
 //     match fn {
-//         get_type => || ffi::mx_image_get_type(),
+//         get_type => || ffi::image_get_type(),
 //     }
 // }
 
+#[derive(Clone, Debug)]
 pub struct Image {
 
 }
@@ -30,7 +30,7 @@ pub struct Image {
 impl Image {
     pub fn new() -> Image {
         // assert_initialized_main_thread!();
-        // unsafe { clutter::Actor::from_glib_none(ffi::mx_image_new()).unsafe_cast() }
+        // unsafe { clutter::Actor::from_glib_none(ffi::image_new()).unsafe_cast() }
         unimplemented!()
     }
 }
@@ -141,32 +141,32 @@ pub const NONE_IMAGE: Option<&Image> = None;
 
 //     fn clear(&self) {
 //         unsafe {
-//             ffi::mx_image_clear(self.as_ref().to_glib_none().0);
+//             ffi::image_clear(self.as_ref().to_glib_none().0);
 //         }
 //     }
 
 //     fn get_allow_upscale(&self) -> bool {
 //         unsafe {
-//             from_glib(ffi::mx_image_get_allow_upscale(
+//             from_glib(ffi::image_get_allow_upscale(
 //                 self.as_ref().to_glib_none().0,
 //             ))
 //         }
 //     }
 
 //     fn get_image_rotation(&self) -> f32 {
-//         unsafe { ffi::mx_image_get_image_rotation(self.as_ref().to_glib_none().0) }
+//         unsafe { ffi::image_get_image_rotation(self.as_ref().to_glib_none().0) }
 //     }
 
 //     fn get_load_async(&self) -> bool {
 //         unsafe {
-//             from_glib(ffi::mx_image_get_load_async(
+//             from_glib(ffi::image_get_load_async(
 //                 self.as_ref().to_glib_none().0,
 //             ))
 //         }
 //     }
 
 //     fn get_scale_height_threshold(&self) -> u32 {
-//         unsafe { ffi::mx_image_get_scale_height_threshold(self.as_ref().to_glib_none().0) }
+//         unsafe { ffi::image_get_scale_height_threshold(self.as_ref().to_glib_none().0) }
 //     }
 
 //     //fn get_scale_mode(&self) -> /*Ignored*/ImageScaleMode {
@@ -174,16 +174,16 @@ pub const NONE_IMAGE: Option<&Image> = None;
 //     //}
 
 //     fn get_scale_width_threshold(&self) -> u32 {
-//         unsafe { ffi::mx_image_get_scale_width_threshold(self.as_ref().to_glib_none().0) }
+//         unsafe { ffi::image_get_scale_width_threshold(self.as_ref().to_glib_none().0) }
 //     }
 
 //     fn get_transition_duration(&self) -> u32 {
-//         unsafe { ffi::mx_image_get_transition_duration(self.as_ref().to_glib_none().0) }
+//         unsafe { ffi::image_get_transition_duration(self.as_ref().to_glib_none().0) }
 //     }
 
 //     fn set_allow_upscale(&self, allow: bool) {
 //         unsafe {
-//             ffi::mx_image_set_allow_upscale(self.as_ref().to_glib_none().0, allow.to_glib());
+//             ffi::image_set_allow_upscale(self.as_ref().to_glib_none().0, allow.to_glib());
 //         }
 //     }
 
@@ -206,7 +206,7 @@ pub const NONE_IMAGE: Option<&Image> = None;
 //     fn set_from_file(&self, filename: &str) -> Result<(), glib::Error> {
 //         unsafe {
 //             let mut error = ptr::null_mut();
-//             let _ = ffi::mx_image_set_from_file(
+//             let _ = ffi::image_set_from_file(
 //                 self.as_ref().to_glib_none().0,
 //                 filename.to_glib_none().0,
 //                 &mut error,
@@ -227,7 +227,7 @@ pub const NONE_IMAGE: Option<&Image> = None;
 //     ) -> Result<(), glib::Error> {
 //         unsafe {
 //             let mut error = ptr::null_mut();
-//             let _ = ffi::mx_image_set_from_file_at_size(
+//             let _ = ffi::image_set_from_file_at_size(
 //                 self.as_ref().to_glib_none().0,
 //                 filename.to_glib_none().0,
 //                 width,
@@ -244,19 +244,19 @@ pub const NONE_IMAGE: Option<&Image> = None;
 
 //     fn set_image_rotation(&self, rotation: f32) {
 //         unsafe {
-//             ffi::mx_image_set_image_rotation(self.as_ref().to_glib_none().0, rotation);
+//             ffi::image_set_image_rotation(self.as_ref().to_glib_none().0, rotation);
 //         }
 //     }
 
 //     fn set_load_async(&self, load_async: bool) {
 //         unsafe {
-//             ffi::mx_image_set_load_async(self.as_ref().to_glib_none().0, load_async.to_glib());
+//             ffi::image_set_load_async(self.as_ref().to_glib_none().0, load_async.to_glib());
 //         }
 //     }
 
 //     fn set_scale_height_threshold(&self, pixels: u32) {
 //         unsafe {
-//             ffi::mx_image_set_scale_height_threshold(self.as_ref().to_glib_none().0, pixels);
+//             ffi::image_set_scale_height_threshold(self.as_ref().to_glib_none().0, pixels);
 //         }
 //     }
 
@@ -266,13 +266,13 @@ pub const NONE_IMAGE: Option<&Image> = None;
 
 //     fn set_scale_width_threshold(&self, pixels: u32) {
 //         unsafe {
-//             ffi::mx_image_set_scale_width_threshold(self.as_ref().to_glib_none().0, pixels);
+//             ffi::image_set_scale_width_threshold(self.as_ref().to_glib_none().0, pixels);
 //         }
 //     }
 
 //     fn set_transition_duration(&self, duration: u32) {
 //         unsafe {
-//             ffi::mx_image_set_transition_duration(self.as_ref().to_glib_none().0, duration);
+//             ffi::image_set_transition_duration(self.as_ref().to_glib_none().0, duration);
 //         }
 //     }
 
@@ -291,7 +291,7 @@ pub const NONE_IMAGE: Option<&Image> = None;
 //         f: F,
 //     ) -> SignalHandlerId {
 //         unsafe extern "C" fn image_load_error_trampoline<P, F: Fn(&P, &glib::Error) + 'static>(
-//             this: *mut ffi::MxImage,
+//             this: *mut ffi::Image,
 //             object: *mut glib_sys::GError,
 //             f: glib_sys::gpointer,
 //         ) where
@@ -318,7 +318,7 @@ pub const NONE_IMAGE: Option<&Image> = None;
 
 //     fn connect_image_loaded<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
 //         unsafe extern "C" fn image_loaded_trampoline<P, F: Fn(&P) + 'static>(
-//             this: *mut ffi::MxImage,
+//             this: *mut ffi::Image,
 //             f: glib_sys::gpointer,
 //         ) where
 //             P: IsA<Image>,
@@ -344,7 +344,7 @@ pub const NONE_IMAGE: Option<&Image> = None;
 //         f: F,
 //     ) -> SignalHandlerId {
 //         unsafe extern "C" fn notify_allow_upscale_trampoline<P, F: Fn(&P) + 'static>(
-//             this: *mut ffi::MxImage,
+//             this: *mut ffi::Image,
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where
@@ -368,7 +368,7 @@ pub const NONE_IMAGE: Option<&Image> = None;
 
 //     fn connect_property_filename_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
 //         unsafe extern "C" fn notify_filename_trampoline<P, F: Fn(&P) + 'static>(
-//             this: *mut ffi::MxImage,
+//             this: *mut ffi::Image,
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where
@@ -395,7 +395,7 @@ pub const NONE_IMAGE: Option<&Image> = None;
 //         f: F,
 //     ) -> SignalHandlerId {
 //         unsafe extern "C" fn notify_image_rotation_trampoline<P, F: Fn(&P) + 'static>(
-//             this: *mut ffi::MxImage,
+//             this: *mut ffi::Image,
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where
@@ -419,7 +419,7 @@ pub const NONE_IMAGE: Option<&Image> = None;
 
 //     fn connect_property_load_async_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
 //         unsafe extern "C" fn notify_load_async_trampoline<P, F: Fn(&P) + 'static>(
-//             this: *mut ffi::MxImage,
+//             this: *mut ffi::Image,
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where
@@ -446,7 +446,7 @@ pub const NONE_IMAGE: Option<&Image> = None;
 //         f: F,
 //     ) -> SignalHandlerId {
 //         unsafe extern "C" fn notify_scale_height_threshold_trampoline<P, F: Fn(&P) + 'static>(
-//             this: *mut ffi::MxImage,
+//             this: *mut ffi::Image,
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where
@@ -470,7 +470,7 @@ pub const NONE_IMAGE: Option<&Image> = None;
 
 //     fn connect_property_scale_mode_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
 //         unsafe extern "C" fn notify_scale_mode_trampoline<P, F: Fn(&P) + 'static>(
-//             this: *mut ffi::MxImage,
+//             this: *mut ffi::Image,
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where
@@ -497,7 +497,7 @@ pub const NONE_IMAGE: Option<&Image> = None;
 //         f: F,
 //     ) -> SignalHandlerId {
 //         unsafe extern "C" fn notify_scale_width_threshold_trampoline<P, F: Fn(&P) + 'static>(
-//             this: *mut ffi::MxImage,
+//             this: *mut ffi::Image,
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where
@@ -524,7 +524,7 @@ pub const NONE_IMAGE: Option<&Image> = None;
 //         f: F,
 //     ) -> SignalHandlerId {
 //         unsafe extern "C" fn notify_transition_duration_trampoline<P, F: Fn(&P) + 'static>(
-//             this: *mut ffi::MxImage,
+//             this: *mut ffi::Image,
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where

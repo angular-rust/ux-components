@@ -1,18 +1,18 @@
-// use glib::object::IsA;
+use crate::prelude::*;
 // use glib::translate::*;
-// use glib::GString;
-// use ffi;
+
 // use std::boxed::Box as Box_;
 use std::fmt;
 
 // glib_wrapper! {
-//     pub struct Clipboard(Object<ffi::MxClipboard, ffi::MxClipboardClass, ClipboardClass>);
+//     pub struct Clipboard(Object<ffi::Clipboard, ffi::ClipboardClass, ClipboardClass>);
 
 //     match fn {
-//         get_type => || ffi::mx_clipboard_get_type(),
+//         get_type => || ffi::clipboard_get_type(),
 //     }
 // }
 
+#[derive(Clone, Debug)]
 pub struct Clipboard {
 
 }
@@ -20,7 +20,7 @@ pub struct Clipboard {
 impl Clipboard {
     pub fn get_default() -> Option<Clipboard> {
         // assert_initialized_main_thread!();
-        // unsafe { from_glib_none(ffi::mx_clipboard_get_default()) }
+        // unsafe { from_glib_none(ffi::clipboard_get_default()) }
         unimplemented!()
     }
 }
@@ -37,19 +37,19 @@ pub trait ClipboardExt: 'static {
 //     fn get_text<P: FnOnce(&Clipboard, &str) + 'static>(&self, callback: P) {
 //         // let callback_data: Box_<P> = Box_::new(callback);
 //         // unsafe extern "C" fn callback_func<P: FnOnce(&Clipboard, &str) + 'static>(
-//         //     clipboard: *mut ffi::MxClipboard,
+//         //     clipboard: *mut ffi::Clipboard,
 //         //     text: *const libc::c_char,
 //         //     user_data: glib_sys::gpointer,
 //         // ) {
 //         //     let clipboard = from_glib_borrow(clipboard);
-//         //     let text: Borrowed<GString> = from_glib_borrow(text);
+//         //     let text: Borrowed<String> = from_glib_borrow(text);
 //         //     let callback: Box_<P> = Box_::from_raw(user_data as *mut _);
 //         //     (*callback)(&clipboard, text.as_str());
 //         // }
 //         // let callback = Some(callback_func::<P> as _);
 //         // let super_callback0: Box_<P> = callback_data;
 //         // unsafe {
-//         //     ffi::mx_clipboard_get_text(
+//         //     ffi::clipboard_get_text(
 //         //         self.as_ref().to_glib_none().0,
 //         //         callback,
 //         //         Box_::into_raw(super_callback0) as *mut _,
@@ -60,7 +60,7 @@ pub trait ClipboardExt: 'static {
 
 //     fn set_text(&self, text: &str) {
 //         // unsafe {
-//         //     ffi::mx_clipboard_set_text(self.as_ref().to_glib_none().0, text.to_glib_none().0);
+//         //     ffi::clipboard_set_text(self.as_ref().to_glib_none().0, text.to_glib_none().0);
 //         // }
 //         unimplemented!()
 //     }

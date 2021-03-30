@@ -1,24 +1,24 @@
-// use clutter;
+use crate::prelude::*;
 // use glib::object::Cast;
-// use glib::object::IsA;
 // use glib::signal::connect_raw;
 // use glib::signal::SignalHandlerId;
 // use glib::translate::*;
-// use glib_sys;
-// use ffi;
+
+
 // use std::boxed::Box as Box_;
 use std::fmt;
 // use std::mem::transmute;
 // use Widget;
 
 // glib_wrapper! {
-//     pub struct Notebook(Object<ffi::MxNotebook, ffi::MxNotebookClass, NotebookClass>) @extends Widget, clutter::Actor;
+//     pub struct Notebook(Object<ffi::Notebook, ffi::NotebookClass, NotebookClass>) @extends Widget, clutter::Actor;
 
 //     match fn {
-//         get_type => || ffi::mx_notebook_get_type(),
+//         get_type => || ffi::notebook_get_type(),
 //     }
 // }
 
+#[derive(Clone, Debug)]
 pub struct Notebook{
 
 }
@@ -26,7 +26,7 @@ pub struct Notebook{
 impl Notebook {
     pub fn new() -> Notebook {
         // assert_initialized_main_thread!();
-        // unsafe { clutter::Actor::from_glib_none(ffi::mx_notebook_new()).unsafe_cast() }
+        // unsafe { clutter::Actor::from_glib_none(ffi::notebook_new()).unsafe_cast() }
         unimplemented!()
     }
 }
@@ -55,7 +55,7 @@ pub const NONE_NOTEBOOK: Option<&Notebook> = None;
 // impl<O: IsA<Notebook>> NotebookExt for O {
 //     fn get_current_page(&self) -> Option<clutter::Actor> {
 //         unsafe {
-//             from_glib_none(ffi::mx_notebook_get_current_page(
+//             from_glib_none(ffi::notebook_get_current_page(
 //                 self.as_ref().to_glib_none().0,
 //             ))
 //         }
@@ -63,19 +63,19 @@ pub const NONE_NOTEBOOK: Option<&Notebook> = None;
 
 //     fn next_page(&self) {
 //         unsafe {
-//             ffi::mx_notebook_next_page(self.as_ref().to_glib_none().0);
+//             ffi::notebook_next_page(self.as_ref().to_glib_none().0);
 //         }
 //     }
 
 //     fn previous_page(&self) {
 //         unsafe {
-//             ffi::mx_notebook_previous_page(self.as_ref().to_glib_none().0);
+//             ffi::notebook_previous_page(self.as_ref().to_glib_none().0);
 //         }
 //     }
 
 //     fn set_current_page<P: IsA<clutter::Actor>>(&self, page: &P) {
 //         unsafe {
-//             ffi::mx_notebook_set_current_page(
+//             ffi::notebook_set_current_page(
 //                 self.as_ref().to_glib_none().0,
 //                 page.as_ref().to_glib_none().0,
 //             );
@@ -87,7 +87,7 @@ pub const NONE_NOTEBOOK: Option<&Notebook> = None;
 //         f: F,
 //     ) -> SignalHandlerId {
 //         unsafe extern "C" fn notify_current_page_trampoline<P, F: Fn(&P) + 'static>(
-//             this: *mut ffi::MxNotebook,
+//             this: *mut ffi::Notebook,
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where

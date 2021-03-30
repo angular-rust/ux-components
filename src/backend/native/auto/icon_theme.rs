@@ -1,23 +1,23 @@
+use crate::prelude::*;
 // use glib::object::Cast;
-// use glib::object::IsA;
 // use glib::signal::connect_raw;
 // use glib::signal::SignalHandlerId;
 // use glib::translate::*;
-// use glib::GString;
-// use glib_sys;
-// use ffi;
+
+
 // use std::boxed::Box as Box_;
 use std::fmt;
 // use std::mem::transmute;
 
 // glib_wrapper! {
-//     pub struct IconTheme(Object<ffi::MxIconTheme, ffi::MxIconThemeClass, IconThemeClass>);
+//     pub struct IconTheme(Object<ffi::IconTheme, ffi::IconThemeClass, IconThemeClass>);
 
 //     match fn {
-//         get_type => || ffi::mx_icon_theme_get_type(),
+//         get_type => || ffi::icon_theme_get_type(),
 //     }
 // }
 
+#[derive(Clone, Debug)]
 pub struct IconTheme {
 
 }
@@ -25,13 +25,13 @@ pub struct IconTheme {
 impl IconTheme {
     pub fn new() -> IconTheme {
         // assert_initialized_main_thread!();
-        // unsafe { from_glib_full(ffi::mx_icon_theme_new()) }
+        // unsafe { from_glib_full(ffi::icon_theme_new()) }
         unimplemented!()
     }
 
     pub fn get_default() -> Option<IconTheme> {
         // assert_initialized_main_thread!();
-        // unsafe { from_glib_none(ffi::mx_icon_theme_get_default()) }
+        // unsafe { from_glib_none(ffi::icon_theme_get_default()) }
         unimplemented!()
     }
 }
@@ -45,9 +45,9 @@ impl Default for IconTheme {
 pub const NONE_ICON_THEME: Option<&IconTheme> = None;
 
 // pub trait IconThemeExt: 'static {
-//     fn get_search_paths(&self) -> Vec<GString>;
+//     fn get_search_paths(&self) -> Vec<String>;
 
-//     fn get_theme_name(&self) -> Option<GString>;
+//     fn get_theme_name(&self) -> Option<String>;
 
 //     fn has_icon(&self, icon_name: &str) -> bool;
 
@@ -61,17 +61,17 @@ pub const NONE_ICON_THEME: Option<&IconTheme> = None;
 // }
 
 // impl<O: IsA<IconTheme>> IconThemeExt for O {
-//     fn get_search_paths(&self) -> Vec<GString> {
+//     fn get_search_paths(&self) -> Vec<String> {
 //         unsafe {
-//             FromGlibPtrContainer::from_glib_none(ffi::mx_icon_theme_get_search_paths(
+//             FromGlibPtrContainer::from_glib_none(ffi::icon_theme_get_search_paths(
 //                 self.as_ref().to_glib_none().0,
 //             ))
 //         }
 //     }
 
-//     fn get_theme_name(&self) -> Option<GString> {
+//     fn get_theme_name(&self) -> Option<String> {
 //         unsafe {
-//             from_glib_none(ffi::mx_icon_theme_get_theme_name(
+//             from_glib_none(ffi::icon_theme_get_theme_name(
 //                 self.as_ref().to_glib_none().0,
 //             ))
 //         }
@@ -79,7 +79,7 @@ pub const NONE_ICON_THEME: Option<&IconTheme> = None;
 
 //     fn has_icon(&self, icon_name: &str) -> bool {
 //         unsafe {
-//             from_glib(ffi::mx_icon_theme_has_icon(
+//             from_glib(ffi::icon_theme_has_icon(
 //                 self.as_ref().to_glib_none().0,
 //                 icon_name.to_glib_none().0,
 //             ))
@@ -92,7 +92,7 @@ pub const NONE_ICON_THEME: Option<&IconTheme> = None;
 
 //     fn set_search_paths(&self, paths: &[&str]) {
 //         unsafe {
-//             ffi::mx_icon_theme_set_search_paths(
+//             ffi::icon_theme_set_search_paths(
 //                 self.as_ref().to_glib_none().0,
 //                 paths.to_glib_none().0,
 //             );
@@ -101,7 +101,7 @@ pub const NONE_ICON_THEME: Option<&IconTheme> = None;
 
 //     fn set_theme_name(&self, theme_name: &str) {
 //         unsafe {
-//             ffi::mx_icon_theme_set_theme_name(
+//             ffi::icon_theme_set_theme_name(
 //                 self.as_ref().to_glib_none().0,
 //                 theme_name.to_glib_none().0,
 //             );
@@ -110,7 +110,7 @@ pub const NONE_ICON_THEME: Option<&IconTheme> = None;
 
 //     fn connect_property_theme_name_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
 //         unsafe extern "C" fn notify_theme_name_trampoline<P, F: Fn(&P) + 'static>(
-//             this: *mut ffi::MxIconTheme,
+//             this: *mut ffi::IconTheme,
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where

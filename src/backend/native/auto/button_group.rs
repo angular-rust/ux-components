@@ -1,24 +1,24 @@
-// use clutter;
+use crate::prelude::*;
 // use glib::object::Cast;
-// use glib::object::IsA;
 // use glib::signal::connect_raw;
 // use glib::signal::SignalHandlerId;
 // use glib::translate::*;
-// use glib_sys;
-// use ffi;
+
+
 // use std::boxed::Box as Box_;
 use std::fmt;
 // use std::mem::transmute;
 // use super::Button;
 
 // glib_wrapper! {
-//     pub struct ButtonGroup(Object<ffi::MxButtonGroup, ffi::MxButtonGroupClass, ButtonGroupClass>);
+//     pub struct ButtonGroup(Object<ffi::ButtonGroup, ffi::ButtonGroupClass, ButtonGroupClass>);
 
 //     match fn {
-//         get_type => || ffi::mx_button_group_get_type(),
+//         get_type => || ffi::button_group_get_type(),
 //     }
 // }
 
+#[derive(Clone, Debug)]
 pub struct ButtonGroup {
 
 }
@@ -26,7 +26,7 @@ pub struct ButtonGroup {
 impl ButtonGroup {
     pub fn new() -> ButtonGroup {
         // assert_initialized_main_thread!();
-        // unsafe { from_glib_none(ffi::mx_button_group_new()) }
+        // unsafe { from_glib_none(ffi::button_group_new()) }
         unimplemented!()
     }
 }
@@ -70,7 +70,7 @@ pub const NONE_BUTTON_GROUP: Option<&ButtonGroup> = None;
 // impl<O: IsA<ButtonGroup>> ButtonGroupExt for O {
 //     fn add<P: IsA<Button>>(&self, button: &P) {
 //         // unsafe {
-//         //     ffi::mx_button_group_add(
+//         //     ffi::button_group_add(
 //         //         self.as_ref().to_glib_none().0,
 //         //         button.as_ref().to_glib_none().0,
 //         //     );
@@ -91,7 +91,7 @@ pub const NONE_BUTTON_GROUP: Option<&ButtonGroup> = None;
 //         // let callback = Some(callback_func::<P> as _);
 //         // let super_callback0: &P = &callback_data;
 //         // unsafe {
-//         //     ffi::mx_button_group_foreach(
+//         //     ffi::button_group_foreach(
 //         //         self.as_ref().to_glib_none().0,
 //         //         callback,
 //         //         super_callback0 as *const _ as usize as *mut _,
@@ -102,7 +102,7 @@ pub const NONE_BUTTON_GROUP: Option<&ButtonGroup> = None;
 
 //     fn get_active_button(&self) -> Option<Button> {
 //         // unsafe {
-//         //     from_glib_none(ffi::mx_button_group_get_active_button(
+//         //     from_glib_none(ffi::button_group_get_active_button(
 //         //         self.as_ref().to_glib_none().0,
 //         //     ))
 //         // }
@@ -111,7 +111,7 @@ pub const NONE_BUTTON_GROUP: Option<&ButtonGroup> = None;
 
 //     fn get_allow_no_active(&self) -> bool {
 //         // unsafe {
-//         //     from_glib(ffi::mx_button_group_get_allow_no_active(
+//         //     from_glib(ffi::button_group_get_allow_no_active(
 //         //         self.as_ref().to_glib_none().0,
 //         //     ))
 //         // }
@@ -120,7 +120,7 @@ pub const NONE_BUTTON_GROUP: Option<&ButtonGroup> = None;
 
 //     fn get_buttons(&self) -> Vec<Button> {
 //         // unsafe {
-//         //     FromGlibPtrContainer::from_glib_none(ffi::mx_button_group_get_buttons(
+//         //     FromGlibPtrContainer::from_glib_none(ffi::button_group_get_buttons(
 //         //         self.as_ref().to_glib_none().0,
 //         //     ))
 //         // }
@@ -129,7 +129,7 @@ pub const NONE_BUTTON_GROUP: Option<&ButtonGroup> = None;
 
 //     fn remove<P: IsA<Button>>(&self, button: &P) {
 //         // unsafe {
-//         //     ffi::mx_button_group_remove(
+//         //     ffi::button_group_remove(
 //         //         self.as_ref().to_glib_none().0,
 //         //         button.as_ref().to_glib_none().0,
 //         //     );
@@ -139,7 +139,7 @@ pub const NONE_BUTTON_GROUP: Option<&ButtonGroup> = None;
 
 //     fn set_active_button<P: IsA<Button>>(&self, button: Option<&P>) {
 //         // unsafe {
-//         //     ffi::mx_button_group_set_active_button(
+//         //     ffi::button_group_set_active_button(
 //         //         self.as_ref().to_glib_none().0,
 //         //         button.map(|p| p.as_ref()).to_glib_none().0,
 //         //     );
@@ -149,7 +149,7 @@ pub const NONE_BUTTON_GROUP: Option<&ButtonGroup> = None;
 
 //     fn set_allow_no_active(&self, allow_no_active: bool) {
 //         // unsafe {
-//         //     ffi::mx_button_group_set_allow_no_active(
+//         //     ffi::button_group_set_allow_no_active(
 //         //         self.as_ref().to_glib_none().0,
 //         //         allow_no_active.to_glib(),
 //         //     );
@@ -162,7 +162,7 @@ pub const NONE_BUTTON_GROUP: Option<&ButtonGroup> = None;
 //         f: F,
 //     ) -> SignalHandlerId {
 //         // unsafe extern "C" fn notify_active_button_trampoline<P, F: Fn(&P) + 'static>(
-//         //     this: *mut ffi::MxButtonGroup,
+//         //     this: *mut ffi::ButtonGroup,
 //         //     _param_spec: glib_sys::gpointer,
 //         //     f: glib_sys::gpointer,
 //         // ) where
@@ -190,7 +190,7 @@ pub const NONE_BUTTON_GROUP: Option<&ButtonGroup> = None;
 //         f: F,
 //     ) -> SignalHandlerId {
 //         // unsafe extern "C" fn notify_allow_no_active_trampoline<P, F: Fn(&P) + 'static>(
-//         //     this: *mut ffi::MxButtonGroup,
+//         //     this: *mut ffi::ButtonGroup,
 //         //     _param_spec: glib_sys::gpointer,
 //         //     f: glib_sys::gpointer,
 //         // ) where

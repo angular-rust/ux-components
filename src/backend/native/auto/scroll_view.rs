@@ -1,24 +1,24 @@
-// use clutter;
+use crate::prelude::*;
 // use glib::object::Cast;
-// use glib::object::IsA;
 // use glib::signal::connect_raw;
 // use glib::signal::SignalHandlerId;
 // use glib::translate::*;
-// use glib_sys;
-// use ffi;
+
+
 // use std::boxed::Box as Box_;
 use std::fmt;
 // use std::mem::transmute;
 // use Widget;
 
 // glib_wrapper! {
-//     pub struct ScrollView(Object<ffi::MxScrollView, ffi::MxScrollViewClass, ScrollViewClass>) @extends Widget, clutter::Actor;
+//     pub struct ScrollView(Object<ffi::ScrollView, ffi::ScrollViewClass, ScrollViewClass>) @extends Widget, clutter::Actor;
 
 //     match fn {
-//         get_type => || ffi::mx_scroll_view_get_type(),
+//         get_type => || ffi::scroll_view_get_type(),
 //     }
 // }
 
+#[derive(Clone, Debug)]
 pub struct ScrollView {
 
 }
@@ -26,7 +26,7 @@ pub struct ScrollView {
 impl ScrollView {
     pub fn new() -> ScrollView {
         // assert_initialized_main_thread!();
-        // unsafe { clutter::Actor::from_glib_none(ffi::mx_scroll_view_new()).unsafe_cast() }
+        // unsafe { clutter::Actor::from_glib_none(ffi::scroll_view_new()).unsafe_cast() }
         unimplemented!()
     }
 }
@@ -73,7 +73,7 @@ pub const NONE_SCROLL_VIEW: Option<&ScrollView> = None;
 // impl<O: IsA<ScrollView>> ScrollViewExt for O {
 //     fn ensure_visible(&self, geometry: &clutter::Geometry) {
 //         unsafe {
-//             ffi::mx_scroll_view_ensure_visible(
+//             ffi::scroll_view_ensure_visible(
 //                 self.as_ref().to_glib_none().0,
 //                 geometry.to_glib_none().0,
 //             );
@@ -82,7 +82,7 @@ pub const NONE_SCROLL_VIEW: Option<&ScrollView> = None;
 
 //     fn get_enable_mouse_scrolling(&self) -> bool {
 //         unsafe {
-//             from_glib(ffi::mx_scroll_view_get_enable_mouse_scrolling(
+//             from_glib(ffi::scroll_view_get_enable_mouse_scrolling(
 //                 self.as_ref().to_glib_none().0,
 //             ))
 //         }
@@ -98,7 +98,7 @@ pub const NONE_SCROLL_VIEW: Option<&ScrollView> = None;
 
 //     fn set_enable_mouse_scrolling(&self, enabled: bool) {
 //         unsafe {
-//             ffi::mx_scroll_view_set_enable_mouse_scrolling(
+//             ffi::scroll_view_set_enable_mouse_scrolling(
 //                 self.as_ref().to_glib_none().0,
 //                 enabled.to_glib(),
 //             );
@@ -118,7 +118,7 @@ pub const NONE_SCROLL_VIEW: Option<&ScrollView> = None;
 //         f: F,
 //     ) -> SignalHandlerId {
 //         unsafe extern "C" fn notify_enable_mouse_scrolling_trampoline<P, F: Fn(&P) + 'static>(
-//             this: *mut ffi::MxScrollView,
+//             this: *mut ffi::ScrollView,
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where
@@ -145,7 +145,7 @@ pub const NONE_SCROLL_VIEW: Option<&ScrollView> = None;
 //         f: F,
 //     ) -> SignalHandlerId {
 //         unsafe extern "C" fn notify_scroll_policy_trampoline<P, F: Fn(&P) + 'static>(
-//             this: *mut ffi::MxScrollView,
+//             this: *mut ffi::ScrollView,
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where
@@ -172,7 +172,7 @@ pub const NONE_SCROLL_VIEW: Option<&ScrollView> = None;
 //         f: F,
 //     ) -> SignalHandlerId {
 //         unsafe extern "C" fn notify_scroll_visibility_trampoline<P, F: Fn(&P) + 'static>(
-//             this: *mut ffi::MxScrollView,
+//             this: *mut ffi::ScrollView,
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where

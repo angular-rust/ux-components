@@ -1,27 +1,27 @@
-// use clutter;
+use crate::prelude::*;
 // use glib::object::Cast;
-// use glib::object::IsA;
 // use glib::signal::connect_raw;
 // use glib::signal::SignalHandlerId;
 // use glib::translate::*;
 // use glib::StaticType;
 // use glib::Value;
-// use glib_sys;
-// use gobject_sys;
-// use ffi;
+
+
+
 // use std::boxed::Box as Box_;
 use std::fmt;
 // use std::mem;
 // use std::mem::transmute;
 
 // glib_wrapper! {
-//     pub struct FadeEffect(Object<ffi::MxFadeEffect, ffi::MxFadeEffectClass, FadeEffectClass>) @extends clutter::OffscreenEffect, clutter::Effect, clutter::ActorMeta;
+//     pub struct FadeEffect(Object<ffi::FadeEffect, ffi::FadeEffectClass, FadeEffectClass>) @extends clutter::OffscreenEffect, clutter::Effect, clutter::ActorMeta;
 
 //     match fn {
-//         get_type => || ffi::mx_fade_effect_get_type(),
+//         get_type => || ffi::fade_effect_get_type(),
 //     }
 // }
 
+#[derive(Clone, Debug)]
 pub struct FadeEffect {
 
 }
@@ -29,7 +29,7 @@ pub struct FadeEffect {
 impl FadeEffect {
     pub fn new() -> FadeEffect {
         // assert_initialized_main_thread!();
-        // unsafe { clutter::Effect::from_glib_none(ffi::mx_fade_effect_new()).unsafe_cast() }
+        // unsafe { clutter::Effect::from_glib_none(ffi::fade_effect_new()).unsafe_cast() }
         unimplemented!()
     }
 }
@@ -130,7 +130,7 @@ pub const NONE_FADE_EFFECT: Option<&FadeEffect> = None;
 //             let mut right = mem::MaybeUninit::uninit();
 //             let mut bottom = mem::MaybeUninit::uninit();
 //             let mut left = mem::MaybeUninit::uninit();
-//             ffi::mx_fade_effect_get_border(
+//             ffi::fade_effect_get_border(
 //                 self.as_ref().to_glib_none().0,
 //                 top.as_mut_ptr(),
 //                 right.as_mut_ptr(),
@@ -151,7 +151,7 @@ pub const NONE_FADE_EFFECT: Option<&FadeEffect> = None;
 //             let mut y = mem::MaybeUninit::uninit();
 //             let mut width = mem::MaybeUninit::uninit();
 //             let mut height = mem::MaybeUninit::uninit();
-//             ffi::mx_fade_effect_get_bounds(
+//             ffi::fade_effect_get_bounds(
 //                 self.as_ref().to_glib_none().0,
 //                 x.as_mut_ptr(),
 //                 y.as_mut_ptr(),
@@ -169,7 +169,7 @@ pub const NONE_FADE_EFFECT: Option<&FadeEffect> = None;
 //     fn get_color(&self) -> clutter::Color {
 //         unsafe {
 //             let mut color = clutter::Color::uninitialized();
-//             ffi::mx_fade_effect_get_color(
+//             ffi::fade_effect_get_color(
 //                 self.as_ref().to_glib_none().0,
 //                 color.to_glib_none_mut().0,
 //             );
@@ -179,7 +179,7 @@ pub const NONE_FADE_EFFECT: Option<&FadeEffect> = None;
 
 //     fn set_border(&self, top: u32, right: u32, bottom: u32, left: u32) {
 //         unsafe {
-//             ffi::mx_fade_effect_set_border(
+//             ffi::fade_effect_set_border(
 //                 self.as_ref().to_glib_none().0,
 //                 top,
 //                 right,
@@ -191,13 +191,13 @@ pub const NONE_FADE_EFFECT: Option<&FadeEffect> = None;
 
 //     fn set_bounds(&self, x: i32, y: i32, width: u32, height: u32) {
 //         unsafe {
-//             ffi::mx_fade_effect_set_bounds(self.as_ref().to_glib_none().0, x, y, width, height);
+//             ffi::fade_effect_set_bounds(self.as_ref().to_glib_none().0, x, y, width, height);
 //         }
 //     }
 
 //     fn set_color(&self, color: &clutter::Color) {
 //         unsafe {
-//             ffi::mx_fade_effect_set_color(
+//             ffi::fade_effect_set_color(
 //                 self.as_ref().to_glib_none().0,
 //                 color.to_glib_none().0,
 //             );
@@ -434,7 +434,7 @@ pub const NONE_FADE_EFFECT: Option<&FadeEffect> = None;
 //         f: F,
 //     ) -> SignalHandlerId {
 //         unsafe extern "C" fn notify_border_bottom_trampoline<P, F: Fn(&P) + 'static>(
-//             this: *mut ffi::MxFadeEffect,
+//             this: *mut ffi::FadeEffect,
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where
@@ -458,7 +458,7 @@ pub const NONE_FADE_EFFECT: Option<&FadeEffect> = None;
 
 //     fn connect_property_border_left_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
 //         unsafe extern "C" fn notify_border_left_trampoline<P, F: Fn(&P) + 'static>(
-//             this: *mut ffi::MxFadeEffect,
+//             this: *mut ffi::FadeEffect,
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where
@@ -485,7 +485,7 @@ pub const NONE_FADE_EFFECT: Option<&FadeEffect> = None;
 //         f: F,
 //     ) -> SignalHandlerId {
 //         unsafe extern "C" fn notify_border_right_trampoline<P, F: Fn(&P) + 'static>(
-//             this: *mut ffi::MxFadeEffect,
+//             this: *mut ffi::FadeEffect,
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where
@@ -509,7 +509,7 @@ pub const NONE_FADE_EFFECT: Option<&FadeEffect> = None;
 
 //     fn connect_property_border_top_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
 //         unsafe extern "C" fn notify_border_top_trampoline<P, F: Fn(&P) + 'static>(
-//             this: *mut ffi::MxFadeEffect,
+//             this: *mut ffi::FadeEffect,
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where
@@ -536,7 +536,7 @@ pub const NONE_FADE_EFFECT: Option<&FadeEffect> = None;
 //         f: F,
 //     ) -> SignalHandlerId {
 //         unsafe extern "C" fn notify_bounds_height_trampoline<P, F: Fn(&P) + 'static>(
-//             this: *mut ffi::MxFadeEffect,
+//             this: *mut ffi::FadeEffect,
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where
@@ -563,7 +563,7 @@ pub const NONE_FADE_EFFECT: Option<&FadeEffect> = None;
 //         f: F,
 //     ) -> SignalHandlerId {
 //         unsafe extern "C" fn notify_bounds_width_trampoline<P, F: Fn(&P) + 'static>(
-//             this: *mut ffi::MxFadeEffect,
+//             this: *mut ffi::FadeEffect,
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where
@@ -587,7 +587,7 @@ pub const NONE_FADE_EFFECT: Option<&FadeEffect> = None;
 
 //     fn connect_property_bounds_x_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
 //         unsafe extern "C" fn notify_bounds_x_trampoline<P, F: Fn(&P) + 'static>(
-//             this: *mut ffi::MxFadeEffect,
+//             this: *mut ffi::FadeEffect,
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where
@@ -611,7 +611,7 @@ pub const NONE_FADE_EFFECT: Option<&FadeEffect> = None;
 
 //     fn connect_property_bounds_y_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
 //         unsafe extern "C" fn notify_bounds_y_trampoline<P, F: Fn(&P) + 'static>(
-//             this: *mut ffi::MxFadeEffect,
+//             this: *mut ffi::FadeEffect,
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where
@@ -635,7 +635,7 @@ pub const NONE_FADE_EFFECT: Option<&FadeEffect> = None;
 
 //     fn connect_property_color_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
 //         unsafe extern "C" fn notify_color_trampoline<P, F: Fn(&P) + 'static>(
-//             this: *mut ffi::MxFadeEffect,
+//             this: *mut ffi::FadeEffect,
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where
@@ -662,7 +662,7 @@ pub const NONE_FADE_EFFECT: Option<&FadeEffect> = None;
 //         f: F,
 //     ) -> SignalHandlerId {
 //         unsafe extern "C" fn notify_freeze_update_trampoline<P, F: Fn(&P) + 'static>(
-//             this: *mut ffi::MxFadeEffect,
+//             this: *mut ffi::FadeEffect,
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where

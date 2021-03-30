@@ -1,11 +1,10 @@
-// use clutter;
+use crate::prelude::*;
 // use glib::object::Cast;
-// use glib::object::IsA;
 // use glib::signal::connect_raw;
 // use glib::signal::SignalHandlerId;
 // use glib::translate::*;
-// use glib_sys;
-// use ffi;
+
+
 // use std::boxed::Box as Box_;
 use std::fmt;
 // use std::mem::transmute;
@@ -13,13 +12,14 @@ use std::fmt;
 // use Widget;
 
 // glib_wrapper! {
-//     pub struct ScrollBar(Object<ffi::MxScrollBar, ffi::MxScrollBarClass, ScrollBarClass>) @extends Widget, clutter::Actor;
+//     pub struct ScrollBar(Object<ffi::ScrollBar, ffi::ScrollBarClass, ScrollBarClass>) @extends Widget, clutter::Actor;
 
 //     match fn {
-//         get_type => || ffi::mx_scroll_bar_get_type(),
+//         get_type => || ffi::scroll_bar_get_type(),
 //     }
 // }
 
+#[derive(Clone, Debug)]
 pub struct ScrollBar {
 
 }
@@ -27,14 +27,14 @@ pub struct ScrollBar {
 impl ScrollBar {
     pub fn new() -> ScrollBar {
         // assert_initialized_main_thread!();
-        // unsafe { clutter::Actor::from_glib_none(ffi::mx_scroll_bar_new()).unsafe_cast() }
+        // unsafe { clutter::Actor::from_glib_none(ffi::scroll_bar_new()).unsafe_cast() }
         unimplemented!()
     }
 
     // pub fn with_adjustment<P: IsA<Adjustment>>(adjustment: &P) -> ScrollBar {
     //     // skip_assert_initialized!();
     //     // unsafe {
-    //     //     clutter::Actor::from_glib_none(ffi::mx_scroll_bar_new_with_adjustment(
+    //     //     clutter::Actor::from_glib_none(ffi::scroll_bar_new_with_adjustment(
     //     //         adjustment.as_ref().to_glib_none().0,
     //     //     ))
     //     //     .unsafe_cast()
@@ -72,7 +72,7 @@ pub const NONE_SCROLL_BAR: Option<&ScrollBar> = None;
 // impl<O: IsA<ScrollBar>> ScrollBarExt for O {
 //     fn get_adjustment(&self) -> Option<Adjustment> {
 //         unsafe {
-//             from_glib_none(ffi::mx_scroll_bar_get_adjustment(
+//             from_glib_none(ffi::scroll_bar_get_adjustment(
 //                 self.as_ref().to_glib_none().0,
 //             ))
 //         }
@@ -84,7 +84,7 @@ pub const NONE_SCROLL_BAR: Option<&ScrollBar> = None;
 
 //     fn set_adjustment<P: IsA<Adjustment>>(&self, adjustment: &P) {
 //         unsafe {
-//             ffi::mx_scroll_bar_set_adjustment(
+//             ffi::scroll_bar_set_adjustment(
 //                 self.as_ref().to_glib_none().0,
 //                 adjustment.as_ref().to_glib_none().0,
 //             );
@@ -97,7 +97,7 @@ pub const NONE_SCROLL_BAR: Option<&ScrollBar> = None;
 
 //     fn connect_scroll_start<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
 //         unsafe extern "C" fn scroll_start_trampoline<P, F: Fn(&P) + 'static>(
-//             this: *mut ffi::MxScrollBar,
+//             this: *mut ffi::ScrollBar,
 //             f: glib_sys::gpointer,
 //         ) where
 //             P: IsA<ScrollBar>,
@@ -120,7 +120,7 @@ pub const NONE_SCROLL_BAR: Option<&ScrollBar> = None;
 
 //     fn connect_scroll_stop<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
 //         unsafe extern "C" fn scroll_stop_trampoline<P, F: Fn(&P) + 'static>(
-//             this: *mut ffi::MxScrollBar,
+//             this: *mut ffi::ScrollBar,
 //             f: glib_sys::gpointer,
 //         ) where
 //             P: IsA<ScrollBar>,
@@ -143,7 +143,7 @@ pub const NONE_SCROLL_BAR: Option<&ScrollBar> = None;
 
 //     fn connect_property_adjustment_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
 //         unsafe extern "C" fn notify_adjustment_trampoline<P, F: Fn(&P) + 'static>(
-//             this: *mut ffi::MxScrollBar,
+//             this: *mut ffi::ScrollBar,
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where
@@ -167,7 +167,7 @@ pub const NONE_SCROLL_BAR: Option<&ScrollBar> = None;
 
 //     fn connect_property_orientation_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
 //         unsafe extern "C" fn notify_orientation_trampoline<P, F: Fn(&P) + 'static>(
-//             this: *mut ffi::MxScrollBar,
+//             this: *mut ffi::ScrollBar,
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where

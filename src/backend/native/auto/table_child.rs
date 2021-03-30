@@ -1,25 +1,26 @@
+use crate::prelude::*;
 // use glib::object::Cast;
-// use glib::object::IsA;
 // use glib::signal::connect_raw;
 // use glib::signal::SignalHandlerId;
 // use glib::translate::*;
 // use glib::StaticType;
 // use glib::Value;
-// use glib_sys;
-// use gobject_sys;
-// use ffi;
+
+
+
 // use std::boxed::Box as Box_;
 use std::fmt;
 // use std::mem::transmute;
 
 // glib_wrapper! {
-//     pub struct TableChild(Object<ffi::MxTableChild, ffi::MxTableChildClass, TableChildClass>);
+//     pub struct TableChild(Object<ffi::TableChild, ffi::TableChildClass, TableChildClass>);
 
 //     match fn {
-//         get_type => || ffi::mx_table_child_get_type(),
+//         get_type => || ffi::table_child_get_type(),
 //     }
 // }
 
+#[derive(Clone, Debug)]
 pub struct TableChild {
 
 }
@@ -319,7 +320,7 @@ pub const NONE_TABLE_CHILD: Option<&TableChild> = None;
 
 //     fn connect_property_column_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
 //         unsafe extern "C" fn notify_column_trampoline<P, F: Fn(&P) + 'static>(
-//             this: *mut ffi::MxTableChild,
+//             this: *mut ffi::TableChild,
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where
@@ -343,7 +344,7 @@ pub const NONE_TABLE_CHILD: Option<&TableChild> = None;
 
 //     fn connect_property_column_span_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
 //         unsafe extern "C" fn notify_column_span_trampoline<P, F: Fn(&P) + 'static>(
-//             this: *mut ffi::MxTableChild,
+//             this: *mut ffi::TableChild,
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where
@@ -367,7 +368,7 @@ pub const NONE_TABLE_CHILD: Option<&TableChild> = None;
 
 //     fn connect_property_row_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
 //         unsafe extern "C" fn notify_row_trampoline<P, F: Fn(&P) + 'static>(
-//             this: *mut ffi::MxTableChild,
+//             this: *mut ffi::TableChild,
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where
@@ -391,7 +392,7 @@ pub const NONE_TABLE_CHILD: Option<&TableChild> = None;
 
 //     fn connect_property_row_span_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
 //         unsafe extern "C" fn notify_row_span_trampoline<P, F: Fn(&P) + 'static>(
-//             this: *mut ffi::MxTableChild,
+//             this: *mut ffi::TableChild,
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where
@@ -415,7 +416,7 @@ pub const NONE_TABLE_CHILD: Option<&TableChild> = None;
 
 //     fn connect_property_x_align_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
 //         unsafe extern "C" fn notify_x_align_trampoline<P, F: Fn(&P) + 'static>(
-//             this: *mut ffi::MxTableChild,
+//             this: *mut ffi::TableChild,
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where
@@ -439,7 +440,7 @@ pub const NONE_TABLE_CHILD: Option<&TableChild> = None;
 
 //     fn connect_property_x_expand_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
 //         unsafe extern "C" fn notify_x_expand_trampoline<P, F: Fn(&P) + 'static>(
-//             this: *mut ffi::MxTableChild,
+//             this: *mut ffi::TableChild,
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where
@@ -463,7 +464,7 @@ pub const NONE_TABLE_CHILD: Option<&TableChild> = None;
 
 //     fn connect_property_x_fill_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
 //         unsafe extern "C" fn notify_x_fill_trampoline<P, F: Fn(&P) + 'static>(
-//             this: *mut ffi::MxTableChild,
+//             this: *mut ffi::TableChild,
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where
@@ -487,7 +488,7 @@ pub const NONE_TABLE_CHILD: Option<&TableChild> = None;
 
 //     fn connect_property_y_align_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
 //         unsafe extern "C" fn notify_y_align_trampoline<P, F: Fn(&P) + 'static>(
-//             this: *mut ffi::MxTableChild,
+//             this: *mut ffi::TableChild,
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where
@@ -511,7 +512,7 @@ pub const NONE_TABLE_CHILD: Option<&TableChild> = None;
 
 //     fn connect_property_y_expand_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
 //         unsafe extern "C" fn notify_y_expand_trampoline<P, F: Fn(&P) + 'static>(
-//             this: *mut ffi::MxTableChild,
+//             this: *mut ffi::TableChild,
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where
@@ -535,7 +536,7 @@ pub const NONE_TABLE_CHILD: Option<&TableChild> = None;
 
 //     fn connect_property_y_fill_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
 //         unsafe extern "C" fn notify_y_fill_trampoline<P, F: Fn(&P) + 'static>(
-//             this: *mut ffi::MxTableChild,
+//             this: *mut ffi::TableChild,
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where

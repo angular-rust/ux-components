@@ -1,24 +1,24 @@
-// use clutter;
+use crate::prelude::*;
 // use glib::object::Cast;
-// use glib::object::IsA;
 // use glib::signal::connect_raw;
 // use glib::signal::SignalHandlerId;
 // use glib::translate::*;
-// use glib_sys;
-// use ffi;
+
+
 // use std::boxed::Box as Box_;
 use std::fmt;
 // use std::mem::transmute;
 // use Widget;
 
 // glib_wrapper! {
-//     pub struct Slider(Object<ffi::MxSlider, ffi::MxSliderClass, SliderClass>) @extends Widget, clutter::Actor;
+//     pub struct Slider(Object<ffi::Slider, ffi::SliderClass, SliderClass>) @extends Widget, clutter::Actor;
 
 //     match fn {
-//         get_type => || ffi::mx_slider_get_type(),
+//         get_type => || ffi::slider_get_type(),
 //     }
 // }
 
+#[derive(Clone, Debug)]
 pub struct Slider {
 
 }
@@ -26,7 +26,7 @@ pub struct Slider {
 impl Slider {
     pub fn new() -> Slider {
         // assert_initialized_main_thread!();
-        // unsafe { clutter::Actor::from_glib_none(ffi::mx_slider_new()).unsafe_cast() }
+        // unsafe { clutter::Actor::from_glib_none(ffi::slider_new()).unsafe_cast() }
         unimplemented!()
     }
 }
@@ -60,28 +60,28 @@ pub const NONE_SLIDER: Option<&Slider> = None;
 
 // impl<O: IsA<Slider>> SliderExt for O {
 //     fn get_buffer_value(&self) -> f64 {
-//         unsafe { ffi::mx_slider_get_buffer_value(self.as_ref().to_glib_none().0) }
+//         unsafe { ffi::slider_get_buffer_value(self.as_ref().to_glib_none().0) }
 //     }
 
 //     fn get_value(&self) -> f64 {
-//         unsafe { ffi::mx_slider_get_value(self.as_ref().to_glib_none().0) }
+//         unsafe { ffi::slider_get_value(self.as_ref().to_glib_none().0) }
 //     }
 
 //     fn set_buffer_value(&self, value: f64) {
 //         unsafe {
-//             ffi::mx_slider_set_buffer_value(self.as_ref().to_glib_none().0, value);
+//             ffi::slider_set_buffer_value(self.as_ref().to_glib_none().0, value);
 //         }
 //     }
 
 //     fn set_value(&self, value: f64) {
 //         unsafe {
-//             ffi::mx_slider_set_value(self.as_ref().to_glib_none().0, value);
+//             ffi::slider_set_value(self.as_ref().to_glib_none().0, value);
 //         }
 //     }
 
 //     fn connect_slide_start<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
 //         unsafe extern "C" fn slide_start_trampoline<P, F: Fn(&P) + 'static>(
-//             this: *mut ffi::MxSlider,
+//             this: *mut ffi::Slider,
 //             f: glib_sys::gpointer,
 //         ) where
 //             P: IsA<Slider>,
@@ -104,7 +104,7 @@ pub const NONE_SLIDER: Option<&Slider> = None;
 
 //     fn connect_slide_stop<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
 //         unsafe extern "C" fn slide_stop_trampoline<P, F: Fn(&P) + 'static>(
-//             this: *mut ffi::MxSlider,
+//             this: *mut ffi::Slider,
 //             f: glib_sys::gpointer,
 //         ) where
 //             P: IsA<Slider>,
@@ -130,7 +130,7 @@ pub const NONE_SLIDER: Option<&Slider> = None;
 //         f: F,
 //     ) -> SignalHandlerId {
 //         unsafe extern "C" fn notify_buffer_value_trampoline<P, F: Fn(&P) + 'static>(
-//             this: *mut ffi::MxSlider,
+//             this: *mut ffi::Slider,
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where
@@ -154,7 +154,7 @@ pub const NONE_SLIDER: Option<&Slider> = None;
 
 //     fn connect_property_value_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
 //         unsafe extern "C" fn notify_value_trampoline<P, F: Fn(&P) + 'static>(
-//             this: *mut ffi::MxSlider,
+//             this: *mut ffi::Slider,
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where

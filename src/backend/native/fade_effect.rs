@@ -9,6 +9,6 @@ impl FadeEffect {
         unimplemented!(); // TODO: complete it
 
         // assert_initialized_main_thread!();
-        // unsafe { from_glib_full(ffi::mx_fade_effect_new()) }
+        // unsafe { from_glib_full(ffi::fade_effect_new()) }
     }
 }

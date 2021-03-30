@@ -1,20 +1,20 @@
-// use clutter;
+use crate::prelude::*;
 // use glib::object::Cast;
-// use glib::object::IsA;
 // use glib::translate::*;
-// use ffi;
+
 use std::fmt;
 // use super::Action;
 // use super::Widget;
 
 // glib_wrapper! {
-//     pub struct Dialog(Object<ffi::MxDialog, ffi::MxDialogClass, DialogClass>) @extends Widget, clutter::Actor;
+//     pub struct Dialog(Object<ffi::Dialog, ffi::DialogClass, DialogClass>) @extends Widget, clutter::Actor;
 
 //     match fn {
-//         get_type => || ffi::mx_dialog_get_type(),
+//         get_type => || ffi::dialog_get_type(),
 //     }
 // }
 
+#[derive(Clone, Debug)]
 pub struct Dialog {
 
 }
@@ -22,7 +22,7 @@ pub struct Dialog {
 impl Dialog {
     pub fn new() -> Dialog {
         // assert_initialized_main_thread!();
-        // unsafe { clutter::Actor::from_glib_none(ffi::mx_dialog_new()).unsafe_cast() }
+        // unsafe { clutter::Actor::from_glib_none(ffi::dialog_new()).unsafe_cast() }
         unimplemented!()
     }
 }
@@ -48,7 +48,7 @@ pub const NONE_DIALOG: Option<&Dialog> = None;
 // impl<O: IsA<Dialog>> DialogExt for O {
 //     fn add_action<P: IsA<Action>>(&self, action: &P) {
 //         // unsafe {
-//         //     ffi::mx_dialog_add_action(
+//         //     ffi::dialog_add_action(
 //         //         self.as_ref().to_glib_none().0,
 //         //         action.as_ref().to_glib_none().0,
 //         //     );
@@ -58,7 +58,7 @@ pub const NONE_DIALOG: Option<&Dialog> = None;
 
 //     fn get_actions(&self) -> Vec<Action> {
 //         // unsafe {
-//         //     FromGlibPtrContainer::from_glib_container(ffi::mx_dialog_get_actions(
+//         //     FromGlibPtrContainer::from_glib_container(ffi::dialog_get_actions(
 //         //         self.as_ref().to_glib_none().0,
 //         //     ))
 //         // }
@@ -67,7 +67,7 @@ pub const NONE_DIALOG: Option<&Dialog> = None;
 
 //     fn remove_action<P: IsA<Action>>(&self, action: &P) {
 //         // unsafe {
-//         //     ffi::mx_dialog_remove_action(
+//         //     ffi::dialog_remove_action(
 //         //         self.as_ref().to_glib_none().0,
 //         //         action.as_ref().to_glib_none().0,
 //         //     );
@@ -77,7 +77,7 @@ pub const NONE_DIALOG: Option<&Dialog> = None;
 
 //     fn set_transient_parent<P: IsA<clutter::Actor>>(&self, actor: &P) {
 //         // unsafe {
-//         //     ffi::mx_dialog_set_transient_parent(
+//         //     ffi::dialog_set_transient_parent(
 //         //         self.as_ref().to_glib_none().0,
 //         //         actor.as_ref().to_glib_none().0,
 //         //     );

@@ -1,24 +1,24 @@
-// use clutter;
+use crate::prelude::*;
 // use glib::object::Cast;
-// use glib::object::IsA;
 // use glib::signal::connect_raw;
 // use glib::signal::SignalHandlerId;
 // use glib::translate::*;
-// use glib_sys;
-// use ffi;
+
+
 // use std::boxed::Box as Box_;
 use std::fmt;
 // use std::mem::transmute;
 // use Widget;
 
 // glib_wrapper! {
-//     pub struct Toggle(Object<ffi::MxToggle, ffi::MxToggleClass, ToggleClass>) @extends Widget, clutter::Actor;
+//     pub struct Toggle(Object<ffi::Toggle, ffi::ToggleClass, ToggleClass>) @extends Widget, clutter::Actor;
 
 //     match fn {
-//         get_type => || ffi::mx_toggle_get_type(),
+//         get_type => || ffi::toggle_get_type(),
 //     }
 // }
 
+#[derive(Clone, Debug)]
 pub struct Toggle {
 
 }
@@ -26,7 +26,7 @@ pub struct Toggle {
 impl Toggle {
     pub fn new() -> Toggle {
         // assert_initialized_main_thread!();
-        // unsafe { clutter::Actor::from_glib_none(ffi::mx_toggle_new()).unsafe_cast() }
+        // unsafe { clutter::Actor::from_glib_none(ffi::toggle_new()).unsafe_cast() }
         unimplemented!()
     }
 }
@@ -49,18 +49,18 @@ pub const NONE_TOGGLE: Option<&Toggle> = None;
 
 // impl<O: IsA<Toggle>> ToggleExt for O {
 //     fn get_active(&self) -> bool {
-//         unsafe { from_glib(ffi::mx_toggle_get_active(self.as_ref().to_glib_none().0)) }
+//         unsafe { from_glib(ffi::toggle_get_active(self.as_ref().to_glib_none().0)) }
 //     }
 
 //     fn set_active(&self, active: bool) {
 //         unsafe {
-//             ffi::mx_toggle_set_active(self.as_ref().to_glib_none().0, active.to_glib());
+//             ffi::toggle_set_active(self.as_ref().to_glib_none().0, active.to_glib());
 //         }
 //     }
 
 //     fn connect_property_active_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
 //         unsafe extern "C" fn notify_active_trampoline<P, F: Fn(&P) + 'static>(
-//             this: *mut ffi::MxToggle,
+//             this: *mut ffi::Toggle,
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where

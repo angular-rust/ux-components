@@ -1,19 +1,19 @@
-// use clutter;
+use crate::prelude::*;
 // use glib::object::Cast;
-// use glib::object::IsA;
 // use glib::translate::*;
-// use ffi;
+
 use std::fmt;
 // use Widget;
 
 // glib_wrapper! {
-//     pub struct Stack(Object<ffi::MxStack, ffi::MxStackClass, StackClass>) @extends Widget, clutter::Actor;
+//     pub struct Stack(Object<ffi::Stack, ffi::StackClass, StackClass>) @extends Widget, clutter::Actor;
 
 //     match fn {
-//         get_type => || ffi::mx_stack_get_type(),
+//         get_type => || ffi::stack_get_type(),
 //     }
 // }
 
+#[derive(Clone, Debug)]
 pub struct Stack {
 
 }
@@ -21,7 +21,7 @@ pub struct Stack {
 impl Stack {
     pub fn new() -> Stack {
         // assert_initialized_main_thread!();
-        // unsafe { clutter::Actor::from_glib_none(ffi::mx_stack_new()).unsafe_cast() }
+        // unsafe { clutter::Actor::from_glib_none(ffi::stack_new()).unsafe_cast() }
         unimplemented!()
     }
 }
@@ -63,7 +63,7 @@ pub const NONE_STACK: Option<&Stack> = None;
 // impl<O: IsA<Stack>> StackExt for O {
 //     fn child_get_crop<P: IsA<clutter::Actor>>(&self, child: &P) -> bool {
 //         unsafe {
-//             from_glib(ffi::mx_stack_child_get_crop(
+//             from_glib(ffi::stack_child_get_crop(
 //                 self.as_ref().to_glib_none().0,
 //                 child.as_ref().to_glib_none().0,
 //             ))
@@ -72,7 +72,7 @@ pub const NONE_STACK: Option<&Stack> = None;
 
 //     fn child_get_fit<P: IsA<clutter::Actor>>(&self, child: &P) -> bool {
 //         unsafe {
-//             from_glib(ffi::mx_stack_child_get_fit(
+//             from_glib(ffi::stack_child_get_fit(
 //                 self.as_ref().to_glib_none().0,
 //                 child.as_ref().to_glib_none().0,
 //             ))
@@ -85,7 +85,7 @@ pub const NONE_STACK: Option<&Stack> = None;
 
 //     fn child_get_x_fill<P: IsA<clutter::Actor>>(&self, child: &P) -> bool {
 //         unsafe {
-//             from_glib(ffi::mx_stack_child_get_x_fill(
+//             from_glib(ffi::stack_child_get_x_fill(
 //                 self.as_ref().to_glib_none().0,
 //                 child.as_ref().to_glib_none().0,
 //             ))
@@ -98,7 +98,7 @@ pub const NONE_STACK: Option<&Stack> = None;
 
 //     fn child_get_y_fill<P: IsA<clutter::Actor>>(&self, child: &P) -> bool {
 //         unsafe {
-//             from_glib(ffi::mx_stack_child_get_y_fill(
+//             from_glib(ffi::stack_child_get_y_fill(
 //                 self.as_ref().to_glib_none().0,
 //                 child.as_ref().to_glib_none().0,
 //             ))
@@ -107,7 +107,7 @@ pub const NONE_STACK: Option<&Stack> = None;
 
 //     fn child_set_crop<P: IsA<clutter::Actor>>(&self, child: &P, crop: bool) {
 //         unsafe {
-//             ffi::mx_stack_child_set_crop(
+//             ffi::stack_child_set_crop(
 //                 self.as_ref().to_glib_none().0,
 //                 child.as_ref().to_glib_none().0,
 //                 crop.to_glib(),
@@ -117,7 +117,7 @@ pub const NONE_STACK: Option<&Stack> = None;
 
 //     fn child_set_fit<P: IsA<clutter::Actor>>(&self, child: &P, fit: bool) {
 //         unsafe {
-//             ffi::mx_stack_child_set_fit(
+//             ffi::stack_child_set_fit(
 //                 self.as_ref().to_glib_none().0,
 //                 child.as_ref().to_glib_none().0,
 //                 fit.to_glib(),
@@ -131,7 +131,7 @@ pub const NONE_STACK: Option<&Stack> = None;
 
 //     fn child_set_x_fill<P: IsA<clutter::Actor>>(&self, child: &P, x_fill: bool) {
 //         unsafe {
-//             ffi::mx_stack_child_set_x_fill(
+//             ffi::stack_child_set_x_fill(
 //                 self.as_ref().to_glib_none().0,
 //                 child.as_ref().to_glib_none().0,
 //                 x_fill.to_glib(),
@@ -145,7 +145,7 @@ pub const NONE_STACK: Option<&Stack> = None;
 
 //     fn child_set_y_fill<P: IsA<clutter::Actor>>(&self, child: &P, y_fill: bool) {
 //         unsafe {
-//             ffi::mx_stack_child_set_y_fill(
+//             ffi::stack_child_set_y_fill(
 //                 self.as_ref().to_glib_none().0,
 //                 child.as_ref().to_glib_none().0,
 //                 y_fill.to_glib(),

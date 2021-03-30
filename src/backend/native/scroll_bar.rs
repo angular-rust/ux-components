@@ -11,13 +11,13 @@ impl ScrollBar {
         unimplemented!(); // TODO: complete it
 
         // assert_initialized_main_thread!();
-        // unsafe { from_glib_full(ffi::mx_scroll_bar_new()) }
+        // unsafe { from_glib_full(ffi::scroll_bar_new()) }
     }
 
     pub fn with_adjustment<P: IsA<Adjustment>>(adjustment: &P) -> ScrollBar {
         unimplemented!(); // TODO: complete it
 
         // assert_initialized_main_thread!();
-        // unsafe { from_glib_full(ffi::mx_scroll_bar_new_with_adjustment()) }
+        // unsafe { from_glib_full(ffi::scroll_bar_new_with_adjustment()) }
     }
 }

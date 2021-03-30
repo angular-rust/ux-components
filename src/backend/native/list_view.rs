@@ -9,6 +9,6 @@ impl ListView {
         unimplemented!() // TODO: complete it
 
         // assert_initialized_main_thread!();
-        // unsafe { from_glib_full(ffi::mx_list_view_new()) }
+        // unsafe { from_glib_full(ffi::list_view_new()) }
     }
 }

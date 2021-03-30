@@ -1,18 +1,18 @@
-// use clutter;
 // use glib::object::Cast;
 // use glib::translate::*;
-// use ffi;
+
 use std::fmt;
 // use Widget;
 
 // glib_wrapper! {
-//     pub struct Frame(Object<ffi::MxFrame, ffi::MxFrameClass, FrameClass>) @extends Widget, clutter::Actor;
+//     pub struct Frame(Object<ffi::Frame, ffi::FrameClass, FrameClass>) @extends Widget, clutter::Actor;
 
 //     match fn {
-//         get_type => || ffi::mx_frame_get_type(),
+//         get_type => || ffi::frame_get_type(),
 //     }
 // }
 
+#[derive(Clone, Debug)]
 pub struct Frame {
 
 }
@@ -20,7 +20,7 @@ pub struct Frame {
 impl Frame {
     pub fn new() -> Frame {
         // assert_initialized_main_thread!();
-        // unsafe { clutter::Actor::from_glib_none(ffi::mx_frame_new()).unsafe_cast() }
+        // unsafe { clutter::Actor::from_glib_none(ffi::frame_new()).unsafe_cast() }
         unimplemented!()
     }
 }

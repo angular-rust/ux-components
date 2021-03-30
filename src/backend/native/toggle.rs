@@ -9,6 +9,6 @@ impl Toggle {
         unimplemented!() // TODO: complete it
 
         // assert_initialized_main_thread!();
-        // unsafe { from_glib_full(ffi::mx_toggle_new()) }
+        // unsafe { from_glib_full(ffi::toggle_new()) }
     }
 }

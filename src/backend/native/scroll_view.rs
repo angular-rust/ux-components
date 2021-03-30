@@ -9,6 +9,6 @@ impl ScrollView {
         unimplemented!() // TODO: complete it
 
         // assert_initialized_main_thread!();
-        // unsafe { from_glib_full(ffi::mx_scroll_view_new()) }
+        // unsafe { from_glib_full(ffi::scroll_view_new()) }
     }
 }

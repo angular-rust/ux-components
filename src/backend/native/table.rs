@@ -9,6 +9,6 @@ impl Table {
         unimplemented!() // TODO: complete it
 
         // assert_initialized_main_thread!();
-        // unsafe { from_glib_full(ffi::mx_table_new()) }
+        // unsafe { from_glib_full(ffi::table_new()) }
     }
 }

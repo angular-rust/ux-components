@@ -1,22 +1,23 @@
+use crate::prelude::*;
 // use glib::object::Cast;
-// use glib::object::IsA;
 // use glib::signal::connect_raw;
 // use glib::signal::SignalHandlerId;
 // use glib::translate::*;
-// use glib_sys;
-// use ffi;
+
+
 // use std::boxed::Box as Box_;
 use std::fmt;
 // use std::mem::transmute;
 
 // glib_wrapper! {
-//     pub struct FocusManager(Object<ffi::MxFocusManager, ffi::MxFocusManagerClass, FocusManagerClass>);
+//     pub struct FocusManager(Object<ffi::FocusManager, ffi::FocusManagerClass, FocusManagerClass>);
 
 //     match fn {
-//         get_type => || ffi::mx_focus_manager_get_type(),
+//         get_type => || ffi::focus_manager_get_type(),
 //     }
 // }
 
+#[derive(Clone, Debug)]
 pub struct FocusManager {
 
 }
@@ -68,7 +69,7 @@ pub const NONE_FOCUS_MANAGER: Option<&FocusManager> = None;
 
 //     fn connect_property_focused_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
 //         unsafe extern "C" fn notify_focused_trampoline<P, F: Fn(&P) + 'static>(
-//             this: *mut ffi::MxFocusManager,
+//             this: *mut ffi::FocusManager,
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where
@@ -92,7 +93,7 @@ pub const NONE_FOCUS_MANAGER: Option<&FocusManager> = None;
 
 //     fn connect_property_stage_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
 //         unsafe extern "C" fn notify_stage_trampoline<P, F: Fn(&P) + 'static>(
-//             this: *mut ffi::MxFocusManager,
+//             this: *mut ffi::FocusManager,
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where

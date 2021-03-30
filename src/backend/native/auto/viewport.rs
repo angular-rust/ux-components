@@ -1,14 +1,13 @@
-// use clutter;
+use crate::prelude::*;
 // use glib::object::Cast;
-// use glib::object::IsA;
 // use glib::signal::connect_raw;
 // use glib::signal::SignalHandlerId;
 // use glib::translate::*;
 // use glib::StaticType;
 // use glib::Value;
-// use glib_sys;
-// use gobject_sys;
-// use ffi;
+
+
+
 // use std::boxed::Box as Box_;
 use std::fmt;
 // use std::mem;
@@ -16,13 +15,14 @@ use std::fmt;
 // use Widget;
 
 // glib_wrapper! {
-//     pub struct Viewport(Object<ffi::MxViewport, ffi::MxViewportClass, ViewportClass>) @extends Widget, clutter::Actor;
+//     pub struct Viewport(Object<ffi::Viewport, ffi::ViewportClass, ViewportClass>) @extends Widget, clutter::Actor;
 
 //     match fn {
-//         get_type => || ffi::mx_viewport_get_type(),
+//         get_type => || ffi::viewport_get_type(),
 //     }
 // }
 
+#[derive(Clone, Debug)]
 pub struct Viewport {
 
 }
@@ -30,7 +30,7 @@ pub struct Viewport {
 impl Viewport {
     pub fn new() -> Viewport {
         // assert_initialized_main_thread!();
-        // unsafe { clutter::Actor::from_glib_none(ffi::mx_viewport_new()).unsafe_cast() }
+        // unsafe { clutter::Actor::from_glib_none(ffi::viewport_new()).unsafe_cast() }
         unimplemented!()
     }
 }
@@ -82,7 +82,7 @@ pub const NONE_VIEWPORT: Option<&Viewport> = None;
 //             let mut x = mem::MaybeUninit::uninit();
 //             let mut y = mem::MaybeUninit::uninit();
 //             let mut z = mem::MaybeUninit::uninit();
-//             ffi::mx_viewport_get_origin(
+//             ffi::viewport_get_origin(
 //                 self.as_ref().to_glib_none().0,
 //                 x.as_mut_ptr(),
 //                 y.as_mut_ptr(),
@@ -97,7 +97,7 @@ pub const NONE_VIEWPORT: Option<&Viewport> = None;
 
 //     fn get_sync_adjustments(&self) -> bool {
 //         unsafe {
-//             from_glib(ffi::mx_viewport_get_sync_adjustments(
+//             from_glib(ffi::viewport_get_sync_adjustments(
 //                 self.as_ref().to_glib_none().0,
 //             ))
 //         }
@@ -105,13 +105,13 @@ pub const NONE_VIEWPORT: Option<&Viewport> = None;
 
 //     fn set_origin(&self, x: f32, y: f32, z: f32) {
 //         unsafe {
-//             ffi::mx_viewport_set_origin(self.as_ref().to_glib_none().0, x, y, z);
+//             ffi::viewport_set_origin(self.as_ref().to_glib_none().0, x, y, z);
 //         }
 //     }
 
 //     fn set_sync_adjustments(&self, sync: bool) {
 //         unsafe {
-//             ffi::mx_viewport_set_sync_adjustments(
+//             ffi::viewport_set_sync_adjustments(
 //                 self.as_ref().to_glib_none().0,
 //                 sync.to_glib(),
 //             );
@@ -198,7 +198,7 @@ pub const NONE_VIEWPORT: Option<&Viewport> = None;
 //         f: F,
 //     ) -> SignalHandlerId {
 //         unsafe extern "C" fn notify_sync_adjustments_trampoline<P, F: Fn(&P) + 'static>(
-//             this: *mut ffi::MxViewport,
+//             this: *mut ffi::Viewport,
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where
@@ -222,7 +222,7 @@ pub const NONE_VIEWPORT: Option<&Viewport> = None;
 
 //     fn connect_property_x_origin_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
 //         unsafe extern "C" fn notify_x_origin_trampoline<P, F: Fn(&P) + 'static>(
-//             this: *mut ffi::MxViewport,
+//             this: *mut ffi::Viewport,
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where
@@ -246,7 +246,7 @@ pub const NONE_VIEWPORT: Option<&Viewport> = None;
 
 //     fn connect_property_y_origin_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
 //         unsafe extern "C" fn notify_y_origin_trampoline<P, F: Fn(&P) + 'static>(
-//             this: *mut ffi::MxViewport,
+//             this: *mut ffi::Viewport,
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where
@@ -270,7 +270,7 @@ pub const NONE_VIEWPORT: Option<&Viewport> = None;
 
 //     fn connect_property_z_origin_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
 //         unsafe extern "C" fn notify_z_origin_trampoline<P, F: Fn(&P) + 'static>(
-//             this: *mut ffi::MxViewport,
+//             this: *mut ffi::Viewport,
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where

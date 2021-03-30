@@ -1,12 +1,10 @@
-// use clutter;
-// use glib;
+
 // use glib::object::Cast;
-// use glib::object::IsA;
 // use glib::signal::connect_raw;
 // use glib::signal::SignalHandlerId;
 // use glib::translate::*;
-// use glib_sys;
-// use ffi;
+
+
 // use std::boxed::Box as Box_;
 use std::fmt;
 // use std::mem::transmute;
@@ -14,13 +12,14 @@ use std::fmt;
 // use Widget;
 
 // glib_wrapper! {
-//     pub struct ItemView(Object<ffi::MxItemView, ffi::MxItemViewClass, ItemViewClass>) @extends Grid, Widget, clutter::Actor;
+//     pub struct ItemView(Object<ffi::ItemView, ffi::ItemViewClass, ItemViewClass>) @extends Grid, Widget, clutter::Actor;
 
 //     match fn {
-//         get_type => || ffi::mx_item_view_get_type(),
+//         get_type => || ffi::item_view_get_type(),
 //     }
 // }
 
+#[derive(Clone, Debug)]
 pub struct ItemView {
 
 }
@@ -28,7 +27,7 @@ pub struct ItemView {
 impl ItemView {
     pub fn new() -> ItemView {
         // assert_initialized_main_thread!();
-        // unsafe { clutter::Actor::from_glib_none(ffi::mx_item_view_new()).unsafe_cast() }
+        // unsafe { clutter::Actor::from_glib_none(ffi::item_view_new()).unsafe_cast() }
         unimplemented!()
     }
 }
@@ -70,7 +69,7 @@ pub const NONE_ITEM_VIEW: Option<&ItemView> = None;
 // impl<O: IsA<ItemView>> ItemViewExt for O {
 //     fn add_attribute(&self, attribute: &str, column: i32) {
 //         unsafe {
-//             ffi::mx_item_view_add_attribute(
+//             ffi::item_view_add_attribute(
 //                 self.as_ref().to_glib_none().0,
 //                 attribute.to_glib_none().0,
 //                 column,
@@ -80,7 +79,7 @@ pub const NONE_ITEM_VIEW: Option<&ItemView> = None;
 
 //     fn freeze(&self) {
 //         unsafe {
-//             ffi::mx_item_view_freeze(self.as_ref().to_glib_none().0);
+//             ffi::item_view_freeze(self.as_ref().to_glib_none().0);
 //         }
 //     }
 
@@ -90,7 +89,7 @@ pub const NONE_ITEM_VIEW: Option<&ItemView> = None;
 
 //     fn get_item_type(&self) -> glib::types::Type {
 //         unsafe {
-//             from_glib(ffi::mx_item_view_get_item_type(
+//             from_glib(ffi::item_view_get_item_type(
 //                 self.as_ref().to_glib_none().0,
 //             ))
 //         }
@@ -98,7 +97,7 @@ pub const NONE_ITEM_VIEW: Option<&ItemView> = None;
 
 //     fn get_model(&self) -> Option<clutter::Model> {
 //         unsafe {
-//             from_glib_none(ffi::mx_item_view_get_model(
+//             from_glib_none(ffi::item_view_get_model(
 //                 self.as_ref().to_glib_none().0,
 //             ))
 //         }
@@ -110,13 +109,13 @@ pub const NONE_ITEM_VIEW: Option<&ItemView> = None;
 
 //     fn set_item_type(&self, item_type: glib::types::Type) {
 //         unsafe {
-//             ffi::mx_item_view_set_item_type(self.as_ref().to_glib_none().0, item_type.to_glib());
+//             ffi::item_view_set_item_type(self.as_ref().to_glib_none().0, item_type.to_glib());
 //         }
 //     }
 
 //     fn set_model<P: IsA<clutter::Model>>(&self, model: &P) {
 //         unsafe {
-//             ffi::mx_item_view_set_model(
+//             ffi::item_view_set_model(
 //                 self.as_ref().to_glib_none().0,
 //                 model.as_ref().to_glib_none().0,
 //             );
@@ -125,13 +124,13 @@ pub const NONE_ITEM_VIEW: Option<&ItemView> = None;
 
 //     fn thaw(&self) {
 //         unsafe {
-//             ffi::mx_item_view_thaw(self.as_ref().to_glib_none().0);
+//             ffi::item_view_thaw(self.as_ref().to_glib_none().0);
 //         }
 //     }
 
 //     fn connect_property_factory_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
 //         unsafe extern "C" fn notify_factory_trampoline<P, F: Fn(&P) + 'static>(
-//             this: *mut ffi::MxItemView,
+//             this: *mut ffi::ItemView,
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where
@@ -155,7 +154,7 @@ pub const NONE_ITEM_VIEW: Option<&ItemView> = None;
 
 //     fn connect_property_item_type_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
 //         unsafe extern "C" fn notify_item_type_trampoline<P, F: Fn(&P) + 'static>(
-//             this: *mut ffi::MxItemView,
+//             this: *mut ffi::ItemView,
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where
@@ -179,7 +178,7 @@ pub const NONE_ITEM_VIEW: Option<&ItemView> = None;
 
 //     fn connect_property_model_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
 //         unsafe extern "C" fn notify_model_trampoline<P, F: Fn(&P) + 'static>(
-//             this: *mut ffi::MxItemView,
+//             this: *mut ffi::ItemView,
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where
