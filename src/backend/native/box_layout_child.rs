@@ -1,29 +1,12 @@
-use crate::prelude::*;
-// use glib::object::Cast;
-// use glib::signal::connect_raw;
-use glib::signal::SignalHandlerId;
-// use glib::translate::*;
-// use glib::StaticType;
-// use glib::Value;
-
-
-
 // use std::boxed::Box as Box_;
-use std::fmt;
 // use std::mem::transmute;
 
-// glib_wrapper! {
-//     pub struct BoxLayoutChild(Object<ffi::BoxLayoutChild, ffi::BoxLayoutChildClass, BoxLayoutChildClass>);
-
-//     match fn {
-//         get_type => || ffi::box_layout_child_get_type(),
-//     }
-// }
+use crate::prelude::*;
+use glib::signal::SignalHandlerId;
+use std::fmt;
 
 #[derive(Clone, Debug)]
-pub struct BoxLayoutChild {
-
-}
+pub struct BoxLayoutChild {}
 
 pub const NONE_BOX_LAYOUT_CHILD: Option<&BoxLayoutChild> = None;
 
@@ -59,7 +42,7 @@ pub trait BoxLayoutChildExt: 'static {
     fn connect_property_y_fill_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
 }
 
-// impl<O: IsA<BoxLayoutChild>> BoxLayoutChildExt for O {
+// impl<O: Is<BoxLayoutChild>> BoxLayoutChildExt for O {
 //     fn get_property_expand(&self) -> bool {
 //         // unsafe {
 //         //     let mut value = Value::from_type(<bool as StaticType>::static_type());
@@ -175,7 +158,7 @@ pub trait BoxLayoutChildExt: 'static {
 //         //     _param_spec: glib_sys::gpointer,
 //         //     f: glib_sys::gpointer,
 //         // ) where
-//         //     P: IsA<BoxLayoutChild>,
+//         //     P: Is<BoxLayoutChild>,
 //         // {
 //         //     let f: &F = &*(f as *const F);
 //         //     f(&BoxLayoutChild::from_glib_borrow(this).unsafe_cast_ref())
@@ -200,7 +183,7 @@ pub trait BoxLayoutChildExt: 'static {
 //         //     _param_spec: glib_sys::gpointer,
 //         //     f: glib_sys::gpointer,
 //         // ) where
-//         //     P: IsA<BoxLayoutChild>,
+//         //     P: Is<BoxLayoutChild>,
 //         // {
 //         //     let f: &F = &*(f as *const F);
 //         //     f(&BoxLayoutChild::from_glib_borrow(this).unsafe_cast_ref())
@@ -225,7 +208,7 @@ pub trait BoxLayoutChildExt: 'static {
 //         //     _param_spec: glib_sys::gpointer,
 //         //     f: glib_sys::gpointer,
 //         // ) where
-//         //     P: IsA<BoxLayoutChild>,
+//         //     P: Is<BoxLayoutChild>,
 //         // {
 //         //     let f: &F = &*(f as *const F);
 //         //     f(&BoxLayoutChild::from_glib_borrow(this).unsafe_cast_ref())
@@ -250,7 +233,7 @@ pub trait BoxLayoutChildExt: 'static {
 //         //     _param_spec: glib_sys::gpointer,
 //         //     f: glib_sys::gpointer,
 //         // ) where
-//         //     P: IsA<BoxLayoutChild>,
+//         //     P: Is<BoxLayoutChild>,
 //         // {
 //         //     let f: &F = &*(f as *const F);
 //         //     f(&BoxLayoutChild::from_glib_borrow(this).unsafe_cast_ref())
@@ -275,7 +258,7 @@ pub trait BoxLayoutChildExt: 'static {
 //         //     _param_spec: glib_sys::gpointer,
 //         //     f: glib_sys::gpointer,
 //         // ) where
-//         //     P: IsA<BoxLayoutChild>,
+//         //     P: Is<BoxLayoutChild>,
 //         // {
 //         //     let f: &F = &*(f as *const F);
 //         //     f(&BoxLayoutChild::from_glib_borrow(this).unsafe_cast_ref())

@@ -1,95 +1,78 @@
-use crate::prelude::*;
-// use glib::object::Cast;
-// use glib::signal::connect_raw;
-// use glib::signal::SignalHandlerId;
-// use glib::translate::*;
-// use glib::StaticType;
-// use glib::Value;
-
-
-
 // use std::boxed::Box as Box_;
-use std::fmt;
 // use std::mem::transmute;
 
-// glib_wrapper! {
-//     pub struct TableChild(Object<ffi::TableChild, ffi::TableChildClass, TableChildClass>);
-
-//     match fn {
-//         get_type => || ffi::table_child_get_type(),
-//     }
-// }
+use crate::prelude::*;
+use glib::signal::SignalHandlerId;
+use std::fmt;
 
 #[derive(Clone, Debug)]
-pub struct TableChild {
-
-}
+pub struct TableChild {}
 
 pub const NONE_TABLE_CHILD: Option<&TableChild> = None;
 
-// pub trait TableChildExt: 'static {
-//     fn get_property_column(&self) -> i32;
+pub trait TableChildExt: 'static {
+    fn get_property_column(&self) -> i32;
 
-//     fn set_property_column(&self, column: i32);
+    fn set_property_column(&self, column: i32);
 
-//     fn get_property_column_span(&self) -> i32;
+    fn get_property_column_span(&self) -> i32;
 
-//     fn set_property_column_span(&self, column_span: i32);
+    fn set_property_column_span(&self, column_span: i32);
 
-//     fn get_property_row(&self) -> i32;
+    fn get_property_row(&self) -> i32;
 
-//     fn set_property_row(&self, row: i32);
+    fn set_property_row(&self, row: i32);
 
-//     fn get_property_row_span(&self) -> i32;
+    fn get_property_row_span(&self) -> i32;
 
-//     fn set_property_row_span(&self, row_span: i32);
+    fn set_property_row_span(&self, row_span: i32);
 
-//     //fn get_property_x_align(&self) -> /*Ignored*/Align;
+    //fn get_property_x_align(&self) -> /*Ignored*/Align;
 
-//     //fn set_property_x_align(&self, x_align: /*Ignored*/Align);
+    //fn set_property_x_align(&self, x_align: /*Ignored*/Align);
 
-//     fn get_property_x_expand(&self) -> bool;
+    fn get_property_x_expand(&self) -> bool;
 
-//     fn set_property_x_expand(&self, x_expand: bool);
+    fn set_property_x_expand(&self, x_expand: bool);
 
-//     fn get_property_x_fill(&self) -> bool;
+    fn get_property_x_fill(&self) -> bool;
 
-//     fn set_property_x_fill(&self, x_fill: bool);
+    fn set_property_x_fill(&self, x_fill: bool);
 
-//     //fn get_property_y_align(&self) -> /*Ignored*/Align;
+    //fn get_property_y_align(&self) -> /*Ignored*/Align;
 
-//     //fn set_property_y_align(&self, y_align: /*Ignored*/Align);
+    //fn set_property_y_align(&self, y_align: /*Ignored*/Align);
 
-//     fn get_property_y_expand(&self) -> bool;
+    fn get_property_y_expand(&self) -> bool;
 
-//     fn set_property_y_expand(&self, y_expand: bool);
+    fn set_property_y_expand(&self, y_expand: bool);
 
-//     fn get_property_y_fill(&self) -> bool;
+    fn get_property_y_fill(&self) -> bool;
 
-//     fn set_property_y_fill(&self, y_fill: bool);
+    fn set_property_y_fill(&self, y_fill: bool);
 
-//     fn connect_property_column_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_column_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
 
-//     fn connect_property_column_span_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_column_span_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
 
-//     fn connect_property_row_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_row_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
 
-//     fn connect_property_row_span_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_row_span_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
 
-//     fn connect_property_x_align_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_x_align_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
 
-//     fn connect_property_x_expand_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_x_expand_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
 
-//     fn connect_property_x_fill_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_x_fill_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
 
-//     fn connect_property_y_align_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_y_align_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
 
-//     fn connect_property_y_expand_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_y_expand_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
 
-//     fn connect_property_y_fill_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
-// }
+    fn connect_property_y_fill_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+}
 
-// impl<O: IsA<TableChild>> TableChildExt for O {
+// impl<O: Is<TableChild>> TableChildExt for O {
 //     fn get_property_column(&self) -> i32 {
 //         unsafe {
 //             let mut value = Value::from_type(<i32 as StaticType>::static_type());
@@ -324,7 +307,7 @@ pub const NONE_TABLE_CHILD: Option<&TableChild> = None;
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where
-//             P: IsA<TableChild>,
+//             P: Is<TableChild>,
 //         {
 //             let f: &F = &*(f as *const F);
 //             f(&TableChild::from_glib_borrow(this).unsafe_cast_ref())
@@ -348,7 +331,7 @@ pub const NONE_TABLE_CHILD: Option<&TableChild> = None;
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where
-//             P: IsA<TableChild>,
+//             P: Is<TableChild>,
 //         {
 //             let f: &F = &*(f as *const F);
 //             f(&TableChild::from_glib_borrow(this).unsafe_cast_ref())
@@ -372,7 +355,7 @@ pub const NONE_TABLE_CHILD: Option<&TableChild> = None;
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where
-//             P: IsA<TableChild>,
+//             P: Is<TableChild>,
 //         {
 //             let f: &F = &*(f as *const F);
 //             f(&TableChild::from_glib_borrow(this).unsafe_cast_ref())
@@ -396,7 +379,7 @@ pub const NONE_TABLE_CHILD: Option<&TableChild> = None;
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where
-//             P: IsA<TableChild>,
+//             P: Is<TableChild>,
 //         {
 //             let f: &F = &*(f as *const F);
 //             f(&TableChild::from_glib_borrow(this).unsafe_cast_ref())
@@ -420,7 +403,7 @@ pub const NONE_TABLE_CHILD: Option<&TableChild> = None;
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where
-//             P: IsA<TableChild>,
+//             P: Is<TableChild>,
 //         {
 //             let f: &F = &*(f as *const F);
 //             f(&TableChild::from_glib_borrow(this).unsafe_cast_ref())
@@ -444,7 +427,7 @@ pub const NONE_TABLE_CHILD: Option<&TableChild> = None;
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where
-//             P: IsA<TableChild>,
+//             P: Is<TableChild>,
 //         {
 //             let f: &F = &*(f as *const F);
 //             f(&TableChild::from_glib_borrow(this).unsafe_cast_ref())
@@ -468,7 +451,7 @@ pub const NONE_TABLE_CHILD: Option<&TableChild> = None;
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where
-//             P: IsA<TableChild>,
+//             P: Is<TableChild>,
 //         {
 //             let f: &F = &*(f as *const F);
 //             f(&TableChild::from_glib_borrow(this).unsafe_cast_ref())
@@ -492,7 +475,7 @@ pub const NONE_TABLE_CHILD: Option<&TableChild> = None;
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where
-//             P: IsA<TableChild>,
+//             P: Is<TableChild>,
 //         {
 //             let f: &F = &*(f as *const F);
 //             f(&TableChild::from_glib_borrow(this).unsafe_cast_ref())
@@ -516,7 +499,7 @@ pub const NONE_TABLE_CHILD: Option<&TableChild> = None;
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where
-//             P: IsA<TableChild>,
+//             P: Is<TableChild>,
 //         {
 //             let f: &F = &*(f as *const F);
 //             f(&TableChild::from_glib_borrow(this).unsafe_cast_ref())
@@ -540,7 +523,7 @@ pub const NONE_TABLE_CHILD: Option<&TableChild> = None;
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where
-//             P: IsA<TableChild>,
+//             P: Is<TableChild>,
 //         {
 //             let f: &F = &*(f as *const F);
 //             f(&TableChild::from_glib_borrow(this).unsafe_cast_ref())

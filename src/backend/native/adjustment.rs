@@ -1,28 +1,16 @@
-use crate::prelude::*;
-// use glib::object::Cast;
-// use glib::signal::connect_raw;
-// use glib::signal::SignalHandlerId;
-// use glib::translate::*;
-
-// use libc;
+#![allow(unused_variables)]
+#![allow(dead_code)]
 
 // use std::boxed::Box as Box_;
-use std::fmt;
 // use std::mem;
 // use std::mem::transmute;
 
-// glib_wrapper! {
-//     pub struct Adjustment(Object<ffi::Adjustment, ffi::AdjustmentClass, AdjustmentClass>);
-
-//     match fn {
-//         get_type => || ffi::adjustment_get_type(),
-//     }
-// }
+use crate::prelude::*;
+use glib::signal::SignalHandlerId;
+use std::fmt;
 
 #[derive(Clone, Debug)]
-pub struct Adjustment {
-
-}
+pub struct Adjustment {}
 
 impl Adjustment {
     pub fn new() -> Adjustment {
@@ -62,85 +50,85 @@ impl Default for Adjustment {
 
 pub const NONE_ADJUSTMENT: Option<&Adjustment> = None;
 
-// pub trait AdjustmentExt: 'static {
-//     fn get_clamp_value(&self) -> bool;
+pub trait AdjustmentExt: 'static {
+    fn get_clamp_value(&self) -> bool;
 
-//     fn get_elastic(&self) -> bool;
+    fn get_elastic(&self) -> bool;
 
-//     fn get_lower(&self) -> f64;
+    fn get_lower(&self) -> f64;
 
-//     fn get_page_increment(&self) -> f64;
+    fn get_page_increment(&self) -> f64;
 
-//     fn get_page_size(&self) -> f64;
+    fn get_page_size(&self) -> f64;
 
-//     fn get_step_increment(&self) -> f64;
+    fn get_step_increment(&self) -> f64;
 
-//     fn get_upper(&self) -> f64;
+    fn get_upper(&self) -> f64;
 
-//     fn get_value(&self) -> f64;
+    fn get_value(&self) -> f64;
 
-//     fn get_values(&self) -> (f64, f64, f64, f64, f64, f64);
+    fn get_values(&self) -> (f64, f64, f64, f64, f64, f64);
 
-//     fn interpolate(&self, value: f64, duration: u32, mode: libc::c_ulong);
+    // fn interpolate(&self, value: f64, duration: u32, mode: libc::c_ulong);
 
-//     fn interpolate_relative(&self, offset: f64, duration: u32, mode: libc::c_ulong);
+    // fn interpolate_relative(&self, offset: f64, duration: u32, mode: libc::c_ulong);
 
-//     fn set_clamp_value(&self, clamp: bool);
+    fn set_clamp_value(&self, clamp: bool);
 
-//     fn set_elastic(&self, elastic: bool);
+    fn set_elastic(&self, elastic: bool);
 
-//     fn set_lower(&self, lower: f64);
+    fn set_lower(&self, lower: f64);
 
-//     fn set_page_increment(&self, increment: f64);
+    fn set_page_increment(&self, increment: f64);
 
-//     fn set_page_size(&self, page_size: f64);
+    fn set_page_size(&self, page_size: f64);
 
-//     fn set_step_increment(&self, increment: f64);
+    fn set_step_increment(&self, increment: f64);
 
-//     fn set_upper(&self, upper: f64);
+    fn set_upper(&self, upper: f64);
 
-//     fn set_value(&self, value: f64);
+    fn set_value(&self, value: f64);
 
-//     fn set_values(
-//         &self,
-//         value: f64,
-//         lower: f64,
-//         upper: f64,
-//         step_increment: f64,
-//         page_increment: f64,
-//         page_size: f64,
-//     );
+    fn set_values(
+        &self,
+        value: f64,
+        lower: f64,
+        upper: f64,
+        step_increment: f64,
+        page_increment: f64,
+        page_size: f64,
+    );
 
-//     fn connect_changed<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_changed<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
 
-//     fn connect_changed_immediate<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_changed_immediate<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
 
-//     fn connect_interpolation_completed<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_interpolation_completed<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
 
-//     fn connect_property_clamp_value_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_clamp_value_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
 
-//     fn connect_property_elastic_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_elastic_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
 
-//     fn connect_property_lower_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_lower_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
 
-//     fn connect_property_page_increment_notify<F: Fn(&Self) + 'static>(
-//         &self,
-//         f: F,
-//     ) -> SignalHandlerId;
+    fn connect_property_page_increment_notify<F: Fn(&Self) + 'static>(
+        &self,
+        f: F,
+    ) -> SignalHandlerId;
 
-//     fn connect_property_page_size_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_page_size_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
 
-//     fn connect_property_step_increment_notify<F: Fn(&Self) + 'static>(
-//         &self,
-//         f: F,
-//     ) -> SignalHandlerId;
+    fn connect_property_step_increment_notify<F: Fn(&Self) + 'static>(
+        &self,
+        f: F,
+    ) -> SignalHandlerId;
 
-//     fn connect_property_upper_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_upper_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
 
-//     fn connect_property_value_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
-// }
+    fn connect_property_value_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+}
 
-// impl<O: IsA<Adjustment>> AdjustmentExt for O {
+// impl<O: Is<Adjustment>> AdjustmentExt for O {
 //     fn get_clamp_value(&self) -> bool {
 //         // unsafe {
 //         //     from_glib(ffi::adjustment_get_clamp_value(
@@ -332,7 +320,7 @@ pub const NONE_ADJUSTMENT: Option<&Adjustment> = None;
 //         //     this: *mut ffi::Adjustment,
 //         //     f: glib_sys::gpointer,
 //         // ) where
-//         //     P: IsA<Adjustment>,
+//         //     P: Is<Adjustment>,
 //         // {
 //         //     let f: &F = &*(f as *const F);
 //         //     f(&Adjustment::from_glib_borrow(this).unsafe_cast_ref())
@@ -356,7 +344,7 @@ pub const NONE_ADJUSTMENT: Option<&Adjustment> = None;
 //         //     this: *mut ffi::Adjustment,
 //         //     f: glib_sys::gpointer,
 //         // ) where
-//         //     P: IsA<Adjustment>,
+//         //     P: Is<Adjustment>,
 //         // {
 //         //     let f: &F = &*(f as *const F);
 //         //     f(&Adjustment::from_glib_borrow(this).unsafe_cast_ref())
@@ -380,7 +368,7 @@ pub const NONE_ADJUSTMENT: Option<&Adjustment> = None;
 //         //     this: *mut ffi::Adjustment,
 //         //     f: glib_sys::gpointer,
 //         // ) where
-//         //     P: IsA<Adjustment>,
+//         //     P: Is<Adjustment>,
 //         // {
 //         //     let f: &F = &*(f as *const F);
 //         //     f(&Adjustment::from_glib_borrow(this).unsafe_cast_ref())
@@ -405,7 +393,7 @@ pub const NONE_ADJUSTMENT: Option<&Adjustment> = None;
 //         //     _param_spec: glib_sys::gpointer,
 //         //     f: glib_sys::gpointer,
 //         // ) where
-//         //     P: IsA<Adjustment>,
+//         //     P: Is<Adjustment>,
 //         // {
 //         //     let f: &F = &*(f as *const F);
 //         //     f(&Adjustment::from_glib_borrow(this).unsafe_cast_ref())
@@ -430,7 +418,7 @@ pub const NONE_ADJUSTMENT: Option<&Adjustment> = None;
 //         //     _param_spec: glib_sys::gpointer,
 //         //     f: glib_sys::gpointer,
 //         // ) where
-//         //     P: IsA<Adjustment>,
+//         //     P: Is<Adjustment>,
 //         // {
 //         //     let f: &F = &*(f as *const F);
 //         //     f(&Adjustment::from_glib_borrow(this).unsafe_cast_ref())
@@ -455,7 +443,7 @@ pub const NONE_ADJUSTMENT: Option<&Adjustment> = None;
 //         //     _param_spec: glib_sys::gpointer,
 //         //     f: glib_sys::gpointer,
 //         // ) where
-//         //     P: IsA<Adjustment>,
+//         //     P: Is<Adjustment>,
 //         // {
 //         //     let f: &F = &*(f as *const F);
 //         //     f(&Adjustment::from_glib_borrow(this).unsafe_cast_ref())
@@ -483,7 +471,7 @@ pub const NONE_ADJUSTMENT: Option<&Adjustment> = None;
 //         //     _param_spec: glib_sys::gpointer,
 //         //     f: glib_sys::gpointer,
 //         // ) where
-//         //     P: IsA<Adjustment>,
+//         //     P: Is<Adjustment>,
 //         // {
 //         //     let f: &F = &*(f as *const F);
 //         //     f(&Adjustment::from_glib_borrow(this).unsafe_cast_ref())
@@ -508,7 +496,7 @@ pub const NONE_ADJUSTMENT: Option<&Adjustment> = None;
 //         //     _param_spec: glib_sys::gpointer,
 //         //     f: glib_sys::gpointer,
 //         // ) where
-//         //     P: IsA<Adjustment>,
+//         //     P: Is<Adjustment>,
 //         // {
 //         //     let f: &F = &*(f as *const F);
 //         //     f(&Adjustment::from_glib_borrow(this).unsafe_cast_ref())
@@ -536,7 +524,7 @@ pub const NONE_ADJUSTMENT: Option<&Adjustment> = None;
 //         //     _param_spec: glib_sys::gpointer,
 //         //     f: glib_sys::gpointer,
 //         // ) where
-//         //     P: IsA<Adjustment>,
+//         //     P: Is<Adjustment>,
 //         // {
 //         //     let f: &F = &*(f as *const F);
 //         //     f(&Adjustment::from_glib_borrow(this).unsafe_cast_ref())
@@ -561,7 +549,7 @@ pub const NONE_ADJUSTMENT: Option<&Adjustment> = None;
 //         //     _param_spec: glib_sys::gpointer,
 //         //     f: glib_sys::gpointer,
 //         // ) where
-//         //     P: IsA<Adjustment>,
+//         //     P: Is<Adjustment>,
 //         // {
 //         //     let f: &F = &*(f as *const F);
 //         //     f(&Adjustment::from_glib_borrow(this).unsafe_cast_ref())
@@ -586,7 +574,7 @@ pub const NONE_ADJUSTMENT: Option<&Adjustment> = None;
 //         //     _param_spec: glib_sys::gpointer,
 //         //     f: glib_sys::gpointer,
 //         // ) where
-//         //     P: IsA<Adjustment>,
+//         //     P: Is<Adjustment>,
 //         // {
 //         //     let f: &F = &*(f as *const F);
 //         //     f(&Adjustment::from_glib_borrow(this).unsafe_cast_ref())

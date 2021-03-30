@@ -50,7 +50,6 @@ pub mod prelude {
     // }
 
     // /* MoreTraits or supertrait +*/
-
     // pub trait WidgetExt: 'static {
     //     fn get_disabled(&self) -> bool;
     // }

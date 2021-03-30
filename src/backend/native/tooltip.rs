@@ -1,28 +1,14 @@
-use crate::prelude::*;
-// use glib::object::Cast;
-// use glib::signal::connect_raw;
-// use glib::signal::SignalHandlerId;
-// use glib::translate::*;
-
-
 // use std::boxed::Box as Box_;
-use std::fmt;
 // use std::mem::transmute;
-// use FloatingWidget;
-// use Widget;
 
-// glib_wrapper! {
-//     pub struct Tooltip(Object<ffi::Tooltip, ffi::TooltipClass, TooltipClass>) @extends FloatingWidget, Widget, clutter::Actor;
+use super::{FloatingWidget, Widget};
+use crate::prelude::*;
+use glib::signal::SignalHandlerId;
+use std::fmt;
 
-//     match fn {
-//         get_type => || ffi::tooltip_get_type(),
-//     }
-// }
-
+// @extends FloatingWidget, Widget, clutter::Actor;
 #[derive(Clone, Debug)]
-pub struct Tooltip {
-
-}
+pub struct Tooltip {}
 
 impl Tooltip {
     pub fn is_in_browse_mode() -> bool {
@@ -34,27 +20,27 @@ impl Tooltip {
 
 pub const NONE_TOOLTIP: Option<&Tooltip> = None;
 
-// pub trait TooltipExt: 'static {
-//     fn get_text(&self) -> Option<String>;
+pub trait TooltipExt: 'static {
+    fn get_text(&self) -> Option<String>;
 
-//     fn get_tip_area(&self) -> Option<clutter::Geometry>;
+    fn get_tip_area(&self) -> Option<clutter::Geometry>;
 
-//     fn hide(&self);
+    fn hide(&self);
 
-//     fn set_text(&self, text: &str);
+    fn set_text(&self, text: &str);
 
-//     fn set_tip_area(&self, area: &clutter::Geometry);
+    fn set_tip_area(&self, area: &clutter::Geometry);
 
-//     fn set_tip_area_from_actor<P: IsA<clutter::Actor>>(&self, actor: &P);
+    fn set_tip_area_from_actor<P: Is<clutter::Actor>>(&self, actor: &P);
 
-//     fn show(&self);
+    fn show(&self);
 
-//     fn connect_property_text_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_text_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
 
-//     fn connect_property_tip_area_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
-// }
+    fn connect_property_tip_area_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+}
 
-// impl<O: IsA<Tooltip>> TooltipExt for O {
+// impl<O: Is<Tooltip>> TooltipExt for O {
 //     fn get_text(&self) -> Option<String> {
 //         unsafe { from_glib_none(ffi::tooltip_get_text(self.as_ref().to_glib_none().0)) }
 //     }
@@ -85,7 +71,7 @@ pub const NONE_TOOLTIP: Option<&Tooltip> = None;
 //         }
 //     }
 
-//     fn set_tip_area_from_actor<P: IsA<clutter::Actor>>(&self, actor: &P) {
+//     fn set_tip_area_from_actor<P: Is<clutter::Actor>>(&self, actor: &P) {
 //         unsafe {
 //             ffi::tooltip_set_tip_area_from_actor(
 //                 self.as_ref().to_glib_none().0,
@@ -106,7 +92,7 @@ pub const NONE_TOOLTIP: Option<&Tooltip> = None;
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where
-//             P: IsA<Tooltip>,
+//             P: Is<Tooltip>,
 //         {
 //             let f: &F = &*(f as *const F);
 //             f(&Tooltip::from_glib_borrow(this).unsafe_cast_ref())
@@ -130,7 +116,7 @@ pub const NONE_TOOLTIP: Option<&Tooltip> = None;
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where
-//             P: IsA<Tooltip>,
+//             P: Is<Tooltip>,
 //         {
 //             let f: &F = &*(f as *const F);
 //             f(&Tooltip::from_glib_borrow(this).unsafe_cast_ref())

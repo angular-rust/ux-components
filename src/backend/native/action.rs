@@ -1,24 +1,14 @@
-use glib;
-// use glib::object::{Cast, IsA};
-use glib::signal::{SignalHandlerId}; // connect_raw
-// use glib::translate::*;
+#![allow(unused_variables)]
+#![allow(dead_code)]
 
-use std::boxed::Box as Box_;
-use std::fmt;
 // use std::mem::transmute;
 
-// glib_wrapper! {
-//     pub struct Action(Object<ffi::Action, ffi::ActionClass, ActionClass>);
-
-//     match fn {
-//         get_type => || ffi::action_get_type(),
-//     }
-// }
+use glib::signal::SignalHandlerId;
+use std::boxed::Box as Box_;
+use std::fmt;
 
 #[derive(Clone, Debug)]
-pub struct Action {
-
-}
+pub struct Action {}
 
 impl Action {
     pub fn new() -> Action {
@@ -126,7 +116,7 @@ pub trait ActionExt: 'static {
     fn connect_property_icon_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
 }
 
-// impl<O: IsA<Action>> ActionExt for O {
+// impl<O: Is<Action>> ActionExt for O {
 //     fn get_active(&self) -> bool {
 //         // unsafe { from_glib(ffi::action_get_active(self.as_ref().to_glib_none().0)) }
 //         unimplemented!()
@@ -191,7 +181,7 @@ pub trait ActionExt: 'static {
 //         //     parameter: *mut glib_sys::GVariant,
 //         //     f: glib_sys::gpointer,
 //         // ) where
-//         //     P: IsA<Action>,
+//         //     P: Is<Action>,
 //         // {
 //         //     let f: &F = &*(f as *const F);
 //         //     f(
@@ -224,7 +214,7 @@ pub trait ActionExt: 'static {
 //         //     _param_spec: glib_sys::gpointer,
 //         //     f: glib_sys::gpointer,
 //         // ) where
-//         //     P: IsA<Action>,
+//         //     P: Is<Action>,
 //         // {
 //         //     let f: &F = &*(f as *const F);
 //         //     f(&Action::from_glib_borrow(this).unsafe_cast_ref())
@@ -249,7 +239,7 @@ pub trait ActionExt: 'static {
 //         //     _param_spec: glib_sys::gpointer,
 //         //     f: glib_sys::gpointer,
 //         // ) where
-//         //     P: IsA<Action>,
+//         //     P: Is<Action>,
 //         // {
 //         //     let f: &F = &*(f as *const F);
 //         //     f(&Action::from_glib_borrow(this).unsafe_cast_ref())

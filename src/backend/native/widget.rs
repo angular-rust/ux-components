@@ -1,23 +1,12 @@
-use crate::prelude::*;
-// use glib::object::Cast;
-// use glib::signal::connect_raw;
-use glib::signal::SignalHandlerId;
-// use glib::translate::*;
-
-
 // use std::boxed::Box as Box_;
-use std::fmt;
 // use std::mem::transmute;
-use crate::native::{Menu, Style};
 
-// glib_wrapper! {
-//     pub struct Widget(Object<ffi::Widget, ffi::WidgetClass, WidgetClass>) @extends clutter::Actor;
+use super::{Menu, Style};
+use crate::prelude::*;
+use glib::signal::SignalHandlerId;
+use std::fmt;
 
-//     match fn {
-//         get_type => || ffi::widget_get_type(),
-//     }
-// }
-
+// @extends clutter::Actor;
 #[derive(Clone, Debug)]
 pub struct Widget {}
 
@@ -102,7 +91,7 @@ pub trait WidgetExt: 'static {
 //     }
 
 //     //fn get_background_texture(&self) -> /*Ignored*/Option<cogl::Handle> {
-//     //    unsafe { TODO: call ffi:mx_widget_get_background_texture() }
+//     //    unsafe { TODO: call ffi:widget_get_background_texture() }
 //     //}
 
 //     fn get_disabled(&self) -> bool {
@@ -118,7 +107,7 @@ pub trait WidgetExt: 'static {
 //     }
 
 //     //fn get_padding(&self, padding: /*Ignored*/Padding) {
-//     //    unsafe { TODO: call ffi:mx_widget_get_padding() }
+//     //    unsafe { TODO: call ffi:widget_get_padding() }
 //     //}
 
 //     fn get_tooltip_delay(&self) -> u32 {

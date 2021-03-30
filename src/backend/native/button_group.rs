@@ -1,27 +1,13 @@
-use crate::prelude::*;
-// use glib::object::Cast;
-// use glib::signal::connect_raw;
-// use glib::signal::SignalHandlerId;
-// use glib::translate::*;
-
-
 // use std::boxed::Box as Box_;
-use std::fmt;
 // use std::mem::transmute;
-// use super::Button;
 
-// glib_wrapper! {
-//     pub struct ButtonGroup(Object<ffi::ButtonGroup, ffi::ButtonGroupClass, ButtonGroupClass>);
-
-//     match fn {
-//         get_type => || ffi::button_group_get_type(),
-//     }
-// }
+use super::Button;
+use crate::prelude::*;
+use glib::signal::SignalHandlerId;
+use std::fmt;
 
 #[derive(Clone, Debug)]
-pub struct ButtonGroup {
-
-}
+pub struct ButtonGroup {}
 
 impl ButtonGroup {
     pub fn new() -> ButtonGroup {
@@ -39,36 +25,36 @@ impl Default for ButtonGroup {
 
 pub const NONE_BUTTON_GROUP: Option<&ButtonGroup> = None;
 
-// pub trait ButtonGroupExt: 'static {
-//     fn add<P: IsA<Button>>(&self, button: &P);
+pub trait ButtonGroupExt: 'static {
+    // fn add<P: Is<Button>>(&self, button: &P);
 
-//     fn foreach<P: FnMut(&clutter::Actor)>(&self, callback: P);
+    fn foreach<P: FnMut(&clutter::Actor)>(&self, callback: P);
 
-//     fn get_active_button(&self) -> Option<Button>;
+    fn get_active_button(&self) -> Option<Button>;
 
-//     fn get_allow_no_active(&self) -> bool;
+    fn get_allow_no_active(&self) -> bool;
 
-//     fn get_buttons(&self) -> Vec<Button>;
+    fn get_buttons(&self) -> Vec<Button>;
 
-//     fn remove<P: IsA<Button>>(&self, button: &P);
+    // fn remove<P: Is<Button>>(&self, button: &P);
 
-//     fn set_active_button<P: IsA<Button>>(&self, button: Option<&P>);
+    // fn set_active_button<P: Is<Button>>(&self, button: Option<&P>);
 
-//     fn set_allow_no_active(&self, allow_no_active: bool);
+    fn set_allow_no_active(&self, allow_no_active: bool);
 
-//     fn connect_property_active_button_notify<F: Fn(&Self) + 'static>(
-//         &self,
-//         f: F,
-//     ) -> SignalHandlerId;
+    fn connect_property_active_button_notify<F: Fn(&Self) + 'static>(
+        &self,
+        f: F,
+    ) -> SignalHandlerId;
 
-//     fn connect_property_allow_no_active_notify<F: Fn(&Self) + 'static>(
-//         &self,
-//         f: F,
-//     ) -> SignalHandlerId;
-// }
+    fn connect_property_allow_no_active_notify<F: Fn(&Self) + 'static>(
+        &self,
+        f: F,
+    ) -> SignalHandlerId;
+}
 
-// impl<O: IsA<ButtonGroup>> ButtonGroupExt for O {
-//     fn add<P: IsA<Button>>(&self, button: &P) {
+// impl<O: Is<ButtonGroup>> ButtonGroupExt for O {
+//     fn add<P: Is<Button>>(&self, button: &P) {
 //         // unsafe {
 //         //     ffi::button_group_add(
 //         //         self.as_ref().to_glib_none().0,
@@ -127,7 +113,7 @@ pub const NONE_BUTTON_GROUP: Option<&ButtonGroup> = None;
 //         unimplemented!()
 //     }
 
-//     fn remove<P: IsA<Button>>(&self, button: &P) {
+//     fn remove<P: Is<Button>>(&self, button: &P) {
 //         // unsafe {
 //         //     ffi::button_group_remove(
 //         //         self.as_ref().to_glib_none().0,
@@ -137,7 +123,7 @@ pub const NONE_BUTTON_GROUP: Option<&ButtonGroup> = None;
 //         unimplemented!()
 //     }
 
-//     fn set_active_button<P: IsA<Button>>(&self, button: Option<&P>) {
+//     fn set_active_button<P: Is<Button>>(&self, button: Option<&P>) {
 //         // unsafe {
 //         //     ffi::button_group_set_active_button(
 //         //         self.as_ref().to_glib_none().0,
@@ -166,7 +152,7 @@ pub const NONE_BUTTON_GROUP: Option<&ButtonGroup> = None;
 //         //     _param_spec: glib_sys::gpointer,
 //         //     f: glib_sys::gpointer,
 //         // ) where
-//         //     P: IsA<ButtonGroup>,
+//         //     P: Is<ButtonGroup>,
 //         // {
 //         //     let f: &F = &*(f as *const F);
 //         //     f(&ButtonGroup::from_glib_borrow(this).unsafe_cast_ref())
@@ -194,7 +180,7 @@ pub const NONE_BUTTON_GROUP: Option<&ButtonGroup> = None;
 //         //     _param_spec: glib_sys::gpointer,
 //         //     f: glib_sys::gpointer,
 //         // ) where
-//         //     P: IsA<ButtonGroup>,
+//         //     P: Is<ButtonGroup>,
 //         // {
 //         //     let f: &F = &*(f as *const F);
 //         //     f(&ButtonGroup::from_glib_borrow(this).unsafe_cast_ref())

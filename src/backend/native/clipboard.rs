@@ -1,21 +1,10 @@
-use crate::prelude::*;
-// use glib::translate::*;
-
 // use std::boxed::Box as Box_;
+
+use crate::prelude::*;
 use std::fmt;
 
-// glib_wrapper! {
-//     pub struct Clipboard(Object<ffi::Clipboard, ffi::ClipboardClass, ClipboardClass>);
-
-//     match fn {
-//         get_type => || ffi::clipboard_get_type(),
-//     }
-// }
-
 #[derive(Clone, Debug)]
-pub struct Clipboard {
-
-}
+pub struct Clipboard {}
 
 impl Clipboard {
     pub fn get_default() -> Option<Clipboard> {
@@ -33,7 +22,7 @@ pub trait ClipboardExt: 'static {
     fn set_text(&self, text: &str);
 }
 
-// impl<O: IsA<Clipboard>> ClipboardExt for O {
+// impl<O: Is<Clipboard>> ClipboardExt for O {
 //     fn get_text<P: FnOnce(&Clipboard, &str) + 'static>(&self, callback: P) {
 //         // let callback_data: Box_<P> = Box_::new(callback);
 //         // unsafe extern "C" fn callback_func<P: FnOnce(&Clipboard, &str) + 'static>(

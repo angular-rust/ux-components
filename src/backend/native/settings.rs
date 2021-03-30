@@ -1,29 +1,12 @@
-use crate::prelude::*;
-// use glib::object::Cast;
-// use glib::signal::connect_raw;
-// use glib::signal::SignalHandlerId;
-// use glib::translate::*;
-// use glib::StaticType;
-// use glib::Value;
-
-
-
 // use std::boxed::Box as Box_;
-use std::fmt;
 // use std::mem::transmute;
 
-// glib_wrapper! {
-//     pub struct Settings(Object<ffi::Settings, ffi::SettingsClass, SettingsClass>);
-
-//     match fn {
-//         get_type => || ffi::settings_get_type(),
-//     }
-// }
+use crate::prelude::*;
+use glib::signal::SignalHandlerId;
+use std::fmt;
 
 #[derive(Clone, Debug)]
-pub struct Settings {
-
-}
+pub struct Settings {}
 
 impl Settings {
     pub fn get_default() -> Option<Settings> {
@@ -35,52 +18,52 @@ impl Settings {
 
 pub const NONE_SETTINGS: Option<&Settings> = None;
 
-// pub trait SettingsExt: 'static {
-//     fn get_property_drag_threshold(&self) -> u32;
+pub trait SettingsExt: 'static {
+    fn get_property_drag_threshold(&self) -> u32;
 
-//     fn set_property_drag_threshold(&self, drag_threshold: u32);
+    fn set_property_drag_threshold(&self, drag_threshold: u32);
 
-//     fn get_property_font_name(&self) -> Option<String>;
+    fn get_property_font_name(&self) -> Option<String>;
 
-//     fn set_property_font_name(&self, font_name: Option<&str>);
+    fn set_property_font_name(&self, font_name: Option<&str>);
 
-//     fn get_property_icon_theme(&self) -> Option<String>;
+    fn get_property_icon_theme(&self) -> Option<String>;
 
-//     fn set_property_icon_theme(&self, icon_theme: Option<&str>);
+    fn set_property_icon_theme(&self, icon_theme: Option<&str>);
 
-//     fn get_property_long_press_timeout(&self) -> u32;
+    fn get_property_long_press_timeout(&self) -> u32;
 
-//     fn set_property_long_press_timeout(&self, long_press_timeout: u32);
+    fn set_property_long_press_timeout(&self, long_press_timeout: u32);
 
-//     fn get_property_small_screen(&self) -> bool;
+    fn get_property_small_screen(&self) -> bool;
 
-//     fn set_property_small_screen(&self, small_screen: bool);
+    fn set_property_small_screen(&self, small_screen: bool);
 
-//     fn get_property_touch_mode(&self) -> bool;
+    fn get_property_touch_mode(&self) -> bool;
 
-//     fn set_property_touch_mode(&self, touch_mode: bool);
+    fn set_property_touch_mode(&self, touch_mode: bool);
 
-//     fn connect_property_drag_threshold_notify<F: Fn(&Self) + 'static>(
-//         &self,
-//         f: F,
-//     ) -> SignalHandlerId;
+    fn connect_property_drag_threshold_notify<F: Fn(&Self) + 'static>(
+        &self,
+        f: F,
+    ) -> SignalHandlerId;
 
-//     fn connect_property_font_name_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_font_name_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
 
-//     fn connect_property_icon_theme_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_icon_theme_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
 
-//     fn connect_property_long_press_timeout_notify<F: Fn(&Self) + 'static>(
-//         &self,
-//         f: F,
-//     ) -> SignalHandlerId;
+    fn connect_property_long_press_timeout_notify<F: Fn(&Self) + 'static>(
+        &self,
+        f: F,
+    ) -> SignalHandlerId;
 
-//     fn connect_property_small_screen_notify<F: Fn(&Self) + 'static>(&self, f: F)
-//         -> SignalHandlerId;
+    fn connect_property_small_screen_notify<F: Fn(&Self) + 'static>(&self, f: F)
+        -> SignalHandlerId;
 
-//     fn connect_property_touch_mode_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
-// }
+    fn connect_property_touch_mode_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+}
 
-// impl<O: IsA<Settings>> SettingsExt for O {
+// impl<O: Is<Settings>> SettingsExt for O {
 //     fn get_property_drag_threshold(&self) -> u32 {
 //         unsafe {
 //             let mut value = Value::from_type(<u32 as StaticType>::static_type());
@@ -238,7 +221,7 @@ pub const NONE_SETTINGS: Option<&Settings> = None;
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where
-//             P: IsA<Settings>,
+//             P: Is<Settings>,
 //         {
 //             let f: &F = &*(f as *const F);
 //             f(&Settings::from_glib_borrow(this).unsafe_cast_ref())
@@ -262,7 +245,7 @@ pub const NONE_SETTINGS: Option<&Settings> = None;
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where
-//             P: IsA<Settings>,
+//             P: Is<Settings>,
 //         {
 //             let f: &F = &*(f as *const F);
 //             f(&Settings::from_glib_borrow(this).unsafe_cast_ref())
@@ -286,7 +269,7 @@ pub const NONE_SETTINGS: Option<&Settings> = None;
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where
-//             P: IsA<Settings>,
+//             P: Is<Settings>,
 //         {
 //             let f: &F = &*(f as *const F);
 //             f(&Settings::from_glib_borrow(this).unsafe_cast_ref())
@@ -313,7 +296,7 @@ pub const NONE_SETTINGS: Option<&Settings> = None;
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where
-//             P: IsA<Settings>,
+//             P: Is<Settings>,
 //         {
 //             let f: &F = &*(f as *const F);
 //             f(&Settings::from_glib_borrow(this).unsafe_cast_ref())
@@ -340,7 +323,7 @@ pub const NONE_SETTINGS: Option<&Settings> = None;
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where
-//             P: IsA<Settings>,
+//             P: Is<Settings>,
 //         {
 //             let f: &F = &*(f as *const F);
 //             f(&Settings::from_glib_borrow(this).unsafe_cast_ref())
@@ -364,7 +347,7 @@ pub const NONE_SETTINGS: Option<&Settings> = None;
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where
-//             P: IsA<Settings>,
+//             P: Is<Settings>,
 //         {
 //             let f: &F = &*(f as *const F);
 //             f(&Settings::from_glib_borrow(this).unsafe_cast_ref())

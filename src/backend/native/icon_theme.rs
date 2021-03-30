@@ -1,26 +1,12 @@
-use crate::prelude::*;
-// use glib::object::Cast;
-// use glib::signal::connect_raw;
-// use glib::signal::SignalHandlerId;
-// use glib::translate::*;
-
-
 // use std::boxed::Box as Box_;
-use std::fmt;
 // use std::mem::transmute;
 
-// glib_wrapper! {
-//     pub struct IconTheme(Object<ffi::IconTheme, ffi::IconThemeClass, IconThemeClass>);
-
-//     match fn {
-//         get_type => || ffi::icon_theme_get_type(),
-//     }
-// }
+use crate::prelude::*;
+use glib::signal::SignalHandlerId;
+use std::fmt;
 
 #[derive(Clone, Debug)]
-pub struct IconTheme {
-
-}
+pub struct IconTheme {}
 
 impl IconTheme {
     pub fn new() -> IconTheme {
@@ -44,23 +30,23 @@ impl Default for IconTheme {
 
 pub const NONE_ICON_THEME: Option<&IconTheme> = None;
 
-// pub trait IconThemeExt: 'static {
-//     fn get_search_paths(&self) -> Vec<String>;
+pub trait IconThemeExt: 'static {
+    fn get_search_paths(&self) -> Vec<String>;
 
-//     fn get_theme_name(&self) -> Option<String>;
+    fn get_theme_name(&self) -> Option<String>;
 
-//     fn has_icon(&self, icon_name: &str) -> bool;
+    fn has_icon(&self, icon_name: &str) -> bool;
 
-//     //fn lookup(&self, icon_name: &str, size: i32) -> /*Ignored*/Option<cogl::Handle>;
+    //fn lookup(&self, icon_name: &str, size: i32) -> /*Ignored*/Option<cogl::Handle>;
 
-//     fn set_search_paths(&self, paths: &[&str]);
+    fn set_search_paths(&self, paths: &[&str]);
 
-//     fn set_theme_name(&self, theme_name: &str);
+    fn set_theme_name(&self, theme_name: &str);
 
-//     fn connect_property_theme_name_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
-// }
+    fn connect_property_theme_name_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+}
 
-// impl<O: IsA<IconTheme>> IconThemeExt for O {
+// impl<O: Is<IconTheme>> IconThemeExt for O {
 //     fn get_search_paths(&self) -> Vec<String> {
 //         unsafe {
 //             FromGlibPtrContainer::from_glib_none(ffi::icon_theme_get_search_paths(
@@ -87,7 +73,7 @@ pub const NONE_ICON_THEME: Option<&IconTheme> = None;
 //     }
 
 //     //fn lookup(&self, icon_name: &str, size: i32) -> /*Ignored*/Option<cogl::Handle> {
-//     //    unsafe { TODO: call ffi:mx_icon_theme_lookup() }
+//     //    unsafe { TODO: call ffi:icon_theme_lookup() }
 //     //}
 
 //     fn set_search_paths(&self, paths: &[&str]) {
@@ -114,7 +100,7 @@ pub const NONE_ICON_THEME: Option<&IconTheme> = None;
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where
-//             P: IsA<IconTheme>,
+//             P: Is<IconTheme>,
 //         {
 //             let f: &F = &*(f as *const F);
 //             f(&IconTheme::from_glib_borrow(this).unsafe_cast_ref())

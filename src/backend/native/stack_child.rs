@@ -1,71 +1,54 @@
-use crate::prelude::*;
-// use glib::object::Cast;
-// use glib::signal::connect_raw;
-// use glib::signal::SignalHandlerId;
-// use glib::translate::*;
-// use glib::StaticType;
-// use glib::Value;
-
-
-
 // use std::boxed::Box as Box_;
-use std::fmt;
 // use std::mem::transmute;
 
-// glib_wrapper! {
-//     pub struct StackChild(Object<ffi::StackChild, ffi::StackChildClass, StackChildClass>);
-
-//     match fn {
-//         get_type => || ffi::stack_child_get_type(),
-//     }
-// }
+use crate::prelude::*;
+use glib::signal::SignalHandlerId;
+use std::fmt;
 
 #[derive(Clone, Debug)]
-pub struct StackChild {
-
-}
+pub struct StackChild {}
 
 pub const NONE_STACK_CHILD: Option<&StackChild> = None;
 
-// pub trait StackChildExt: 'static {
-//     fn get_property_crop(&self) -> bool;
+pub trait StackChildExt: 'static {
+    fn get_property_crop(&self) -> bool;
 
-//     fn set_property_crop(&self, crop: bool);
+    fn set_property_crop(&self, crop: bool);
 
-//     fn get_property_fit(&self) -> bool;
+    fn get_property_fit(&self) -> bool;
 
-//     fn set_property_fit(&self, fit: bool);
+    fn set_property_fit(&self, fit: bool);
 
-//     //fn get_property_x_align(&self) -> /*Ignored*/Align;
+    //fn get_property_x_align(&self) -> /*Ignored*/Align;
 
-//     //fn set_property_x_align(&self, x_align: /*Ignored*/Align);
+    //fn set_property_x_align(&self, x_align: /*Ignored*/Align);
 
-//     fn get_property_x_fill(&self) -> bool;
+    fn get_property_x_fill(&self) -> bool;
 
-//     fn set_property_x_fill(&self, x_fill: bool);
+    fn set_property_x_fill(&self, x_fill: bool);
 
-//     //fn get_property_y_align(&self) -> /*Ignored*/Align;
+    //fn get_property_y_align(&self) -> /*Ignored*/Align;
 
-//     //fn set_property_y_align(&self, y_align: /*Ignored*/Align);
+    //fn set_property_y_align(&self, y_align: /*Ignored*/Align);
 
-//     fn get_property_y_fill(&self) -> bool;
+    fn get_property_y_fill(&self) -> bool;
 
-//     fn set_property_y_fill(&self, y_fill: bool);
+    fn set_property_y_fill(&self, y_fill: bool);
 
-//     fn connect_property_crop_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_crop_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
 
-//     fn connect_property_fit_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_fit_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
 
-//     fn connect_property_x_align_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_x_align_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
 
-//     fn connect_property_x_fill_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_x_fill_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
 
-//     fn connect_property_y_align_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_y_align_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
 
-//     fn connect_property_y_fill_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
-// }
+    fn connect_property_y_fill_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+}
 
-// impl<O: IsA<StackChild>> StackChildExt for O {
+// impl<O: Is<StackChild>> StackChildExt for O {
 //     fn get_property_crop(&self) -> bool {
 //         unsafe {
 //             let mut value = Value::from_type(<bool as StaticType>::static_type());
@@ -200,7 +183,7 @@ pub const NONE_STACK_CHILD: Option<&StackChild> = None;
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where
-//             P: IsA<StackChild>,
+//             P: Is<StackChild>,
 //         {
 //             let f: &F = &*(f as *const F);
 //             f(&StackChild::from_glib_borrow(this).unsafe_cast_ref())
@@ -224,7 +207,7 @@ pub const NONE_STACK_CHILD: Option<&StackChild> = None;
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where
-//             P: IsA<StackChild>,
+//             P: Is<StackChild>,
 //         {
 //             let f: &F = &*(f as *const F);
 //             f(&StackChild::from_glib_borrow(this).unsafe_cast_ref())
@@ -248,7 +231,7 @@ pub const NONE_STACK_CHILD: Option<&StackChild> = None;
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where
-//             P: IsA<StackChild>,
+//             P: Is<StackChild>,
 //         {
 //             let f: &F = &*(f as *const F);
 //             f(&StackChild::from_glib_borrow(this).unsafe_cast_ref())
@@ -272,7 +255,7 @@ pub const NONE_STACK_CHILD: Option<&StackChild> = None;
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where
-//             P: IsA<StackChild>,
+//             P: Is<StackChild>,
 //         {
 //             let f: &F = &*(f as *const F);
 //             f(&StackChild::from_glib_borrow(this).unsafe_cast_ref())
@@ -296,7 +279,7 @@ pub const NONE_STACK_CHILD: Option<&StackChild> = None;
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where
-//             P: IsA<StackChild>,
+//             P: Is<StackChild>,
 //         {
 //             let f: &F = &*(f as *const F);
 //             f(&StackChild::from_glib_borrow(this).unsafe_cast_ref())
@@ -320,7 +303,7 @@ pub const NONE_STACK_CHILD: Option<&StackChild> = None;
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where
-//             P: IsA<StackChild>,
+//             P: Is<StackChild>,
 //         {
 //             let f: &F = &*(f as *const F);
 //             f(&StackChild::from_glib_borrow(this).unsafe_cast_ref())

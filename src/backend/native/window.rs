@@ -1,26 +1,14 @@
-use crate::prelude::*;
-// use glib::object::Cast;
-// use glib::signal::connect_raw;
-use glib::signal::SignalHandlerId;
-// use glib::translate::*;
-// use glib::StaticType;
-// use glib::Value;
-
-
+#![allow(unused_variables)]
+#![allow(dead_code)]
 
 // use std::boxed::Box as Box_;
-use std::fmt;
 // use std::mem;
 // use std::mem::transmute;
+
 use crate::native::Toolbar;
-
-// glib_wrapper! {
-//     pub struct Window(Object<ffi::Window, ffi::WindowClass, WindowClass>);
-
-//     match fn {
-//         get_type => || ffi::window_get_type(),
-//     }
-// }
+use crate::prelude::*;
+use glib::signal::SignalHandlerId;
+use std::fmt;
 
 #[derive(Clone, Debug)]
 pub struct Window {}
@@ -32,13 +20,13 @@ impl Window {
         unimplemented!()
     }
 
-    pub fn with_clutter_stage(stage: /*Ignored*/&clutter::Stage) -> Window {
-    //    unsafe { TODO: call ffi:mx_window_new_with_clutter_stage() }
-       unimplemented!()
+    pub fn with_clutter_stage(stage: /*Ignored*/ &clutter::Stage) -> Window {
+        //    unsafe { TODO: call ffi:window_new_with_clutter_stage() }
+        unimplemented!()
     }
 
     pub fn get_for_stage(stage: &clutter::Stage) -> Option<Window> {
-    //    unsafe { TODO: call ffi:mx_window_get_for_stage() }
+        //    unsafe { TODO: call ffi:window_get_for_stage() }
         unimplemented!()
     }
 }
@@ -148,13 +136,13 @@ pub trait WindowExt: 'static {
     ) -> SignalHandlerId;
 }
 
-// impl<O: IsA<Window>> WindowExt for O {
+// impl<O: Is<Window>> WindowExt for O {
 //     fn get_child(&self) -> Option<clutter::Actor> {
 //         unsafe { from_glib_none(ffi::window_get_child(self.as_ref().to_glib_none().0)) }
 //     }
 
 //     //fn get_clutter_stage(&self) -> /*Ignored*/Option<clutter::Stage> {
-//     //    unsafe { TODO: call ffi:mx_window_get_clutter_stage() }
+//     //    unsafe { TODO: call ffi:window_get_clutter_stage() }
 //     //}
 
 //     fn get_fullscreen(&self) -> bool {
@@ -217,7 +205,7 @@ pub trait WindowExt: 'static {
 //     }
 
 //     //fn get_window_rotation(&self) -> /*Ignored*/WindowRotation {
-//     //    unsafe { TODO: call ffi:mx_window_get_window_rotation() }
+//     //    unsafe { TODO: call ffi:window_get_window_rotation() }
 //     //}
 
 //     fn get_window_size(&self) -> (i32, i32) {
@@ -247,7 +235,7 @@ pub trait WindowExt: 'static {
 //         }
 //     }
 
-//     fn set_child<P: IsA<clutter::Actor>>(&self, actor: &P) {
+//     fn set_child<P: Is<clutter::Actor>>(&self, actor: &P) {
 //         unsafe {
 //             ffi::window_set_child(
 //                 self.as_ref().to_glib_none().0,
@@ -269,7 +257,7 @@ pub trait WindowExt: 'static {
 //     }
 
 //     //fn set_icon_from_cogl_texture(&self, texture: /*Ignored*/cogl::Handle) {
-//     //    unsafe { TODO: call ffi:mx_window_set_icon_from_cogl_texture() }
+//     //    unsafe { TODO: call ffi:window_set_icon_from_cogl_texture() }
 //     //}
 
 //     fn set_icon_name(&self, icon_name: Option<&str>) {
@@ -296,7 +284,7 @@ pub trait WindowExt: 'static {
 //         }
 //     }
 
-//     fn set_toolbar<P: IsA<Toolbar>>(&self, toolbar: &P) {
+//     fn set_toolbar<P: Is<Toolbar>>(&self, toolbar: &P) {
 //         unsafe {
 //             ffi::window_set_toolbar(
 //                 self.as_ref().to_glib_none().0,
@@ -312,7 +300,7 @@ pub trait WindowExt: 'static {
 //     }
 
 //     //fn set_window_rotation(&self, rotation: /*Ignored*/WindowRotation) {
-//     //    unsafe { TODO: call ffi:mx_window_set_window_rotation() }
+//     //    unsafe { TODO: call ffi:window_set_window_rotation() }
 //     //}
 
 //     fn set_window_size(&self, width: i32, height: i32) {
@@ -385,7 +373,7 @@ pub trait WindowExt: 'static {
 //             this: *mut ffi::Window,
 //             f: glib_sys::gpointer,
 //         ) where
-//             P: IsA<Window>,
+//             P: Is<Window>,
 //         {
 //             let f: &F = &*(f as *const F);
 //             f(&Window::from_glib_borrow(this).unsafe_cast_ref())
@@ -409,7 +397,7 @@ pub trait WindowExt: 'static {
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where
-//             P: IsA<Window>,
+//             P: Is<Window>,
 //         {
 //             let f: &F = &*(f as *const F);
 //             f(&Window::from_glib_borrow(this).unsafe_cast_ref())
@@ -433,7 +421,7 @@ pub trait WindowExt: 'static {
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where
-//             P: IsA<Window>,
+//             P: Is<Window>,
 //         {
 //             let f: &F = &*(f as *const F);
 //             f(&Window::from_glib_borrow(this).unsafe_cast_ref())
@@ -457,7 +445,7 @@ pub trait WindowExt: 'static {
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where
-//             P: IsA<Window>,
+//             P: Is<Window>,
 //         {
 //             let f: &F = &*(f as *const F);
 //             f(&Window::from_glib_borrow(this).unsafe_cast_ref())
@@ -484,7 +472,7 @@ pub trait WindowExt: 'static {
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where
-//             P: IsA<Window>,
+//             P: Is<Window>,
 //         {
 //             let f: &F = &*(f as *const F);
 //             f(&Window::from_glib_borrow(this).unsafe_cast_ref())
@@ -508,7 +496,7 @@ pub trait WindowExt: 'static {
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where
-//             P: IsA<Window>,
+//             P: Is<Window>,
 //         {
 //             let f: &F = &*(f as *const F);
 //             f(&Window::from_glib_borrow(this).unsafe_cast_ref())
@@ -535,7 +523,7 @@ pub trait WindowExt: 'static {
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where
-//             P: IsA<Window>,
+//             P: Is<Window>,
 //         {
 //             let f: &F = &*(f as *const F);
 //             f(&Window::from_glib_borrow(this).unsafe_cast_ref())
@@ -559,7 +547,7 @@ pub trait WindowExt: 'static {
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where
-//             P: IsA<Window>,
+//             P: Is<Window>,
 //         {
 //             let f: &F = &*(f as *const F);
 //             f(&Window::from_glib_borrow(this).unsafe_cast_ref())
@@ -583,7 +571,7 @@ pub trait WindowExt: 'static {
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where
-//             P: IsA<Window>,
+//             P: Is<Window>,
 //         {
 //             let f: &F = &*(f as *const F);
 //             f(&Window::from_glib_borrow(this).unsafe_cast_ref())
@@ -610,7 +598,7 @@ pub trait WindowExt: 'static {
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where
-//             P: IsA<Window>,
+//             P: Is<Window>,
 //         {
 //             let f: &F = &*(f as *const F);
 //             f(&Window::from_glib_borrow(this).unsafe_cast_ref())
@@ -637,7 +625,7 @@ pub trait WindowExt: 'static {
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where
-//             P: IsA<Window>,
+//             P: Is<Window>,
 //         {
 //             let f: &F = &*(f as *const F);
 //             f(&Window::from_glib_borrow(this).unsafe_cast_ref())
@@ -664,7 +652,7 @@ pub trait WindowExt: 'static {
 //             _param_spec: glib_sys::gpointer,
 //             f: glib_sys::gpointer,
 //         ) where
-//             P: IsA<Window>,
+//             P: Is<Window>,
 //         {
 //             let f: &F = &*(f as *const F);
 //             f(&Window::from_glib_borrow(this).unsafe_cast_ref())
