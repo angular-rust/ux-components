@@ -33,12 +33,12 @@ impl Default for FadeEffect {
     }
 }
 
-impl UxObject for FadeEffect {}
+impl Object for FadeEffect {}
 impl Is<FadeEffect> for FadeEffect {}
 
 impl AsRef<FadeEffect> for FadeEffect {
     fn as_ref(&self) -> &FadeEffect {
-        unimplemented!()
+        self
     }
 }
 

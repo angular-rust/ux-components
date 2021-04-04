@@ -3,7 +3,7 @@
 // use std::boxed::Box as Box_;
 // use std::mem::transmute;
 
-use super::Widget;
+use super::Actor;
 use crate::prelude::*;
 use glib::signal::SignalHandlerId;
 use std::fmt;
@@ -33,12 +33,12 @@ impl Default for Toolbar {
     }
 }
 
-impl UxObject for Toolbar {}
+impl Object for Toolbar {}
 impl Is<Toolbar> for Toolbar {}
 
 impl AsRef<Toolbar> for Toolbar {
     fn as_ref(&self) -> &Toolbar {
-        unimplemented!()
+        self
     }
 }
 

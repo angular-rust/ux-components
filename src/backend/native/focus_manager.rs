@@ -16,12 +16,12 @@ impl FocusManager {
     //}
 }
 
-impl UxObject for FocusManager {}
+impl Object for FocusManager {}
 impl Is<FocusManager> for FocusManager {}
 
 impl AsRef<FocusManager> for FocusManager {
     fn as_ref(&self) -> &FocusManager {
-        unimplemented!()
+        self
     }
 }
 

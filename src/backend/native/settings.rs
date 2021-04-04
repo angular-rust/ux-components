@@ -18,12 +18,12 @@ impl Settings {
     }
 }
 
-impl UxObject for Settings {}
+impl Object for Settings {}
 impl Is<Settings> for Settings {}
 
 impl AsRef<Settings> for Settings {
     fn as_ref(&self) -> &Settings {
-        unimplemented!()
+        self
     }
 }
 

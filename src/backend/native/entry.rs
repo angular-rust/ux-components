@@ -3,7 +3,7 @@
 // use std::boxed::Box as Box_;
 // use std::mem::transmute;
 
-use super::Widget;
+use super::Actor;
 use crate::prelude::*;
 use glib::signal::SignalHandlerId;
 use std::fmt;
@@ -49,12 +49,12 @@ impl Default for Entry {
     }
 }
 
-impl UxObject for Entry {}
+impl Object for Entry {}
 impl Is<Entry> for Entry {}
 
 impl AsRef<Entry> for Entry {
     fn as_ref(&self) -> &Entry {
-        unimplemented!()
+        self
     }
 }
 

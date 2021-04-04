@@ -14,12 +14,12 @@ impl TextureCache {
     }
 }
 
-impl UxObject for TextureCache {}
+impl Object for TextureCache {}
 impl Is<TextureCache> for TextureCache {}
 
 impl AsRef<TextureCache> for TextureCache {
     fn as_ref(&self) -> &TextureCache {
-        unimplemented!()
+        self
     }
 }
 

@@ -10,18 +10,18 @@ use std::fmt;
 
 // @extends clutter::Actor;
 #[derive(Clone, Debug)]
-pub struct Widget {}
+pub struct Actor {}
 
-impl UxObject for Widget {}
-impl Is<Widget> for Widget {}
+impl Object for Actor {}
+impl Is<Actor> for Actor {}
 
-impl AsRef<Widget> for Widget {
-    fn as_ref(&self) -> &Widget {
-        unimplemented!()
+impl AsRef<Actor> for Actor {
+    fn as_ref(&self) -> &Actor {
+        self
     }
 }
 
-pub const NONE_WIDGET: Option<&Widget> = None;
+pub const NONE_WIDGET: Option<&Actor> = None;
 
 pub trait WidgetExt: 'static {
     fn apply_style<P: Is<Style>>(&self, style: &P);
@@ -73,7 +73,7 @@ pub trait WidgetExt: 'static {
         -> SignalHandlerId;
 }
 
-impl<O: Is<Widget>> WidgetExt for O {
+impl<O: Is<Actor>> WidgetExt for O {
     fn apply_style<P: Is<Style>>(&self, style: &P) {
         // unsafe {
         //     ffi::widget_apply_style(
@@ -316,7 +316,7 @@ impl<O: Is<Widget>> WidgetExt for O {
     }
 }
 
-impl fmt::Display for Widget {
+impl fmt::Display for Actor {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(f, "Widget")
     }

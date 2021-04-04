@@ -3,7 +3,7 @@
 // use std::boxed::Box as Box_;
 // use std::mem::transmute;
 
-use super::{Action, FloatingWidget, Widget};
+use super::{Action, FloatingWidget, Actor};
 use crate::prelude::*;
 use glib::signal::SignalHandlerId;
 use std::fmt;
@@ -33,12 +33,12 @@ impl Default for Menu {
     }
 }
 
-impl UxObject for Menu {}
+impl Object for Menu {}
 impl Is<Menu> for Menu {}
 
 impl AsRef<Menu> for Menu {
     fn as_ref(&self) -> &Menu {
-        unimplemented!()
+        self
     }
 }
 

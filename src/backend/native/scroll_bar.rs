@@ -3,7 +3,7 @@
 // use std::boxed::Box as Box_;
 // use std::mem::transmute;
 
-use super::{Adjustment, Widget};
+use super::{Adjustment, Actor};
 use crate::prelude::*;
 use glib::signal::SignalHandlerId;
 use std::fmt;
@@ -51,12 +51,12 @@ impl Default for ScrollBar {
     }
 }
 
-impl UxObject for ScrollBar {}
+impl Object for ScrollBar {}
 impl Is<ScrollBar> for ScrollBar {}
 
 impl AsRef<ScrollBar> for ScrollBar {
     fn as_ref(&self) -> &ScrollBar {
-        unimplemented!()
+        self
     }
 }
 

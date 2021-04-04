@@ -15,11 +15,11 @@ static INITIALIZED: AtomicBool = AtomicBool::new(false);
 /// Asserts that this is the main thread and either `clutter::init` has been called.
 macro_rules! assert_initialized_main_thread {
     () => {
-        if !crate::rt::is_initialized_main_thread() {
-            if crate::rt::is_initialized() {
-                panic!("GDK may only be used from the main thread.");
+        if !super::rt::is_initialized_main_thread() {
+            if super::rt::is_initialized() {
+                panic!("Clutter may only be used from the main thread.");
             } else {
-                panic!("GDK has not been initialized. Call `clutter::init` first.");
+                panic!("Clutter has not been initialized. Call `clutter::init` first.");
             }
         }
     };
@@ -33,27 +33,27 @@ macro_rules! skip_assert_initialized {
 /// Asserts that neither `clutter::init` has been called.
 macro_rules! assert_not_initialized {
     () => {
-        // if crate::rt::is_initialized() {
-        //     panic!("This function has to be called before `clutter::init`.");
-        // }
+        if super::rt::is_initialized() {
+            panic!("This function has to be called before `clutter::init`.");
+        }
     };
 }
 
-/// Returns `true` if GDK has been initialized.
+/// Returns `true` if Clutter has been initialized.
 #[inline]
 pub fn is_initialized() -> bool {
     skip_assert_initialized!();
     INITIALIZED.load(Ordering::Acquire)
 }
 
-/// Returns `true` if GDK has been initialized and this is the main thread.
+/// Returns `true` if Clutter has been initialized and this is the main thread.
 #[inline]
 pub fn is_initialized_main_thread() -> bool {
     skip_assert_initialized!();
     IS_MAIN_THREAD.with(|c| c.get())
 }
 
-/// Informs this crate that GDK has been initialized and the current thread is the main one.
+/// Informs this crate that Clutter has been initialized and the current thread is the main one.
 pub unsafe fn set_initialized() {
     skip_assert_initialized!();
     if is_initialized_main_thread() {

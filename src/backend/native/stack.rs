@@ -1,6 +1,6 @@
 #![allow(unused_variables)]
 
-use super::Widget;
+use super::Actor;
 use crate::prelude::*;
 use std::fmt;
 
@@ -29,12 +29,12 @@ impl Default for Stack {
     }
 }
 
-impl UxObject for Stack {}
+impl Object for Stack {}
 impl Is<Stack> for Stack {}
 
 impl AsRef<Stack> for Stack {
     fn as_ref(&self) -> &Stack {
-        unimplemented!()
+        self
     }
 }
 

@@ -3,7 +3,7 @@
 // use std::boxed::Box as Box_;
 // use std::mem::transmute;
 
-use super::Widget;
+use super::Actor;
 use crate::prelude::*;
 use glib::signal::SignalHandlerId;
 use std::fmt;
@@ -33,12 +33,12 @@ impl Default for Toggle {
     }
 }
 
-impl UxObject for Toggle {}
+impl Object for Toggle {}
 impl Is<Toggle> for Toggle {}
 
 impl AsRef<Toggle> for Toggle {
     fn as_ref(&self) -> &Toggle {
-        unimplemented!()
+        self
     }
 }
 

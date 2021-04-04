@@ -3,7 +3,7 @@
 // use std::boxed::Box as Box_;
 // use std::mem::transmute;
 
-use super::Widget;
+use super::Actor;
 use crate::prelude::*;
 use glib::signal::SignalHandlerId;
 use std::fmt;
@@ -33,12 +33,12 @@ impl Default for Grid {
     }
 }
 
-impl UxObject for Grid {}
+impl Object for Grid {}
 impl Is<Grid> for Grid {}
 
 impl AsRef<Grid> for Grid {
     fn as_ref(&self) -> &Grid {
-        unimplemented!()
+        self
     }
 }
 

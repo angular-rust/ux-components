@@ -3,7 +3,7 @@
 // use std::boxed::Box as Box_;
 // use std::mem::transmute;
 
-use super::{FloatingWidget, Widget};
+use super::{FloatingWidget, Actor};
 use crate::prelude::*;
 use glib::signal::SignalHandlerId;
 use std::fmt;
@@ -20,12 +20,12 @@ impl Tooltip {
     }
 }
 
-impl UxObject for Tooltip {}
+impl Object for Tooltip {}
 impl Is<Tooltip> for Tooltip {}
 
 impl AsRef<Tooltip> for Tooltip {
     fn as_ref(&self) -> &Tooltip {
-        unimplemented!()
+        self
     }
 }
 

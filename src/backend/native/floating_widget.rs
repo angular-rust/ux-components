@@ -1,6 +1,6 @@
 #![allow(unused_variables)]
 
-use super::Widget;
+use super::Actor;
 use crate::prelude::*;
 use std::fmt;
 
@@ -10,12 +10,12 @@ pub struct FloatingWidget {}
 
 impl FloatingWidget {}
 
-impl UxObject for FloatingWidget {}
+impl Object for FloatingWidget {}
 impl Is<FloatingWidget> for FloatingWidget {}
 
 impl AsRef<FloatingWidget> for FloatingWidget {
     fn as_ref(&self) -> &FloatingWidget {
-        unimplemented!()
+        self
     }
 }
 

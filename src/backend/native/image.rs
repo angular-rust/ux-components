@@ -4,7 +4,7 @@
 // use std::mem::transmute;
 // use std::ptr;
 
-use super::Widget;
+use super::Actor;
 use crate::prelude::*;
 use glib::signal::SignalHandlerId;
 use std::fmt;
@@ -34,12 +34,12 @@ impl Default for Image {
     }
 }
 
-impl UxObject for Image {}
+impl Object for Image {}
 impl Is<Image> for Image {}
 
 impl AsRef<Image> for Image {
     fn as_ref(&self) -> &Image {
-        unimplemented!()
+        self
     }
 }
 

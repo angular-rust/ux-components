@@ -3,7 +3,7 @@
 // use std::boxed::Box as Box_;
 // use std::mem::transmute;
 
-use super::Widget;
+use super::Actor;
 use crate::prelude::*;
 use glib::signal::SignalHandlerId;
 use std::fmt;
@@ -33,12 +33,12 @@ impl Default for Spinner {
     }
 }
 
-impl UxObject for Spinner {}
+impl Object for Spinner {}
 impl Is<Spinner> for Spinner {}
 
 impl AsRef<Spinner> for Spinner {
     fn as_ref(&self) -> &Spinner {
-        unimplemented!()
+        self
     }
 }
 

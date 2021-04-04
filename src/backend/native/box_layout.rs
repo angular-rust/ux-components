@@ -4,7 +4,7 @@
 // use std::mem::transmute;
 // use Orientation;
 
-use super::Widget;
+use super::Actor;
 use crate::prelude::*;
 use glib::signal::SignalHandlerId;
 use std::fmt;
@@ -41,12 +41,12 @@ impl Default for BoxLayout {
     }
 }
 
-impl UxObject for BoxLayout {}
+impl Object for BoxLayout {}
 impl Is<BoxLayout> for BoxLayout {}
 
 impl AsRef<BoxLayout> for BoxLayout {
     fn as_ref(&self) -> &BoxLayout {
-        unimplemented!()
+        self
     }
 }
 

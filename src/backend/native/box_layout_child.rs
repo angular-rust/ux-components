@@ -10,12 +10,12 @@ use std::fmt;
 #[derive(Clone, Debug)]
 pub struct BoxLayoutChild {}
 
-impl UxObject for BoxLayoutChild {}
+impl Object for BoxLayoutChild {}
 impl Is<BoxLayoutChild> for BoxLayoutChild {}
 
 impl AsRef<BoxLayoutChild> for BoxLayoutChild {
     fn as_ref(&self) -> &BoxLayoutChild {
-        unimplemented!()
+        self
     }
 }
 

@@ -30,12 +30,12 @@ impl Default for IconTheme {
     }
 }
 
-impl UxObject for IconTheme {}
+impl Object for IconTheme {}
 impl Is<IconTheme> for IconTheme {}
 
 impl AsRef<IconTheme> for IconTheme {
     fn as_ref(&self) -> &IconTheme {
-        unimplemented!()
+        self
     }
 }
 

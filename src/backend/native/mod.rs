@@ -13,9 +13,6 @@ pub use self::actor_manager::{ActorManager, ActorManagerExt, NONE_ACTOR_MANAGER}
 mod adjustment;
 pub use self::adjustment::{Adjustment, AdjustmentExt, NONE_ADJUSTMENT};
 
-mod application;
-pub use self::application::{Application, ApplicationExt, NONE_APPLICATION};
-
 mod box_layout;
 pub use self::box_layout::{BoxLayout, BoxLayoutExt, NONE_BOX_LAYOUT};
 
@@ -141,60 +138,12 @@ pub use self::tooltip::{Tooltip, TooltipExt, NONE_TOOLTIP};
 mod viewport;
 pub use self::viewport::{Viewport, ViewportExt, NONE_VIEWPORT};
 
-mod widget;
-pub use self::widget::{Widget, WidgetExt, NONE_WIDGET};
+mod actor;
+pub use self::actor::{Actor, WidgetExt, NONE_WIDGET};
 
-mod window;
-pub use self::window::{Window, WindowExt, NONE_WINDOW};
+mod stage;
+pub use self::stage::{Stage, WindowExt, NONE_WINDOW};
 
-#[doc(hidden)]
-pub mod traits {
-    pub use super::ActionExt;
-    pub use super::ActorManagerExt;
-    pub use super::AdjustmentExt;
-    pub use super::ApplicationExt;
-    pub use super::BoxLayoutChildExt;
-    pub use super::BoxLayoutExt;
-    pub use super::ButtonExt;
-    pub use super::ButtonGroupExt;
-    pub use super::ClipboardExt;
-    pub use super::ComboBoxExt;
-    pub use super::DialogExt;
-    pub use super::EntryExt;
-    pub use super::ExpanderExt;
-    pub use super::FadeEffectExt;
-    pub use super::FocusManagerExt;
-    pub use super::GridExt;
-    pub use super::IconExt;
-    pub use super::IconThemeExt;
-    pub use super::ImageExt;
-    pub use super::ItemViewExt;
-    pub use super::KineticScrollViewExt;
-    pub use super::LabelExt;
-    pub use super::ListViewExt;
-    pub use super::MenuExt;
-    pub use super::NotebookExt;
-    pub use super::PagerExt;
-    pub use super::PathBarExt;
-    pub use super::ProgressBarExt;
-    pub use super::ScrollBarExt;
-    pub use super::ScrollViewExt;
-    pub use super::SettingsExt;
-    pub use super::SliderExt;
-    pub use super::SpinnerExt;
-    pub use super::StackChildExt;
-    pub use super::StackExt;
-    pub use super::StyleExt;
-    pub use super::TableChildExt;
-    pub use super::TableExt;
-    pub use super::TextureCacheExt;
-    pub use super::ToggleExt;
-    pub use super::ToolbarExt;
-    pub use super::TooltipExt;
-    pub use super::ViewportExt;
-    pub use super::WidgetExt;
-    pub use super::WindowExt;
-}
 
 // #[cfg_attr(feature = "cargo-clippy", allow(type_complexity))]
 // #[cfg_attr(feature = "cargo-clippy", allow(unreadable_literal))]

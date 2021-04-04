@@ -20,12 +20,12 @@ impl ActorManager {
     //}
 }
 
-impl UxObject for ActorManager {}
+impl Object for ActorManager {}
 impl Is<ActorManager> for ActorManager {}
 
 impl AsRef<ActorManager> for ActorManager {
     fn as_ref(&self) -> &ActorManager {
-        unimplemented!()
+        self
     }
 }
 

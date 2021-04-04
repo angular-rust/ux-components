@@ -4,7 +4,7 @@
 // use std::mem;
 // use std::mem::transmute;
 
-use super::Widget;
+use super::Actor;
 use crate::prelude::*;
 use glib::signal::SignalHandlerId;
 use std::fmt;
@@ -34,12 +34,12 @@ impl Default for Viewport {
     }
 }
 
-impl UxObject for Viewport {}
+impl Object for Viewport {}
 impl Is<Viewport> for Viewport {}
 
 impl AsRef<Viewport> for Viewport {
     fn as_ref(&self) -> &Viewport {
-        unimplemented!()
+        self
     }
 }
 

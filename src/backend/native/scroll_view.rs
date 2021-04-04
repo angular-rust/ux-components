@@ -3,7 +3,7 @@
 // use std::boxed::Box as Box_;
 // use std::mem::transmute;
 
-use super::Widget;
+use super::Actor;
 use crate::prelude::*;
 use glib::signal::SignalHandlerId;
 use std::fmt;
@@ -33,12 +33,12 @@ impl Default for ScrollView {
     }
 }
 
-impl UxObject for ScrollView {}
+impl Object for ScrollView {}
 impl Is<ScrollView> for ScrollView {}
 
 impl AsRef<ScrollView> for ScrollView {
     fn as_ref(&self) -> &ScrollView {
-        unimplemented!()
+        self
     }
 }
 

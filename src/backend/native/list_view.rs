@@ -3,7 +3,7 @@
 // use std::boxed::Box as Box_;
 // use std::mem::transmute;
 
-use super::{BoxLayout, Widget};
+use super::{BoxLayout, Actor};
 use crate::prelude::*;
 use glib::signal::SignalHandlerId;
 use std::fmt;
@@ -33,12 +33,12 @@ impl Default for ListView {
     }
 }
 
-impl UxObject for ListView {}
+impl Object for ListView {}
 impl Is<ListView> for ListView {}
 
 impl AsRef<ListView> for ListView {
     fn as_ref(&self) -> &ListView {
-        unimplemented!()
+        self
     }
 }
 

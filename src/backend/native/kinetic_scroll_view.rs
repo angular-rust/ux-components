@@ -4,7 +4,7 @@
 // use std::mem::transmute;
 // use std::ptr;
 
-use super::Widget;
+use super::Actor;
 use crate::prelude::*;
 use glib::signal::SignalHandlerId;
 use std::fmt;
@@ -36,12 +36,12 @@ impl Default for KineticScrollView {
     }
 }
 
-impl UxObject for KineticScrollView {}
+impl Object for KineticScrollView {}
 impl Is<KineticScrollView> for KineticScrollView {}
 
 impl AsRef<KineticScrollView> for KineticScrollView {
     fn as_ref(&self) -> &KineticScrollView {
-        unimplemented!()
+        self
     }
 }
 

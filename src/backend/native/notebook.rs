@@ -3,7 +3,7 @@
 // use std::boxed::Box as Box_;
 // use std::mem::transmute;
 
-use super::Widget;
+use super::Actor;
 use crate::prelude::*;
 use glib::signal::SignalHandlerId;
 use std::fmt;
@@ -33,12 +33,12 @@ impl Default for Notebook {
     }
 }
 
-impl UxObject for Notebook {}
+impl Object for Notebook {}
 impl Is<Notebook> for Notebook {}
 
 impl AsRef<Notebook> for Notebook {
     fn as_ref(&self) -> &Notebook {
-        unimplemented!()
+        self
     }
 }
 

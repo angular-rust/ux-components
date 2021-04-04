@@ -1,51 +1,60 @@
 #![allow(unused_variables)]
 
-// use std::boxed::Box as Box_;
+use std::boxed::Box as Box_;
 // use std::mem;
 // use std::mem::transmute;
 
-use crate::native::Toolbar;
+use super::Toolbar;
 use crate::prelude::*;
+
 use glib::signal::SignalHandlerId;
 use std::fmt;
 
 #[derive(Clone, Debug)]
-pub struct Window {}
+pub struct Stage {
+    stage: clutter::Stage,
+}
 
-impl Window {
-    pub fn new() -> Window {
-        // assert_initialized_main_thread!();
-        // unsafe { from_glib_full(ffi::window_new()) }
-        unimplemented!()
+impl Stage {
+    pub fn new() -> Stage {
+        Self {
+            stage: clutter::Stage::new(),
+        }
     }
 
-    pub fn with_clutter_stage(stage: /*Ignored*/ &clutter::Stage) -> Window {
+    pub fn with_clutter_stage(stage: &clutter::Stage) -> Stage {
         //    unsafe { TODO: call ffi:window_new_with_clutter_stage() }
         unimplemented!()
     }
 
-    pub fn get_for_stage(stage: &clutter::Stage) -> Option<Window> {
+    pub fn get_for_stage(stage: &clutter::Stage) -> Option<Stage> {
         //    unsafe { TODO: call ffi:window_get_for_stage() }
         unimplemented!()
     }
+
+    pub fn test_check(&self) -> String {
+        "HERE".into()
+    }
 }
 
-impl Default for Window {
+impl Default for Stage {
     fn default() -> Self {
-        Self::new()
+        Self {
+            stage: clutter::Stage::new(),
+        }
     }
 }
 
-impl UxObject for Window {}
-impl Is<Window> for Window {}
+impl Object for Stage {}
+impl Is<Stage> for Stage {}
 
-impl AsRef<Window> for Window {
-    fn as_ref(&self) -> &Window {
-        unimplemented!()
+impl AsRef<Stage> for Stage {
+    fn as_ref(&self) -> &Stage {
+        self
     }
 }
 
-pub const NONE_WINDOW: Option<&Window> = None;
+pub const NONE_WINDOW: Option<&Stage> = None;
 
 pub trait WindowExt: 'static {
     fn get_child(&self) -> Option<clutter::Actor>;
@@ -57,6 +66,8 @@ pub trait WindowExt: 'static {
     fn get_has_toolbar(&self) -> bool;
 
     fn get_icon_name(&self) -> Option<String>;
+
+    fn get_resisable(&self) -> bool;
 
     fn get_small_screen(&self) -> bool;
 
@@ -70,13 +81,13 @@ pub trait WindowExt: 'static {
 
     fn get_window_size(&self) -> (i32, i32);
 
-    fn hide(&self);
+    fn hide(&self) -> &Self;
 
     fn present(&self);
 
     fn set_child<P: Is<clutter::Actor>>(&self, actor: &P);
 
-    fn set_fullscreen(&self, fullscreen: bool);
+    fn set_fullscreen(&self, fullscreen: bool) -> &Self;
 
     fn set_has_toolbar(&self, toolbar: bool);
 
@@ -84,9 +95,11 @@ pub trait WindowExt: 'static {
 
     fn set_icon_name(&self, icon_name: Option<&str>);
 
+    fn set_resizable(&self, resizable: bool) -> &Self;
+
     fn set_small_screen(&self, small_screen: bool);
 
-    fn set_title(&self, title: &str);
+    fn set_title(&self, title: &str) -> &Self;
 
     fn set_toolbar<P: Is<Toolbar>>(&self, toolbar: &P);
 
@@ -94,9 +107,9 @@ pub trait WindowExt: 'static {
 
     //fn set_window_rotation(&self, rotation: /*Ignored*/WindowRotation);
 
-    fn set_window_size(&self, width: i32, height: i32);
+    fn set_window_size(&self, width: i32, height: i32) -> &Self;
 
-    fn show(&self);
+    fn show(&self) -> &Self;
 
     fn get_property_icon_cogl_texture(&self) -> Option<String>;
 
@@ -144,24 +157,21 @@ pub trait WindowExt: 'static {
     ) -> SignalHandlerId;
 }
 
-impl<O: Is<Window>> WindowExt for O {
+impl<O: Is<Stage>> WindowExt for O {
     fn get_child(&self) -> Option<clutter::Actor> {
         // unsafe { from_glib_none(ffi::window_get_child(self.as_ref().to_glib_none().0)) }
+        let win = self.as_ref();
         unimplemented!()
     }
 
     fn get_clutter_stage(&self) -> Option<clutter::Stage> {
-    //    unsafe { TODO: call ffi:window_get_clutter_stage() }
+        //    unsafe { TODO: call ffi:window_get_clutter_stage() }
         unimplemented!()
     }
 
     fn get_fullscreen(&self) -> bool {
-        // unsafe {
-        //     from_glib(ffi::window_get_fullscreen(
-        //         self.as_ref().to_glib_none().0,
-        //     ))
-        // }
-        unimplemented!()
+        let stage = &self.as_ref().stage;
+        stage.get_fullscreen()
     }
 
     fn get_has_toolbar(&self) -> bool {
@@ -182,6 +192,11 @@ impl<O: Is<Window>> WindowExt for O {
         unimplemented!()
     }
 
+    fn get_resisable(&self) -> bool {
+        let stage = &self.as_ref().stage;
+        stage.get_user_resizable()
+    }
+
     fn get_small_screen(&self) -> bool {
         // unsafe {
         //     from_glib(ffi::window_get_small_screen(
@@ -192,8 +207,11 @@ impl<O: Is<Window>> WindowExt for O {
     }
 
     fn get_title(&self) -> Option<String> {
-        // unsafe { from_glib_none(ffi::window_get_title(self.as_ref().to_glib_none().0)) }
-        unimplemented!()
+        let stage = &self.as_ref().stage;
+        match stage.get_title() {
+            Some(title) => Some(title.as_str().into()),
+            None => None,
+        }
     }
 
     fn get_toolbar(&self) -> Option<Toolbar> {
@@ -226,26 +244,15 @@ impl<O: Is<Window>> WindowExt for O {
     //}
 
     fn get_window_size(&self) -> (i32, i32) {
-        // unsafe {
-        //     let mut width = mem::MaybeUninit::uninit();
-        //     let mut height = mem::MaybeUninit::uninit();
-        //     ffi::window_get_window_size(
-        //         self.as_ref().to_glib_none().0,
-        //         width.as_mut_ptr(),
-        //         height.as_mut_ptr(),
-        //     );
-        //     let width = width.assume_init();
-        //     let height = height.assume_init();
-        //     (width, height)
-        // }
-        unimplemented!()
+        let stage = &self.as_ref().stage;
+        let (width, height) = stage.get_size();
+        (width as i32, height as i32)
     }
 
-    fn hide(&self) {
-        // unsafe {
-        //     ffi::window_hide(self.as_ref().to_glib_none().0);
-        // }
-        unimplemented!()
+    fn hide(&self) -> &Self {
+        let stage = &self.as_ref().stage;
+        stage.hide();
+        self
     }
 
     fn present(&self) {
@@ -265,11 +272,10 @@ impl<O: Is<Window>> WindowExt for O {
         unimplemented!()
     }
 
-    fn set_fullscreen(&self, fullscreen: bool) {
-        // unsafe {
-        //     ffi::window_set_fullscreen(self.as_ref().to_glib_none().0, fullscreen.to_glib());
-        // }
-        unimplemented!()
+    fn set_fullscreen(&self, fullscreen: bool) -> &Self {
+        let stage = &self.as_ref().stage;
+        stage.set_fullscreen(fullscreen);
+        self
     }
 
     fn set_has_toolbar(&self, toolbar: bool) {
@@ -293,6 +299,12 @@ impl<O: Is<Window>> WindowExt for O {
         unimplemented!()
     }
 
+    fn set_resizable(&self, resizable: bool) -> &Self {
+        let stage = &self.as_ref().stage;
+        stage.set_user_resizable(resizable);
+        self
+    }
+
     fn set_small_screen(&self, small_screen: bool) {
         // unsafe {
         //     ffi::window_set_small_screen(
@@ -303,11 +315,10 @@ impl<O: Is<Window>> WindowExt for O {
         unimplemented!()
     }
 
-    fn set_title(&self, title: &str) {
-        // unsafe {
-        //     ffi::window_set_title(self.as_ref().to_glib_none().0, title.to_glib_none().0);
-        // }
-        unimplemented!()
+    fn set_title(&self, title: &str) -> &Self {
+        let stage = &self.as_ref().stage;
+        stage.set_title(title);
+        self
     }
 
     fn set_toolbar<P: Is<Toolbar>>(&self, toolbar: &P) {
@@ -331,18 +342,16 @@ impl<O: Is<Window>> WindowExt for O {
     //    unsafe { TODO: call ffi:window_set_window_rotation() }
     //}
 
-    fn set_window_size(&self, width: i32, height: i32) {
-        // unsafe {
-        //     ffi::window_set_window_size(self.as_ref().to_glib_none().0, width, height);
-        // }
-        unimplemented!()
+    fn set_window_size(&self, width: i32, height: i32) -> &Self {
+        let stage = &self.as_ref().stage;
+        stage.set_size(width as f32, height as f32);
+        self
     }
 
-    fn show(&self) {
-        // unsafe {
-        //     ffi::window_show(self.as_ref().to_glib_none().0);
-        // }
-        unimplemented!()
+    fn show(&self) -> &Self {
+        let stage = &self.as_ref().stage;
+        stage.show();
+        self
     }
 
     fn get_property_icon_cogl_texture(&self) -> Option<String> {
@@ -402,28 +411,25 @@ impl<O: Is<Window>> WindowExt for O {
         unimplemented!()
     }
 
+    // unsafe fn unsafe_cast_ref<T: ObjectType>(&self) -> &T {
+    //     debug_assert!(self.is::<T>());
+    //     // This cast is safe because all our wrapper types have the
+    //     // same representation except for the name and the phantom data
+    //     // type. IsA<> is an unsafe trait that must only be implemented
+    //     // if this is a valid wrapper type
+    //     &*(self as *const Self as *const T)
+    // }
+
+    // TODO: &Self
     fn connect_destroy<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
-        // unsafe extern "C" fn destroy_trampoline<P, F: Fn(&P) + 'static>(
-        //     this: *mut ffi::Window,
-        //     f: glib_sys::gpointer,
-        // ) where
-        //     P: Is<Window>,
-        // {
-        //     let f: &F = &*(f as *const F);
-        //     f(&Window::from_glib_borrow(this).unsafe_cast_ref())
-        // }
-        // unsafe {
-        //     let f: Box_<F> = Box_::new(f);
-        //     connect_raw(
-        //         self.as_ptr() as *mut _,
-        //         b"destroy\0".as_ptr() as *const _,
-        //         Some(transmute::<_, unsafe extern "C" fn()>(
-        //             destroy_trampoline::<Self, F> as *const (),
-        //         )),
-        //         Box_::into_raw(f),
-        //     )
-        // }
-        unimplemented!()
+        let win = self.as_ref();
+        let this = unsafe { 
+            &*(win as *const Stage as *const Self)
+        };
+
+        win.stage.connect_destroy(move |_| {
+            f(this);
+        })
     }
 
     fn connect_property_child_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
@@ -717,7 +723,7 @@ impl<O: Is<Window>> WindowExt for O {
     }
 }
 
-impl fmt::Display for Window {
+impl fmt::Display for Stage {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(f, "Window")
     }

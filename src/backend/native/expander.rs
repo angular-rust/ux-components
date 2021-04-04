@@ -3,7 +3,7 @@
 // use std::boxed::Box as Box_;
 // use std::mem::transmute;
 
-use super::Widget;
+use super::Actor;
 use crate::prelude::*;
 use glib::signal::SignalHandlerId;
 use std::fmt;
@@ -33,12 +33,12 @@ impl Default for Expander {
     }
 }
 
-impl UxObject for Expander {}
+impl Object for Expander {}
 impl Is<Expander> for Expander {}
 
 impl AsRef<Expander> for Expander {
     fn as_ref(&self) -> &Expander {
-        unimplemented!()
+        self
     }
 }
 

@@ -86,12 +86,12 @@ impl Default for Action {
     }
 }
 
-impl UxObject for Action {}
+impl Object for Action {}
 impl Is<Action> for Action {}
 
 impl AsRef<Action> for Action {
     fn as_ref(&self) -> &Action {
-        unimplemented!()
+        self
     }
 }
 

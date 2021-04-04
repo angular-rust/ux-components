@@ -1,6 +1,6 @@
 #![allow(unused_variables)]
 
-use super::Widget;
+use super::Actor;
 use crate::prelude::*;
 use std::fmt;
 
@@ -29,12 +29,12 @@ impl Default for Frame {
     }
 }
 
-impl UxObject for Frame {}
+impl Object for Frame {}
 impl Is<Frame> for Frame {}
 
 impl AsRef<Frame> for Frame {
     fn as_ref(&self) -> &Frame {
-        unimplemented!()
+        self
     }
 }
 

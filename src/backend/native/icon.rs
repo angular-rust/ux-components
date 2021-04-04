@@ -3,7 +3,7 @@
 // use std::boxed::Box as Box_;
 // use std::mem::transmute;
 
-use super::Widget;
+use super::Actor;
 use crate::prelude::*;
 use glib::signal::SignalHandlerId;
 use std::fmt;
@@ -33,12 +33,12 @@ impl Default for Icon {
     }
 }
 
-impl UxObject for Icon {}
+impl Object for Icon {}
 impl Is<Icon> for Icon {}
 
 impl AsRef<Icon> for Icon {
     fn as_ref(&self) -> &Icon {
-        unimplemented!()
+        self
     }
 }
 

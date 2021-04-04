@@ -1,6 +1,6 @@
 #![allow(unused_variables)]
 
-use super::{Action, Widget};
+use super::{Action, Actor};
 use crate::prelude::*;
 use std::fmt;
 
@@ -29,12 +29,12 @@ impl Default for Dialog {
     }
 }
 
-impl UxObject for Dialog {}
+impl Object for Dialog {}
 impl Is<Dialog> for Dialog {}
 
 impl AsRef<Dialog> for Dialog {
     fn as_ref(&self) -> &Dialog {
-        unimplemented!()
+        self
     }
 }
 

@@ -31,12 +31,12 @@ impl Default for Style {
     }
 }
 
-impl UxObject for Style {}
+impl Object for Style {}
 impl Is<Style> for Style {}
 
 impl AsRef<Style> for Style {
     fn as_ref(&self) -> &Style {
-        unimplemented!()
+        self
     }
 }
 

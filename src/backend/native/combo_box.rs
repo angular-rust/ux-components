@@ -3,7 +3,7 @@
 // use std::boxed::Box as Box_;
 // use std::mem::transmute;
 
-use super::Widget;
+use super::Actor;
 use crate::prelude::*;
 use glib::signal::SignalHandlerId;
 use std::fmt;
@@ -33,12 +33,12 @@ impl Default for ComboBox {
     }
 }
 
-impl UxObject for ComboBox {}
+impl Object for ComboBox {}
 impl Is<ComboBox> for ComboBox {}
 
 impl AsRef<ComboBox> for ComboBox {
     fn as_ref(&self) -> &ComboBox {
-        unimplemented!()
+        self
     }
 }
 

@@ -3,7 +3,7 @@
 // use std::boxed::Box as Box_;
 // use std::mem::transmute;
 
-use super::{Entry, Widget};
+use super::{Entry, Actor};
 use crate::prelude::*;
 use glib::signal::SignalHandlerId;
 use std::fmt;
@@ -33,12 +33,12 @@ impl Default for PathBar {
     }
 }
 
-impl UxObject for PathBar {}
+impl Object for PathBar {}
 impl Is<PathBar> for PathBar {}
 
 impl AsRef<PathBar> for PathBar {
     fn as_ref(&self) -> &PathBar {
-        unimplemented!()
+        self
     }
 }
 

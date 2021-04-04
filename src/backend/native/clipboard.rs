@@ -16,12 +16,12 @@ impl Clipboard {
     }
 }
 
-impl UxObject for Clipboard {}
+impl Object for Clipboard {}
 impl Is<Clipboard> for Clipboard {}
 
 impl AsRef<Clipboard> for Clipboard {
     fn as_ref(&self) -> &Clipboard {
-        unimplemented!()
+        self
     }
 }
 

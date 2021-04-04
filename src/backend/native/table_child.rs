@@ -10,12 +10,12 @@ use std::fmt;
 #[derive(Clone, Debug)]
 pub struct TableChild {}
 
-impl UxObject for TableChild {}
+impl Object for TableChild {}
 impl Is<TableChild> for TableChild {}
 
 impl AsRef<TableChild> for TableChild {
     fn as_ref(&self) -> &TableChild {
-        unimplemented!()
+        self
     }
 }
 

@@ -25,12 +25,12 @@ impl Default for ButtonGroup {
     }
 }
 
-impl UxObject for ButtonGroup {}
+impl Object for ButtonGroup {}
 impl Is<ButtonGroup> for ButtonGroup {}
 
 impl AsRef<ButtonGroup> for ButtonGroup {
     fn as_ref(&self) -> &ButtonGroup {
-        unimplemented!()
+        self
     }
 }
 

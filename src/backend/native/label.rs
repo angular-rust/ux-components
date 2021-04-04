@@ -3,7 +3,7 @@
 // use std::boxed::Box as Box_;
 // use std::mem::transmute;
 
-use super::Widget;
+use super::Actor;
 use crate::prelude::*;
 use glib::signal::SignalHandlerId;
 use std::fmt;
@@ -49,12 +49,12 @@ impl Default for Label {
     }
 }
 
-impl UxObject for Label {}
+impl Object for Label {}
 impl Is<Label> for Label {}
 
 impl AsRef<Label> for Label {
     fn as_ref(&self) -> &Label {
-        unimplemented!()
+        self
     }
 }
 

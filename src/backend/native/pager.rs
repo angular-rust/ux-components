@@ -3,7 +3,7 @@
 // use std::boxed::Box as Box_;
 // use std::mem::transmute;
 
-use super::{Stack, Widget};
+use super::{Stack, Actor};
 use crate::prelude::*;
 use glib::signal::SignalHandlerId;
 use std::fmt;
@@ -26,12 +26,12 @@ impl Default for Pager {
     }
 }
 
-impl UxObject for Pager {}
+impl Object for Pager {}
 impl Is<Pager> for Pager {}
 
 impl AsRef<Pager> for Pager {
     fn as_ref(&self) -> &Pager {
-        unimplemented!()
+        self
     }
 }
 

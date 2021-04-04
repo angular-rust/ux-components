@@ -47,12 +47,12 @@ impl Default for Adjustment {
     }
 }
 
-impl UxObject for Adjustment {}
+impl Object for Adjustment {}
 impl Is<Adjustment> for Adjustment {}
 
 impl AsRef<Adjustment> for Adjustment {
     fn as_ref(&self) -> &Adjustment {
-        unimplemented!()
+        self
     }
 }
 

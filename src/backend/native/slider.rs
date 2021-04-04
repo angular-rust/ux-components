@@ -3,7 +3,7 @@
 // use std::boxed::Box as Box_;
 // use std::mem::transmute;
 
-use super::Widget;
+use super::Actor;
 use crate::prelude::*;
 use glib::signal::SignalHandlerId;
 use std::fmt;
@@ -33,12 +33,12 @@ impl Default for Slider {
     }
 }
 
-impl UxObject for Slider {}
+impl Object for Slider {}
 impl Is<Slider> for Slider {}
 
 impl AsRef<Slider> for Slider {
     fn as_ref(&self) -> &Slider {
-        unimplemented!()
+        self
     }
 }
 
