@@ -10,7 +10,15 @@ use std::fmt;
 
 // @extends Widget, clutter::Actor;
 #[derive(Clone, Debug)]
-pub struct Expander {}
+pub struct Expander {
+    pub label: Option<clutter::Actor>,
+    pub arrow: Option<clutter::Actor>,
+    pub spacing: f64,
+    pub timeline: Option<clutter::Timeline>,
+    pub progress: u64,
+    pub expanded: bool,
+    pub child: Option<clutter::Actor>,
+}
 
 impl Expander {
     pub fn new() -> Expander {
@@ -45,10 +53,30 @@ impl AsRef<Expander> for Expander {
 pub const NONE_EXPANDER: Option<&Expander> = None;
 
 pub trait ExpanderExt: 'static {
+    /// get_expanded:
+    /// @expander: a #Expander
+    ///
+    /// Get the current state of the expander (the value of #Expander:expanded)
+    ///
+    /// Returns: #true if the expander is open, #false if it is closed
+    ///
     fn get_expanded(&self) -> bool;
 
+    /// set_expanded:
+    /// @expander: A #Expander
+    /// @expanded: the state of the expander to set
+    ///
+    /// Set the state (the #Expander:expanded property) of the expander.
+    /// This will cause the expander to open or close.
+    ///
     fn set_expanded(&self, expanded: bool);
 
+    /// set_label:
+    /// @expander: A #Expander
+    /// @label: string to set as the expander label
+    ///
+    /// Sets the text displayed as the title of the expander
+    ///
     fn set_label(&self, label: &str);
 
     fn get_property_label(&self) -> Option<String>;
@@ -61,27 +89,45 @@ pub trait ExpanderExt: 'static {
 }
 
 impl<O: Is<Expander>> ExpanderExt for O {
+    /// get_expanded:
+    /// @expander: a #Expander
+    ///
+    /// Get the current state of the expander (the value of #Expander:expanded)
+    ///
+    /// Returns: #true if the expander is open, #false if it is closed
+    ///
     fn get_expanded(&self) -> bool {
-        // unsafe {
-        //     from_glib(ffi::expander_get_expanded(
-        //         self.as_ref().to_glib_none().0,
-        //     ))
-        // }
-        unimplemented!()
+        let expander = self.as_ref();
+        expander.expanded
     }
 
+    /// set_expanded:
+    /// @expander: A #Expander
+    /// @expanded: the state of the expander to set
+    ///
+    /// Set the state (the #Expander:expanded property) of the expander.
+    /// This will cause the expander to open or close.
+    ///
     fn set_expanded(&self, expanded: bool) {
-        // unsafe {
-        //     ffi::expander_set_expanded(self.as_ref().to_glib_none().0, expanded.to_glib());
-        // }
-        unimplemented!()
+        let expander = self.as_ref();
+        
+        if expander.expanded != expanded {
+            // expander.expanded = expanded;
+
+            // expander.update();
+            // g_object_notify (G_OBJECT (expander), "expanded");
+        }
     }
 
+    /// set_label:
+    /// @expander: A #Expander
+    /// @label: string to set as the expander label
+    ///
+    /// Sets the text displayed as the title of the expander
+    ///
     fn set_label(&self, label: &str) {
-        // unsafe {
-        //     ffi::expander_set_label(self.as_ref().to_glib_none().0, label.to_glib_none().0);
-        // }
-        unimplemented!()
+        let expander = self.as_ref();
+        // clutter_text_set_text (CLUTTER_TEXT (expander.label), label);
     }
 
     fn get_property_label(&self) -> Option<String> {
