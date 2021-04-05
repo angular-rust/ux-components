@@ -3,7 +3,7 @@
 // use std::boxed::Box as Box_;
 // use std::mem::transmute;
 
-use super::{Adjustment, Actor};
+use super::{Adjustment, Orientation, Widget};
 use crate::prelude::*;
 use glib::signal::SignalHandlerId;
 use std::fmt;
@@ -65,11 +65,11 @@ pub const NONE_SCROLL_BAR: Option<&ScrollBar> = None;
 pub trait ScrollBarExt: 'static {
     fn get_adjustment(&self) -> Option<Adjustment>;
 
-    //fn get_orientation(&self) -> /*Ignored*/Orientation;
+    fn get_orientation(&self) -> Orientation;
 
-    // fn set_adjustment<P: Is<Adjustment>>(&self, adjustment: &P);
+    fn set_adjustment<P: Is<Adjustment>>(&self, adjustment: &P);
 
-    //fn set_orientation(&self, orientation: /*Ignored*/Orientation);
+    fn set_orientation(&self, orientation: Orientation);
 
     fn connect_scroll_start<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
 
@@ -90,22 +90,25 @@ impl<O: Is<ScrollBar>> ScrollBarExt for O {
         unimplemented!()
     }
 
-    //fn get_orientation(&self) -> /*Ignored*/Orientation {
-    //    unsafe { TODO: call ffi:scroll_bar_get_orientation() }
-    //}
+    fn get_orientation(&self) -> Orientation {
+        //    unsafe { TODO: call ffi:scroll_bar_get_orientation() }
+        unimplemented!()
+    }
 
-    // fn set_adjustment<P: Is<Adjustment>>(&self, adjustment: &P) {
-    //     unsafe {
-    //         ffi::scroll_bar_set_adjustment(
-    //             self.as_ref().to_glib_none().0,
-    //             adjustment.as_ref().to_glib_none().0,
-    //         );
-    //     }
-    // }
+    fn set_adjustment<P: Is<Adjustment>>(&self, adjustment: &P) {
+        // unsafe {
+        //     ffi::scroll_bar_set_adjustment(
+        //         self.as_ref().to_glib_none().0,
+        //         adjustment.as_ref().to_glib_none().0,
+        //     );
+        // }
+        unimplemented!()
+    }
 
-    //fn set_orientation(&self, orientation: /*Ignored*/Orientation) {
-    //    unsafe { TODO: call ffi:scroll_bar_set_orientation() }
-    //}
+    fn set_orientation(&self, orientation: Orientation) {
+        //    unsafe { TODO: call ffi:scroll_bar_set_orientation() }
+        unimplemented!()
+    }
 
     fn connect_scroll_start<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         // unsafe extern "C" fn scroll_start_trampoline<P, F: Fn(&P) + 'static>(

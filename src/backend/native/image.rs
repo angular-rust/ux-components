@@ -4,7 +4,7 @@
 // use std::mem::transmute;
 // use std::ptr;
 
-use super::Actor;
+use super::{ImageScaleMode, Widget};
 use crate::prelude::*;
 use glib::signal::SignalHandlerId;
 use std::fmt;
@@ -46,7 +46,7 @@ impl AsRef<Image> for Image {
 pub const NONE_IMAGE: Option<&Image> = None;
 
 pub trait ImageExt: 'static {
-    //fn animate_scale_mode(&self, mode: libc::c_ulong, duration: u32, scale_mode: /*Ignored*/ImageScaleMode);
+    fn animate_scale_mode(&self, mode: u64, duration: u32, scale_mode: ImageScaleMode);
 
     fn clear(&self);
 
@@ -58,7 +58,7 @@ pub trait ImageExt: 'static {
 
     fn get_scale_height_threshold(&self) -> u32;
 
-    //fn get_scale_mode(&self) -> /*Ignored*/ImageScaleMode;
+    fn get_scale_mode(&self) -> ImageScaleMode;
 
     fn get_scale_width_threshold(&self) -> u32;
 
@@ -72,7 +72,7 @@ pub trait ImageExt: 'static {
 
     //fn set_from_cogl_texture(&self, texture: /*Ignored*/cogl::Handle) -> bool;
 
-    //fn set_from_data(&self, data: &[u8], pixel_format: /*Ignored*/cogl::PixelFormat, width: i32, height: i32, rowstride: i32) -> Result<(), glib::Error>;
+    //fn set_from_data(&self, data: &[u8], pixel_format: cogl::PixelFormat, width: i32, height: i32, rowstride: i32) -> Result<(), glib::Error>;
 
     fn set_from_file(&self, filename: &str) -> Result<(), glib::Error>;
 
@@ -89,7 +89,7 @@ pub trait ImageExt: 'static {
 
     fn set_scale_height_threshold(&self, pixels: u32);
 
-    //fn set_scale_mode(&self, mode: /*Ignored*/ImageScaleMode);
+    fn set_scale_mode(&self, mode: ImageScaleMode);
 
     fn set_scale_width_threshold(&self, pixels: u32);
 
@@ -137,9 +137,10 @@ pub trait ImageExt: 'static {
 }
 
 impl<O: Is<Image>> ImageExt for O {
-    //fn animate_scale_mode(&self, mode: libc::c_ulong, duration: u32, scale_mode: /*Ignored*/ImageScaleMode) {
-    //    unsafe { TODO: call ffi:image_animate_scale_mode() }
-    //}
+    fn animate_scale_mode(&self, mode: u64, duration: u32, scale_mode: ImageScaleMode) {
+        //    unsafe { TODO: call ffi:image_animate_scale_mode() }
+        unimplemented!()
+    }
 
     fn clear(&self) {
         // unsafe {
@@ -176,9 +177,10 @@ impl<O: Is<Image>> ImageExt for O {
         unimplemented!()
     }
 
-    //fn get_scale_mode(&self) -> /*Ignored*/ImageScaleMode {
-    //    unsafe { TODO: call ffi:image_get_scale_mode() }
-    //}
+    fn get_scale_mode(&self) -> ImageScaleMode {
+        //    unsafe { TODO: call ffi:image_get_scale_mode() }
+        unimplemented!()
+    }
 
     fn get_scale_width_threshold(&self) -> u32 {
         // unsafe { ffi::image_get_scale_width_threshold(self.as_ref().to_glib_none().0) }
@@ -209,7 +211,7 @@ impl<O: Is<Image>> ImageExt for O {
     //    unsafe { TODO: call ffi:image_set_from_cogl_texture() }
     //}
 
-    //fn set_from_data(&self, data: &[u8], pixel_format: /*Ignored*/cogl::PixelFormat, width: i32, height: i32, rowstride: i32) -> Result<(), glib::Error> {
+    //fn set_from_data(&self, data: &[u8], pixel_format: cogl::PixelFormat, width: i32, height: i32, rowstride: i32) -> Result<(), glib::Error> {
     //    unsafe { TODO: call ffi:image_set_from_data() }
     //}
 
@@ -275,9 +277,10 @@ impl<O: Is<Image>> ImageExt for O {
         unimplemented!()
     }
 
-    //fn set_scale_mode(&self, mode: /*Ignored*/ImageScaleMode) {
-    //    unsafe { TODO: call ffi:image_set_scale_mode() }
-    //}
+    fn set_scale_mode(&self, mode: ImageScaleMode) {
+        //    unsafe { TODO: call ffi:image_set_scale_mode() }
+        unimplemented!()
+    }
 
     fn set_scale_width_threshold(&self, pixels: u32) {
         // unsafe {

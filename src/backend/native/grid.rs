@@ -3,7 +3,7 @@
 // use std::boxed::Box as Box_;
 // use std::mem::transmute;
 
-use super::Actor;
+use super::{Align, Orientation, Widget};
 use crate::prelude::*;
 use glib::signal::SignalHandlerId;
 use std::fmt;
@@ -45,9 +45,9 @@ impl AsRef<Grid> for Grid {
 pub const NONE_GRID: Option<&Grid> = None;
 
 pub trait GridExt: 'static {
-    //fn get_child_x_align(&self) -> /*Ignored*/Align;
+    fn get_child_x_align(&self) -> Align;
 
-    //fn get_child_y_align(&self) -> /*Ignored*/Align;
+    fn get_child_y_align(&self) -> Align;
 
     fn get_column_spacing(&self) -> f32;
 
@@ -55,17 +55,17 @@ pub trait GridExt: 'static {
 
     fn get_homogenous_rows(&self) -> bool;
 
-    //fn get_line_alignment(&self) -> /*Ignored*/Align;
+    fn get_line_alignment(&self) -> Align;
 
     fn get_max_stride(&self) -> i32;
 
-    //fn get_orientation(&self) -> /*Ignored*/Orientation;
+    fn get_orientation(&self) -> Orientation;
 
     fn get_row_spacing(&self) -> f32;
 
-    //fn set_child_x_align(&self, value: /*Ignored*/Align);
+    fn set_child_x_align(&self, value: Align);
 
-    //fn set_child_y_align(&self, value: /*Ignored*/Align);
+    fn set_child_y_align(&self, value: Align);
 
     fn set_column_spacing(&self, value: f32);
 
@@ -73,11 +73,11 @@ pub trait GridExt: 'static {
 
     fn set_homogenous_rows(&self, value: bool);
 
-    //fn set_line_alignment(&self, value: /*Ignored*/Align);
+    fn set_line_alignment(&self, value: Align);
 
     fn set_max_stride(&self, value: i32);
 
-    //fn set_orientation(&self, orientation: /*Ignored*/Orientation);
+    fn set_orientation(&self, orientation: Orientation);
 
     fn set_row_spacing(&self, value: f32);
 
@@ -119,13 +119,15 @@ pub trait GridExt: 'static {
 }
 
 impl<O: Is<Grid>> GridExt for O {
-    //fn get_child_x_align(&self) -> /*Ignored*/Align {
-    //    unsafe { TODO: call ffi:grid_get_child_x_align() }
-    //}
+    fn get_child_x_align(&self) -> Align {
+        //    unsafe { TODO: call ffi:grid_get_child_x_align() }
+        unimplemented!()
+    }
 
-    //fn get_child_y_align(&self) -> /*Ignored*/Align {
-    //    unsafe { TODO: call ffi:grid_get_child_y_align() }
-    //}
+    fn get_child_y_align(&self) -> Align {
+        //    unsafe { TODO: call ffi:grid_get_child_y_align() }
+        unimplemented!()
+    }
 
     fn get_column_spacing(&self) -> f32 {
         // unsafe { ffi::grid_get_column_spacing(self.as_ref().to_glib_none().0) }
@@ -150,31 +152,35 @@ impl<O: Is<Grid>> GridExt for O {
         unimplemented!()
     }
 
-    //fn get_line_alignment(&self) -> /*Ignored*/Align {
-    //    unsafe { TODO: call ffi:grid_get_line_alignment() }
-    //}
+    fn get_line_alignment(&self) -> Align {
+        //    unsafe { TODO: call ffi:grid_get_line_alignment() }
+        unimplemented!()
+    }
 
     fn get_max_stride(&self) -> i32 {
         // unsafe { ffi::grid_get_max_stride(self.as_ref().to_glib_none().0) }
         unimplemented!()
     }
 
-    //fn get_orientation(&self) -> /*Ignored*/Orientation {
-    //    unsafe { TODO: call ffi:grid_get_orientation() }
-    //}
+    fn get_orientation(&self) -> Orientation {
+        //    unsafe { TODO: call ffi:grid_get_orientation() }
+        unimplemented!()
+    }
 
     fn get_row_spacing(&self) -> f32 {
         // unsafe { ffi::grid_get_row_spacing(self.as_ref().to_glib_none().0) }
         unimplemented!()
     }
 
-    //fn set_child_x_align(&self, value: /*Ignored*/Align) {
-    //    unsafe { TODO: call ffi:grid_set_child_x_align() }
-    //}
+    fn set_child_x_align(&self, value: Align) {
+        //    unsafe { TODO: call ffi:grid_set_child_x_align() }
+        unimplemented!()
+    }
 
-    //fn set_child_y_align(&self, value: /*Ignored*/Align) {
-    //    unsafe { TODO: call ffi:grid_set_child_y_align() }
-    //}
+    fn set_child_y_align(&self, value: Align) {
+        //    unsafe { TODO: call ffi:grid_set_child_y_align() }
+        unimplemented!()
+    }
 
     fn set_column_spacing(&self, value: f32) {
         // unsafe {
@@ -197,9 +203,10 @@ impl<O: Is<Grid>> GridExt for O {
         unimplemented!()
     }
 
-    //fn set_line_alignment(&self, value: /*Ignored*/Align) {
-    //    unsafe { TODO: call ffi:grid_set_line_alignment() }
-    //}
+    fn set_line_alignment(&self, value: Align) {
+        //    unsafe { TODO: call ffi:grid_set_line_alignment() }
+        unimplemented!()
+    }
 
     fn set_max_stride(&self, value: i32) {
         // unsafe {
@@ -208,9 +215,10 @@ impl<O: Is<Grid>> GridExt for O {
         unimplemented!()
     }
 
-    //fn set_orientation(&self, orientation: /*Ignored*/Orientation) {
-    //    unsafe { TODO: call ffi:grid_set_orientation() }
-    //}
+    fn set_orientation(&self, orientation: Orientation) {
+        //    unsafe { TODO: call ffi:grid_set_orientation() }
+        unimplemented!()
+    }
 
     fn set_row_spacing(&self, value: f32) {
         // unsafe {

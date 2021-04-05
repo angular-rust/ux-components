@@ -1,6 +1,6 @@
 #![allow(unused_variables)]
 
-use super::{Action, Actor};
+use super::{Action, Widget};
 use crate::prelude::*;
 use std::fmt;
 

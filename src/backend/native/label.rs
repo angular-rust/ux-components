@@ -3,7 +3,7 @@
 // use std::boxed::Box as Box_;
 // use std::mem::transmute;
 
-use super::Actor;
+use super::{Align, Widget};
 use crate::prelude::*;
 use glib::signal::SignalHandlerId;
 use std::fmt;
@@ -61,7 +61,7 @@ impl AsRef<Label> for Label {
 pub const NONE_LABEL: Option<&Label> = None;
 
 pub trait LabelExt: 'static {
-    //fn get_alignment(&self) -> (/*Ignored*/Align, /*Ignored*/Align);
+    fn get_alignment(&self) -> (Align, Align);
 
     fn get_clutter_text(&self) -> Option<clutter::Actor>;
 
@@ -75,11 +75,11 @@ pub trait LabelExt: 'static {
 
     fn get_use_markup(&self) -> bool;
 
-    //fn get_x_align(&self) -> /*Ignored*/Align;
+    fn get_x_align(&self) -> Align;
 
-    //fn get_y_align(&self) -> /*Ignored*/Align;
+    fn get_y_align(&self) -> Align;
 
-    //fn set_alignment(&self, x_align: /*Ignored*/Align, y_align: /*Ignored*/Align);
+    fn set_alignment(&self, x_align: Align, y_align: Align);
 
     fn set_fade_out(&self, fade: bool);
 
@@ -91,9 +91,9 @@ pub trait LabelExt: 'static {
 
     fn set_use_markup(&self, use_markup: bool);
 
-    //fn set_x_align(&self, align: /*Ignored*/Align);
+    fn set_x_align(&self, align: Align);
 
-    //fn set_y_align(&self, align: /*Ignored*/Align);
+    fn set_y_align(&self, align: Align);
 
     fn connect_property_clutter_text_notify<F: Fn(&Self) + 'static>(&self, f: F)
         -> SignalHandlerId;
@@ -115,9 +115,10 @@ pub trait LabelExt: 'static {
 }
 
 impl<O: Is<Label>> LabelExt for O {
-    //fn get_alignment(&self) -> (/*Ignored*/Align, /*Ignored*/Align) {
-    //    unsafe { TODO: call ffi:label_get_alignment() }
-    //}
+    fn get_alignment(&self) -> (Align, Align) {
+        //    unsafe { TODO: call ffi:label_get_alignment() }
+        unimplemented!()
+    }
 
     fn get_clutter_text(&self) -> Option<clutter::Actor> {
         // unsafe {
@@ -169,17 +170,20 @@ impl<O: Is<Label>> LabelExt for O {
         unimplemented!()
     }
 
-    //fn get_x_align(&self) -> /*Ignored*/Align {
-    //    unsafe { TODO: call ffi:label_get_x_align() }
-    //}
+    fn get_x_align(&self) -> Align {
+        //    unsafe { TODO: call ffi:label_get_x_align() }
+        unimplemented!()
+    }
 
-    //fn get_y_align(&self) -> /*Ignored*/Align {
-    //    unsafe { TODO: call ffi:label_get_y_align() }
-    //}
+    fn get_y_align(&self) -> Align {
+        //    unsafe { TODO: call ffi:label_get_y_align() }
+        unimplemented!()
+    }
 
-    //fn set_alignment(&self, x_align: /*Ignored*/Align, y_align: /*Ignored*/Align) {
-    //    unsafe { TODO: call ffi:label_set_alignment() }
-    //}
+    fn set_alignment(&self, x_align: Align, y_align: Align) {
+        //    unsafe { TODO: call ffi:label_set_alignment() }
+        unimplemented!()
+    }
 
     fn set_fade_out(&self, fade: bool) {
         // unsafe {
@@ -219,13 +223,15 @@ impl<O: Is<Label>> LabelExt for O {
         unimplemented!()
     }
 
-    //fn set_x_align(&self, align: /*Ignored*/Align) {
-    //    unsafe { TODO: call ffi:label_set_x_align() }
-    //}
+    fn set_x_align(&self, align: Align) {
+        //    unsafe { TODO: call ffi:label_set_x_align() }
+        unimplemented!()
+    }
 
-    //fn set_y_align(&self, align: /*Ignored*/Align) {
-    //    unsafe { TODO: call ffi:label_set_y_align() }
-    //}
+    fn set_y_align(&self, align: Align) {
+        //    unsafe { TODO: call ffi:label_set_y_align() }
+        unimplemented!()
+    }
 
     fn connect_property_clutter_text_notify<F: Fn(&Self) + 'static>(
         &self,

@@ -4,7 +4,7 @@
 // use std::mem::transmute;
 // use Orientation;
 
-use super::Actor;
+use super::{Align, Orientation, Widget};
 use crate::prelude::*;
 use glib::signal::SignalHandlerId;
 use std::fmt;
@@ -23,16 +23,10 @@ impl BoxLayout {
         unimplemented!()
     }
 
-    //pub fn with_orientation(orientation: /*Ignored*/Orientation) -> BoxLayout {
-    //    unsafe { TODO: call ffi:box_layout_new_with_orientation() }
-    //}
-
-    // pub fn with_orientation(orientation: /*Ignored*/ Orientation) -> BoxLayout {
-    //     unimplemented!(); // TODO: complete it
-
-    //     // assert_initialized_main_thread!();
-    //     // unsafe { from_glib_full(ffi::box_layout_new_with_orientation()) }
-    // }
+    pub fn with_orientation(orientation: Orientation) -> BoxLayout {
+        //    unsafe { TODO: call ffi:box_layout_new_with_orientation() }
+        unimplemented!()
+    }
 }
 
 impl Default for BoxLayout {
@@ -55,27 +49,27 @@ pub const NONE_BOX_LAYOUT: Option<&BoxLayout> = None;
 pub trait BoxLayoutExt: 'static {
     fn child_get_expand<P: Is<clutter::Actor>>(&self, child: &P) -> bool;
 
-    //fn child_get_x_align<P: Is<clutter::Actor>>(&self, child: &P) -> /*Ignored*/Align;
+    fn child_get_x_align<P: Is<clutter::Actor>>(&self, child: &P) -> Align;
 
     fn child_get_x_fill<P: Is<clutter::Actor>>(&self, child: &P) -> bool;
 
-    //fn child_get_y_align<P: Is<clutter::Actor>>(&self, child: &P) -> /*Ignored*/Align;
+    fn child_get_y_align<P: Is<clutter::Actor>>(&self, child: &P) -> Align;
 
     fn child_get_y_fill<P: Is<clutter::Actor>>(&self, child: &P) -> bool;
 
     fn child_set_expand<P: Is<clutter::Actor>>(&self, child: &P, expand: bool);
 
-    //fn child_set_x_align<P: Is<clutter::Actor>>(&self, child: &P, x_align: /*Ignored*/Align);
+    fn child_set_x_align<P: Is<clutter::Actor>>(&self, child: &P, x_align: Align);
 
     fn child_set_x_fill<P: Is<clutter::Actor>>(&self, child: &P, x_fill: bool);
 
-    //fn child_set_y_align<P: Is<clutter::Actor>>(&self, child: &P, y_align: /*Ignored*/Align);
+    fn child_set_y_align<P: Is<clutter::Actor>>(&self, child: &P, y_align: Align);
 
     fn child_set_y_fill<P: Is<clutter::Actor>>(&self, child: &P, y_fill: bool);
 
     fn get_enable_animations(&self) -> bool;
 
-    //fn get_orientation(&self) -> /*Ignored*/Orientation;
+    fn get_orientation(&self) -> Orientation;
 
     fn get_scroll_to_focused(&self) -> bool;
 
@@ -83,11 +77,11 @@ pub trait BoxLayoutExt: 'static {
 
     fn insert_actor<P: Is<clutter::Actor>>(&self, actor: &P, position: i32);
 
-    //fn insert_actor_with_properties<P: Is<clutter::Actor>>(&self, actor: &P, position: i32, first_property: &str, : /*Unknown conversion*//*Unimplemented*/Fundamental: VarArgs);
+    //fn insert_actor_with_properties<P: Is<clutter::Actor>>(&self, actor: &P, position: i32, first_property: &str, : /*Unknown conversion*/Fundamental: VarArgs);
 
     fn set_enable_animations(&self, enable_animations: bool);
 
-    //fn set_orientation(&self, orientation: /*Ignored*/Orientation);
+    fn set_orientation(&self, orientation: Orientation);
 
     fn set_scroll_to_focused(&self, scroll_to_focused: bool);
 
@@ -119,9 +113,10 @@ impl<O: Is<BoxLayout>> BoxLayoutExt for O {
         unimplemented!()
     }
 
-    //fn child_get_x_align<P: Is<clutter::Actor>>(&self, child: &P) -> /*Ignored*/Align {
-    //    unsafe { TODO: call ffi:box_layout_child_get_x_align() }
-    //}
+    fn child_get_x_align<P: Is<clutter::Actor>>(&self, child: &P) -> Align {
+        //    unsafe { TODO: call ffi:box_layout_child_get_x_align() }
+        unimplemented!()
+    }
 
     fn child_get_x_fill<P: Is<clutter::Actor>>(&self, child: &P) -> bool {
         // unsafe {
@@ -133,9 +128,10 @@ impl<O: Is<BoxLayout>> BoxLayoutExt for O {
         unimplemented!()
     }
 
-    //fn child_get_y_align<P: Is<clutter::Actor>>(&self, child: &P) -> /*Ignored*/Align {
-    //    unsafe { TODO: call ffi:box_layout_child_get_y_align() }
-    //}
+    fn child_get_y_align<P: Is<clutter::Actor>>(&self, child: &P) -> Align {
+        //    unsafe { TODO: call ffi:box_layout_child_get_y_align() }
+        unimplemented!()
+    }
 
     fn child_get_y_fill<P: Is<clutter::Actor>>(&self, child: &P) -> bool {
         // unsafe {
@@ -158,9 +154,9 @@ impl<O: Is<BoxLayout>> BoxLayoutExt for O {
         unimplemented!()
     }
 
-    //fn child_set_x_align<P: Is<clutter::Actor>>(&self, child: &P, x_align: /*Ignored*/Align) {
-    //    unsafe { TODO: call ffi:box_layout_child_set_x_align() }
-    //}
+    fn child_set_x_align<P: Is<clutter::Actor>>(&self, child: &P, x_align: Align) {
+        //    unsafe { TODO: call ffi:box_layout_child_set_x_align() }
+    }
 
     fn child_set_x_fill<P: Is<clutter::Actor>>(&self, child: &P, x_fill: bool) {
         // unsafe {
@@ -173,9 +169,9 @@ impl<O: Is<BoxLayout>> BoxLayoutExt for O {
         unimplemented!()
     }
 
-    //fn child_set_y_align<P: Is<clutter::Actor>>(&self, child: &P, y_align: /*Ignored*/Align) {
-    //    unsafe { TODO: call ffi:box_layout_child_set_y_align() }
-    //}
+    fn child_set_y_align<P: Is<clutter::Actor>>(&self, child: &P, y_align: Align) {
+        //    unsafe { TODO: call ffi:box_layout_child_set_y_align() }
+    }
 
     fn child_set_y_fill<P: Is<clutter::Actor>>(&self, child: &P, y_fill: bool) {
         // unsafe {
@@ -197,9 +193,10 @@ impl<O: Is<BoxLayout>> BoxLayoutExt for O {
         unimplemented!()
     }
 
-    //fn get_orientation(&self) -> /*Ignored*/Orientation {
-    //    unsafe { TODO: call ffi:box_layout_get_orientation() }
-    //}
+    fn get_orientation(&self) -> Orientation {
+        //    unsafe { TODO: call ffi:box_layout_get_orientation() }
+        unimplemented!()
+    }
 
     fn get_scroll_to_focused(&self) -> bool {
         // unsafe {
@@ -226,7 +223,7 @@ impl<O: Is<BoxLayout>> BoxLayoutExt for O {
         unimplemented!()
     }
 
-    //fn insert_actor_with_properties<P: Is<clutter::Actor>>(&self, actor: &P, position: i32, first_property: &str, : /*Unknown conversion*//*Unimplemented*/Fundamental: VarArgs) {
+    //fn insert_actor_with_properties<P: Is<clutter::Actor>>(&self, actor: &P, position: i32, first_property: &str, : /*Unknown conversion*/Fundamental: VarArgs) {
     //    unsafe { TODO: call ffi:box_layout_insert_actor_with_properties() }
     //}
 
@@ -240,9 +237,10 @@ impl<O: Is<BoxLayout>> BoxLayoutExt for O {
         unimplemented!()
     }
 
-    //fn set_orientation(&self, orientation: /*Ignored*/Orientation) {
-    //    unsafe { TODO: call ffi:box_layout_set_orientation() }
-    //}
+    fn set_orientation(&self, orientation: Orientation) {
+        //    unsafe { TODO: call ffi:box_layout_set_orientation() }
+        unimplemented!()
+    }
 
     fn set_scroll_to_focused(&self, scroll_to_focused: bool) {
         // unsafe {

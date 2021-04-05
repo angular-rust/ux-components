@@ -3,7 +3,7 @@
 // use std::boxed::Box as Box_;
 // use std::mem::transmute;
 
-use super::Actor;
+use super::{ScrollPolicy, Widget};
 use crate::prelude::*;
 use glib::signal::SignalHandlerId;
 use std::fmt;
@@ -49,15 +49,15 @@ pub trait ScrollViewExt: 'static {
 
     fn get_enable_mouse_scrolling(&self) -> bool;
 
-    //fn get_scroll_policy(&self) -> /*Ignored*/ScrollPolicy;
+    fn get_scroll_policy(&self) -> ScrollPolicy;
 
-    //fn get_scroll_visibility(&self) -> /*Ignored*/ScrollPolicy;
+    fn get_scroll_visibility(&self) -> ScrollPolicy;
 
     fn set_enable_mouse_scrolling(&self, enabled: bool);
 
-    //fn set_scroll_policy(&self, policy: /*Ignored*/ScrollPolicy);
+    fn set_scroll_policy(&self, policy: ScrollPolicy);
 
-    //fn set_scroll_visibility(&self, visibility: /*Ignored*/ScrollPolicy);
+    fn set_scroll_visibility(&self, visibility: ScrollPolicy);
 
     fn connect_property_enable_mouse_scrolling_notify<F: Fn(&Self) + 'static>(
         &self,
@@ -95,13 +95,15 @@ impl<O: Is<ScrollView>> ScrollViewExt for O {
         unimplemented!()
     }
 
-    //fn get_scroll_policy(&self) -> /*Ignored*/ScrollPolicy {
-    //    unsafe { TODO: call ffi:scroll_view_get_scroll_policy() }
-    //}
+    fn get_scroll_policy(&self) -> ScrollPolicy {
+        //    unsafe { TODO: call ffi:scroll_view_get_scroll_policy() }
+        unimplemented!()
+    }
 
-    //fn get_scroll_visibility(&self) -> /*Ignored*/ScrollPolicy {
-    //    unsafe { TODO: call ffi:scroll_view_get_scroll_visibility() }
-    //}
+    fn get_scroll_visibility(&self) -> ScrollPolicy {
+        //    unsafe { TODO: call ffi:scroll_view_get_scroll_visibility() }
+        unimplemented!()
+    }
 
     fn set_enable_mouse_scrolling(&self, enabled: bool) {
         // unsafe {
@@ -113,13 +115,15 @@ impl<O: Is<ScrollView>> ScrollViewExt for O {
         unimplemented!()
     }
 
-    //fn set_scroll_policy(&self, policy: /*Ignored*/ScrollPolicy) {
-    //    unsafe { TODO: call ffi:scroll_view_set_scroll_policy() }
-    //}
+    fn set_scroll_policy(&self, policy: ScrollPolicy) {
+        //    unsafe { TODO: call ffi:scroll_view_set_scroll_policy() }
+        unimplemented!()
+    }
 
-    //fn set_scroll_visibility(&self, visibility: /*Ignored*/ScrollPolicy) {
-    //    unsafe { TODO: call ffi:scroll_view_set_scroll_visibility() }
-    //}
+    fn set_scroll_visibility(&self, visibility: ScrollPolicy) {
+        //    unsafe { TODO: call ffi:scroll_view_set_scroll_visibility() }
+        unimplemented!()
+    }
 
     fn connect_property_enable_mouse_scrolling_notify<F: Fn(&Self) + 'static>(
         &self,

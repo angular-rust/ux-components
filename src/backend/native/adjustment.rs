@@ -9,7 +9,33 @@ use glib::signal::SignalHandlerId;
 use std::fmt;
 
 #[derive(Clone, Debug)]
-pub struct Adjustment {}
+pub struct Adjustment {
+    // Do not sanity-check values while constructing, not all properties may be set yet.
+    pub is_constructing: bool,
+    pub clamp_value: bool,
+    pub elastic: bool,
+
+    pub lower: f64,
+    pub upper: f64,
+    pub value: f64,
+    pub step_increment: f64,
+    pub page_increment: f64,
+    pub page_size: f64,
+
+    // For signal emission/notification
+    pub lower_source: u32,
+    pub upper_source: u32,
+    pub value_source: u32,
+    pub step_inc_source: u32,
+    pub page_inc_source: u32,
+    pub page_size_source: u32,
+    pub changed_source: u32,
+
+    // For interpolation
+    pub interpolation: clutter::Timeline,
+    pub old_position: f64,
+    pub new_position: f64,
+}
 
 impl Adjustment {
     pub fn new() -> Adjustment {
@@ -39,6 +65,157 @@ impl Adjustment {
         // }
         unimplemented!()
     }
+
+    /// set_lower:
+    /// @adjustment: A #Adjustment
+    /// @lower: A #gdouble
+    ///
+    /// Set the value of the #Adjustment:lower property.
+    ///
+    fn set_lower(&self, lower: f64) -> bool {
+        if self.lower != lower {
+            // self.lower = lower;
+
+            // adjustment_emit_changed (adjustment);
+
+            // if !self.lower_source {
+            //     self.lower_source =
+            //     g_idle_add_full (CLUTTER_PRIORITY_REDRAW,
+            //                     (GSourceFunc)adjustment_lower_notify_cb,
+            //                     adjustment,
+            //                     None);
+            // }
+
+            // /* Defer clamp until after construction. */
+            // if !self.is_constructing && self.clamp_value {
+            //     self.clamp_page(self.lower, self.upper);
+            // }
+
+            // return true;
+        }
+
+        false
+    }
+
+    /// set_upper:
+    /// @adjustment: A #Adjustment
+    /// @upper: A #gdouble
+    ///
+    /// Set the value of the #Adjustment:upper property.
+    ///
+    fn set_upper(&self, upper: f64) -> bool {
+        let adjustment = self.as_ref();
+
+        if self.upper != upper {
+            // self.upper = upper;
+
+            // adjustment_emit_changed (adjustment);
+
+            // if !self.upper_source {
+            //     self.upper_source =
+            //     g_idle_add_full (CLUTTER_PRIORITY_REDRAW,
+            //                     (GSourceFunc)adjustment_upper_notify_cb,
+            //                     adjustment,
+            //                     None);
+            // }
+
+            // // Defer clamp until after construction.
+            // if !self.is_constructing && self.clamp_value {
+            //     adjustment_clamp_page (adjustment, self.lower, self.upper);
+            // }
+
+            // return true;
+        }
+
+        false
+    }
+    
+    /// set_step_increment:
+    /// @adjustment: A #Adjustment
+    /// @increment: A #gdouble
+    ///
+    /// Set the value of the #Adjustment:step-increment property.
+    ///
+    fn set_step_increment(&self, increment: f64) -> bool {
+        let adjustment = self.as_ref();
+
+        if self.step_increment != increment {
+            // self.step_increment = increment;
+
+            // adjustment_emit_changed (adjustment);
+
+            // if !self.step_inc_source {
+            //     self.step_inc_source =
+            //     g_idle_add_full (CLUTTER_PRIORITY_REDRAW,
+            //                     (GSourceFunc)adjustment_step_inc_notify_cb,
+            //                     adjustment,
+            //                     None);
+            // }
+
+            // return true;
+        }
+
+        false
+    }
+
+    /// set_page_size:
+    /// @adjustment: A #Adjustment
+    /// @page_size: A #gdouble
+    ///
+    /// Set the #Adjustment:page-size property.
+    ///
+    fn set_page_size(&self, page_size: f64) -> bool {
+        let adjustment = self.as_ref();
+
+        if self.page_size != page_size {
+            // self.page_size = page_size;
+
+            // adjustment_emit_changed (adjustment);
+
+            // if !self.page_size_source {
+            //     self.page_size_source =
+            //     g_idle_add_full (CLUTTER_PRIORITY_REDRAW,
+            //                     (GSourceFunc)adjustment_page_size_notify_cb,
+            //                     adjustment,
+            //                     None);
+            // }
+
+            // // Well explicitely clamp after construction.
+            // if !self.is_constructing && self.clamp_value {
+            //         adjustment_clamp_page (adjustment, self.lower, self.upper);
+            // }
+
+            // return true;
+        }
+
+        false
+    }
+
+    /// set_page_increment:
+    /// @adjustment: A #Adjustment
+    /// @increment: A #gdouble
+    ///
+    /// Set the value of the #Adjustment:page-increment property.
+    ///
+    fn set_page_increment(&self, increment: f64) -> bool {
+        // if self.page_increment != increment {
+        //     self.page_increment = increment;
+
+        //     adjustment_emit_changed (adjustment);
+
+        //     if !self.page_inc_source {
+        //         self.page_inc_source =
+        //         g_idle_add_full (CLUTTER_PRIORITY_REDRAW,
+        //                         (GSourceFunc)mx_adjustment_page_inc_notify_cb,
+        //                         adjustment,
+        //                         None);
+        //     }
+
+        //     return true;
+        // }
+
+        false
+    }
 }
 
 impl Default for Adjustment {
@@ -59,44 +236,188 @@ impl AsRef<Adjustment> for Adjustment {
 pub const NONE_ADJUSTMENT: Option<&Adjustment> = None;
 
 pub trait AdjustmentExt: 'static {
+    /// get_clamp_value:
+    /// @adjustment: A #Adjustment
+    ///
+    /// Get the value of the #Adjustment:clamp-value property.
+    ///
+    /// Returns: the current value of the "clamp-value" property.
+    ///
     fn get_clamp_value(&self) -> bool;
 
+    /// get_elastic:
+    /// @adjustment: A #Adjustment
+    ///
+    /// Get the value of the #Adjustment:elastic property.
+    ///
+    /// Returns: the current value of the "elastic" property.
+    ///
     fn get_elastic(&self) -> bool;
 
+    /// get_lower:
+    /// @adjustment: A #Adjustment
+    ///
+    /// Get the value of the #Adjustment:lower property.
+    ///
+    /// Returns: the current value of the "lower" property.
+    ///
     fn get_lower(&self) -> f64;
 
+    /// get_page_increment:
+    /// @adjustment: A #Adjustment
+    ///
+    /// Get the value of the Adjustment:page-increment property.
+    ///
+    /// Returns: the current value of the "page-increment" property.
+    ///
     fn get_page_increment(&self) -> f64;
 
+    /// get_page_size:
+    /// @adjustment: A #Adjustment
+    ///
+    /// Get the value of the #Adjustment:page-size property.
+    ///
+    /// Returns: the current value of the "page-size" property.
+    ///
     fn get_page_size(&self) -> f64;
 
+    /// get_step_increment:
+    /// @adjustment: A #Adjustment
+    ///
+    /// Get the value of the Adjustment:step-increment property.
+    ///
+    /// Returns: the current value of the "step-increment" property.
+    ///
     fn get_step_increment(&self) -> f64;
 
+    /// get_upper:
+    /// @adjustment: A #Adjustment
+    ///
+    /// Get the value of the #Adjustment:upper property.
+    ///
+    /// Returns: the current value of the "upper" property.
+    ///
     fn get_upper(&self) -> f64;
 
+    /// get_value:
+    /// @adjustment: An #Adjustment
+    ///
+    /// Get the current value of the #Adjustment:value property
+    ///
+    /// Returns: the current value of the "value" property
+    ///
     fn get_value(&self) -> f64;
 
+    /// get_values:
+    /// @adjustment: A #Adjustment
+    /// @value: (out) (allow-none): A #gdouble
+    /// @lower: (out) (allow-none): A #gdouble
+    /// @upper: (out) (allow-none): A #gdouble
+    /// @step_increment: (out) (allow-none): A #gdouble
+    /// @page_increment: (out) (allow-none): A #gdouble
+    /// @page_size: (out) (allow-none): A #gdouble
+    ///
+    /// Get the various properties of Adjustment.
+    ///
     fn get_values(&self) -> (f64, f64, f64, f64, f64, f64);
 
-    // fn interpolate(&self, value: f64, duration: u32, mode: libc::c_ulong);
+    /// interpolate:
+    /// @adjustment: A #Adjustment
+    /// @value: A #gdouble
+    /// @duration: duration in milliseconds
+    /// @mode: A #ClutterAnimationMode
+    ///
+    /// Interpolate #Adjustment:value to the new value specified by @value, using
+    /// the mode and duration given.
+    ///
+    fn interpolate(&self, value: f64, duration: u32, mode: u64);
 
-    // fn interpolate_relative(&self, offset: f64, duration: u32, mode: libc::c_ulong);
+    /// interpolate_relative:
+    /// @adjustment: A #Adjustment
+    /// @offset: A #gdouble
+    /// @duration: duration in milliseconds
+    /// @mode: A #ClutterAnimationMode
+    ///
+    /// Interpolate the value of #Adjustment:value to a new value calculated from
+    /// @offset.
+    ///
+    fn interpolate_relative(&self, offset: f64, duration: u32, mode: u64);
 
+    /// set_clamp_value:
+    /// @adjustment: A #Adjustment
+    /// @clamp: a #gboolean
+    ///
+    /// Set the value of the #Adjustment:clamp-value property.
+    ///
     fn set_clamp_value(&self, clamp: bool);
 
+    /// set_elastic:
+    /// @adjustment: A #Adjustment
+    /// @elastic: A #gboolean
+    ///
+    /// Set the value of the #Adjustment:elastic property.
+    ///
     fn set_elastic(&self, elastic: bool);
 
+    /// set_lower:
+    /// @adjustment: A #Adjustment
+    /// @lower: A #gdouble
+    ///
+    /// Set the value of the #Adjustment:lower property.
+    ///
     fn set_lower(&self, lower: f64);
 
+    /// set_page_increment:
+    /// @adjustment: A #Adjustment
+    /// @increment: A #gdouble
+    ///
+    /// Set the value of the #Adjustment:page-increment property.
+    ///
     fn set_page_increment(&self, increment: f64);
 
+    /// set_page_size:
+    /// @adjustment: A #Adjustment
+    /// @page_size: A #gdouble
+    ///
+    /// Set the #Adjustment:page-size property.
+    ///
     fn set_page_size(&self, page_size: f64);
 
+    /// set_step_increment:
+    /// @adjustment: A #Adjustment
+    /// @increment: A #gdouble
+    ///
+    /// Set the value of the #Adjustment:step-increment property.
+    ///
     fn set_step_increment(&self, increment: f64);
 
+    /// set_upper:
+    /// @adjustment: A #Adjustment
+    /// @upper: A #gdouble
+    ///
+    /// Set the value of the #Adjustment:upper property.
+    ///
     fn set_upper(&self, upper: f64);
 
+    /// set_value:
+    /// @adjustment: An #Adjustment
+    /// @value: A #gdouble
+    ///
+    /// Set the value of the #Adjustment:value property.
+    ///
     fn set_value(&self, value: f64);
 
+    /// set_values:
+    /// @adjustment: A #Adjustment
+    /// @value: A #gdouble
+    /// @lower: A #gdouble
+    /// @upper: A #gdouble
+    /// @step_increment: A #gdouble
+    /// @page_increment: A #gdouble
+    /// @page_size: A #gdouble
+    ///
+    /// Set the various properties of Adjustment.
+    ///
     fn set_values(
         &self,
         value: f64,
@@ -137,169 +458,319 @@ pub trait AdjustmentExt: 'static {
 }
 
 impl<O: Is<Adjustment>> AdjustmentExt for O {
+    /// get_clamp_value:
+    /// @adjustment: A #Adjustment
+    ///
+    /// Get the value of the #Adjustment:clamp-value property.
+    ///
+    /// Returns: the current value of the "clamp-value" property.
+    ///
     fn get_clamp_value(&self) -> bool {
-        // unsafe {
-        //     from_glib(ffi::adjustment_get_clamp_value(
-        //         self.as_ref().to_glib_none().0,
-        //     ))
-        // }
-        unimplemented!()
+        let adjustment = self.as_ref();
+        adjustment.clamp_value
     }
 
+    /// get_elastic:
+    /// @adjustment: A #Adjustment
+    ///
+    /// Get the value of the #Adjustment:elastic property.
+    ///
+    /// Returns: the current value of the "elastic" property.
+    ///
     fn get_elastic(&self) -> bool {
-        // unsafe {
-        //     from_glib(ffi::adjustment_get_elastic(
-        //         self.as_ref().to_glib_none().0,
-        //     ))
-        // }
-        unimplemented!()
+        let adjustment = self.as_ref();
+        adjustment.elastic
     }
 
+    /// get_lower:
+    /// @adjustment: A #Adjustment
+    ///
+    /// Get the value of the #Adjustment:lower property.
+    ///
+    /// Returns: the current value of the "lower" property.
+    ///
     fn get_lower(&self) -> f64 {
-        // unsafe { ffi::adjustment_get_lower(self.as_ref().to_glib_none().0) }
-        unimplemented!()
+        let adjustment = self.as_ref();
+        adjustment.lower
     }
 
+    /// get_page_increment:
+    /// @adjustment: A #Adjustment
+    ///
+    /// Get the value of the Adjustment:page-increment property.
+    ///
+    /// Returns: the current value of the "page-increment" property.
+    ///
     fn get_page_increment(&self) -> f64 {
-        // unsafe { ffi::adjustment_get_page_increment(self.as_ref().to_glib_none().0) }
-        unimplemented!()
+        let adjustment = self.as_ref();
+        adjustment.page_increment
     }
 
+    /// get_page_size:
+    /// @adjustment: A #Adjustment
+    ///
+    /// Get the value of the #Adjustment:page-size property.
+    ///
+    /// Returns: the current value of the "page-size" property.
+    ///
     fn get_page_size(&self) -> f64 {
-        // unsafe { ffi::adjustment_get_page_size(self.as_ref().to_glib_none().0) }
-        unimplemented!()
+        let adjustment = self.as_ref();
+        adjustment.page_size
     }
 
+    /// get_step_increment:
+    /// @adjustment: A #Adjustment
+    ///
+    /// Get the value of the Adjustment:step-increment property.
+    ///
+    /// Returns: the current value of the "step-increment" property.
+    ///
     fn get_step_increment(&self) -> f64 {
-        // unsafe { ffi::adjustment_get_step_increment(self.as_ref().to_glib_none().0) }
-        unimplemented!()
+        let adjustment = self.as_ref();
+        adjustment.step_increment
     }
 
+    /// get_upper:
+    /// @adjustment: A #Adjustment
+    ///
+    /// Get the value of the #Adjustment:upper property.
+    ///
+    /// Returns: the current value of the "upper" property.
+    ///
     fn get_upper(&self) -> f64 {
-        // unsafe { ffi::adjustment_get_upper(self.as_ref().to_glib_none().0) }
-        unimplemented!()
+        let adjustment = self.as_ref();
+        adjustment.upper
     }
 
+    /// get_value:
+    /// @adjustment: An #Adjustment
+    ///
+    /// Get the current value of the #Adjustment:value property
+    ///
+    /// Returns: the current value of the "value" property
+    ///
     fn get_value(&self) -> f64 {
-        // unsafe { ffi::adjustment_get_value(self.as_ref().to_glib_none().0) }
-        unimplemented!()
+        let adjustment = self.as_ref();
+        adjustment.value
     }
 
+    /// get_values:
+    /// @adjustment: A #Adjustment
+    /// @value: (out) (allow-none): A #gdouble
+    /// @lower: (out) (allow-none): A #gdouble
+    /// @upper: (out) (allow-none): A #gdouble
+    /// @step_increment: (out) (allow-none): A #gdouble
+    /// @page_increment: (out) (allow-none): A #gdouble
+    /// @page_size: (out) (allow-none): A #gdouble
+    ///
+    /// Get the various properties of Adjustment.
+    ///
     fn get_values(&self) -> (f64, f64, f64, f64, f64, f64) {
-        // unsafe {
-        //     let mut value = mem::MaybeUninit::uninit();
-        //     let mut lower = mem::MaybeUninit::uninit();
-        //     let mut upper = mem::MaybeUninit::uninit();
-        //     let mut step_increment = mem::MaybeUninit::uninit();
-        //     let mut page_increment = mem::MaybeUninit::uninit();
-        //     let mut page_size = mem::MaybeUninit::uninit();
-        //     ffi::adjustment_get_values(
-        //         self.as_ref().to_glib_none().0,
-        //         value.as_mut_ptr(),
-        //         lower.as_mut_ptr(),
-        //         upper.as_mut_ptr(),
-        //         step_increment.as_mut_ptr(),
-        //         page_increment.as_mut_ptr(),
-        //         page_size.as_mut_ptr(),
+        let adjustment = self.as_ref();
+        (
+            adjustment.value,
+            adjustment.lower,
+            adjustment.upper,
+            adjustment.step_increment,
+            adjustment.page_increment,
+            adjustment.page_size,
+        )
+    }
+
+    /// interpolate:
+    /// @adjustment: A #Adjustment
+    /// @value: A #gdouble
+    /// @duration: duration in milliseconds
+    /// @mode: A #ClutterAnimationMode
+    ///
+    /// Interpolate #Adjustment:value to the new value specified by @value, using
+    /// the mode and duration given.
+    ///
+    fn interpolate(&self, value: f64, duration: u32, mode: u64) {
+        let adjustment = self.as_ref();
+
+        // g_return_if_fail (isfinite (value));
+
+        if duration <= 1 {
+            // stop_interpolation (adjustment);
+            adjustment.set_value(value);
+            return;
+        }
+
+        // adjustment.old_position = adjustment.value;
+        // adjustment.new_position = value;
+
+        // if !adjustment.interpolation {
+        //     adjustment.interpolation = clutter_timeline_new(duration);
+
+        //     g_signal_connect(
+        //         adjustment.interpolation,
+        //         "new-frame",
+        //         G_CALLBACK(interpolation_new_frame_cb),
+        //         adjustment,
         //     );
-        //     let value = value.assume_init();
-        //     let lower = lower.assume_init();
-        //     let upper = upper.assume_init();
-        //     let step_increment = step_increment.assume_init();
-        //     let page_increment = page_increment.assume_init();
-        //     let page_size = page_size.assume_init();
-        //     (
-        //         value,
-        //         lower,
-        //         upper,
-        //         step_increment,
-        //         page_increment,
-        //         page_size,
-        //     )
+        //     g_signal_connect(
+        //         adjustment.interpolation,
+        //         "completed",
+        //         G_CALLBACK(interpolation_completed_cb),
+        //         adjustment,
+        //     );
+        // } else {
+        //     // Extend the animation if it gets interrupted, otherwise frequent calls
+        //     // to this function will end up with no advancements until the calls
+        //     // finish (as the animation never gets a chance to start).
+        //     clutter_timeline_set_direction(adjustment.interpolation, CLUTTER_TIMELINE_FORWARD);
+        //     clutter_timeline_rewind(adjustment.interpolation);
+        //     clutter_timeline_set_duration(adjustment.interpolation, duration);
         // }
-        unimplemented!()
+        // clutter_timeline_set_progress_mode(adjustment.interpolation, mode);
+        // clutter_timeline_start(adjustment.interpolation);
+
+        // TODO: ...
     }
 
-    // fn interpolate(&self, value: f64, duration: u32, mode: libc::c_ulong) {
-    //     // unsafe {
-    //     //     ffi::adjustment_interpolate(
-    //     //         self.as_ref().to_glib_none().0,
-    //     //         value,
-    //     //         duration,
-    //     //         mode,
-    //     //     );
-    //     // }
-    //     unimplemented!()
-    // }
+    /// interpolate_relative:
+    /// @adjustment: A #Adjustment
+    /// @offset: A #gdouble
+    /// @duration: duration in milliseconds
+    /// @mode: A #ClutterAnimationMode
+    ///
+    /// Interpolate the value of #Adjustment:value to a new value calculated from
+    /// @offset.
+    ///
+    fn interpolate_relative(&self, offset: f64, duration: u32, mode: u64) {
+        let adjustment = self.as_ref();
 
-    // fn interpolate_relative(&self, offset: f64, duration: u32, mode: libc::c_ulong) {
-    //     // unsafe {
-    //     //     ffi::adjustment_interpolate_relative(
-    //     //         self.as_ref().to_glib_none().0,
-    //     //         offset,
-    //     //         duration,
-    //     //         mode,
-    //     //     );
-    //     // }
-    //     unimplemented!()
-    // }
+        // if adjustment.interpolation {
+        //     offset += adjustment.new_position;
+        // } else {
+        //     offset += adjustment.value;
+        // }
 
+        // adjustment.interpolate(offset, duration, mode);
+    }
+
+    /// set_clamp_value:
+    /// @adjustment: A #Adjustment
+    /// @clamp: a #gboolean
+    ///
+    /// Set the value of the #Adjustment:clamp-value property.
+    ///
     fn set_clamp_value(&self, clamp: bool) {
-        // unsafe {
-        //     ffi::adjustment_set_clamp_value(self.as_ref().to_glib_none().0, clamp.to_glib());
-        // }
-        unimplemented!()
+        let adjustment = self.as_ref();
+        // adjustment.clamp_value = clamp;
+        // TODO: ...
     }
 
+    /// set_elastic:
+    /// @adjustment: A #Adjustment
+    /// @elastic: A #gboolean
+    ///
+    /// Set the value of the #Adjustment:elastic property.
+    ///
     fn set_elastic(&self, elastic: bool) {
-        // unsafe {
-        //     ffi::adjustment_set_elastic(self.as_ref().to_glib_none().0, elastic.to_glib());
-        // }
-        unimplemented!()
+        let adjustment = self.as_ref();
+        // adjustment.elastic = elastic;
+        // TODO: ...
     }
 
+    /// set_lower:
+    /// @adjustment: A #Adjustment
+    /// @lower: A #gdouble
+    ///
+    /// Set the value of the #Adjustment:lower property.
+    ///
     fn set_lower(&self, lower: f64) {
-        // unsafe {
-        //     ffi::adjustment_set_lower(self.as_ref().to_glib_none().0, lower);
-        // }
-        unimplemented!()
+        let adjustment = self.as_ref();
+        Adjustment::set_lower(adjustment, lower);
     }
 
+    /// set_page_increment:
+    /// @adjustment: A #Adjustment
+    /// @increment: A #gdouble
+    ///
+    /// Set the value of the #Adjustment:page-increment property.
+    ///
     fn set_page_increment(&self, increment: f64) {
-        // unsafe {
-        //     ffi::adjustment_set_page_increment(self.as_ref().to_glib_none().0, increment);
-        // }
-        unimplemented!()
+        let adjustment = self.as_ref();
+        Adjustment::set_page_increment(adjustment, increment);
     }
 
+    /// set_page_size:
+    /// @adjustment: A #Adjustment
+    /// @page_size: A #gdouble
+    ///
+    /// Set the #Adjustment:page-size property.
+    ///
     fn set_page_size(&self, page_size: f64) {
-        // unsafe {
-        //     ffi::adjustment_set_page_size(self.as_ref().to_glib_none().0, page_size);
-        // }
-        unimplemented!()
+        let adjustment = self.as_ref();
+        Adjustment::set_page_size(adjustment, page_size);
     }
 
+    /// set_step_increment:
+    /// @adjustment: A #Adjustment
+    /// @increment: A #gdouble
+    ///
+    /// Set the value of the #Adjustment:step-increment property.
+    ///
     fn set_step_increment(&self, increment: f64) {
-        // unsafe {
-        //     ffi::adjustment_set_step_increment(self.as_ref().to_glib_none().0, increment);
-        // }
-        unimplemented!()
+        let adjustment = self.as_ref();
+        Adjustment::set_step_increment(adjustment, increment);
     }
 
+    /// set_upper:
+    /// @adjustment: A #Adjustment
+    /// @upper: A #gdouble
+    ///
+    /// Set the value of the #Adjustment:upper property.
+    ///
     fn set_upper(&self, upper: f64) {
-        // unsafe {
-        //     ffi::adjustment_set_upper(self.as_ref().to_glib_none().0, upper);
-        // }
-        unimplemented!()
+        let adjustment = self.as_ref();
+        Adjustment::set_upper(adjustment, upper);
     }
 
+    /// set_value:
+    /// @adjustment: An #Adjustment
+    /// @value: A #gdouble
+    ///
+    /// Set the value of the #Adjustment:value property.
+    ///
     fn set_value(&self, value: f64) {
-        // unsafe {
-        //     ffi::adjustment_set_value(self.as_ref().to_glib_none().0, value);
+        let adjustment = self.as_ref();
+
+        // // Defer clamp until after construction.
+        // if !adjustment.is_constructing {
+        //     if !adjustment.elastic && adjustment.clamp_value {
+        //         value = CLAMP(
+        //             value,
+        //             adjustment.lower,
+        //             MAX(adjustment.lower, adjustment.upper - adjustment.page_size),
+        //         );
+        //     }
+        // }
+
+        // if adjustment.value != value {
+        //     stop_interpolation(adjustment);
+
+        //     adjustment.value = value;
+
+        //     g_object_notify(G_OBJECT(adjustment), "value");
+        //     adjustment_emit_changed(adjustment);
         // }
         unimplemented!()
     }
 
+    /// set_values:
+    /// @adjustment: A #Adjustment
+    /// @value: A #gdouble
+    /// @lower: A #gdouble
+    /// @upper: A #gdouble
+    /// @step_increment: A #gdouble
+    /// @page_increment: A #gdouble
+    /// @page_size: A #gdouble
+    ///
+    /// Set the various properties of Adjustment.
+    ///
     fn set_values(
         &self,
         value: f64,
@@ -309,18 +780,35 @@ impl<O: Is<Adjustment>> AdjustmentExt for O {
         page_increment: f64,
         page_size: f64,
     ) {
-        // unsafe {
-        //     ffi::adjustment_set_values(
-        //         self.as_ref().to_glib_none().0,
-        //         value,
-        //         lower,
-        //         upper,
-        //         step_increment,
-        //         page_increment,
-        //         page_size,
-        //     );
+        // let adjustment = self.as_ref();
+        
+        // let emit_changed = false;
+
+        // g_return_if_fail (page_size >= 0 && page_size <= G_MAXDOUBLE);
+        // g_return_if_fail (step_increment >= 0 && step_increment <= G_MAXDOUBLE);
+        // g_return_if_fail (page_increment >= 0 && page_increment <= G_MAXDOUBLE);
+
+        // g_object_freeze_notify (G_OBJECT (adjustment));
+
+        // emit_changed |= Adjustment::set_lower (adjustment, lower);
+        // emit_changed |= Adjustment::set_upper (adjustment, upper);
+        // emit_changed |= Adjustment::set_step_increment (adjustment,
+        //                                                     step_increment);
+        // emit_changed |= Adjustment::set_page_increment (adjustment,
+        //                                                     page_increment);
+        // emit_changed |= Adjustment::set_page_size (adjustment, page_size);
+
+        // if value != adjustment.value {
+        //     adjustment_set_value (adjustment, value);
+        //     emit_changed = true;
         // }
-        unimplemented!()
+
+        // if emit_changed {
+        //     mx_adjustment_emit_changed (adjustment);
+        // }
+
+        // g_object_thaw_notify(G_OBJECT (adjustment));
+        // TODO: ...
     }
 
     fn connect_changed<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {

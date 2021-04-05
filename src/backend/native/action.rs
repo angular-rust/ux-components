@@ -8,7 +8,15 @@ use std::boxed::Box as Box_;
 use std::fmt;
 
 #[derive(Clone, Debug)]
-pub struct Action {}
+pub struct Action {
+    pub name: Option<String>,
+    // pub parameter_type: GVariantType,
+    pub enabled: bool,
+    pub state_set: bool,
+    // pub state: GVariant,
+    pub display_name: Option<String>,
+    pub icon: Option<String>,
+}
 
 impl Action {
     pub fn new() -> Action {
@@ -98,20 +106,72 @@ impl AsRef<Action> for Action {
 pub const NONE_ACTION: Option<&Action> = None;
 
 pub trait ActionExt: 'static {
+    /// get_active:
+    /// @action: A #Action
+    ///
+    /// Get the value of the active property
+    ///
+    /// Returns: #true if the action is active
+    ///
     fn get_active(&self) -> bool;
 
+    /// get_display_name:
+    /// @action: A #Action
+    ///
+    /// Get the display name of the action
+    ///
+    /// Returns: display-name of the action, owned by Action
+    ///
     fn get_display_name(&self) -> Option<String>;
 
+    /// get_icon:
+    /// @action: A #Action
+    ///
+    /// Get the icon of the action
+    ///
+    /// Returns: icon of the action, owned by Action
+    ///
     fn get_icon(&self) -> Option<String>;
 
+    /// get_name:
+    /// @action: A #Action
+    ///
+    /// Get the name of the action
+    ///
+    /// Returns: name of the action, owned by Action
+    ///
     fn get_name(&self) -> Option<String>;
 
+    /// set_active:
+    /// @action: A #Action
+    /// @active: the value to set
+    ///
+    /// Set the value of the active property
+    ///
     fn set_active(&self, active: bool);
 
+    /// set_display_name:
+    /// @action: A #Action
+    /// @name: new display name to set
+    ///
+    /// Set the name of the action to display to the user
+    ///
     fn set_display_name(&self, name: &str);
 
+    /// set_icon:
+    /// @action: A #Action
+    /// @name: new icon to set
+    ///
+    /// The icon to be used in a visual representation of an action.
+    ///
     fn set_icon(&self, name: &str);
 
+    /// set_name:
+    /// @action: A #Action
+    /// @name: new name to set
+    ///
+    /// Set the name of the action
+    ///
     fn set_name(&self, name: &str);
 
     fn connect_activate<F: Fn(&Self, Option<&glib::Variant>) + 'static>(
@@ -126,59 +186,154 @@ pub trait ActionExt: 'static {
 }
 
 impl<O: Is<Action>> ActionExt for O {
+    /// get_active:
+    /// @action: A #Action
+    ///
+    /// Get the value of the active property
+    ///
+    /// Returns: #true if the action is active
+    ///
     fn get_active(&self) -> bool {
-        // unsafe { from_glib(ffi::action_get_active(self.as_ref().to_glib_none().0)) }
-        unimplemented!()
+        let action = self.as_ref();
+        action.enabled
     }
 
+    /// get_display_name:
+    /// @action: A #Action
+    ///
+    /// Get the display name of the action
+    ///
+    /// Returns: display-name of the action, owned by Action
+    ///
     fn get_display_name(&self) -> Option<String> {
-        // unsafe {
-        //     from_glib_none(ffi::action_get_display_name(
-        //         self.as_ref().to_glib_none().0,
-        //     ))
-        // }
-        unimplemented!()
+        let action = self.as_ref();
+        action.display_name.clone()
     }
 
+    /// get_icon:
+    /// @action: A #Action
+    ///
+    /// Get the icon of the action
+    ///
+    /// Returns: icon of the action, owned by Action
+    ///
     fn get_icon(&self) -> Option<String> {
-        // unsafe { from_glib_none(ffi::action_get_icon(self.as_ref().to_glib_none().0)) }
-        unimplemented!()
+        let action = self.as_ref();
+        action.icon.clone()
     }
 
+    /// get_name:
+    /// @action: A #Action
+    ///
+    /// Get the name of the action
+    ///
+    /// Returns: name of the action, owned by Action
+    ///
     fn get_name(&self) -> Option<String> {
-        // unsafe { from_glib_none(ffi::action_get_name(self.as_ref().to_glib_none().0)) }
-        unimplemented!()
+        let action = self.as_ref();
+        action.name.clone()
     }
 
+    /// set_active:
+    /// @action: A #Action
+    /// @active: the value to set
+    ///
+    /// Set the value of the active property
+    ///
     fn set_active(&self, active: bool) {
-        // unsafe {
-        //     ffi::action_set_active(self.as_ref().to_glib_none().0, active.to_glib());
-        // }
-        unimplemented!()
+        let action = self.as_ref();
+
+        if action.enabled != active {
+            // action.enabled = active;
+            // g_object_notify (G_OBJECT (action), "active");
+            // TODO: ...
+        }
     }
 
+    /// set_display_name:
+    /// @action: A #Action
+    /// @name: new display name to set
+    ///
+    /// Set the name of the action to display to the user
+    ///
     fn set_display_name(&self, name: &str) {
-        // unsafe {
-        //     ffi::action_set_display_name(
-        //         self.as_ref().to_glib_none().0,
-        //         name.to_glib_none().0,
-        //     );
-        // }
-        unimplemented!()
+        let action = self.as_ref();
+
+        match &action.display_name {
+            Some(display_name) => {
+                if display_name.as_str() != name {
+                    // g_free (action.display_name);
+                    // action.display_name = g_strdup (name);
+
+                    // g_object_notify (G_OBJECT (action), "display-name");
+                    // TODO: ...
+                }
+            }
+            None => {
+                // g_free (action.display_name);
+                // action.display_name = g_strdup (name);
+
+                // g_object_notify (G_OBJECT (action), "display-name");
+                // TODO: ...
+            }
+        }
     }
 
+    /// set_icon:
+    /// @action: A #Action
+    /// @name: new icon to set
+    ///
+    /// The icon to be used in a visual representation of an action.
+    ///
     fn set_icon(&self, name: &str) {
-        // unsafe {
-        //     ffi::action_set_icon(self.as_ref().to_glib_none().0, name.to_glib_none().0);
-        // }
-        unimplemented!()
+        let action = self.as_ref();
+
+        match &action.icon {
+            Some(icon) => {
+                if icon.as_str() != name {
+                    // g_free (action.icon);
+                    // action.icon = g_strdup (name);
+
+                    // g_object_notify (G_OBJECT (action), "icon");
+                    // TODO: ...
+                }
+            }
+            None => {
+                // g_free (action.icon);
+                // action.icon = g_strdup (name);
+
+                // g_object_notify (G_OBJECT (action), "icon");
+                // TODO: ...
+            }
+        }
     }
 
+    /// set_name:
+    /// @action: A #Action
+    /// @name: new name to set
+    ///
+    /// Set the name of the action
+    ///
     fn set_name(&self, name: &str) {
-        // unsafe {
-        //     ffi::action_set_name(self.as_ref().to_glib_none().0, name.to_glib_none().0);
-        // }
-        unimplemented!()
+        let action = self.as_ref();
+        match &action.name {
+            Some(name) => {
+                if name.as_str() != name {
+                    // g_free (action.name);
+                    // action.name = g_strdup (name);
+
+                    // g_object_notify (G_OBJECT (action), "name");
+                    // TODO: ...
+                }
+            }
+            None=> {
+                // g_free (action.name);
+                // action.name = g_strdup (name);
+
+                // g_object_notify (G_OBJECT (action), "name");
+                // TODO: ...
+            }
+        }
     }
 
     fn connect_activate<F: Fn(&Self, Option<&glib::Variant>) + 'static>(

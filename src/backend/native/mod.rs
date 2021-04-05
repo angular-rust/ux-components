@@ -138,12 +138,214 @@ pub use self::tooltip::{Tooltip, TooltipExt, NONE_TOOLTIP};
 mod viewport;
 pub use self::viewport::{Viewport, ViewportExt, NONE_VIEWPORT};
 
-mod actor;
-pub use self::actor::{Actor, WidgetExt, NONE_WIDGET};
+mod widget;
+pub use self::widget::{Widget, WidgetExt, NONE_WIDGET};
 
 mod stage;
 pub use self::stage::{Stage, WindowExt, NONE_WINDOW};
 
+/// BorderImage:
+/// uri: uri of a supported image file
+/// top: top border slice width
+/// right: right border slice width
+/// bottom: bottom border slice width
+/// left: bottom border slice width
+#[derive(Default, Debug, Clone)]
+pub struct BorderImage {
+    pub uri: String,
+    pub top: usize,
+    pub right: usize,
+    pub bottom: usize,
+    pub left: usize,
+}
+
+// gboolean border_image_equal (BorderImage *b1, BorderImage *b2);
+
+// void border_image_set_from_string (GValue *value,
+//                                       const gchar *str,
+//                                       const gchar *filename);
+
+// void font_weight_set_from_string (GValue *value, const gchar *str);
+
+/// Padding:
+/// top: padding from the top
+/// right: padding from the right
+/// bottom: padding from the bottom
+/// left: padding from the left
+///
+/// The padding from the internal border of the parent container.
+#[derive(Default, Debug, Clone, Copy)]
+pub struct Padding {
+    pub top: f64,
+    pub right: f64,
+    pub bottom: f64,
+    pub left: f64,
+}
+
+/// TextShadow:
+/// h_offset: horizontal shadow offset
+/// v_offset: vertical shadow offset
+/// blur: blur distance
+/// color: shadow color
+///
+/// Properties of a text shadow
+#[derive(Clone, Debug)]
+pub struct TextShadow {
+    h_offset: f64,
+    v_offset: f64,
+    blur: f64,
+    color: clutter::Color,
+}
+
+/// Align:
+/// Start: Align at the beginning of the axis
+/// Middle: Align in the middle of the axis
+/// End: Align at the end of the axis
+///
+/// Set the alignment of the item
+///
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum Align {
+    Start,
+    Middle,
+    End,
+}
+
+/// FontWeight:
+/// Normal: Normal font weight
+/// Bold: Bold font weight
+/// Bolder: Bolder font weight
+/// Lighter: Lighter font weight
+///
+/// Support values of font weight
+///
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum FontWeight {
+    Normal,
+    Bold,
+    Bolder,
+    Lighter,
+}
+
+/// ScrollPolicy:
+/// None: Never scroll
+/// Horizontal: Only allow horizontal scrolling
+/// Vertical: Only allow vertical scrolling
+/// Both: Allow scrolling both horizontally and vertically
+/// Automatic: Automatically align scroll to horizontal
+/// or vertical direction or both depending on the drag angle.
+///
+/// Defines the scrolling policy of scrollable widgets.
+///
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum ScrollPolicy {
+    None,
+    Horizontal,
+    Vertical,
+    Both,
+    Automatic,
+}
+
+/// Orientation:
+/// Horizontal: horizontal orientation
+/// Vertical: vertical orientation
+///
+/// Defines the orientation of various layout widgets.
+///
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum Orientation {
+    Horizontal,
+    Vertical,
+}
+
+/// WindowRotation:
+/// Rotation0: Zero degrees of rotation
+/// Rotation90: 90 degrees of rotation
+/// Rotation180: 180 degrees of rotation
+/// Rotation270: 270 degrees of rotation
+///
+/// Defines the clock-wise rotation angle of a window.
+///
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum WindowRotation {
+    Rotation0,
+    Rotation90,
+    Rotation180,
+    Rotation270,
+}
+
+/// Position:
+/// Top: The top position
+/// Right: The right position
+/// Bottom: The bottom position
+/// Left: The left position
+///
+/// Defines the position of an interface element.
+///
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum Position {
+    Top,
+    Right,
+    Bottom,
+    Left,
+}
+
+/// ImageScaleMode:
+/// None: Do not apply any scaling and center the image within
+/// the allocation
+/// Fit: Scale the image, but maintain the aspect ratio so that
+/// it fits exactly within the allocation
+/// Crop: Scale and crop the image so that it covers the entire
+/// allocation while retaining the correct aspect ratio
+///
+/// Defines the scaling mode of an image.
+///
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum ImageScaleMode {
+    None,
+    Fit,
+    Crop,
+}
+
+/// VisibilityStyle:
+/// Visible: The actor is visible
+/// Hidden: The actor is invisible (but is still allocated space)
+///
+/// Values for the "visibility" style property.
+///
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum VisibilityStyle {
+    Visible,
+    Hidden,
+}
+
+/// DisplayStyle:
+/// None: The actor is not displayed at all
+/// Inline: The actor is displayed as normal
+///
+/// Values for the "display" style property.
+///
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum DisplayStyle {
+    None,
+    Inline,
+}
+
+/// TextAlign:
+/// Left: align text to the left
+/// Right: align text to the right
+/// Center: center the text
+/// Justify: justify the text
+///
+/// The horizontal alignment and layout of multiple lines of text.
+///
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum TextAlign {
+    Left,
+    Right,
+    Center,
+    Justify,
+}
 
 // #[cfg_attr(feature = "cargo-clippy", allow(type_complexity))]
 // #[cfg_attr(feature = "cargo-clippy", allow(unreadable_literal))]

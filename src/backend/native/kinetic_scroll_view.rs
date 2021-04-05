@@ -4,7 +4,7 @@
 // use std::mem::transmute;
 // use std::ptr;
 
-use super::Actor;
+use super::{ScrollPolicy, Widget};
 use crate::prelude::*;
 use glib::signal::SignalHandlerId;
 use std::fmt;
@@ -54,7 +54,7 @@ pub trait KineticScrollViewExt: 'static {
 
     fn get_clamp_duration(&self) -> u32;
 
-    // fn get_clamp_mode(&self) -> libc::c_ulong;
+    fn get_clamp_mode(&self) -> u64;
 
     fn get_clamp_to_center(&self) -> bool;
 
@@ -66,7 +66,7 @@ pub trait KineticScrollViewExt: 'static {
 
     fn get_overshoot(&self) -> f64;
 
-    //fn get_scroll_policy(&self) -> /*Ignored*/ScrollPolicy;
+    fn get_scroll_policy(&self) -> ScrollPolicy;
 
     fn get_snap_on_page(&self) -> bool;
 
@@ -78,7 +78,7 @@ pub trait KineticScrollViewExt: 'static {
 
     fn set_clamp_duration(&self, clamp_duration: u32);
 
-    // fn set_clamp_mode(&self, clamp_mode: libc::c_ulong);
+    fn set_clamp_mode(&self, clamp_mode: u64);
 
     fn set_clamp_to_center(&self, clamp_to_center: bool);
 
@@ -88,7 +88,7 @@ pub trait KineticScrollViewExt: 'static {
 
     fn set_overshoot(&self, overshoot: f64);
 
-    //fn set_scroll_policy(&self, policy: /*Ignored*/ScrollPolicy);
+    fn set_scroll_policy(&self, policy: ScrollPolicy);
 
     fn set_snap_on_page(&self, snap_on_page: bool);
 
@@ -172,9 +172,10 @@ impl<O: Is<KineticScrollView>> KineticScrollViewExt for O {
         unimplemented!()
     }
 
-    // fn get_clamp_mode(&self) -> libc::c_ulong {
-    //     unsafe { ffi::kinetic_scroll_view_get_clamp_mode(self.as_ref().to_glib_none().0) }
-    // }
+    fn get_clamp_mode(&self) -> u64 {
+        // unsafe { ffi::kinetic_scroll_view_get_clamp_mode(self.as_ref().to_glib_none().0) }
+        unimplemented!()
+    }
 
     fn get_clamp_to_center(&self) -> bool {
         // unsafe {
@@ -214,9 +215,10 @@ impl<O: Is<KineticScrollView>> KineticScrollViewExt for O {
         unimplemented!()
     }
 
-    //fn get_scroll_policy(&self) -> /*Ignored*/ScrollPolicy {
-    //    unsafe { TODO: call ffi:kinetic_scroll_view_get_scroll_policy() }
-    //}
+    fn get_scroll_policy(&self) -> ScrollPolicy {
+        //    unsafe { TODO: call ffi:kinetic_scroll_view_get_scroll_policy() }
+        unimplemented!()
+    }
 
     fn get_snap_on_page(&self) -> bool {
         // unsafe {
@@ -265,14 +267,14 @@ impl<O: Is<KineticScrollView>> KineticScrollViewExt for O {
         unimplemented!()
     }
 
-    // fn set_clamp_mode(&self, clamp_mode: libc::c_ulong) {
-    //     unsafe {
-    //         ffi::kinetic_scroll_view_set_clamp_mode(
-    //             self.as_ref().to_glib_none().0,
-    //             clamp_mode,
-    //         );
-    //     }
-    // }
+    fn set_clamp_mode(&self, clamp_mode: u64) {
+        // unsafe {
+        //     ffi::kinetic_scroll_view_set_clamp_mode(
+        //         self.as_ref().to_glib_none().0,
+        //         clamp_mode,
+        //     );
+        // }
+    }
 
     fn set_clamp_to_center(&self, clamp_to_center: bool) {
         // unsafe {
@@ -305,9 +307,10 @@ impl<O: Is<KineticScrollView>> KineticScrollViewExt for O {
         unimplemented!()
     }
 
-    //fn set_scroll_policy(&self, policy: /*Ignored*/ScrollPolicy) {
-    //    unsafe { TODO: call ffi:kinetic_scroll_view_set_scroll_policy() }
-    //}
+    fn set_scroll_policy(&self, policy: ScrollPolicy) {
+        //    unsafe { TODO: call ffi:kinetic_scroll_view_set_scroll_policy() }
+        unimplemented!()
+    }
 
     fn set_snap_on_page(&self, snap_on_page: bool) {
         // unsafe {

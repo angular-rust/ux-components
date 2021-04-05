@@ -28,17 +28,17 @@ pub const NONE_TEXTURE_CACHE: Option<&TextureCache> = None;
 pub trait TextureCacheExt: 'static {
     fn contains(&self, uri: &str) -> bool;
 
-    //fn contains_meta(&self, uri: &str, ident: /*Unimplemented*/Option<Fundamental: Pointer>) -> bool;
+    //fn contains_meta(&self, uri: &str, ident: Option<Fundamental: Pointer>) -> bool;
 
     //fn get_cogl_texture(&self, uri: &str) -> /*Ignored*/Option<cogl::Handle>;
 
-    //fn get_meta_cogl_texture(&self, uri: &str, ident: /*Unimplemented*/Option<Fundamental: Pointer>) -> /*Ignored*/Option<cogl::Handle>;
+    //fn get_meta_cogl_texture(&self, uri: &str, ident: Option<Fundamental: Pointer>) -> /*Ignored*/Option<cogl::Handle>;
 
     fn get_size(&self) -> i32;
 
     //fn insert(&self, uri: &str, texture: /*Ignored*/cogl::Handle);
 
-    //fn insert_meta(&self, uri: &str, ident: /*Unimplemented*/Option<Fundamental: Pointer>, texture: /*Ignored*/cogl::Handle);
+    //fn insert_meta(&self, uri: &str, ident: Option<Fundamental: Pointer>, texture: /*Ignored*/cogl::Handle);
 
     fn load_cache(&self, filename: &str);
 }
@@ -54,7 +54,7 @@ impl<O: Is<TextureCache>> TextureCacheExt for O {
         unimplemented!()
     }
 
-    //fn contains_meta(&self, uri: &str, ident: /*Unimplemented*/Option<Fundamental: Pointer>) -> bool {
+    //fn contains_meta(&self, uri: &str, ident: Option<Fundamental: Pointer>) -> bool {
     //    unsafe { TODO: call ffi:texture_cache_contains_meta() }
     //}
 
@@ -62,7 +62,7 @@ impl<O: Is<TextureCache>> TextureCacheExt for O {
     //    unsafe { TODO: call ffi:texture_cache_get_cogl_texture() }
     //}
 
-    //fn get_meta_cogl_texture(&self, uri: &str, ident: /*Unimplemented*/Option<Fundamental: Pointer>) -> /*Ignored*/Option<cogl::Handle> {
+    //fn get_meta_cogl_texture(&self, uri: &str, ident: Option<Fundamental: Pointer>) -> /*Ignored*/Option<cogl::Handle> {
     //    unsafe { TODO: call ffi:texture_cache_get_meta_cogl_texture() }
     //}
 
@@ -75,7 +75,7 @@ impl<O: Is<TextureCache>> TextureCacheExt for O {
     //    unsafe { TODO: call ffi:texture_cache_insert() }
     //}
 
-    //fn insert_meta(&self, uri: &str, ident: /*Unimplemented*/Option<Fundamental: Pointer>, texture: /*Ignored*/cogl::Handle) {
+    //fn insert_meta(&self, uri: &str, ident: Option<Fundamental: Pointer>, texture: /*Ignored*/cogl::Handle) {
     //    unsafe { TODO: call ffi:texture_cache_insert_meta() }
     //}
 

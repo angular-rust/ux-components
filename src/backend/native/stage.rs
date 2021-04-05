@@ -4,7 +4,7 @@ use std::boxed::Box as Box_;
 // use std::mem;
 // use std::mem::transmute;
 
-use super::Toolbar;
+use super::{Toolbar, WindowRotation};
 use crate::prelude::*;
 
 use glib::signal::SignalHandlerId;
@@ -12,13 +12,13 @@ use std::fmt;
 
 #[derive(Clone, Debug)]
 pub struct Stage {
-    stage: clutter::Stage,
+    inner: clutter::Stage,
 }
 
 impl Stage {
     pub fn new() -> Stage {
         Self {
-            stage: clutter::Stage::new(),
+            inner: clutter::Stage::new(),
         }
     }
 
@@ -40,7 +40,7 @@ impl Stage {
 impl Default for Stage {
     fn default() -> Self {
         Self {
-            stage: clutter::Stage::new(),
+            inner: clutter::Stage::new(),
         }
     }
 }
@@ -77,7 +77,7 @@ pub trait WindowExt: 'static {
 
     fn get_window_position(&self) -> (i32, i32);
 
-    //fn get_window_rotation(&self) -> /*Ignored*/WindowRotation;
+    fn get_window_rotation(&self) -> WindowRotation;
 
     fn get_window_size(&self) -> (i32, i32);
 
@@ -105,7 +105,7 @@ pub trait WindowExt: 'static {
 
     fn set_window_position(&self, x: i32, y: i32);
 
-    //fn set_window_rotation(&self, rotation: /*Ignored*/WindowRotation);
+    fn set_window_rotation(&self, rotation: WindowRotation);
 
     fn set_window_size(&self, width: i32, height: i32) -> &Self;
 
@@ -170,8 +170,8 @@ impl<O: Is<Stage>> WindowExt for O {
     }
 
     fn get_fullscreen(&self) -> bool {
-        let stage = &self.as_ref().stage;
-        stage.get_fullscreen()
+        let inner = &self.as_ref().inner;
+        inner.get_fullscreen()
     }
 
     fn get_has_toolbar(&self) -> bool {
@@ -193,8 +193,8 @@ impl<O: Is<Stage>> WindowExt for O {
     }
 
     fn get_resisable(&self) -> bool {
-        let stage = &self.as_ref().stage;
-        stage.get_user_resizable()
+        let inner = &self.as_ref().inner;
+        inner.get_user_resizable()
     }
 
     fn get_small_screen(&self) -> bool {
@@ -207,8 +207,8 @@ impl<O: Is<Stage>> WindowExt for O {
     }
 
     fn get_title(&self) -> Option<String> {
-        let stage = &self.as_ref().stage;
-        match stage.get_title() {
+        let inner = &self.as_ref().inner;
+        match inner.get_title() {
             Some(title) => Some(title.as_str().into()),
             None => None,
         }
@@ -239,19 +239,20 @@ impl<O: Is<Stage>> WindowExt for O {
         unimplemented!()
     }
 
-    //fn get_window_rotation(&self) -> /*Ignored*/WindowRotation {
-    //    unsafe { TODO: call ffi:window_get_window_rotation() }
-    //}
+    fn get_window_rotation(&self) -> WindowRotation {
+        //    unsafe { TODO: call ffi:window_get_window_rotation() }
+        unimplemented!()
+    }
 
     fn get_window_size(&self) -> (i32, i32) {
-        let stage = &self.as_ref().stage;
-        let (width, height) = stage.get_size();
+        let inner = &self.as_ref().inner;
+        let (width, height) = inner.get_size();
         (width as i32, height as i32)
     }
 
     fn hide(&self) -> &Self {
-        let stage = &self.as_ref().stage;
-        stage.hide();
+        let inner = &self.as_ref().inner;
+        inner.hide();
         self
     }
 
@@ -273,8 +274,8 @@ impl<O: Is<Stage>> WindowExt for O {
     }
 
     fn set_fullscreen(&self, fullscreen: bool) -> &Self {
-        let stage = &self.as_ref().stage;
-        stage.set_fullscreen(fullscreen);
+        let inner = &self.as_ref().inner;
+        inner.set_fullscreen(fullscreen);
         self
     }
 
@@ -300,8 +301,8 @@ impl<O: Is<Stage>> WindowExt for O {
     }
 
     fn set_resizable(&self, resizable: bool) -> &Self {
-        let stage = &self.as_ref().stage;
-        stage.set_user_resizable(resizable);
+        let inner = &self.as_ref().inner;
+        inner.set_user_resizable(resizable);
         self
     }
 
@@ -316,8 +317,8 @@ impl<O: Is<Stage>> WindowExt for O {
     }
 
     fn set_title(&self, title: &str) -> &Self {
-        let stage = &self.as_ref().stage;
-        stage.set_title(title);
+        let inner = &self.as_ref().inner;
+        inner.set_title(title);
         self
     }
 
@@ -338,19 +339,20 @@ impl<O: Is<Stage>> WindowExt for O {
         unimplemented!()
     }
 
-    //fn set_window_rotation(&self, rotation: /*Ignored*/WindowRotation) {
-    //    unsafe { TODO: call ffi:window_set_window_rotation() }
-    //}
+    fn set_window_rotation(&self, rotation: WindowRotation) {
+        //    unsafe { TODO: call ffi:window_set_window_rotation() }
+        unimplemented!()
+    }
 
     fn set_window_size(&self, width: i32, height: i32) -> &Self {
-        let stage = &self.as_ref().stage;
-        stage.set_size(width as f32, height as f32);
+        let inner = &self.as_ref().inner;
+        inner.set_size(width as f32, height as f32);
         self
     }
 
     fn show(&self) -> &Self {
-        let stage = &self.as_ref().stage;
-        stage.show();
+        let inner = &self.as_ref().inner;
+        inner.show();
         self
     }
 
@@ -423,11 +425,9 @@ impl<O: Is<Stage>> WindowExt for O {
     // TODO: &Self
     fn connect_destroy<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         let win = self.as_ref();
-        let this = unsafe { 
-            &*(win as *const Stage as *const Self)
-        };
+        let this = unsafe { &*(win as *const Stage as *const Self) };
 
-        win.stage.connect_destroy(move |_| {
+        win.inner.connect_destroy(move |_| {
             f(this);
         })
     }

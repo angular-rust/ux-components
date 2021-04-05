@@ -1,6 +1,6 @@
 #![allow(unused_variables)]
 
-use super::Actor;
+use super::{Align, Widget};
 use crate::prelude::*;
 use std::fmt;
 
@@ -45,11 +45,11 @@ pub trait StackExt: 'static {
 
     fn child_get_fit<P: Is<clutter::Actor>>(&self, child: &P) -> bool;
 
-    //fn child_get_x_align<P: Is<clutter::Actor>>(&self, child: &P) -> /*Ignored*/Align;
+    fn child_get_x_align<P: Is<clutter::Actor>>(&self, child: &P) -> Align;
 
     fn child_get_x_fill<P: Is<clutter::Actor>>(&self, child: &P) -> bool;
 
-    //fn child_get_y_align<P: Is<clutter::Actor>>(&self, child: &P) -> /*Ignored*/Align;
+    fn child_get_y_align<P: Is<clutter::Actor>>(&self, child: &P) -> Align;
 
     fn child_get_y_fill<P: Is<clutter::Actor>>(&self, child: &P) -> bool;
 
@@ -57,11 +57,11 @@ pub trait StackExt: 'static {
 
     fn child_set_fit<P: Is<clutter::Actor>>(&self, child: &P, fit: bool);
 
-    //fn child_set_x_align<P: Is<clutter::Actor>>(&self, child: &P, x_align: /*Ignored*/Align);
+    fn child_set_x_align<P: Is<clutter::Actor>>(&self, child: &P, x_align: Align);
 
     fn child_set_x_fill<P: Is<clutter::Actor>>(&self, child: &P, x_fill: bool);
 
-    //fn child_set_y_align<P: Is<clutter::Actor>>(&self, child: &P, y_align: /*Ignored*/Align);
+    fn child_set_y_align<P: Is<clutter::Actor>>(&self, child: &P, y_align: Align);
 
     fn child_set_y_fill<P: Is<clutter::Actor>>(&self, child: &P, y_fill: bool);
 }
@@ -87,9 +87,10 @@ impl<O: Is<Stack>> StackExt for O {
         unimplemented!()
     }
 
-    //fn child_get_x_align<P: Is<clutter::Actor>>(&self, child: &P) -> /*Ignored*/Align {
-    //    unsafe { TODO: call ffi:stack_child_get_x_align() }
-    //}
+    fn child_get_x_align<P: Is<clutter::Actor>>(&self, child: &P) -> Align {
+        //    unsafe { TODO: call ffi:stack_child_get_x_align() }
+        unimplemented!()
+    }
 
     fn child_get_x_fill<P: Is<clutter::Actor>>(&self, child: &P) -> bool {
         // unsafe {
@@ -101,9 +102,10 @@ impl<O: Is<Stack>> StackExt for O {
         unimplemented!()
     }
 
-    //fn child_get_y_align<P: Is<clutter::Actor>>(&self, child: &P) -> /*Ignored*/Align {
-    //    unsafe { TODO: call ffi:stack_child_get_y_align() }
-    //}
+    fn child_get_y_align<P: Is<clutter::Actor>>(&self, child: &P) -> Align {
+        //    unsafe { TODO: call ffi:stack_child_get_y_align() }
+        unimplemented!()
+    }
 
     fn child_get_y_fill<P: Is<clutter::Actor>>(&self, child: &P) -> bool {
         // unsafe {
@@ -137,9 +139,10 @@ impl<O: Is<Stack>> StackExt for O {
         unimplemented!()
     }
 
-    //fn child_set_x_align<P: Is<clutter::Actor>>(&self, child: &P, x_align: /*Ignored*/Align) {
-    //    unsafe { TODO: call ffi:stack_child_set_x_align() }
-    //}
+    fn child_set_x_align<P: Is<clutter::Actor>>(&self, child: &P, x_align: Align) {
+        //    unsafe { TODO: call ffi:stack_child_set_x_align() }
+        unimplemented!()
+    }
 
     fn child_set_x_fill<P: Is<clutter::Actor>>(&self, child: &P, x_fill: bool) {
         // unsafe {
@@ -152,9 +155,10 @@ impl<O: Is<Stack>> StackExt for O {
         unimplemented!()
     }
 
-    //fn child_set_y_align<P: Is<clutter::Actor>>(&self, child: &P, y_align: /*Ignored*/Align) {
-    //    unsafe { TODO: call ffi:stack_child_set_y_align() }
-    //}
+    fn child_set_y_align<P: Is<clutter::Actor>>(&self, child: &P, y_align: Align) {
+        //    unsafe { TODO: call ffi:stack_child_set_y_align() }
+        unimplemented!()
+    }
 
     fn child_set_y_fill<P: Is<clutter::Actor>>(&self, child: &P, y_fill: bool) {
         // unsafe {

@@ -3,6 +3,7 @@
 // use std::boxed::Box as Box_;
 // use std::mem::transmute;
 
+use super::Align;
 use crate::prelude::*;
 use glib::signal::SignalHandlerId;
 use std::fmt;
@@ -26,17 +27,17 @@ pub trait BoxLayoutChildExt: 'static {
 
     fn set_property_expand(&self, expand: bool);
 
-    //fn get_property_x_align(&self) -> /*Ignored*/Align;
+    fn get_property_x_align(&self) -> Align;
 
-    //fn set_property_x_align(&self, x_align: /*Ignored*/Align);
+    fn set_property_x_align(&self, x_align: Align);
 
     fn get_property_x_fill(&self) -> bool;
 
     fn set_property_x_fill(&self, x_fill: bool);
 
-    //fn get_property_y_align(&self) -> /*Ignored*/Align;
+    fn get_property_y_align(&self) -> Align;
 
-    //fn set_property_y_align(&self, y_align: /*Ignored*/Align);
+    fn set_property_y_align(&self, y_align: Align);
 
     fn get_property_y_fill(&self) -> bool;
 
@@ -81,19 +82,21 @@ impl<O: Is<BoxLayoutChild>> BoxLayoutChildExt for O {
         unimplemented!()
     }
 
-    //fn get_property_x_align(&self) -> /*Ignored*/Align {
-    //    unsafe {
-    //        let mut value = Value::from_type(</*Unknown type*/ as StaticType>::static_type());
-    //        gobject_sys::g_object_get_property(self.to_glib_none().0 as *mut gobject_sys::GObject, b"x-align\0".as_ptr() as *const _, value.to_glib_none_mut().0);
-    //        value.get().expect("Return Value for property `x-align` getter").unwrap()
-    //    }
-    //}
+    fn get_property_x_align(&self) -> Align {
+        //    unsafe {
+        //        let mut value = Value::from_type(</*Unknown type*/ as StaticType>::static_type());
+        //        gobject_sys::g_object_get_property(self.to_glib_none().0 as *mut gobject_sys::GObject, b"x-align\0".as_ptr() as *const _, value.to_glib_none_mut().0);
+        //        value.get().expect("Return Value for property `x-align` getter").unwrap()
+        //    }
+        unimplemented!()
+    }
 
-    //fn set_property_x_align(&self, x_align: /*Ignored*/Align) {
-    //    unsafe {
-    //        gobject_sys::g_object_set_property(self.to_glib_none().0 as *mut gobject_sys::GObject, b"x-align\0".as_ptr() as *const _, Value::from(&x_align).to_glib_none().0);
-    //    }
-    //}
+    fn set_property_x_align(&self, x_align: Align) {
+        //    unsafe {
+        //        gobject_sys::g_object_set_property(self.to_glib_none().0 as *mut gobject_sys::GObject, b"x-align\0".as_ptr() as *const _, Value::from(&x_align).to_glib_none().0);
+        //    }
+        unimplemented!()
+    }
 
     fn get_property_x_fill(&self) -> bool {
         // unsafe {
@@ -122,19 +125,25 @@ impl<O: Is<BoxLayoutChild>> BoxLayoutChildExt for O {
         unimplemented!()
     }
 
-    //fn get_property_y_align(&self) -> /*Ignored*/Align {
-    //    unsafe {
-    //        let mut value = Value::from_type(</*Unknown type*/ as StaticType>::static_type());
-    //        gobject_sys::g_object_get_property(self.to_glib_none().0 as *mut gobject_sys::GObject, b"y-align\0".as_ptr() as *const _, value.to_glib_none_mut().0);
-    //        value.get().expect("Return Value for property `y-align` getter").unwrap()
-    //    }
-    //}
+    fn get_property_y_align(&self) -> Align {
+        //    unsafe {
+        //        let mut value = Value::from_type(</*Unknown type*/ as StaticType>::static_type());
+        //        gobject_sys::g_object_get_property(self.to_glib_none().0 as *mut gobject_sys::GObject, b"y-align\0".as_ptr() as *const _, value.to_glib_none_mut().0);
+        //        value.get().expect("Return Value for property `y-align` getter").unwrap()
+        //    }
+        unimplemented!()
+    }
 
-    //fn set_property_y_align(&self, y_align: /*Ignored*/Align) {
-    //    unsafe {
-    //        gobject_sys::g_object_set_property(self.to_glib_none().0 as *mut gobject_sys::GObject, b"y-align\0".as_ptr() as *const _, Value::from(&y_align).to_glib_none().0);
-    //    }
-    //}
+    fn set_property_y_align(&self, y_align: Align) {
+        // unsafe {
+        //     gobject_sys::g_object_set_property(
+        //         self.to_glib_none().0 as *mut gobject_sys::GObject,
+        //         b"y-align\0".as_ptr() as *const _,
+        //         Value::from(&y_align).to_glib_none().0,
+        //     );
+        // }
+        unimplemented!()
+    }
 
     fn get_property_y_fill(&self) -> bool {
         // unsafe {

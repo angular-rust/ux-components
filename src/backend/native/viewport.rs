@@ -4,7 +4,7 @@
 // use std::mem;
 // use std::mem::transmute;
 
-use super::Actor;
+use super::Widget;
 use crate::prelude::*;
 use glib::signal::SignalHandlerId;
 use std::fmt;

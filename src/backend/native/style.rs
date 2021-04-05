@@ -43,11 +43,11 @@ impl AsRef<Style> for Style {
 pub const NONE_STYLE: Option<&Style> = None;
 
 pub trait StyleExt: 'static {
-    //fn get(&self, stylable: /*Ignored*/&Stylable, first_property_name: &str, : /*Unknown conversion*//*Unimplemented*/Fundamental: VarArgs);
+    //fn get(&self, stylable: /*Ignored*/&Stylable, first_property_name: &str, : /*Unknown conversion*/Fundamental: VarArgs);
 
     //fn get_property(&self, stylable: /*Ignored*/&Stylable, pspec: /*Ignored*/&glib::ParamSpec) -> glib::Value;
 
-    //fn get_valist(&self, stylable: /*Ignored*/&Stylable, first_property_name: &str, va_args: /*Unknown conversion*//*Unimplemented*/Unsupported);
+    //fn get_valist(&self, stylable: /*Ignored*/&Stylable, first_property_name: &str, va_args: /*Unknown conversion*/Unsupported);
 
     fn load_from_data(&self, id: &str, data: &str) -> Result<(), glib::Error>;
 
@@ -59,7 +59,7 @@ pub trait StyleExt: 'static {
 }
 
 impl<O: Is<Style>> StyleExt for O {
-    //fn get(&self, stylable: /*Ignored*/&Stylable, first_property_name: &str, : /*Unknown conversion*//*Unimplemented*/Fundamental: VarArgs) {
+    //fn get(&self, stylable: /*Ignored*/&Stylable, first_property_name: &str, : /*Unknown conversion*/Fundamental: VarArgs) {
     //    unsafe { TODO: call ffi:style_get() }
     //}
 
@@ -67,7 +67,7 @@ impl<O: Is<Style>> StyleExt for O {
     //    unsafe { TODO: call ffi:style_get_property() }
     //}
 
-    //fn get_valist(&self, stylable: /*Ignored*/&Stylable, first_property_name: &str, va_args: /*Unknown conversion*//*Unimplemented*/Unsupported) {
+    //fn get_valist(&self, stylable: /*Ignored*/&Stylable, first_property_name: &str, va_args: /*Unknown conversion*/Unsupported) {
     //    unsafe { TODO: call ffi:style_get_valist() }
     //}
 
