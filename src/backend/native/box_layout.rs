@@ -4,14 +4,33 @@
 // use std::mem::transmute;
 // use Orientation;
 
-use super::{Align, Orientation, Widget};
+use super::{Adjustment, Align, Orientation, Widget};
 use crate::prelude::*;
 use glib::signal::SignalHandlerId;
 use std::fmt;
 
 // @extends Widget, clutter::Actor;
 #[derive(Clone, Debug)]
-pub struct BoxLayout {}
+pub struct BoxLayout {
+    // GList        *children;
+    /// Should we ignore spacing from CSS because
+    /// the application set it via set_spacing
+    pub ignore_css_spacing: bool,
+    pub spacing: u32,
+
+    pub hadjustment: Adjustment,
+    pub vadjustment: Adjustment,
+
+    // pub start_allocations: GHashTable,
+    pub timeline: clutter::Timeline,
+    pub alpha: clutter::Alpha,
+    pub is_animating: bool,
+    pub enable_animations: bool,
+    pub scroll_to_focused: bool,
+
+    pub orientation: Orientation,
+    // pub last_focus: Focusable,
+}
 
 impl BoxLayout {
     pub fn new() -> BoxLayout {
@@ -67,24 +86,82 @@ pub trait BoxLayoutExt: 'static {
 
     fn child_set_y_fill<P: Is<clutter::Actor>>(&self, child: &P, y_fill: bool);
 
+    /// get_enable_animations:
+    /// @box: A #BoxLayout
+    ///
+    /// Get the value of the #BoxLayout:enable-animations property.
+    ///
+    /// Returns: #TRUE if animations enabled
+    ///
     fn get_enable_animations(&self) -> bool;
 
+    /// get_orientation:
+    /// @box: A #BoxLayout
+    ///
+    /// Get the value of the #BoxLayout:orientation property.
+    ///
     fn get_orientation(&self) -> Orientation;
 
+    /// get_scroll_to_focused:
+    /// @box: A #BoxLayout
+    ///
+    /// Get the value of the #BoxLayout:scroll-to-focused property.
+    ///
+    /// Returns: #TRUE if automatically scrolling to the focused actor is enabled
+    ///
     fn get_scroll_to_focused(&self) -> bool;
 
+    /// get_spacing:
+    /// @box: A #BoxLayout
+    ///
+    /// Get the spacing between children in pixels
+    ///
+    /// Returns: the spacing value
+    ///
     fn get_spacing(&self) -> u32;
 
+    /// insert_actor:
+    /// @box: a #BoxLayout
+    /// @actor: the #ClutterActor actor to add to the box layout
+    /// @position: the position where to insert the actor
+    ///
+    /// Inserts @actor at @position in @box.
+    ///
     fn insert_actor<P: Is<clutter::Actor>>(&self, actor: &P, position: i32);
 
     //fn insert_actor_with_properties<P: Is<clutter::Actor>>(&self, actor: &P, position: i32, first_property: &str, : /*Unknown conversion*/Fundamental: VarArgs);
 
+    /// set_enable_animations:
+    /// @box: A #BoxLayout
+    /// @enable_animations: #TRUE to enable animations
+    ///
+    /// Enable animations when certain properties change.
+    ///
     fn set_enable_animations(&self, enable_animations: bool);
 
+    /// set_orientation:
+    /// @box: A #BoxLayout
+    /// @orientation: orientation value for the layout
+    ///
+    /// Set the orientation of the box layout.
+    ///
     fn set_orientation(&self, orientation: Orientation);
 
+    /// set_scroll_to_focused:
+    /// @box: A #BoxLayout
+    /// @scroll_to_focused: #TRUE to enable automatically scrolling to the
+    ///   focused actor
+    ///
+    /// Enables or disables automatic scrolling to the focused actor.
+    ///
     fn set_scroll_to_focused(&self, scroll_to_focused: bool);
 
+    /// set_spacing:
+    /// @box: A #BoxLayout
+    /// @spacing: the spacing value
+    ///
+    /// Set the amount of spacing between children in pixels
+    ///
     fn set_spacing(&self, spacing: u32);
 
     fn connect_property_enable_animations_notify<F: Fn(&Self) + 'static>(
@@ -184,79 +261,138 @@ impl<O: Is<BoxLayout>> BoxLayoutExt for O {
         unimplemented!()
     }
 
+    /// get_enable_animations:
+    /// @box: A #BoxLayout
+    ///
+    /// Get the value of the #BoxLayout:enable-animations property.
+    ///
+    /// Returns: #TRUE if animations enabled
+    ///
     fn get_enable_animations(&self) -> bool {
-        // unsafe {
-        //     from_glib(ffi::box_layout_get_enable_animations(
-        //         self.as_ref().to_glib_none().0,
-        //     ))
-        // }
-        unimplemented!()
+        let boxlayout = self.as_ref();
+        boxlayout.enable_animations
     }
 
+    /// get_orientation:
+    /// @box: A #BoxLayout
+    ///
+    /// Get the value of the #BoxLayout:orientation property.
+    ///
     fn get_orientation(&self) -> Orientation {
-        //    unsafe { TODO: call ffi:box_layout_get_orientation() }
-        unimplemented!()
+        let boxlayout = self.as_ref();
+        boxlayout.orientation
     }
 
+    /// get_scroll_to_focused:
+    /// @box: A #BoxLayout
+    ///
+    /// Get the value of the #BoxLayout:scroll-to-focused property.
+    ///
+    /// Returns: #TRUE if automatically scrolling to the focused actor is enabled
+    ///
     fn get_scroll_to_focused(&self) -> bool {
-        // unsafe {
-        //     from_glib(ffi::box_layout_get_scroll_to_focused(
-        //         self.as_ref().to_glib_none().0,
-        //     ))
-        // }
-        unimplemented!()
+        let boxlayout = self.as_ref();
+        boxlayout.scroll_to_focused
     }
 
+    /// get_spacing:
+    /// @box: A #BoxLayout
+    ///
+    /// Get the spacing between children in pixels
+    ///
+    /// Returns: the spacing value
+    ///
     fn get_spacing(&self) -> u32 {
-        // unsafe { ffi::box_layout_get_spacing(self.as_ref().to_glib_none().0) }
-        unimplemented!()
+        let boxlayout = self.as_ref();
+        boxlayout.spacing
     }
 
+    /// insert_actor:
+    /// @box: a #BoxLayout
+    /// @actor: the #ClutterActor actor to add to the box layout
+    /// @position: the position where to insert the actor
+    ///
+    /// Inserts @actor at @position in @box.
+    ///
     fn insert_actor<P: Is<clutter::Actor>>(&self, actor: &P, position: i32) {
-        // unsafe {
-        //     ffi::box_layout_insert_actor(
-        //         self.as_ref().to_glib_none().0,
-        //         actor.as_ref().to_glib_none().0,
-        //         position,
-        //     );
-        // }
-        unimplemented!()
+        let boxlayout = self.as_ref();
+        let actor = actor.as_ref();
+        
+        // clutter_actor_insert_child_at_index (CLUTTER_ACTOR (box), actor, position);
     }
 
     //fn insert_actor_with_properties<P: Is<clutter::Actor>>(&self, actor: &P, position: i32, first_property: &str, : /*Unknown conversion*/Fundamental: VarArgs) {
     //    unsafe { TODO: call ffi:box_layout_insert_actor_with_properties() }
     //}
 
+    /// set_enable_animations:
+    /// @box: A #BoxLayout
+    /// @enable_animations: #TRUE to enable animations
+    ///
+    /// Enable animations when certain properties change.
+    ///
     fn set_enable_animations(&self, enable_animations: bool) {
-        // unsafe {
-        //     ffi::box_layout_set_enable_animations(
-        //         self.as_ref().to_glib_none().0,
-        //         enable_animations.to_glib(),
-        //     );
-        // }
-        unimplemented!()
+        let boxlayout = self.as_ref();
+
+        if boxlayout.enable_animations != enable_animations {
+            // boxlayout.enable_animations = enable_animations;
+            // clutter_actor_queue_relayout ((ClutterActor*) box);
+
+            // g_object_notify (G_OBJECT (box), "enable-animations");
+        }
     }
 
+    /// set_orientation:
+    /// @box: A #BoxLayout
+    /// @orientation: orientation value for the layout
+    ///
+    /// Set the orientation of the box layout.
+    ///
     fn set_orientation(&self, orientation: Orientation) {
-        //    unsafe { TODO: call ffi:box_layout_set_orientation() }
-        unimplemented!()
+        let boxlayout = self.as_ref();
+
+        if boxlayout.orientation != orientation {
+            // boxlayout.orientation = orientation;
+            // boxlayout.start_animation();
+            // clutter_actor_queue_relayout (CLUTTER_ACTOR (box));
+
+            // g_object_notify (G_OBJECT (box), "orientation");
+        }
     }
 
+    /// set_scroll_to_focused:
+    /// @box: A #BoxLayout
+    /// @scroll_to_focused: #TRUE to enable automatically scrolling to the
+    ///   focused actor
+    ///
+    /// Enables or disables automatic scrolling to the focused actor.
+    ///
     fn set_scroll_to_focused(&self, scroll_to_focused: bool) {
-        // unsafe {
-        //     ffi::box_layout_set_scroll_to_focused(
-        //         self.as_ref().to_glib_none().0,
-        //         scroll_to_focused.to_glib(),
-        //     );
-        // }
-        unimplemented!()
+        let boxlayout = self.as_ref();
+        
+        if boxlayout.scroll_to_focused != scroll_to_focused {
+            // boxlayout.scroll_to_focused = scroll_to_focused;
+            // g_object_notify (G_OBJECT (box), "scroll-to-focused");
+        }
     }
 
+    /// set_spacing:
+    /// @box: A #BoxLayout
+    /// @spacing: the spacing value
+    ///
+    /// Set the amount of spacing between children in pixels
+    ///
     fn set_spacing(&self, spacing: u32) {
-        // unsafe {
-        //     ffi::box_layout_set_spacing(self.as_ref().to_glib_none().0, spacing);
-        // }
-        unimplemented!()
+        let boxlayout = self.as_ref();
+
+        if boxlayout.spacing != spacing {
+            // boxlayout.spacing = spacing;
+            // boxlayout.ignore_css_spacing = true;
+
+            // clutter_actor_queue_relayout (CLUTTER_ACTOR (box));
+
+            // g_object_notify (G_OBJECT (box), "spacing");
+        }
     }
 
     fn connect_property_enable_animations_notify<F: Fn(&Self) + 'static>(

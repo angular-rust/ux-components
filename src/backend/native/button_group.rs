@@ -9,7 +9,12 @@ use glib::signal::SignalHandlerId;
 use std::fmt;
 
 #[derive(Clone, Debug)]
-pub struct ButtonGroup {}
+pub struct ButtonGroup {
+    pub active_button: Option<Button>,
+    pub children: Vec<Button>,
+
+    pub allow_no_active: bool,
+}
 
 impl ButtonGroup {
     pub fn new() -> ButtonGroup {
@@ -37,20 +42,74 @@ impl AsRef<ButtonGroup> for ButtonGroup {
 pub const NONE_BUTTON_GROUP: Option<&ButtonGroup> = None;
 
 pub trait ButtonGroupExt: 'static {
+    /// add:
+    /// @group: A #ButtonGroup
+    /// @button: A #Button
+    ///
+    /// Add @button to the #ButtonGroup.
+    ///
     fn add<P: Is<Button>>(&self, button: &P);
 
+    /// foreach:
+    /// @group: A #ButtonGroup
+    /// @callback: (scope call): A #ClutterCallback
+    /// @userdata: (closure): A #gpointer
+    ///
+    /// Calls @callback for each button in the group.
+    ///
     fn foreach<P: FnMut(&clutter::Actor)>(&self, callback: P);
 
-    fn get_active_button(&self) -> Option<Button>;
+    /// get_active_button:
+    /// @group: A #ButtonGroup
+    ///
+    /// Get the current active button
+    ///
+    /// Returns: (transfer none): the currently active button
+    ///
+    fn get_active_button(&self) -> &Option<Button>;
 
+    /// get_allow_no_active:
+    /// @group: A #ButtonGroup
+    ///
+    /// Get the value of the #ButtonGroup:allow-no-active property.
+    ///
+    /// Returns: the value of the "allow-no-active" property.
+    ///
     fn get_allow_no_active(&self) -> bool;
 
-    fn get_buttons(&self) -> Vec<Button>;
+    /// get_buttons:
+    /// @group: A #ButtonGroup
+    ///
+    /// Get a list of the buttons in the button group.
+    ///
+    /// Returns: (element-type .Button): a list of buttons. The list is
+    /// owned by the #ButtonGroup and should not be modified by the application.
+    ///
+    fn get_buttons(&self) -> &Vec<Button>;
 
+    /// remove:
+    /// @group: A #ButtonGroup
+    /// @button: A #Button
+    ///
+    /// Remove @button from the #ButtonGroup
+    ///
     fn remove<P: Is<Button>>(&self, button: &P);
 
+    /// set_active_button:
+    /// @group: A #ButtonGroup
+    /// @button: (allow-none): A #Button
+    ///
+    /// Set the current active button in the group. The previous active button will
+    /// have #Button:toggled set to #FALSE.
+    ///
     fn set_active_button<P: Is<Button>>(&self, button: Option<&P>);
 
+    /// set_allow_no_active:
+    /// @group: A #ButtonGroup
+    /// @allow_no_active: A #gboolean
+    ///
+    /// Set the value of the #ButtonGroup:allow-no-active property.
+    ///
     fn set_allow_no_active(&self, allow_no_active: bool);
 
     fn connect_property_active_button_notify<F: Fn(&Self) + 'static>(
@@ -65,93 +124,181 @@ pub trait ButtonGroupExt: 'static {
 }
 
 impl<O: Is<ButtonGroup>> ButtonGroupExt for O {
+    /// add:
+    /// @group: A #ButtonGroup
+    /// @button: A #Button
+    ///
+    /// Add @button to the #ButtonGroup.
+    ///
     fn add<P: Is<Button>>(&self, button: &P) {
-        // unsafe {
-        //     ffi::button_group_add(
-        //         self.as_ref().to_glib_none().0,
-        //         button.as_ref().to_glib_none().0,
-        //     );
-        // }
-        unimplemented!()
+        let buttongroup = self.as_ref();
+        let button = button.as_ref();
+
+        // buttongroup.children.push(button);
+        // g_signal_connect (button, "notify::toggled",
+        //                     G_CALLBACK (button_toggled_notify_cb), group);
+        // g_signal_connect (button, "button-press-event",
+        //                     G_CALLBACK (button_click_intercept), group);
+        // g_signal_connect (button, "button-release-event",
+        //                     G_CALLBACK (button_click_intercept), group);
+        // g_signal_connect (button, "touch-event",
+        //                     G_CALLBACK (button_click_intercept), group);
+
+        // g_object_weak_ref (G_OBJECT (button), (GWeakNotify) button_weak_notify,
+        //                     group);
+
+        if !buttongroup.allow_no_active && buttongroup.active_button.is_none() {
+            button.set_toggled(true);
+        }
     }
 
+    /// foreach:
+    /// @group: A #ButtonGroup
+    /// @callback: (scope call): A #ClutterCallback
+    /// @userdata: (closure): A #gpointer
+    ///
+    /// Calls @callback for each button in the group.
+    ///
     fn foreach<P: FnMut(&clutter::Actor)>(&self, callback: P) {
-        // let callback_data: P = callback;
-        // unsafe extern "C" fn callback_func<P: FnMut(&clutter::Actor)>(
-        //     actor: *mut clutter_sys::ClutterActor,
-        //     data: glib_sys::gpointer,
-        // ) {
-        //     let actor = from_glib_borrow(actor);
-        //     let callback: *mut P = data as *const _ as usize as *mut P;
-        //     (*callback)(&actor);
-        // }
-        // let callback = Some(callback_func::<P> as _);
-        // let super_callback0: &P = &callback_data;
-        // unsafe {
-        //     ffi::button_group_foreach(
-        //         self.as_ref().to_glib_none().0,
-        //         callback,
-        //         super_callback0 as *const _ as usize as *mut _,
-        //     );
-        // }
-        unimplemented!()
+        let buttongroup = self.as_ref();
+        // g_return_if_fail (IS_BUTTON_GROUP (group));
+        // g_return_if_fail (callback != NULL);
+
+        // g_slist_foreach (buttongroup.children, (GFunc) callback, userdata);
     }
 
-    fn get_active_button(&self) -> Option<Button> {
-        // unsafe {
-        //     from_glib_none(ffi::button_group_get_active_button(
-        //         self.as_ref().to_glib_none().0,
-        //     ))
-        // }
-        unimplemented!()
+    /// get_active_button:
+    /// @group: A #ButtonGroup
+    ///
+    /// Get the current active button
+    ///
+    /// Returns: (transfer none): the currently active button
+    ///
+    fn get_active_button(&self) -> &Option<Button> {
+        let buttongroup = self.as_ref();
+        &buttongroup.active_button
     }
 
+    /// get_allow_no_active:
+    /// @group: A #ButtonGroup
+    ///
+    /// Get the value of the #ButtonGroup:allow-no-active property.
+    ///
+    /// Returns: the value of the "allow-no-active" property.
+    ///
     fn get_allow_no_active(&self) -> bool {
-        // unsafe {
-        //     from_glib(ffi::button_group_get_allow_no_active(
-        //         self.as_ref().to_glib_none().0,
-        //     ))
-        // }
-        unimplemented!()
+        let buttongroup = self.as_ref();
+        buttongroup.allow_no_active
     }
 
-    fn get_buttons(&self) -> Vec<Button> {
-        // unsafe {
-        //     FromGlibPtrContainer::from_glib_none(ffi::button_group_get_buttons(
-        //         self.as_ref().to_glib_none().0,
-        //     ))
-        // }
-        unimplemented!()
+    /// get_buttons:
+    /// @group: A #ButtonGroup
+    ///
+    /// Get a list of the buttons in the button group.
+    ///
+    /// Returns: (element-type .Button): a list of buttons. The list is
+    /// owned by the #ButtonGroup and should not be modified by the application.
+    ///
+    fn get_buttons(&self) -> &Vec<Button> {
+        let buttongroup = self.as_ref();
+        &buttongroup.children
     }
 
+    /// remove:
+    /// @group: A #ButtonGroup
+    /// @button: A #Button
+    ///
+    /// Remove @button from the #ButtonGroup
+    ///
     fn remove<P: Is<Button>>(&self, button: &P) {
-        // unsafe {
-        //     ffi::button_group_remove(
-        //         self.as_ref().to_glib_none().0,
-        //         button.as_ref().to_glib_none().0,
-        //     );
+        let buttongroup = self.as_ref();
+        let button = button.as_ref();
+        
+        // GSList *l, *prev = NULL, *next;
+        // let mut found = false;
+
+        // // check the button exists in this group
+        // for btn in buttongroup.children.iter() {
+        //     if (Button*) btn->data == button {
+        //         found = true;
+        //         break;
+        //     }
+        //     prev = btn;
         // }
-        unimplemented!()
+
+        // if !found {
+        //     return;
+        // }
+
+        // next = g_slist_next (l);
+        // buttongroup.children = g_slist_remove (buttongroup.children, button);
+
+        // g_signal_handlers_disconnect_by_func (button, button_toggled_notify_cb,
+        //                                         group);
+        // g_signal_handlers_disconnect_by_func (button, button_click_intercept, group);
+
+        // g_object_weak_unref (G_OBJECT (button), (GWeakNotify) button_weak_notify, group);
+
+        // if buttongroup.active_button == button {
+        //     /* Try and select another button if the one we've removed is active.
+        //     * But we shouldn't do this in the case where we allow no active button.
+        //     */
+        //     if buttongroup.allow_no_active {
+        //         buttongroup.set_active_button (None);
+        //     } else if prev {
+        //         buttongroup.set_active_button ((Button *) prev->data);
+        //     } else if next {
+        //         buttongroup.set_active_button ((Button *) next->data);
+        //     } else if buttongroup.children {
+        //         buttongroup.set_active_button ((Button *) priv->children->data);
+        //     } else {
+        //         buttongroup.set_active_button (NULL);
+        //     }
+        // }
     }
 
+    /// set_active_button:
+    /// @group: A #ButtonGroup
+    /// @button: (allow-none): A #Button
+    ///
+    /// Set the current active button in the group. The previous active button will
+    /// have #Button:toggled set to #FALSE.
+    ///
     fn set_active_button<P: Is<Button>>(&self, button: Option<&P>) {
-        // unsafe {
-        //     ffi::button_group_set_active_button(
-        //         self.as_ref().to_glib_none().0,
-        //         button.map(|p| p.as_ref()).to_glib_none().0,
-        //     );
+        let buttongroup = self.as_ref();
+        let button = button.as_ref();
+
+        // if let Some(active_button) = buttongroup.active_button {
+        //     if let Some(button) = button {
+        //         // if *button == active_button {
+        //         //     return;
+        //         // }
+        //         // TODO: ...
+        //     }
+        //     active_button.set_toggled(false);
         // }
-        unimplemented!()
+
+        // if let Some(button) = button {
+        //     button.set_toggled(true);
+        // }
+
+        // buttongroup.active_button = button;
+        // g_object_notify (G_OBJECT (group), "active-button");
     }
 
+    /// set_allow_no_active:
+    /// @group: A #ButtonGroup
+    /// @allow_no_active: A #gboolean
+    ///
+    /// Set the value of the #ButtonGroup:allow-no-active property.
+    ///
     fn set_allow_no_active(&self, allow_no_active: bool) {
-        // unsafe {
-        //     ffi::button_group_set_allow_no_active(
-        //         self.as_ref().to_glib_none().0,
-        //         allow_no_active.to_glib(),
-        //     );
-        // }
-        unimplemented!()
+        let buttongroup = self.as_ref();
+
+        if buttongroup.allow_no_active != allow_no_active {
+            // buttongroup.allow_no_active = allow_no_active;
+            // g_object_notify (G_OBJECT (group), "allow-no-active");
+        }
     }
 
     fn connect_property_active_button_notify<F: Fn(&Self) + 'static>(

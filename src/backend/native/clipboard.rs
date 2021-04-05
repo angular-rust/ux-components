@@ -28,12 +28,34 @@ impl AsRef<Clipboard> for Clipboard {
 pub const NONE_CLIPBOARD: Option<&Clipboard> = None;
 
 pub trait ClipboardExt: 'static {
+    /// get_text:
+    /// @clipboard: A #Clipboard
+    /// @callback: (scope async): function to be called when the text is retreived
+    /// @user_data: data to be passed to the callback
+    ///
+    /// Request the data from the clipboard in text form. @callback is executed
+    /// when the data is retreived.
+    ///
     fn get_text<P: FnOnce(&Clipboard, &str) + 'static>(&self, callback: P);
 
+    /// set_text:
+    /// @clipboard: A #Clipboard
+    /// @text: text to copy to the clipboard
+    ///
+    /// Sets text as the current contents of the clipboard.
+    ///
     fn set_text(&self, text: &str);
 }
 
 impl<O: Is<Clipboard>> ClipboardExt for O {
+    /// get_text:
+    /// @clipboard: A #Clipboard
+    /// @callback: (scope async): function to be called when the text is retreived
+    /// @user_data: data to be passed to the callback
+    ///
+    /// Request the data from the clipboard in text form. @callback is executed
+    /// when the data is retreived.
+    ///
     fn get_text<P: FnOnce(&Clipboard, &str) + 'static>(&self, callback: P) {
         // let callback_data: Box_<P> = Box_::new(callback);
         // unsafe extern "C" fn callback_func<P: FnOnce(&Clipboard, &str) + 'static>(
@@ -55,14 +77,35 @@ impl<O: Is<Clipboard>> ClipboardExt for O {
         //         Box_::into_raw(super_callback0) as *mut _,
         //     );
         // }
-        unimplemented!()
+        
+        // ClipboardClosure *closure;
+
+        // g_return_if_fail (IS_CLIPBOARD (clipboard));
+        // g_return_if_fail (callback != NULL);
+      
+        // closure = g_slice_new (ClipboardClosure);
+        // closure->clipboard = clipboard;
+        // closure->callback = callback;
+        // closure->user_data = user_data;
+      
+        // g_object_add_weak_pointer (G_OBJECT (clipboard),
+        //                            (gpointer *)&closure->clipboard);
+        // g_idle_add ((GSourceFunc)clipboard_get_text_cb, closure);
     }
 
+    /// set_text:
+    /// @clipboard: A #Clipboard
+    /// @text: text to copy to the clipboard
+    ///
+    /// Sets text as the current contents of the clipboard.
+    ///
     fn set_text(&self, text: &str) {
-        // unsafe {
-        //     ffi::clipboard_set_text(self.as_ref().to_glib_none().0, text.to_glib_none().0);
-        // }
-        unimplemented!()
+        // g_return_if_fail (IS_CLIPBOARD (clipboard));
+        // g_return_if_fail (text != NULL);
+
+        // priv = clipboard->priv;
+        // g_free (priv->text);
+        // priv->text = g_strdup (text);
     }
 }
 

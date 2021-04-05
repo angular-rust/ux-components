@@ -9,7 +9,15 @@ use glib::signal::SignalHandlerId;
 use std::fmt;
 
 #[derive(Clone, Debug)]
-pub struct BoxLayoutChild {}
+pub struct BoxLayoutChild {
+    pub parent: clutter::ChildMeta,
+
+    pub expand: bool,
+    pub x_fill: bool,
+    pub y_fill: bool,
+    pub x_align: Align,
+    pub y_align: Align,
+}
 
 impl Object for BoxLayoutChild {}
 impl Is<BoxLayoutChild> for BoxLayoutChild {}
@@ -22,25 +30,101 @@ impl AsRef<BoxLayoutChild> for BoxLayoutChild {
 
 pub const NONE_BOX_LAYOUT_CHILD: Option<&BoxLayoutChild> = None;
 
+// TODO: should implement with childs
 pub trait BoxLayoutChildExt: 'static {
+    /// get_expand:
+    /// @box_layout: A #BoxLayout
+    /// @child: A #ClutterActor
+    ///
+    /// Get the value of the #BoxLayoutChild:expand property
+    ///
+    /// Returns: the current value of the "expand" property
+    ///
     fn get_property_expand(&self) -> bool;
 
+    /// set_expand:
+    /// @box_layout: A #BoxLayout
+    /// @child: A #ClutterActor
+    /// @expand: A #gboolean
+    ///
+    /// Set the value of the #BoxLayoutChild:expand property.
+    ///
     fn set_property_expand(&self, expand: bool);
 
+    /// get_x_align:
+    /// @box_layout: An #BoxLayout
+    /// @child: A #ClutterActor
+    ///
+    /// Get the value of the #BoxLayoutChild:x-align property
+    ///
+    /// Returns: the current value of the "x-align" property
+    ///
     fn get_property_x_align(&self) -> Align;
 
+    /// set_x_align:
+    /// @box_layout: A #BoxLayout
+    /// @child: A #ClutterActor
+    /// @x_align: An #Align
+    ///
+    /// Set the value of the #BoxLayoutChild:x-align property.
+    ///
     fn set_property_x_align(&self, x_align: Align);
 
+    /// get_x_fill:
+    /// @box_layout: A #BoxLayout
+    /// @child: A #ClutterActor
+    ///
+    /// Get the value of the #BoxLayoutChild:x-fill property.
+    ///
+    /// Returns: the current value of the "x-fill" property.
+    ///
     fn get_property_x_fill(&self) -> bool;
 
+    /// set_x_fill:
+    /// @box_layout: A #BoxLayout
+    /// @child: A #ClutterActor
+    /// @x_fill: A #gboolean
+    ///
+    /// Set the value of the #BoxLayoutChild:x-fill property.
+    ///
     fn set_property_x_fill(&self, x_fill: bool);
 
+    /// get_y_align:
+    /// @box_layout: An #BoxLayout
+    /// @child: A #ClutterActor
+    ///
+    /// Get the value of the #BoxLayoutChild:y-align property.
+    ///
+    /// Returns: the current value of the "y-align" property.
+    ///
     fn get_property_y_align(&self) -> Align;
 
+    /// set_y_align:
+    /// @box_layout: An #BoxLayout
+    /// @child: A #ClutterActor
+    /// @y_align: An #Align
+    ///
+    /// Set the value of the #BoxLayoutChild:y-align property.
+    ///
     fn set_property_y_align(&self, y_align: Align);
 
+    /// get_y_fill:
+    /// @box_layout: An #BoxLayout
+    /// @child: A #ClutterActor
+    ///
+    /// Get the value of the #BoxLayoutChild:y-fill property
+    ///
+    /// Returns: the current value of the "y-fill" property
+    ///
     fn get_property_y_fill(&self) -> bool;
 
+    /// set_y_fill:
+    /// @box_layout: An #BoxLayout
+    /// @child: A #ClutterActor
+    /// @y_fill: A #gboolean
+    ///
+    /// Set the value of the #BoxLayoutChild:y-fill property.
+    ///
     fn set_property_y_fill(&self, y_fill: bool);
 
     fn connect_property_expand_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
@@ -55,121 +139,129 @@ pub trait BoxLayoutChildExt: 'static {
 }
 
 impl<O: Is<BoxLayoutChild>> BoxLayoutChildExt for O {
+    /// get_expand:
+    /// @box_layout: A #BoxLayout
+    /// @child: A #ClutterActor
+    ///
+    /// Get the value of the #BoxLayoutChild:expand property
+    ///
+    /// Returns: the current value of the "expand" property
+    ///
     fn get_property_expand(&self) -> bool {
-        // unsafe {
-        //     let mut value = Value::from_type(<bool as StaticType>::static_type());
-        //     gobject_sys::g_object_get_property(
-        //         self.to_glib_none().0 as *mut gobject_sys::GObject,
-        //         b"expand\0".as_ptr() as *const _,
-        //         value.to_glib_none_mut().0,
-        //     );
-        //     value
-        //         .get()
-        //         .expect("Return Value for property `expand` getter")
-        //         .unwrap()
-        // }
-        unimplemented!()
+        let boxlayoutchild = self.as_ref();
+        boxlayoutchild.expand
     }
 
+    /// set_expand:
+    /// @box_layout: A #BoxLayout
+    /// @child: A #ClutterActor
+    /// @expand: A #gboolean
+    ///
+    /// Set the value of the #BoxLayoutChild:expand property.
+    ///
     fn set_property_expand(&self, expand: bool) {
-        // unsafe {
-        //     gobject_sys::g_object_set_property(
-        //         self.to_glib_none().0 as *mut gobject_sys::GObject,
-        //         b"expand\0".as_ptr() as *const _,
-        //         Value::from(&expand).to_glib_none().0,
-        //     );
-        // }
-        unimplemented!()
+        let boxlayoutchild = self.as_ref();
+        // boxlayoutchild.expand = expand
     }
 
+    /// get_x_align:
+    /// @box_layout: An #BoxLayout
+    /// @child: A #ClutterActor
+    ///
+    /// Get the value of the #BoxLayoutChild:x-align property
+    ///
+    /// Returns: the current value of the "x-align" property
+    ///
     fn get_property_x_align(&self) -> Align {
-        //    unsafe {
-        //        let mut value = Value::from_type(</*Unknown type*/ as StaticType>::static_type());
-        //        gobject_sys::g_object_get_property(self.to_glib_none().0 as *mut gobject_sys::GObject, b"x-align\0".as_ptr() as *const _, value.to_glib_none_mut().0);
-        //        value.get().expect("Return Value for property `x-align` getter").unwrap()
-        //    }
-        unimplemented!()
+        let boxlayoutchild = self.as_ref();
+        boxlayoutchild.x_align
     }
 
+    /// set_x_align:
+    /// @box_layout: A #BoxLayout
+    /// @child: A #ClutterActor
+    /// @x_align: An #Align
+    ///
+    /// Set the value of the #BoxLayoutChild:x-align property.
+    ///
     fn set_property_x_align(&self, x_align: Align) {
-        //    unsafe {
-        //        gobject_sys::g_object_set_property(self.to_glib_none().0 as *mut gobject_sys::GObject, b"x-align\0".as_ptr() as *const _, Value::from(&x_align).to_glib_none().0);
-        //    }
-        unimplemented!()
+        let boxlayoutchild = self.as_ref();
+        // boxlayoutchild.x_align = x_align
     }
 
+    /// get_x_fill:
+    /// @box_layout: A #BoxLayout
+    /// @child: A #ClutterActor
+    ///
+    /// Get the value of the #BoxLayoutChild:x-fill property.
+    ///
+    /// Returns: the current value of the "x-fill" property.
+    ///
     fn get_property_x_fill(&self) -> bool {
-        // unsafe {
-        //     let mut value = Value::from_type(<bool as StaticType>::static_type());
-        //     gobject_sys::g_object_get_property(
-        //         self.to_glib_none().0 as *mut gobject_sys::GObject,
-        //         b"x-fill\0".as_ptr() as *const _,
-        //         value.to_glib_none_mut().0,
-        //     );
-        //     value
-        //         .get()
-        //         .expect("Return Value for property `x-fill` getter")
-        //         .unwrap()
-        // }
-        unimplemented!()
+        let boxlayoutchild = self.as_ref();
+        boxlayoutchild.x_fill
     }
 
+    /// set_x_fill:
+    /// @box_layout: A #BoxLayout
+    /// @child: A #ClutterActor
+    /// @x_fill: A #gboolean
+    ///
+    /// Set the value of the #BoxLayoutChild:x-fill property.
+    ///
     fn set_property_x_fill(&self, x_fill: bool) {
-        // unsafe {
-        //     gobject_sys::g_object_set_property(
-        //         self.to_glib_none().0 as *mut gobject_sys::GObject,
-        //         b"x-fill\0".as_ptr() as *const _,
-        //         Value::from(&x_fill).to_glib_none().0,
-        //     );
-        // }
-        unimplemented!()
+        let boxlayoutchild = self.as_ref();
+        // boxlayoutchild.x_fill = x_fill
     }
 
+    /// get_y_align:
+    /// @box_layout: An #BoxLayout
+    /// @child: A #ClutterActor
+    ///
+    /// Get the value of the #BoxLayoutChild:y-align property.
+    ///
+    /// Returns: the current value of the "y-align" property.
+    ///
     fn get_property_y_align(&self) -> Align {
-        //    unsafe {
-        //        let mut value = Value::from_type(</*Unknown type*/ as StaticType>::static_type());
-        //        gobject_sys::g_object_get_property(self.to_glib_none().0 as *mut gobject_sys::GObject, b"y-align\0".as_ptr() as *const _, value.to_glib_none_mut().0);
-        //        value.get().expect("Return Value for property `y-align` getter").unwrap()
-        //    }
-        unimplemented!()
+        let boxlayoutchild = self.as_ref();
+        boxlayoutchild.y_align
     }
 
+    /// set_y_align:
+    /// @box_layout: An #BoxLayout
+    /// @child: A #ClutterActor
+    /// @y_align: An #Align
+    ///
+    /// Set the value of the #BoxLayoutChild:y-align property.
+    ///
     fn set_property_y_align(&self, y_align: Align) {
-        // unsafe {
-        //     gobject_sys::g_object_set_property(
-        //         self.to_glib_none().0 as *mut gobject_sys::GObject,
-        //         b"y-align\0".as_ptr() as *const _,
-        //         Value::from(&y_align).to_glib_none().0,
-        //     );
-        // }
-        unimplemented!()
+        let boxlayoutchild = self.as_ref();
+        // boxlayoutchild.y_align = y_align
     }
 
+    /// get_y_fill:
+    /// @box_layout: An #BoxLayout
+    /// @child: A #ClutterActor
+    ///
+    /// Get the value of the #BoxLayoutChild:y-fill property
+    ///
+    /// Returns: the current value of the "y-fill" property
+    ///
     fn get_property_y_fill(&self) -> bool {
-        // unsafe {
-        //     let mut value = Value::from_type(<bool as StaticType>::static_type());
-        //     gobject_sys::g_object_get_property(
-        //         self.to_glib_none().0 as *mut gobject_sys::GObject,
-        //         b"y-fill\0".as_ptr() as *const _,
-        //         value.to_glib_none_mut().0,
-        //     );
-        //     value
-        //         .get()
-        //         .expect("Return Value for property `y-fill` getter")
-        //         .unwrap()
-        // }
-        unimplemented!()
+        let boxlayoutchild = self.as_ref();
+        boxlayoutchild.y_fill
     }
 
+    /// set_y_fill:
+    /// @box_layout: An #BoxLayout
+    /// @child: A #ClutterActor
+    /// @y_fill: A #gboolean
+    ///
+    /// Set the value of the #BoxLayoutChild:y-fill property.
+    ///
     fn set_property_y_fill(&self, y_fill: bool) {
-        // unsafe {
-        //     gobject_sys::g_object_set_property(
-        //         self.to_glib_none().0 as *mut gobject_sys::GObject,
-        //         b"y-fill\0".as_ptr() as *const _,
-        //         Value::from(&y_fill).to_glib_none().0,
-        //     );
-        // }
-        unimplemented!()
+        let boxlayoutchild = self.as_ref();
+        // boxlayoutchild.y_fill = y_fill
     }
 
     fn connect_property_expand_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
