@@ -206,7 +206,7 @@ impl Adjustment {
         //     if !self.page_inc_source {
         //         self.page_inc_source =
         //         g_idle_add_full (CLUTTER_PRIORITY_REDRAW,
-        //                         (GSourceFunc)mx_adjustment_page_inc_notify_cb,
+        //                         (GSourceFunc)adjustment_page_inc_notify_cb,
         //                         adjustment,
         //                         None);
         //     }
@@ -804,7 +804,7 @@ impl<O: Is<Adjustment>> AdjustmentExt for O {
         // }
 
         // if emit_changed {
-        //     mx_adjustment_emit_changed (adjustment);
+        //     adjustment_emit_changed (adjustment);
         // }
 
         // g_object_thaw_notify(G_OBJECT (adjustment));

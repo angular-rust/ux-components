@@ -8,9 +8,28 @@ use crate::prelude::*;
 use glib::signal::SignalHandlerId;
 use std::fmt;
 
+#[derive(Clone, Debug)]
+pub struct MenuChild {
+    pub action: Action,
+    pub widget: Widget, // called `box` before
+}
+
 // @extends FloatingWidget, Widget, clutter::Actor
 #[derive(Clone, Debug)]
-pub struct Menu {}
+pub struct Menu {
+    pub children: Vec<MenuChild>,
+    pub transition_out: bool,
+    pub stage: Option<clutter::Actor>,
+    pub captured_event_handler: u64,
+    pub internal_focus_push: bool,
+    pub scrolling_mode: bool,
+    pub id_offset: i32,
+    pub last_shown_id: i32,
+    pub up_button: Option<clutter::Actor>,
+    pub down_button: Option<clutter::Actor>,
+    pub up_source: u64,
+    pub down_source: u64,
+}
 
 impl Menu {
     pub fn new() -> Menu {
@@ -38,50 +57,124 @@ impl AsRef<Menu> for Menu {
 pub const NONE_MENU: Option<&Menu> = None;
 
 pub trait MenuExt: 'static {
+    /// add_action:
+    /// @menu: A #Menu
+    /// @action: A #Action
+    ///
+    /// Append @action to @menu.
+    ///
     fn add_action<P: Is<Action>>(&self, action: &P);
 
+    /// remove_action:
+    /// @menu: A #Menu
+    /// @action: A #Action
+    ///
+    /// Remove @action from @menu.
+    ///
     fn remove_action<P: Is<Action>>(&self, action: &P);
 
+    /// remove_all:
+    /// @menu: A #Menu
+    ///
+    /// Remove all the actions from @menu.
+    ///
     fn remove_all(&self);
 
+    /// show_with_position:
+    /// @menu: A #Menu
+    /// @x: X position
+    /// @y: Y position
+    ///
+    /// Moves the menu to the specified position and shows it.
+    ///
     fn show_with_position(&self, x: f32, y: f32);
 
     fn connect_action_activated<F: Fn(&Self, &Action) + 'static>(&self, f: F) -> SignalHandlerId;
 }
 
 impl<O: Is<Menu>> MenuExt for O {
+    /// add_action:
+    /// @menu: A #Menu
+    /// @action: A #Action
+    ///
+    /// Append @action to @menu.
+    ///
     fn add_action<P: Is<Action>>(&self, action: &P) {
-        // unsafe {
-        //     ffi::menu_add_action(
-        //         self.as_ref().to_glib_none().0,
-        //         action.as_ref().to_glib_none().0,
-        //     );
-        // }
-        unimplemented!()
+        let menu = self.as_ref();
+        let action = action.as_ref();
+        
+        // let child: MenuChild;
+        // child.action = g_object_ref_sink(action);
+        // // TODO: Connect to notify signals in case action properties change
+        // child.widget = g_object_new(TYPE_BUTTON,
+        //                             "action", child.action,
+        //                             NULL);
+        // button_set_action(BUTTON (child.widget), child.action);
+
+        // // align to the left 
+        // let button_child: clutter::Actor = clutter_actor_get_child_at_index((ClutterActor*)child.widget, 0);
+        // clutter_actor_set_x_align(button_child, CLUTTER_ACTOR_ALIGN_START);
+
+        // g_signal_connect(child.widget, "clicked",
+        //                     G_CALLBACK (menu_button_clicked_cb), action);
+        // g_signal_connect(child.widget, "enter-event",
+        //                     G_CALLBACK (menu_button_enter_event_cb), menu);
+        // clutter_actor_add_child(CLUTTER_ACTOR (menu), CLUTTER_ACTOR(child.widget));
+        // g_array_append_val(menu.children, child);
+        // clutter_actor_queue_relayout(CLUTTER_ACTOR(menu));
     }
 
+    /// remove_action:
+    /// @menu: A #Menu
+    /// @action: A #Action
+    ///
+    /// Remove @action from @menu.
+    ///
     fn remove_action<P: Is<Action>>(&self, action: &P) {
-        // unsafe {
-        //     ffi::menu_remove_action(
-        //         self.as_ref().to_glib_none().0,
-        //         action.as_ref().to_glib_none().0,
-        //     );
+        let menu = self.as_ref();
+        let action = action.as_ref();
+
+        // for (i = 0; i < menu.children.len(); i++) {
+        //     MenuChild *child = &g_array_index (menu.children, MenuChild, i);
+
+        //     if child->action == action {
+        //         menu_free_action_at (menu, i, TRUE);
+        //         break;
+        //     }
         // }
-        unimplemented!()
     }
 
+    /// remove_all:
+    /// @menu: A #Menu
+    ///
+    /// Remove all the actions from @menu.
+    ///
     fn remove_all(&self) {
-        // unsafe {
-        //     ffi::menu_remove_all(self.as_ref().to_glib_none().0);
+        let menu = self.as_ref();
+        
+        // if !menu.children.len() {
+        //     return;
         // }
-        unimplemented!()
+
+        // for (i = 0; i < menu.children.len; i++) {
+        //     menu_free_action_at(menu, i, false);
+        // }
+
+        // g_array_remove_range(menu.children, 0, menu.children.len());
     }
 
+    /// show_with_position:
+    /// @menu: A #Menu
+    /// @x: X position
+    /// @y: Y position
+    ///
+    /// Moves the menu to the specified position and shows it.
+    ///
     fn show_with_position(&self, x: f32, y: f32) {
-        // unsafe {
-        //     ffi::menu_show_with_position(self.as_ref().to_glib_none().0, x, y);
-        // }
-        unimplemented!()
+        let menu = self.as_ref();
+        
+        // clutter_actor_set_position(CLUTTER_ACTOR(menu), x, y);
+        // clutter_actor_show(CLUTTER_ACTOR(menu));
     }
 
     fn connect_action_activated<F: Fn(&Self, &Action) + 'static>(&self, f: F) -> SignalHandlerId {

@@ -296,7 +296,7 @@ impl<O: Is<ActorManager>> ActorManagerExt for O {
         //     op_links = op_links.next;
         //     g_queue_unlink (manager.ops, op_link);
         //     g_signal_emit (manager, signals[OP_CANCELLED], 0, op.id);
-        //     mx_actor_manager_op_free (manager, op_link, FALSE);
+        //     actor_manager_op_free (manager, op_link, FALSE);
         //     g_list_free (op_link);
         // }
         // TODO: ...
@@ -383,7 +383,7 @@ impl<O: Is<ActorManager>> ActorManagerExt for O {
         let container = container.as_ref();
         let actor = actor.as_ref();
 
-        // let op: MxActorManagerOperation =
+        // let op: ActorManagerOperation =
         //     manager.op_new(ACTOR_MANAGER_REMOVE, None, None, actor, container);
         // manager.ensure_processing();
         // op.id

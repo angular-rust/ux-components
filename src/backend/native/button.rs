@@ -441,7 +441,7 @@ impl<O: Is<Button>> ButtonExt for O {
         // g_free (button.icon_name);
         // button.icon_name = g_strdup (icon_name);
 
-        // icon_set_icon_name (MX_ICON (button.icon), icon_name ?
+        // icon_set_icon_name (ICON (button.icon), icon_name ?
         //                        icon_name : button.style_icon_name);
         // button.update_contents ();
 
@@ -478,7 +478,7 @@ impl<O: Is<Button>> ButtonExt for O {
 
         if button.icon_size != icon_size {
             // button.icon_size = icon_size;
-            // icon_set_icon_size (MX_ICON (button.icon), icon_size ?
+            // icon_set_icon_size (ICON (button.icon), icon_size ?
             //                         icon_size : button.style_icon_size);
             // g_object_notify (G_OBJECT (button), "icon-size");
             // TODO: ...
