@@ -8,9 +8,23 @@ use crate::prelude::*;
 use glib::signal::SignalHandlerId;
 use std::fmt;
 
+#[derive(Clone, Debug)]
+pub struct ToggleHandle {
+    pub parent: Widget,
+}
+
 // @extends Widget, clutter::Actor;
 #[derive(Clone, Debug)]
-pub struct Toggle {}
+pub struct Toggle {
+    pub active: bool,
+    pub handle: Option<clutter::Actor>,
+    pub handle_filename: String,
+    pub timeline: Option<clutter::Timeline>,
+    pub position: f32,
+    pub drag_offset: f32,
+    pub slide_length: f32,
+    pub last_move: f32,
+}
 
 impl Toggle {
     pub fn new() -> Toggle {
@@ -47,15 +61,49 @@ pub trait ToggleExt: 'static {
 
 impl<O: Is<Toggle>> ToggleExt for O {
     fn get_active(&self) -> bool {
-        // unsafe { from_glib(ffi::toggle_get_active(self.as_ref().to_glib_none().0)) }
-        unimplemented!()
+        let toggle = self.as_ref();
+        toggle.active
     }
 
     fn set_active(&self, active: bool) {
-        // unsafe {
-        //     ffi::toggle_set_active(self.as_ref().to_glib_none().0, active.to_glib());
-        // }
-        unimplemented!()
+        let toggle = self.as_ref();
+
+        if toggle.active != active || (toggle.position > 0.0 && toggle.position < 1.0) {
+            
+            // toggle.active = active;
+            // if active {
+            //     mx_stylable_set_style_pseudo_class(MX_STYLABLE(toggle), "checked");
+            // } else {
+            //     mx_stylable_set_style_pseudo_class(MX_STYLABLE(toggle), NULL);
+            // }
+            // g_object_notify(G_OBJECT(toggle), "active");
+      
+            // // don't run an animation if the actor is not mapped
+            // if !CLUTTER_ACTOR_IS_MAPPED(CLUTTER_ACTOR(toggle)) {
+            //     toggle.position = (active) ? 1 : 0;
+            //     return;
+            // }
+      
+            // if active {
+            //     clutter_timeline_set_direction(toggle.timeline, CLUTTER_TIMELINE_FORWARD);
+            // } else {
+            //     clutter_timeline_set_direction(toggle.timeline, CLUTTER_TIMELINE_BACKWARD);
+            // }
+            // if clutter_timeline_is_playing (toggle.timeline) {
+            //     return;
+            // }
+      
+            // clutter_timeline_rewind(toggle.timeline);
+      
+            // if toggle.drag_offset > -1  {
+            //     clutter_timeline_set_progress_mode(toggle.timeline, CLUTTER_LINEAR);
+            //     clutter_timeline_advance(toggle.timeline, toggle.position * 300);
+            // } else {
+            //     clutter_timeline_set_progress_mode(toggle.timeline, CLUTTER_EASE_IN_OUT_CUBIC);
+            // }
+      
+            // clutter_timeline_start(toggle.timeline);
+        }
     }
 
     fn connect_property_active_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
