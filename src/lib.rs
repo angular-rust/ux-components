@@ -62,6 +62,7 @@ pub mod prelude {
 }
 
 impl prelude::Object for clutter::Actor {}
+impl prelude::Object for clutter::Model {}
 
 #[cfg(test)]
 mod tests {

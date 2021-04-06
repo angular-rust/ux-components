@@ -6,7 +6,9 @@ use std::fmt;
 
 // @extends Widget, clutter::Actor;
 #[derive(Clone, Debug)]
-pub struct Frame {}
+pub struct Frame {
+    pub child: Option<clutter::Actor>,
+}
 
 impl Frame {
     pub fn new() -> Frame {

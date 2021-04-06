@@ -6,7 +6,15 @@ use std::fmt;
 
 // @extends Widget, clutter::Actor;
 #[derive(Clone, Debug)]
-pub struct FloatingWidget {}
+pub struct FloatingWidget {
+    pub stage: Option<clutter::Stage>,
+
+    pub paint_matrix: Option<cogl::Matrix>,
+    pub pick_matrix: Option<cogl::Matrix>,
+  
+    pub pick_handler: u64,
+    pub paint_handler: u64,
+}
 
 impl FloatingWidget {}
 

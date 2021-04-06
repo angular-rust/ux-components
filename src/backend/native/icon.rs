@@ -10,7 +10,15 @@ use std::fmt;
 
 // @extends Widget, clutter::Actor;
 #[derive(Clone, Debug)]
-pub struct Icon {}
+pub struct Icon {
+    pub icon_set: bool,
+    pub size_set: bool,
+    pub is_content_image: bool,
+    pub icon_texture: Option<cogl::Texture>,
+    pub icon_name: Option<String>,
+    pub icon_suffix: Option<String>,
+    pub icon_size: i32,
+}
 
 impl Icon {
     pub fn new() -> Icon {
@@ -60,34 +68,61 @@ pub trait IconExt: 'static {
 
 impl<O: Is<Icon>> IconExt for O {
     fn get_icon_name(&self) -> Option<String> {
-        // unsafe {
-        //     from_glib_none(ffi::icon_get_icon_name(
-        //         self.as_ref().to_glib_none().0,
-        //     ))
-        // }
-        unimplemented!()
+        let icon = self.as_ref();
+        icon.icon_name.clone()
     }
 
     fn get_icon_size(&self) -> i32 {
-        // unsafe { ffi::icon_get_icon_size(self.as_ref().to_glib_none().0) }
-        unimplemented!()
+        let icon = self.as_ref();
+        icon.icon_size
     }
 
     fn set_icon_name(&self, icon_name: &str) {
-        // unsafe {
-        //     ffi::icon_set_icon_name(
-        //         self.as_ref().to_glib_none().0,
-        //         icon_name.to_glib_none().0,
-        //     );
+        let icon = self.as_ref();
+        
+        // // Unset the icon name if necessary
+        // if !icon_name {
+        //     if icon.icon_set {
+        //         icon.icon_set = false;
+        //         stylable_style_changed(STYLABLE (icon), STYLE_CHANGED_NONE);
+        //     }
+
+        //     return;
         // }
-        unimplemented!()
+
+        // icon.icon_set = true;
+
+        // // Check if there's no change 
+        // if icon.icon_name && g_str_equal (icon.icon_name, icon_name) {
+        //     return;
+        // }
+
+        // g_free(icon.icon_name);
+        // icon.icon_name = g_strdup(icon_name);
+
+        // icon_update(icon);
+
+        // g_object_notify(G_OBJECT(icon), "icon-name");
     }
 
     fn set_icon_size(&self, size: i32) {
-        // unsafe {
-        //     ffi::icon_set_icon_size(self.as_ref().to_glib_none().0, size);
+        let icon = self.as_ref();
+        
+        // if size < 0 {
+        //     if icon.size_set {
+        //         icon.size_set = false;
+        //         stylable_style_changed(STYLABLE(icon), STYLE_CHANGED_NONE);
+        //     }
+
+        //     return;
+        // } else if icon.icon_size != size {
+        //     icon.icon_size = size;
+        //     icon_update(icon);
+
+        //     g_object_notify(G_OBJECT(icon), "icon-size");
         // }
-        unimplemented!()
+
+        // icon.size_set = true;
     }
 
     fn connect_property_icon_name_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {

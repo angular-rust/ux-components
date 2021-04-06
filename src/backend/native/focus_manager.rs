@@ -4,11 +4,18 @@
 // use std::mem::transmute;
 
 use crate::prelude::*;
+use crate::{FocusDirection, FocusHint, Focusable};
 use glib::signal::SignalHandlerId;
 use std::fmt;
 
 #[derive(Clone, Debug)]
-pub struct FocusManager {}
+pub struct FocusManager {
+    pub stage: Option<clutter::Stage>,
+
+    pub focused: Option<Focusable>,
+    pub focused_toplevel: Option<Focusable>,
+    pub refocus_idle: u32,
+}
 
 impl FocusManager {
     //pub fn get_for_stage(stage: /*Ignored*/&clutter::Stage) -> Option<FocusManager> {
@@ -28,15 +35,55 @@ impl AsRef<FocusManager> for FocusManager {
 pub const NONE_FOCUS_MANAGER: Option<&FocusManager> = None;
 
 pub trait FocusManagerExt: 'static {
-    //fn get_focused(&self) -> /*Ignored*/Option<Focusable>;
+    /// focus_manager_get_focused:
+    /// @manager: A #FocusManager
+    ///
+    /// Get the currently focused #Focusable
+    ///
+    /// Returns: (transfer none): Focusable
+    ///
+    fn get_focused(&self) -> Option<Focusable>;
 
+    /// focus_manager_get_stage:
+    /// @manager: A #FocusManager
+    ///
+    /// Get the stage the FocusManager is associated with
+    ///
+    /// Returns: (transfer none): A #ClutterStage
+    ///
     fn get_stage(&self) -> Option<clutter::Stage>;
 
-    //fn move_focus(&self, direction: /*Ignored*/FocusDirection);
+    /// focus_manager_move_focus:
+    /// @manager: the focus manager
+    /// @direction: The direction to move focus in
+    ///
+    /// Moves the current focus in the given direction.
+    ///
+    fn move_focus(&self, direction: FocusDirection);
 
-    //fn push_focus(&self, focusable: /*Ignored*/&Focusable);
+    /// focus_manager_push_focus:
+    /// @manager: the focus manager
+    /// @focusable: the object to set focus on
+    ///
+    /// Sets the currently focused actor, with an #FocusHint of
+    /// %FOCUS_HINT_PRIOR.
+    ///
+    /// Note: the final focused object may not be the same as @focusable if
+    /// @focusable does not accept focus directly.
+    ///
+    fn push_focus(&self, focusable: &Focusable);
 
-    //fn push_focus_with_hint(&self, focusable: /*Ignored*/&Focusable, hint: /*Ignored*/FocusHint);
+    /// focus_manager_push_focus_with_hint:
+    /// @manager: the focus manager
+    /// @focusable: the object to set focus on
+    /// @hint: an #FocusHint
+    ///
+    /// Similar to #focus_manager_push_focus, but allows the hint to be specified.
+    ///
+    /// Note: the final focused object may not be the same as @focusable if
+    /// @focusable does not accept focus directly.
+    ///
+    fn push_focus_with_hint(&self, focusable: &Focusable, hint: FocusHint);
 
     fn connect_property_focused_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
 
@@ -44,26 +91,157 @@ pub trait FocusManagerExt: 'static {
 }
 
 impl<O: Is<FocusManager>> FocusManagerExt for O {
-    //fn get_focused(&self) -> /*Ignored*/Option<Focusable> {
-    //    unsafe { TODO: call ffi:focus_manager_get_focused() }
-    //}
-
-    fn get_stage(&self) -> Option<clutter::Stage> {
-        //    unsafe { TODO: call ffi:focus_manager_get_stage() }
-        unimplemented!()
+    /// focus_manager_get_focused:
+    /// @manager: A #FocusManager
+    ///
+    /// Get the currently focused #Focusable
+    ///
+    /// Returns: (transfer none): Focusable
+    ///
+    fn get_focused(&self) -> Option<Focusable> {
+        let focusmanager = self.as_ref();
+        focusmanager.focused.clone()
     }
 
-    //fn move_focus(&self, direction: /*Ignored*/FocusDirection) {
-    //    unsafe { TODO: call ffi:focus_manager_move_focus() }
-    //}
+    /// focus_manager_get_stage:
+    /// @manager: A #FocusManager
+    ///
+    /// Get the stage the FocusManager is associated with
+    ///
+    /// Returns: (transfer none): A #ClutterStage
+    ///
+    fn get_stage(&self) -> Option<clutter::Stage> {
+        let focusmanager = self.as_ref();
+        focusmanager.stage.clone()
+    }
 
-    //fn push_focus(&self, focusable: /*Ignored*/&Focusable) {
-    //    unsafe { TODO: call ffi:focus_manager_push_focus() }
-    //}
+    /// focus_manager_move_focus:
+    /// @manager: the focus manager
+    /// @direction: The direction to move focus in
+    ///
+    /// Moves the current focus in the given direction.
+    ///
+    fn move_focus(&self, direction: FocusDirection) {
+        let focusmanager = self.as_ref();
 
-    //fn push_focus_with_hint(&self, focusable: /*Ignored*/&Focusable, hint: /*Ignored*/FocusHint) {
-    //    unsafe { TODO: call ffi:focus_manager_push_focus_with_hint() }
-    //}
+        // let mut new_focused;
+
+        // let old_focus = focusmanager.focused.clone();
+
+        // if focusmanager.focused {
+        //     new_focused = focusable_move_focus(focusmanager.focused,
+        //                                             direction,
+        //                                             focusmanager.focused);
+        //     focus_manager_set_focused(manager, new_focused);
+        // }
+
+        // if !focusmanager.focused {
+        //     // If we're going next or previous, we wrap around, otherwise
+        //     // re-focus the last actor.
+        //     match direction {
+        //         FocusDirection::Next => {
+        //             if old_focus {
+        //                 focus_manager_start_focus(manager, FocusHint::First);
+        //             } else {
+        //                 focus_manager_ensure_focused(
+        //                     manager,
+        //                     CLUTTER_STAGE(focusmanager.stage),
+        //                     FocusHint::First,
+        //                 );
+        //             }
+        //         }
+        //         FocusDirection::Previous => {
+        //             if old_focus {
+        //                 focus_manager_start_focus(manager, FocusHint::Last);
+        //             } else {
+        //                 focus_manager_ensure_focused(
+        //                     manager,
+        //                     CLUTTER_STAGE(focusmanager.stage),
+        //                     FocusHint::Last,
+        //                 );
+        //             }
+        //         }
+        //         _ => {
+        //             // re-focus the original
+        //             if old_focus && (direction != FocusDirection::Out) {
+        //                 new_focused = focusable_accept_focus(old_focus, 0);
+        //                 focus_manager_set_focused(manager, new_focused);
+        //             } else {
+        //                 focus_manager_ensure_focused(
+        //                     manager,
+        //                     CLUTTER_STAGE(focusmanager.stage),
+        //                     FocusHint::First,
+        //                 );
+        //             }
+        //         }
+        //     }
+        // }
+
+        // // Notify if the focus has changed
+        // if focusmanager.focused != old_focus {
+        //     g_object_notify(G_OBJECT(manager), "focused");
+        // }
+    }
+
+    /// focus_manager_push_focus:
+    /// @manager: the focus manager
+    /// @focusable: the object to set focus on
+    ///
+    /// Sets the currently focused actor, with an #FocusHint of
+    /// %FOCUS_HINT_PRIOR.
+    ///
+    /// Note: the final focused object may not be the same as @focusable if
+    /// @focusable does not accept focus directly.
+    ///
+    fn push_focus(&self, focusable: &Focusable) {
+        let focusmanager = self.as_ref();
+
+        // if focusmanager.focused != focusable {
+        //     if focusmanager.focused {
+        //         // notify the current focusable that focus is being moved
+        //         focusable_move_focus(
+        //             focusmanager.focused,
+        //             FocusDirection::Out,
+        //             focusmanager.focused,
+        //         );
+        //     }
+
+        //     let new_focused = focusable_accept_focus(focusable, FocusHint::Prior);
+        //     focus_manager_set_focused(manager, new_focused);
+
+        //     g_object_notify(G_OBJECT(manager), "focused");
+        // }
+    }
+
+    /// focus_manager_push_focus_with_hint:
+    /// @manager: the focus manager
+    /// @focusable: the object to set focus on
+    /// @hint: an #FocusHint
+    ///
+    /// Similar to #focus_manager_push_focus, but allows the hint to be specified.
+    ///
+    /// Note: the final focused object may not be the same as @focusable if
+    /// @focusable does not accept focus directly.
+    ///
+    fn push_focus_with_hint(&self, focusable: &Focusable, hint: FocusHint) {
+        let focusmanager = self.as_ref();
+
+        // if focusmanager.focused != focusable {
+        //     if focusmanager.focused {
+        //         // notify the current focusable that focus is being moved
+        //         focusable_move_focus(
+        //             focusmanager.focused,
+        //             FocusDirection::Out,
+        //             focusmanager.focused,
+        //         );
+        //     }
+
+        //     let new_focused = focusable_accept_focus(focusable, hint);
+        //     focus_manager_set_focused(manager, new_focused);
+
+        //     g_object_notify(G_OBJECT(manager), "focused");
+        // }
+    }
 
     fn connect_property_focused_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         // unsafe extern "C" fn notify_focused_trampoline<P, F: Fn(&P) + 'static>(

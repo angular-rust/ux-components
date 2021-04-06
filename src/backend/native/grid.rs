@@ -3,14 +3,35 @@
 // use std::boxed::Box as Box_;
 // use std::mem::transmute;
 
-use super::{Align, Orientation, Widget};
+use super::{Adjustment, Align, Focusable, Orientation, Widget};
 use crate::prelude::*;
 use glib::signal::SignalHandlerId;
 use std::fmt;
 
 // @extends Widget, clutter::Actor;
 #[derive(Clone, Debug)]
-pub struct Grid {}
+pub struct Grid {
+    // pub hash_table: GHashTable,
+    pub homogenous_rows: bool,
+    pub homogenous_columns: bool,
+    pub line_alignment: Align,
+    pub col_spacing: f32,
+    pub row_spacing: f32,
+    pub child_x_align: Align,
+    pub child_y_align: Align,
+    pub orientation: Orientation,
+    pub first_of_batch: bool,
+    pub a_current_sum: f32,
+    pub a_wrap: f32,
+    pub max_extent_a: f32,
+    pub max_extent_b: f32,
+    pub max_stride: i32,
+    pub hadjustment: Adjustment,
+    pub vadjustment: Adjustment,
+    pub last_focus: Focusable,
+    pub ignore_css_col_spacing: bool,
+    pub ignore_css_row_spacing: bool,
+}
 
 impl Grid {
     pub fn new() -> Grid {
@@ -120,111 +141,132 @@ pub trait GridExt: 'static {
 
 impl<O: Is<Grid>> GridExt for O {
     fn get_child_x_align(&self) -> Align {
-        //    unsafe { TODO: call ffi:grid_get_child_x_align() }
-        unimplemented!()
+        let grid = self.as_ref();
+        grid.child_x_align
     }
 
     fn get_child_y_align(&self) -> Align {
-        //    unsafe { TODO: call ffi:grid_get_child_y_align() }
-        unimplemented!()
+        let grid = self.as_ref();
+        grid.child_y_align
     }
 
     fn get_column_spacing(&self) -> f32 {
-        // unsafe { ffi::grid_get_column_spacing(self.as_ref().to_glib_none().0) }
-        unimplemented!()
+        let grid = self.as_ref();
+        grid.col_spacing
     }
 
     fn get_homogenous_columns(&self) -> bool {
-        // unsafe {
-        //     from_glib(ffi::grid_get_homogenous_columns(
-        //         self.as_ref().to_glib_none().0,
-        //     ))
-        // }
-        unimplemented!()
+        let grid = self.as_ref();
+        grid.homogenous_columns
     }
 
     fn get_homogenous_rows(&self) -> bool {
-        // unsafe {
-        //     from_glib(ffi::grid_get_homogenous_rows(
-        //         self.as_ref().to_glib_none().0,
-        //     ))
-        // }
-        unimplemented!()
+        let grid = self.as_ref();
+        grid.homogenous_rows
     }
 
     fn get_line_alignment(&self) -> Align {
-        //    unsafe { TODO: call ffi:grid_get_line_alignment() }
-        unimplemented!()
+        let grid = self.as_ref();
+        grid.line_alignment
     }
 
     fn get_max_stride(&self) -> i32 {
-        // unsafe { ffi::grid_get_max_stride(self.as_ref().to_glib_none().0) }
-        unimplemented!()
+        let grid = self.as_ref();
+        grid.max_stride
     }
 
     fn get_orientation(&self) -> Orientation {
-        //    unsafe { TODO: call ffi:grid_get_orientation() }
-        unimplemented!()
+        let grid = self.as_ref();
+        grid.orientation
     }
 
     fn get_row_spacing(&self) -> f32 {
-        // unsafe { ffi::grid_get_row_spacing(self.as_ref().to_glib_none().0) }
-        unimplemented!()
+        let grid = self.as_ref();
+        grid.row_spacing
     }
 
     fn set_child_x_align(&self, value: Align) {
-        //    unsafe { TODO: call ffi:grid_set_child_x_align() }
-        unimplemented!()
+        let grid = self.as_ref();
+        
+        if value != grid.child_x_align {
+            // grid.child_x_align = value;
+            // clutter_actor_queue_relayout(CLUTTER_ACTOR(self));
+        }
     }
 
     fn set_child_y_align(&self, value: Align) {
-        //    unsafe { TODO: call ffi:grid_set_child_y_align() }
-        unimplemented!()
+        let grid = self.as_ref();
+        
+        if value != grid.child_y_align {
+            // grid.child_y_align = value;
+            // clutter_actor_queue_relayout(CLUTTER_ACTOR(self));
+        }
     }
 
     fn set_column_spacing(&self, value: f32) {
-        // unsafe {
-        //     ffi::grid_set_column_spacing(self.as_ref().to_glib_none().0, value);
-        // }
-        unimplemented!()
+        let grid = self.as_ref();
+        
+        if grid.col_spacing != value {
+            // grid.ignore_css_col_spacing = true;
+            // grid.col_spacing = value;
+            // clutter_actor_queue_relayout(CLUTTER_ACTOR(self));
+        }
     }
 
     fn set_homogenous_columns(&self, value: bool) {
-        // unsafe {
-        //     ffi::grid_set_homogenous_columns(self.as_ref().to_glib_none().0, value.to_glib());
-        // }
-        unimplemented!()
+        let grid = self.as_ref();
+        
+        if value != grid.homogenous_columns {
+            // grid.homogenous_columns = value;
+            // clutter_actor_queue_relayout(CLUTTER_ACTOR(self));
+        }
     }
 
     fn set_homogenous_rows(&self, value: bool) {
-        // unsafe {
-        //     ffi::grid_set_homogenous_rows(self.as_ref().to_glib_none().0, value.to_glib());
-        // }
-        unimplemented!()
+        let grid = self.as_ref();
+        
+        if value != grid.homogenous_rows {
+            // grid.homogenous_rows = value;
+            // clutter_actor_queue_relayout(CLUTTER_ACTOR(self));
+        }
     }
 
     fn set_line_alignment(&self, value: Align) {
-        //    unsafe { TODO: call ffi:grid_set_line_alignment() }
-        unimplemented!()
+        let grid = self.as_ref();
+        
+        if value != grid.line_alignment {
+            // grid.line_alignment = value;
+            // clutter_actor_queue_relayout(CLUTTER_ACTOR(self));
+        }
     }
 
     fn set_max_stride(&self, value: i32) {
-        // unsafe {
-        //     ffi::grid_set_max_stride(self.as_ref().to_glib_none().0, value);
-        // }
-        unimplemented!()
+        let grid = self.as_ref();
+        
+        if value != grid.max_stride {
+            // grid.max_stride = value;
+            // clutter_actor_queue_relayout(CLUTTER_ACTOR(self));
+        }
     }
 
     fn set_orientation(&self, orientation: Orientation) {
-        //    unsafe { TODO: call ffi:grid_set_orientation() }
-        unimplemented!()
+        let grid = self.as_ref();
+        
+        if grid.orientation != orientation {
+            // grid.orientation = orientation;
+            // clutter_actor_queue_relayout(CLUTTER_ACTOR(self));
+            // g_object_notify(G_OBJECT(self), "orientation");
+        }
     }
 
     fn set_row_spacing(&self, value: f32) {
-        // unsafe {
-        //     ffi::grid_set_row_spacing(self.as_ref().to_glib_none().0, value);
-        // }
-        unimplemented!()
+        let grid = self.as_ref();
+        
+        if value != grid.row_spacing {
+            // grid.ignore_css_row_spacing = true;
+            // grid.row_spacing = value;
+            // clutter_actor_queue_relayout(CLUTTER_ACTOR(self));
+        }
     }
 
     fn connect_property_child_x_align_notify<F: Fn(&Self) + 'static>(

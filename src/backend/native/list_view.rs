@@ -3,7 +3,7 @@
 // use std::boxed::Box as Box_;
 // use std::mem::transmute;
 
-use super::{BoxLayout, Widget};
+use super::{BoxLayout, Widget, ItemFactory};
 use crate::prelude::*;
 use glib::signal::SignalHandlerId;
 use std::fmt;
@@ -49,13 +49,13 @@ pub trait ListViewExt: 'static {
 
     fn freeze(&self);
 
-    //fn get_factory(&self) -> /*Ignored*/Option<ItemFactory>;
+    fn get_factory(&self) -> Option<ItemFactory>;
 
     fn get_item_type(&self) -> glib::types::Type;
 
     fn get_model(&self) -> Option<clutter::Model>;
 
-    //fn set_factory(&self, factory: /*Ignored*/Option<&ItemFactory>);
+    fn set_factory(&self, factory: Option<&ItemFactory>);
 
     fn set_item_type(&self, item_type: glib::types::Type);
 
@@ -89,9 +89,10 @@ impl<O: Is<ListView>> ListViewExt for O {
         unimplemented!()
     }
 
-    //fn get_factory(&self) -> /*Ignored*/Option<ItemFactory> {
-    //    unsafe { TODO: call ffi:list_view_get_factory() }
-    //}
+    fn get_factory(&self) -> Option<ItemFactory> {
+        //    unsafe { TODO: call ffi:list_view_get_factory() }
+        unimplemented!()
+    }
 
     fn get_item_type(&self) -> glib::types::Type {
         // unsafe {
@@ -111,9 +112,10 @@ impl<O: Is<ListView>> ListViewExt for O {
         unimplemented!()
     }
 
-    //fn set_factory(&self, factory: /*Ignored*/Option<&ItemFactory>) {
-    //    unsafe { TODO: call ffi:list_view_set_factory() }
-    //}
+    fn set_factory(&self, factory: Option<&ItemFactory>) {
+        //    unsafe { TODO: call ffi:list_view_set_factory() }
+        unimplemented!()
+    }
 
     fn set_item_type(&self, item_type: glib::types::Type) {
         // unsafe {

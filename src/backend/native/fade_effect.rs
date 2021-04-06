@@ -10,7 +10,29 @@ use std::fmt;
 
 // @extends clutter::OffscreenEffect, clutter::Effect, clutter::ActorMeta;
 #[derive(Clone, Debug)]
-pub struct FadeEffect {}
+pub struct FadeEffect {
+    pub x: i32,
+    pub y: i32,
+    pub bounds_width: u32,
+    pub bounds_height: u32,
+
+    pub border: [u32; 4],
+    pub color: clutter::Color,
+    pub width: f32,
+    pub height: f32,
+
+    // pub vbo: cogl::Handle,
+    // pub indices: cogl::Handle,
+    pub n_quads: u32,
+    // pub old_material: cogl::Material,
+    pub blocked_id: u64,
+
+    pub x_offset: f32,
+    pub y_offset: f32,
+
+    pub update_vbo: bool,
+    pub freeze_update: bool,
+}
 
 impl FadeEffect {
     pub fn new() -> FadeEffect {
@@ -45,16 +67,74 @@ impl AsRef<FadeEffect> for FadeEffect {
 pub const NONE_FADE_EFFECT: Option<&FadeEffect> = None;
 
 pub trait FadeEffectExt: 'static {
+    /// get_border:
+    /// @effect: A #FadeEffect
+    /// @top: (out) (allow-none): The upper border, in pixels
+    /// @right: (out) (allow-none): The right border, in pixels
+    /// @bottom: (out) (allow-none): The lower border, in pixels
+    /// @left: (out) (allow-none): The left border, in pixels
+    ///
+    /// Retrieves the border values for @effect.
+    ///
     fn get_border(&self) -> (u32, u32, u32, u32);
 
+    /// get_bounds:
+    /// @effect: A #FadeEffect
+    /// @x: (out) (allow-none): The x value of the effect bounds, in pixels
+    /// @y: (out) (allow-none): The y value of the effect bounds, in pixels
+    /// @width: (out) (allow-none): The width of the effect bounds, in pixels, or %0
+    /// @height: (out) (allow-none): The height of the effect bounds, in pixels, or %0
+    ///
+    /// Retrieves the bounding box of the effect.
+    ///
     fn get_bounds(&self) -> (i32, i32, u32, u32);
-
+    
+    /// get_color:
+    /// @effect: A #FadeEffect
+    /// @color: (out): A #ClutterColor to store the color in
+    ///
+    /// Retrieves the color used for the fade effect.
+    ///
     fn get_color(&self) -> clutter::Color;
 
+    /// set_border:
+    /// @effect: A #FadeEffect
+    /// @top: The upper border, in pixels
+    /// @right: The right border, in pixels
+    /// @bottom: The lower border, in pixels
+    /// @left: The left border, in pixels
+    ///
+    /// Sets the border to be used for the fading effect. This is the number of
+    /// pixels on each side of the effect that should be used to fade.
+    ///
     fn set_border(&self, top: u32, right: u32, bottom: u32, left: u32);
 
+    /// set_bounds:
+    /// @effect: A #FadeEffect
+    /// @x: The x value of the effect bounds, in pixels
+    /// @y: The y value of the effect bounds, in pixels
+    /// @width: The width of the effect bounds, in pixels, or %0
+    /// @height: The height of the effect bounds, in pixels, or %0
+    ///
+    /// Sets the bounding box of the effect. The effect will essentially treat
+    /// this box as a clipping rectangle. Setting width or height to %0 will
+    /// use the width or height of the #ClutterActor the effect is attached to.
+    ///
+    /// <note><para>
+    /// The effect border will apply to the bounds, and not to the un-altered
+    /// rectangle, so an effect with an %x of %5 and a %left-border of %5 will
+    /// have a gap of 5 blank pixels to the left, with a fade length of 5 pixels.
+    /// </para></note>
+    ///
     fn set_bounds(&self, x: i32, y: i32, width: u32, height: u32);
 
+    /// set_color:
+    /// @effect: A #FadeEffect
+    /// @color: A #ClutterColor
+    ///
+    /// Sets the color of the fade effect. The effect will fade out towards
+    /// the set border to this color.
+    ///
     fn set_color(&self, color: &clutter::Color);
 
     fn get_property_border_bottom(&self) -> u32;
@@ -126,90 +206,158 @@ pub trait FadeEffectExt: 'static {
 }
 
 impl<O: Is<FadeEffect>> FadeEffectExt for O {
+    /// get_border:
+    /// @effect: A #FadeEffect
+    /// @top: (out) (allow-none): The upper border, in pixels
+    /// @right: (out) (allow-none): The right border, in pixels
+    /// @bottom: (out) (allow-none): The lower border, in pixels
+    /// @left: (out) (allow-none): The left border, in pixels
+    ///
+    /// Retrieves the border values for @effect.
+    ///
     fn get_border(&self) -> (u32, u32, u32, u32) {
-        // unsafe {
-        //     let mut top = mem::MaybeUninit::uninit();
-        //     let mut right = mem::MaybeUninit::uninit();
-        //     let mut bottom = mem::MaybeUninit::uninit();
-        //     let mut left = mem::MaybeUninit::uninit();
-        //     ffi::fade_effect_get_border(
-        //         self.as_ref().to_glib_none().0,
-        //         top.as_mut_ptr(),
-        //         right.as_mut_ptr(),
-        //         bottom.as_mut_ptr(),
-        //         left.as_mut_ptr(),
-        //     );
-        //     let top = top.assume_init();
-        //     let right = right.assume_init();
-        //     let bottom = bottom.assume_init();
-        //     let left = left.assume_init();
-        //     (top, right, bottom, left)
-        // }
-        unimplemented!()
+        let fadeeffect = self.as_ref();
+        
+        let top = fadeeffect.border[0];
+        let right = fadeeffect.border[1];
+        let bottom = fadeeffect.border[2];
+        let left = fadeeffect.border[3];
+        (top, right, bottom, left)
     }
 
+    /// get_bounds:
+    /// @effect: A #FadeEffect
+    /// @x: (out) (allow-none): The x value of the effect bounds, in pixels
+    /// @y: (out) (allow-none): The y value of the effect bounds, in pixels
+    /// @width: (out) (allow-none): The width of the effect bounds, in pixels, or %0
+    /// @height: (out) (allow-none): The height of the effect bounds, in pixels, or %0
+    ///
+    /// Retrieves the bounding box of the effect.
+    ///
     fn get_bounds(&self) -> (i32, i32, u32, u32) {
-        // unsafe {
-        //     let mut x = mem::MaybeUninit::uninit();
-        //     let mut y = mem::MaybeUninit::uninit();
-        //     let mut width = mem::MaybeUninit::uninit();
-        //     let mut height = mem::MaybeUninit::uninit();
-        //     ffi::fade_effect_get_bounds(
-        //         self.as_ref().to_glib_none().0,
-        //         x.as_mut_ptr(),
-        //         y.as_mut_ptr(),
-        //         width.as_mut_ptr(),
-        //         height.as_mut_ptr(),
-        //     );
-        //     let x = x.assume_init();
-        //     let y = y.assume_init();
-        //     let width = width.assume_init();
-        //     let height = height.assume_init();
-        //     (x, y, width, height)
-        // }
-        unimplemented!()
+        let fadeeffect = self.as_ref();
+
+        let x = fadeeffect.x;
+        let y = fadeeffect.y;
+        let width = fadeeffect.bounds_width;
+        let height = fadeeffect.bounds_height;
+        (x, y, width, height)
+        
     }
 
+    /// get_color:
+    /// @effect: A #FadeEffect
+    /// @color: (out): A #ClutterColor to store the color in
+    ///
+    /// Retrieves the color used for the fade effect.
+    ///
     fn get_color(&self) -> clutter::Color {
-        // unsafe {
-        //     let mut color = clutter::Color::uninitialized();
-        //     ffi::fade_effect_get_color(
-        //         self.as_ref().to_glib_none().0,
-        //         color.to_glib_none_mut().0,
-        //     );
-        //     color
-        // }
-        unimplemented!()
+        let fadeeffect = self.as_ref();
+        fadeeffect.color.clone()
     }
 
+    /// set_border:
+    /// @effect: A #FadeEffect
+    /// @top: The upper border, in pixels
+    /// @right: The right border, in pixels
+    /// @bottom: The lower border, in pixels
+    /// @left: The left border, in pixels
+    ///
+    /// Sets the border to be used for the fading effect. This is the number of
+    /// pixels on each side of the effect that should be used to fade.
+    ///
     fn set_border(&self, top: u32, right: u32, bottom: u32, left: u32) {
-        // unsafe {
-        //     ffi::fade_effect_set_border(
-        //         self.as_ref().to_glib_none().0,
-        //         top,
-        //         right,
-        //         bottom,
-        //         left,
-        //     );
+        let fadeeffect = self.as_ref();
+        
+        // g_object_freeze_notify(G_OBJECT(effect));
+
+        // if fadeeffect.border[0] != top {
+        //     fadeeffect.border[0] = top;
+        //     g_object_notify(G_OBJECT(effect), "border-top");
         // }
-        unimplemented!()
+
+        // if fadeeffect.border[1] != right {
+        //     fadeeffect.border[1] = right;
+        //     g_object_notify(G_OBJECT(effect), "border-right");
+        // }
+
+        // if fadeeffect.border[2] != bottom {
+        //     fadeeffect.border[2] = bottom;
+        //     g_object_notify(G_OBJECT(effect), "border-bottom");
+        // }
+
+        // if fadeeffect.border[3] != left {
+        //     fadeeffect.border[3] = left;
+        //     g_object_notify(G_OBJECT(effect), "border-left");
+        // }
+
+        // fadeeffect.update_vbo = true;
+
+        // g_object_thaw_notify(G_OBJECT(effect));
     }
 
+    /// set_bounds:
+    /// @effect: A #FadeEffect
+    /// @x: The x value of the effect bounds, in pixels
+    /// @y: The y value of the effect bounds, in pixels
+    /// @width: The width of the effect bounds, in pixels, or %0
+    /// @height: The height of the effect bounds, in pixels, or %0
+    ///
+    /// Sets the bounding box of the effect. The effect will essentially treat
+    /// this box as a clipping rectangle. Setting width or height to %0 will
+    /// use the width or height of the #ClutterActor the effect is attached to.
+    ///
+    /// <note><para>
+    /// The effect border will apply to the bounds, and not to the un-altered
+    /// rectangle, so an effect with an %x of %5 and a %left-border of %5 will
+    /// have a gap of 5 blank pixels to the left, with a fade length of 5 pixels.
+    /// </para></note>
+    ///
     fn set_bounds(&self, x: i32, y: i32, width: u32, height: u32) {
-        // unsafe {
-        //     ffi::fade_effect_set_bounds(self.as_ref().to_glib_none().0, x, y, width, height);
+        let fadeeffect = self.as_ref();
+        
+        // g_object_freeze_notify(G_OBJECT(effect));
+
+        // if fadeeffect.x != x) {
+        //     fadeeffect.x = x;
+        //     g_object_notify(G_OBJECT(effect), "bounds-x");
         // }
-        unimplemented!()
+
+        // if fadeeffect.y != y {
+        //     fadeeffect.y = y;
+        //     g_object_notify(G_OBJECT(effect), "bounds-y");
+        // }
+
+        // if fadeeffect.bounds_width != width {
+        //     fadeeffect.bounds_width = width;
+        //     g_object_notify(G_OBJECT(effect), "bounds-width");
+        // }
+
+        // if fadeeffect.bounds_height != height {
+        //     fadeeffect.bounds_height = height;
+        //     g_object_notify(G_OBJECT(effect), "bounds-height");
+        // }
+
+        // fadeeffect.update_vbo = true;
+
+        // g_object_thaw_notify(G_OBJECT(effect));
     }
 
+    /// set_color:
+    /// @effect: A #FadeEffect
+    /// @color: A #ClutterColor
+    ///
+    /// Sets the color of the fade effect. The effect will fade out towards
+    /// the set border to this color.
+    ///
     fn set_color(&self, color: &clutter::Color) {
-        // unsafe {
-        //     ffi::fade_effect_set_color(
-        //         self.as_ref().to_glib_none().0,
-        //         color.to_glib_none().0,
-        //     );
+        let fadeeffect = self.as_ref();
+        
+        // if !clutter_color_equal(&fadeeffect.color, color) {
+        //     fadeeffect.color = *color;
+        //     fadeeffect.update_vbo = true;
+        //     g_object_notify(G_OBJECT(effect), "color");
         // }
-        unimplemented!()
     }
 
     fn get_property_border_bottom(&self) -> u32 {

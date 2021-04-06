@@ -49,6 +49,9 @@ pub use self::floating_widget::{FloatingWidget, NONE_FLOATING_WIDGET};
 mod focus_manager;
 pub use self::focus_manager::{FocusManager, FocusManagerExt, NONE_FOCUS_MANAGER};
 
+mod focusable;
+pub use self::focusable::Focusable;
+
 mod frame;
 pub use self::frame::{Frame, NONE_FRAME};
 
@@ -143,6 +146,46 @@ pub use self::widget::{Widget, WidgetExt, NONE_WIDGET};
 
 mod stage;
 pub use self::stage::{Stage, WindowExt, NONE_WINDOW};
+
+#[derive(Debug, Clone)]
+pub struct ItemFactory;
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum KineticScrollViewState {
+    Idle,
+    Panning,
+    Scrolling,
+    Clamping,
+}
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum AutomaticScroll {
+    None,
+    Horizontal,
+    Vertical,
+}
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum FocusDirection {
+    Out,
+    Up,
+    Down,
+    Left,
+    Right,
+    Next,
+    Previous,
+}
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum FocusHint {
+    First,
+    Last,
+    Prior,
+    FromAbove,
+    FromBelow,
+    FromLeft,
+    FromRight,
+}
 
 /// BorderImage:
 /// uri: uri of a supported image file
