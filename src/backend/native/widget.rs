@@ -181,7 +181,7 @@ pub trait WidgetExt: 'static {
     /// @disabled: value to set
     ///
     /// Set the disabled property. Disabled widgets have a "disabled" pseudo-class
-    /// until disabled is set to #FALSE.
+    /// until disabled is set to #false.
     ///
     fn set_disabled(&self, disabled: bool);
 
@@ -208,7 +208,7 @@ pub trait WidgetExt: 'static {
     /// Set the tooltip text of the widget. Note that setting tooltip text will cause
     /// the widget to be set reactive. If you no longer need tooltips and you do not
     /// need the widget to be reactive, you must set ClutterActor::reactive to
-    /// %FALSE.
+    /// %false.
     ///
     fn set_tooltip_text(&self, text: &str);
 
@@ -417,7 +417,7 @@ impl<O: Is<Widget>> WidgetExt for O {
     /// @disabled: value to set
     ///
     /// Set the disabled property. Disabled widgets have a "disabled" pseudo-class
-    /// until disabled is set to #FALSE.
+    /// until disabled is set to #false.
     ///
     fn set_disabled(&self, disabled: bool) {
         let widget = self.as_ref();
