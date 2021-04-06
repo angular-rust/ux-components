@@ -18,13 +18,6 @@ impl Toolbar {
         // unsafe { clutter::Actor::from_glib_none(ffi::toolbar_new()).unsafe_cast() }
         unimplemented!()
     }
-
-    // pub fn new() -> Toolbar {
-    //     unimplemented!() // TODO: complete it
-
-    //     // assert_initialized_main_thread!();
-    //     // unsafe { from_glib_full(ffi::toolbar_new()) }
-    // }
 }
 
 impl Default for Toolbar {

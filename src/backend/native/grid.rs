@@ -39,13 +39,6 @@ impl Grid {
         // unsafe { clutter::Actor::from_glib_none(ffi::grid_new()).unsafe_cast() }
         unimplemented!()
     }
-
-    // pub fn new() -> Grid {
-    //     unimplemented!(); // TODO: complete it
-
-    //     // assert_initialized_main_thread!();
-    //     // unsafe { from_glib_full(ffi::grid_new()) }
-    // }
 }
 
 impl Default for Grid {

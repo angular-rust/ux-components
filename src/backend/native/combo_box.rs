@@ -29,13 +29,6 @@ impl ComboBox {
         // unsafe { clutter::Actor::from_glib_none(ffi::combo_box_new()).unsafe_cast() }
         unimplemented!()
     }
-
-    // pub fn new() -> ComboBox {
-    //     unimplemented!(); // TODO: complete it
-
-    //     // assert_initialized_main_thread!();
-    //     // unsafe { from_glib_full(ffi::combo_box_new()) }
-    // }
 }
 
 impl Default for ComboBox {

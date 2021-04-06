@@ -18,13 +18,6 @@ impl Menu {
         // unsafe { clutter::Actor::from_glib_none(ffi::menu_new()).unsafe_cast() }
         unimplemented!()
     }
-
-    // pub fn new() -> Menu {
-    //     unimplemented!() // TODO: complete it
-
-    //     // assert_initialized_main_thread!();
-    //     // unsafe { from_glib_full(ffi::menu_new()) }
-    // }
 }
 
 impl Default for Menu {

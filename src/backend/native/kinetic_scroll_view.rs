@@ -70,13 +70,6 @@ impl KineticScrollView {
         // }
         unimplemented!()
     }
-
-    // pub fn new() -> KineticScrollView {
-    //     unimplemented!() // TODO: complete it
-
-    //     // assert_initialized_main_thread!();
-    //     // unsafe { from_glib_full(ffi::kinetic_scroll_view_new()) }
-    // }
 }
 
 impl Default for KineticScrollView {
@@ -159,7 +152,7 @@ pub trait KineticScrollViewExt: 'static {
     /// Retrieves informations about the current input device driving the
     /// scrolling.
     ///
-    fn get_input(&self) -> (clutter::InputDevice, clutter::EventSequence);
+    fn get_input(&self) -> (Option<clutter::InputDevice>, Option<clutter::EventSequence>);
 
     /// get_mouse_button:
     /// @scroll: A #KineticScrollView
@@ -382,13 +375,19 @@ impl<O: Is<KineticScrollView>> KineticScrollViewExt for O {
     /// taking precedence.
     ///
     fn ensure_visible(&self, geometry: &clutter::Geometry) {
-        // unsafe {
-        //     ffi::kinetic_scroll_view_ensure_visible(
-        //         self.as_ref().to_glib_none().0,
-        //         geometry.to_glib_none().0,
-        //     );
-        // }
-        unimplemented!()
+        let scrollview = self.as_ref();
+        // Adjustment *hadjustment, *vadjustment;
+
+        // scrollable_get_adjustments(SCROLLABLE(scrollview.child),
+        //                                &hadjustment,
+        //                                &vadjustment);
+
+        // _scroll_view_ensure_visible_axis (hadjustment,
+        //                                      geometry.x,
+        //                                      geometry.x + geometry.width);
+        // _scroll_view_ensure_visible_axis (vadjustment,
+        //                                      geometry.y,
+        //                                      geometry.y + geometry.height);
     }
 
     /// get_acceleration_factor:
@@ -399,10 +398,8 @@ impl<O: Is<KineticScrollView>> KineticScrollViewExt for O {
     /// Returns: The initial acceleration factor of the kinetic scroll-view
     ///
     fn get_acceleration_factor(&self) -> f64 {
-        // unsafe {
-        //     ffi::kinetic_scroll_view_get_acceleration_factor(self.as_ref().to_glib_none().0)
-        // }
-        unimplemented!()
+        let scrollview = self.as_ref();
+        scrollview.acceleration_factor
     }
 
     /// get_clamp_duration:
@@ -413,8 +410,8 @@ impl<O: Is<KineticScrollView>> KineticScrollViewExt for O {
     /// Returns: Clamp duration
     ///
     fn get_clamp_duration(&self) -> u32 {
-        // unsafe { ffi::kinetic_scroll_view_get_clamp_duration(self.as_ref().to_glib_none().0) }
-        unimplemented!()
+        let scrollview = self.as_ref();
+        scrollview.clamp_duration
     }
 
     /// get_clamp_mode:
@@ -425,8 +422,8 @@ impl<O: Is<KineticScrollView>> KineticScrollViewExt for O {
     /// Returns: Clamp mode
     ///
     fn get_clamp_mode(&self) -> u64 {
-        // unsafe { ffi::kinetic_scroll_view_get_clamp_mode(self.as_ref().to_glib_none().0) }
-        unimplemented!()
+        let scrollview = self.as_ref();
+        scrollview.clamp_mode
     }
 
     /// get_clamp_to_center:
@@ -437,12 +434,8 @@ impl<O: Is<KineticScrollView>> KineticScrollViewExt for O {
     /// Returns: Clamp to center
     ///
     fn get_clamp_to_center(&self) -> bool {
-        // unsafe {
-        //     from_glib(ffi::kinetic_scroll_view_get_clamp_to_center(
-        //         self.as_ref().to_glib_none().0,
-        //     ))
-        // }
-        unimplemented!()
+        let scrollview = self.as_ref();
+        scrollview.clamp_to_center
     }
 
     /// get_deceleration:
@@ -453,8 +446,8 @@ impl<O: Is<KineticScrollView>> KineticScrollViewExt for O {
     /// Returns: The deceleration rate of the kinetic scroll-view
     ///
     fn get_deceleration(&self) -> f64 {
-        // unsafe { ffi::kinetic_scroll_view_get_deceleration(self.as_ref().to_glib_none().0) }
-        unimplemented!()
+        let scrollview = self.as_ref();
+        scrollview.decel_rate
     }
 
     /// get_input:
@@ -465,18 +458,10 @@ impl<O: Is<KineticScrollView>> KineticScrollViewExt for O {
     /// Retrieves informations about the current input device driving the
     /// scrolling.
     ///
-    fn get_input(&self) -> (clutter::InputDevice, clutter::EventSequence) {
-        // unsafe {
-        //     let mut device = ptr::null_mut();
-        //     let mut sequence = ptr::null_mut();
-        //     ffi::kinetic_scroll_view_get_input(
-        //         self.as_ref().to_glib_none().0,
-        //         &mut device,
-        //         &mut sequence,
-        //     );
-        //     (from_glib_none(device), from_glib_none(sequence))
-        // }
-        unimplemented!()
+    fn get_input(&self) -> (Option<clutter::InputDevice>, Option<clutter::EventSequence>) {
+        let scrollview = self.as_ref();
+
+        (scrollview.device.clone(), scrollview.sequence.clone())
     }
 
     /// get_mouse_button:
@@ -488,8 +473,8 @@ impl<O: Is<KineticScrollView>> KineticScrollViewExt for O {
     ///          kinetic scroll-view
     ///
     fn get_mouse_button(&self) -> u32 {
-        // unsafe { ffi::kinetic_scroll_view_get_mouse_button(self.as_ref().to_glib_none().0) }
-        unimplemented!()
+        let scrollview = self.as_ref();
+        scrollview.button
     }
 
     /// get_overshoot:
@@ -499,8 +484,8 @@ impl<O: Is<KineticScrollView>> KineticScrollViewExt for O {
     /// scrolling beyond its boundaries.
     ///
     fn get_overshoot(&self) -> f64 {
-        // unsafe { ffi::kinetic_scroll_view_get_overshoot(self.as_ref().to_glib_none().0) }
-        unimplemented!()
+        let scrollview = self.as_ref();
+        scrollview.overshoot
     }
 
     /// get_scroll_policy:
@@ -509,8 +494,8 @@ impl<O: Is<KineticScrollView>> KineticScrollViewExt for O {
     /// Retrieves the scrolling policy of the kinetic scroll-view.
     ///
     fn get_scroll_policy(&self) -> ScrollPolicy {
-        //    unsafe { TODO: call ffi:kinetic_scroll_view_get_scroll_policy() }
-        unimplemented!()
+        let scrollview = self.as_ref();
+        scrollview.scroll_policy
     }
 
     /// get_snap_on_page:
@@ -521,12 +506,8 @@ impl<O: Is<KineticScrollView>> KineticScrollViewExt for O {
     /// Returns: #true if animations end on step increments, #false otherwise.
     ///
     fn get_snap_on_page(&self) -> bool {
-        // unsafe {
-        //     from_glib(ffi::kinetic_scroll_view_get_snap_on_page(
-        //         self.as_ref().to_glib_none().0,
-        //     ))
-        // }
-        unimplemented!()
+        let scrollview = self.as_ref();
+        scrollview.snap_on_page
     }
 
     /// get_use_captured:
@@ -537,12 +518,8 @@ impl<O: Is<KineticScrollView>> KineticScrollViewExt for O {
     /// Returns: %true if captured-events should be used to initiate scrolling
     ///
     fn get_use_captured(&self) -> bool {
-        // unsafe {
-        //     from_glib(ffi::kinetic_scroll_view_get_use_captured(
-        //         self.as_ref().to_glib_none().0,
-        //     ))
-        // }
-        unimplemented!()
+        let scrollview = self.as_ref();
+        scrollview.use_captured
     }
 
     /// get_use_grab:
@@ -553,12 +530,8 @@ impl<O: Is<KineticScrollView>> KineticScrollViewExt for O {
     /// Returns: %true if grab-events should be used to initiate scrolling
     ///
     fn get_use_grab(&self) -> bool {
-        // unsafe {
-        //     from_glib(ffi::kinetic_scroll_view_get_use_grab(
-        //         self.as_ref().to_glib_none().0,
-        //     ))
-        // }
-        unimplemented!()
+        let scrollview = self.as_ref();
+        scrollview.use_grab
     }
 
     /// set_acceleration_factor:
@@ -568,13 +541,12 @@ impl<O: Is<KineticScrollView>> KineticScrollViewExt for O {
     /// Factor applied to the initial momentum.
     ///
     fn set_acceleration_factor(&self, acceleration_factor: f64) {
-        // unsafe {
-        //     ffi::kinetic_scroll_view_set_acceleration_factor(
-        //         self.as_ref().to_glib_none().0,
-        //         acceleration_factor,
-        //     );
-        // }
-        unimplemented!()
+        let scrollview = self.as_ref();
+
+        if scrollview.acceleration_factor != acceleration_factor {
+            // scrollview.acceleration_factor = acceleration_factor;
+            // g_object_notify(G_OBJECT(scroll), "acceleration-factor");
+        }
     }
 
     /// set_clamp_duration:
@@ -584,13 +556,12 @@ impl<O: Is<KineticScrollView>> KineticScrollViewExt for O {
     /// Duration of the adjustment clamp animation.
     ///
     fn set_clamp_duration(&self, clamp_duration: u32) {
-        // unsafe {
-        //     ffi::kinetic_scroll_view_set_clamp_duration(
-        //         self.as_ref().to_glib_none().0,
-        //         clamp_duration,
-        //     );
-        // }
-        unimplemented!()
+        let scrollview = self.as_ref();
+
+        if scrollview.clamp_duration != clamp_duration {
+            // scrollview.clamp_duration = clamp_duration;
+            // g_object_notify(G_OBJECT(scroll), "clamp-duration");
+        }
     }
 
     /// set_clamp_mode:
@@ -600,12 +571,12 @@ impl<O: Is<KineticScrollView>> KineticScrollViewExt for O {
     /// Animation mode to use for the adjustment clamp animation.
     ///
     fn set_clamp_mode(&self, clamp_mode: u64) {
-        // unsafe {
-        //     ffi::kinetic_scroll_view_set_clamp_mode(
-        //         self.as_ref().to_glib_none().0,
-        //         clamp_mode,
-        //     );
-        // }
+        let scrollview = self.as_ref();
+
+        if scrollview.clamp_mode != clamp_mode {
+            // scrollview.clamp_mode = clamp_mode;
+            // g_object_notify(G_OBJECT(scroll), "clamp-mode");
+        }
     }
 
     /// set_clamp_to_center:
@@ -615,13 +586,12 @@ impl<O: Is<KineticScrollView>> KineticScrollViewExt for O {
     /// Set whether to clamp to step increments based on the center of the page.
     ///
     fn set_clamp_to_center(&self, clamp_to_center: bool) {
-        // unsafe {
-        //     ffi::kinetic_scroll_view_set_clamp_to_center(
-        //         self.as_ref().to_glib_none().0,
-        //         clamp_to_center.to_glib(),
-        //     );
-        // }
-        unimplemented!()
+        let scrollview = self.as_ref();
+
+        if scrollview.clamp_to_center != clamp_to_center {
+            // scrollview.clamp_to_center = !!clamp_to_center;
+            // g_object_notify(G_OBJECT(scroll), "clamp-to-center");
+        }
     }
 
     /// set_deceleration:
@@ -633,10 +603,12 @@ impl<O: Is<KineticScrollView>> KineticScrollViewExt for O {
     /// every 60th of a second.
     ///
     fn set_deceleration(&self, rate: f64) {
-        // unsafe {
-        //     ffi::kinetic_scroll_view_set_deceleration(self.as_ref().to_glib_none().0, rate);
-        // }
-        unimplemented!()
+        let scrollview = self.as_ref();
+
+        if scrollview.decel_rate != rate {
+            // scrollview.decel_rate = rate;
+            // g_object_notify(G_OBJECT(scroll), "deceleration");
+        }
     }
 
     /// set_mouse_button:
@@ -647,10 +619,12 @@ impl<O: Is<KineticScrollView>> KineticScrollViewExt for O {
     /// scroll-view.
     ///
     fn set_mouse_button(&self, button: u32) {
-        // unsafe {
-        //     ffi::kinetic_scroll_view_set_mouse_button(self.as_ref().to_glib_none().0, button);
-        // }
-        unimplemented!()
+        let scrollview = self.as_ref();
+
+        if scrollview.button != button {
+            // scrollview.button = button;
+            // g_object_notify(G_OBJECT(scroll), "mouse-button");
+        }
     }
 
     /// set_overshoot:
@@ -666,10 +640,12 @@ impl<O: Is<KineticScrollView>> KineticScrollViewExt for O {
     /// See set_deceleration()
     ///
     fn set_overshoot(&self, overshoot: f64) {
-        // unsafe {
-        //     ffi::kinetic_scroll_view_set_overshoot(self.as_ref().to_glib_none().0, overshoot);
-        // }
-        unimplemented!()
+        let scrollview = self.as_ref();
+
+        if scrollview.overshoot != overshoot {
+            // scrollview.overshoot = overshoot;
+            // g_object_notify(G_OBJECT(scroll), "overshoot");
+        }
     }
 
     /// set_scroll_policy:
@@ -680,8 +656,12 @@ impl<O: Is<KineticScrollView>> KineticScrollViewExt for O {
     /// possible axes of movement, and can affect the minimum size of the widget.
     ///
     fn set_scroll_policy(&self, policy: ScrollPolicy) {
-        //    unsafe { TODO: call ffi:kinetic_scroll_view_set_scroll_policy() }
-        unimplemented!()
+        let scrollview = self.as_ref();
+
+        if scrollview.scroll_policy != policy {
+            // scrollview.scroll_policy = policy;
+            // g_object_notify(G_OBJECT(scroll), "scroll-policy");
+        }
     }
 
     /// set_snap_on_page:
@@ -691,13 +671,12 @@ impl<O: Is<KineticScrollView>> KineticScrollViewExt for O {
     /// Set whether to stop animations on step increments.
     ///
     fn set_snap_on_page(&self, snap_on_page: bool) {
-        // unsafe {
-        //     ffi::kinetic_scroll_view_set_snap_on_page(
-        //         self.as_ref().to_glib_none().0,
-        //         snap_on_page.to_glib(),
-        //     );
-        // }
-        unimplemented!()
+        let scrollview = self.as_ref();
+
+        if scrollview.snap_on_page != snap_on_page {
+            // scrollview.snap_on_page = !!snap_on_page;
+            // g_object_notify(G_OBJECT(scroll), "snap-on-page");
+        }
     }
 
     /// set_use_captured:
@@ -709,13 +688,37 @@ impl<O: Is<KineticScrollView>> KineticScrollViewExt for O {
     /// actor.
     ///
     fn set_use_captured(&self, use_captured: bool) {
-        // unsafe {
-        //     ffi::kinetic_scroll_view_set_use_captured(
-        //         self.as_ref().to_glib_none().0,
-        //         use_captured.to_glib(),
-        //     );
-        // }
-        unimplemented!()
+        let scrollview = self.as_ref();
+
+        if scrollview.use_captured != use_captured {
+            // scrollview.use_captured = use_captured;
+
+            // g_signal_handlers_disconnect_by_func(scroll, button_press_event_cb, scroll);
+
+            // if use_captured {
+            //     g_signal_connect(
+            //         scroll,
+            //         "captured-event",
+            //         G_CALLBACK(button_press_event_cb),
+            //         scroll,
+            //     );
+            // } else {
+            //     g_signal_connect(
+            //         scroll,
+            //         "button-press-event",
+            //         G_CALLBACK(button_press_event_cb),
+            //         scroll,
+            //     );
+            //     g_signal_connect(
+            //         scroll,
+            //         "touch-event",
+            //         G_CALLBACK(button_press_event_cb),
+            //         scroll,
+            //     );
+            // }
+
+            // g_object_notify(G_OBJECT(scroll), "use-captured");
+        }
     }
 
     /// set_use_grab:
@@ -727,13 +730,12 @@ impl<O: Is<KineticScrollView>> KineticScrollViewExt for O {
     /// actor.
     ///
     fn set_use_grab(&self, use_grab: bool) {
-        // unsafe {
-        //     ffi::kinetic_scroll_view_set_use_grab(
-        //         self.as_ref().to_glib_none().0,
-        //         use_grab.to_glib(),
-        //     );
-        // }
-        unimplemented!()
+        let scrollview = self.as_ref();
+        
+        if scrollview.use_grab != use_grab {
+            // scrollview.use_grab = use_grab;
+            // g_object_notify(G_OBJECT(scroll), "use-grab");
+        }
     }
 
     /// stop:
@@ -742,10 +744,13 @@ impl<O: Is<KineticScrollView>> KineticScrollViewExt for O {
     /// Stops any current movement due to kinetic scrolling.
     ///
     fn stop(&self) {
-        // unsafe {
-        //     ffi::kinetic_scroll_view_stop(self.as_ref().to_glib_none().0);
+        let scrollview = self.as_ref();
+        
+        // if scrollview.deceleration_timeline {
+        //     clutter_timeline_stop(scrollview.deceleration_timeline);
+        //     g_object_unref(scrollview.deceleration_timeline);
+        //     scrollview.deceleration_timeline = None;
         // }
-        unimplemented!()
     }
 
     fn get_property_snap_on_page(&self) -> bool {

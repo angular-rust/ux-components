@@ -26,13 +26,6 @@ impl Icon {
         // unsafe { clutter::Actor::from_glib_none(ffi::icon_new()).unsafe_cast() }
         unimplemented!()
     }
-
-    // pub fn new() -> Icon {
-    //     unimplemented!() // TODO: complete it
-
-    //     // assert_initialized_main_thread!();
-    //     // unsafe { from_glib_full(ffi::icon_new()) }
-    // }
 }
 
 impl Default for Icon {

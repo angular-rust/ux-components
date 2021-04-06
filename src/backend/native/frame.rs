@@ -16,13 +16,6 @@ impl Frame {
         // unsafe { clutter::Actor::from_glib_none(ffi::frame_new()).unsafe_cast() }
         unimplemented!()
     }
-
-    // pub fn new() -> Frame {
-    //     unimplemented!() // TODO: complete it
-
-    //     // assert_initialized_main_thread!();
-    //     // unsafe { from_glib_full(ffi::frame_new()) }
-    // }
 }
 
 impl Default for Frame {

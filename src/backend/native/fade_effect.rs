@@ -40,13 +40,6 @@ impl FadeEffect {
         // unsafe { clutter::Effect::from_glib_none(ffi::fade_effect_new()).unsafe_cast() }
         unimplemented!()
     }
-
-    // pub fn new() -> FadeEffect {
-    //     unimplemented!(); // TODO: complete it
-
-    //     // assert_initialized_main_thread!();
-    //     // unsafe { from_glib_full(ffi::fade_effect_new()) }
-    // }
 }
 
 impl Default for FadeEffect {

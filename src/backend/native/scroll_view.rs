@@ -18,13 +18,6 @@ impl ScrollView {
         // unsafe { clutter::Actor::from_glib_none(ffi::scroll_view_new()).unsafe_cast() }
         unimplemented!()
     }
-
-    // pub fn new() -> ScrollView {
-    //     unimplemented!() // TODO: complete it
-
-    //     // assert_initialized_main_thread!();
-    //     // unsafe { from_glib_full(ffi::scroll_view_new()) }
-    // }
 }
 
 impl Default for ScrollView {

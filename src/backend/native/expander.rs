@@ -26,13 +26,6 @@ impl Expander {
         // unsafe { clutter::Actor::from_glib_none(ffi::expander_new()).unsafe_cast() }
         unimplemented!()
     }
-
-    // pub fn new() -> Expander {
-    //     unimplemented!(); // TODO: complete it
-
-    //     // assert_initialized_main_thread!();
-    //     // unsafe { from_glib_full(ffi::expander_new()) }
-    // }
 }
 
 impl Default for Expander {

@@ -18,13 +18,6 @@ impl PathBar {
         // unsafe { clutter::Actor::from_glib_none(ffi::path_bar_new()).unsafe_cast() }
         unimplemented!()
     }
-
-    // pub fn new() -> PathBar {
-    //     unimplemented!() // TODO: complete it
-
-    //     // assert_initialized_main_thread!();
-    //     // unsafe { from_glib_full(ffi::path_bar_new()) }
-    // }
 }
 
 impl Default for PathBar {

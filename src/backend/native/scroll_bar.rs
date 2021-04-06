@@ -29,20 +29,6 @@ impl ScrollBar {
     //     // }
     //     unimplemented!()
     // }
-
-    // pub fn new() -> ScrollBar {
-    //     unimplemented!(); // TODO: complete it
-
-    //     // assert_initialized_main_thread!();
-    //     // unsafe { from_glib_full(ffi::scroll_bar_new()) }
-    // }
-
-    // pub fn with_adjustment<P: Is<Adjustment>>(adjustment: &P) -> ScrollBar {
-    //     unimplemented!(); // TODO: complete it
-
-    //     // assert_initialized_main_thread!();
-    //     // unsafe { from_glib_full(ffi::scroll_bar_new_with_adjustment()) }
-    // }
 }
 
 impl Default for ScrollBar {

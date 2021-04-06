@@ -18,13 +18,6 @@ impl ProgressBar {
         // unsafe { clutter::Actor::from_glib_none(ffi::progress_bar_new()).unsafe_cast() }
         unimplemented!()
     }
-
-    // pub fn new() -> ProgressBar {
-    //     unimplemented!() // TODO: complete it
-
-    //     // assert_initialized_main_thread!();
-    //     // unsafe { from_glib_full(ffi::progress_bar_new()) }
-    // }
 }
 
 impl Default for ProgressBar {

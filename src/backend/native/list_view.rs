@@ -18,13 +18,6 @@ impl ListView {
         // unsafe { clutter::Actor::from_glib_none(ffi::list_view_new()).unsafe_cast() }
         unimplemented!()
     }
-
-    // pub fn new() -> ListView {
-    //     unimplemented!() // TODO: complete it
-
-    //     // assert_initialized_main_thread!();
-    //     // unsafe { from_glib_full(ffi::list_view_new()) }
-    // }
 }
 
 impl Default for ListView {

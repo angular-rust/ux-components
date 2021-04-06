@@ -18,13 +18,6 @@ impl Notebook {
         // unsafe { clutter::Actor::from_glib_none(ffi::notebook_new()).unsafe_cast() }
         unimplemented!()
     }
-
-    // pub fn new() -> Notebook {
-    //     unimplemented!() // TODO: complete it
-
-    //     // assert_initialized_main_thread!();
-    //     // unsafe { from_glib_full(ffi::notebook_new()) }
-    // }
 }
 
 impl Default for Notebook {
