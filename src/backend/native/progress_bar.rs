@@ -8,9 +8,18 @@ use crate::prelude::*;
 use glib::signal::SignalHandlerId;
 use std::fmt;
 
+#[derive(Clone, Debug)]
+pub struct ProgressBarFill {
+    pub parent: Widget,
+    pub height: u32,
+}
+
 // @extends Widget, clutter::Actor;
 #[derive(Clone, Debug)]
-pub struct ProgressBar {}
+pub struct ProgressBar {
+    pub fill: Option<clutter::Actor>,
+    pub progress: f64,
+}
 
 impl ProgressBar {
     pub fn new() -> ProgressBar {
@@ -38,24 +47,54 @@ impl AsRef<ProgressBar> for ProgressBar {
 pub const NONE_PROGRESS_BAR: Option<&ProgressBar> = None;
 
 pub trait ProgressBarExt: 'static {
+    /// get_progress:
+    /// @bar: A #ProgressBar
+    ///
+    /// Get the progress of the progress bar
+    ///
+    /// Returns: A value between 0.0 and 1.0
+    ///
     fn get_progress(&self) -> f64;
 
+    /// set_progress:
+    /// @bar: A #ProgressBar
+    /// @progress: A value between 0.0 and 1.0
+    ///
+    /// Set the progress of the progress bar
+    ///
     fn set_progress(&self, progress: f64);
 
     fn connect_property_progress_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
 }
 
 impl<O: Is<ProgressBar>> ProgressBarExt for O {
+    /// get_progress:
+    /// @bar: A #ProgressBar
+    ///
+    /// Get the progress of the progress bar
+    ///
+    /// Returns: A value between 0.0 and 1.0
+    ///
     fn get_progress(&self) -> f64 {
-        // unsafe { ffi::progress_bar_get_progress(self.as_ref().to_glib_none().0) }
-        unimplemented!()
+        let progressbar = self.as_ref();
+        progressbar.progress
     }
 
+    /// set_progress:
+    /// @bar: A #ProgressBar
+    /// @progress: A value between 0.0 and 1.0
+    ///
+    /// Set the progress of the progress bar
+    ///
     fn set_progress(&self, progress: f64) {
-        // unsafe {
-        //     ffi::progress_bar_set_progress(self.as_ref().to_glib_none().0, progress);
-        // }
-        unimplemented!()
+        let progressbar = self.as_ref();
+        
+        if progressbar.progress != progress {
+            // progressbar.progress = progress;
+            // allocate_fill(bar, NULL, 0);
+            // clutter_actor_queue_redraw(CLUTTER_ACTOR(bar));
+            // g_object_notify(G_OBJECT(bar), "progress");
+        }
     }
 
     fn connect_property_progress_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {

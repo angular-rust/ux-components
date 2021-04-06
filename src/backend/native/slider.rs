@@ -10,7 +10,30 @@ use std::fmt;
 
 // @extends Widget, clutter::Actor;
 #[derive(Clone, Debug)]
-pub struct Slider {}
+pub struct Slider {
+    pub trough_bg: Option<clutter::Actor>,
+    pub fill: Option<clutter::Actor>,
+    pub trough: Option<clutter::Actor>,
+    pub handle: Option<clutter::Actor>,
+    pub buffer: Option<clutter::Actor>,
+
+    pub capture_handler: u64,
+    pub x_origin: f32,
+
+    // the middle of the handle can wander on the axis between start and end
+    pub handle_middle_start: f32,
+    pub handle_middle_end: f32,
+
+    // keep those around for ::alocate_fill() */
+    pub trough_box_y1: f32,
+    pub trough_box_y2: f32,
+    pub trough_height: i32,
+    pub handle_width: u32,
+    pub handle_height: u32,
+
+    pub value: f64,
+    pub buffer_value: f64,
+}
 
 impl Slider {
     pub fn new() -> Slider {
@@ -38,12 +61,38 @@ impl AsRef<Slider> for Slider {
 pub const NONE_SLIDER: Option<&Slider> = None;
 
 pub trait SliderExt: 'static {
+    /// get_buffer_value:
+    /// @slider: A #Slider
+    ///
+    /// Get the value of the #Slider:buffer-value property.
+    ///
+    /// Returns: The current value of the "buffer-value" property.
+    ///
     fn get_buffer_value(&self) -> f64;
 
+    /// get_value:
+    /// @bar: A #Slider
+    ///
+    /// Retrieve the current value of the media bar
+    ///
+    /// Returns: gdouble
+    ///
     fn get_value(&self) -> f64;
 
+    /// set_buffer_value:
+    /// @slider: A #Slider
+    /// @value: the new buffer value of the slider
+    ///
+    /// Set the value of the #Slider:buffer-value property.
+    ///
     fn set_buffer_value(&self, value: f64);
 
+    /// set_value:
+    /// @bar: A #Slider
+    /// @value: A value between 0.0 and 1.0
+    ///
+    /// Set the value of the slider
+    ///
     fn set_value(&self, value: f64);
 
     fn connect_slide_start<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
@@ -57,28 +106,74 @@ pub trait SliderExt: 'static {
 }
 
 impl<O: Is<Slider>> SliderExt for O {
+    /// get_buffer_value:
+    /// @slider: A #Slider
+    ///
+    /// Get the value of the #Slider:buffer-value property.
+    ///
+    /// Returns: The current value of the "buffer-value" property.
+    ///
     fn get_buffer_value(&self) -> f64 {
-        // unsafe { ffi::slider_get_buffer_value(self.as_ref().to_glib_none().0) }
-        unimplemented!()
+        let slider = self.as_ref();
+        slider.buffer_value
     }
 
+    /// get_value:
+    /// @bar: A #Slider
+    ///
+    /// Retrieve the current value of the media bar
+    ///
+    /// Returns: gdouble
+    ///
     fn get_value(&self) -> f64 {
-        // unsafe { ffi::slider_get_value(self.as_ref().to_glib_none().0) }
-        unimplemented!()
+        let slider = self.as_ref();
+        slider.value
     }
 
+    /// set_buffer_value:
+    /// @slider: A #Slider
+    /// @value: the new buffer value of the slider
+    ///
+    /// Set the value of the #Slider:buffer-value property.
+    ///
     fn set_buffer_value(&self, value: f64) {
-        // unsafe {
-        //     ffi::slider_set_buffer_value(self.as_ref().to_glib_none().0, value);
+        let slider = self.as_ref();
+
+        // if slider.buffer_value == value {
+        //     return;
         // }
-        unimplemented!()
+
+        // slider.buffer_value = value;
+        // clutter_actor_queue_relayout(CLUTTER_ACTOR(slider));
+        // g_object_notify(G_OBJECT(slider), "buffer-value");
     }
 
+    /// set_value:
+    /// @bar: A #Slider
+    /// @value: A value between 0.0 and 1.0
+    ///
+    /// Set the value of the slider
+    ///
     fn set_value(&self, value: f64) {
-        // unsafe {
-        //     ffi::slider_set_value(self.as_ref().to_glib_none().0, value);
+        let slider = self.as_ref();
+
+        if slider.value == value {
+            return;
+        }
+
+        // if G_UNLIKELY((value < 0.0) || (value > 1.0)) {
+        //     g_warning("Slider:value must be a number between 0.0 and 1.0");
+        //     return;
         // }
-        unimplemented!()
+
+        // slider.value = value;
+
+        // if !slider.capture_handler {
+        //     slider_allocate_fill_handle(slider, NULL, 0);
+        //     clutter_actor_queue_redraw(CLUTTER_ACTOR(slider));
+        // }
+
+        // g_object_notify(G_OBJECT(slider), "value");
     }
 
     fn connect_slide_start<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {

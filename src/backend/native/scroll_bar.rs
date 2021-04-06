@@ -8,9 +8,41 @@ use crate::prelude::*;
 use glib::signal::SignalHandlerId;
 use std::fmt;
 
+#[derive(Clone, Copy, Debug)]
+pub enum ScrollBarDirection {
+    None,
+    Up,
+    Down,
+}
 // @extends Widget, clutter::Actor;
 #[derive(Clone, Debug)]
-pub struct ScrollBar {}
+pub struct ScrollBar {
+    pub adjustment: Option<Adjustment>,
+
+    pub capture_handler: u64,
+    pub x_origin: f32,
+    pub y_origin: f32,
+
+    pub bw_stepper: Option<clutter::Actor>,
+    pub fw_stepper: Option<clutter::Actor>,
+    pub trough: Option<clutter::Actor>,
+    pub handle: Option<clutter::Actor>,
+
+    pub move_x: f32,
+    pub move_y: f32,
+
+    pub handle_min_size: u32,
+
+    // Trough-click handling.
+    pub paging_direction: ScrollBarDirection,
+    pub paging_source_id: u32,
+    pub paging_event_no: u32,
+
+    pub stepper_forward: bool,
+    pub stepper_source_id: u32,
+
+    pub orientation: Orientation,
+}
 
 impl ScrollBar {
     pub fn new() -> ScrollBar {
@@ -49,6 +81,12 @@ impl AsRef<ScrollBar> for ScrollBar {
 pub const NONE_SCROLL_BAR: Option<&ScrollBar> = None;
 
 pub trait ScrollBarExt: 'static {
+    /// get_adjustment:
+    /// @bar: a #ScrollBar
+    ///
+    /// Gets the adjustment object that stores the current position
+    /// of the scrollbar.
+    ///
     fn get_adjustment(&self) -> Option<Adjustment>;
 
     fn get_orientation(&self) -> Orientation;
@@ -67,33 +105,81 @@ pub trait ScrollBarExt: 'static {
 }
 
 impl<O: Is<ScrollBar>> ScrollBarExt for O {
+    /// get_adjustment:
+    /// @bar: a #ScrollBar
+    ///
+    /// Gets the adjustment object that stores the current position
+    /// of the scrollbar.
+    ///
     fn get_adjustment(&self) -> Option<Adjustment> {
-        // unsafe {
-        //     from_glib_none(ffi::scroll_bar_get_adjustment(
-        //         self.as_ref().to_glib_none().0,
-        //     ))
-        // }
-        unimplemented!()
+        let scrollbar = self.as_ref();
+        scrollbar.adjustment.clone()
     }
 
     fn get_orientation(&self) -> Orientation {
-        //    unsafe { TODO: call ffi:scroll_bar_get_orientation() }
-        unimplemented!()
+        let scrollbar = self.as_ref();
+        scrollbar.orientation
     }
 
     fn set_adjustment<P: Is<Adjustment>>(&self, adjustment: &P) {
-        // unsafe {
-        //     ffi::scroll_bar_set_adjustment(
-        //         self.as_ref().to_glib_none().0,
-        //         adjustment.as_ref().to_glib_none().0,
+        let scrollbar = self.as_ref();
+
+        // if scrollbar.adjustment {
+        //     g_signal_handlers_disconnect_by_func(
+        //         scrollbar.adjustment,
+        //         clutter_actor_queue_relayout,
+        //         bar,
         //     );
+        //     g_signal_handlers_disconnect_by_func(
+        //         scrollbar.adjustment,
+        //         clutter_actor_queue_relayout,
+        //         bar,
+        //     );
+        //     g_object_unref(scrollbar.adjustment);
+        //     scrollbar.adjustment = None;
         // }
-        unimplemented!()
+
+        // if adjustment {
+        //     scrollbar.adjustment = g_object_ref(adjustment);
+
+        //     g_signal_connect_swapped(
+        //         scrollbar.adjustment,
+        //         "notify::value",
+        //         G_CALLBACK(clutter_actor_queue_relayout),
+        //         bar,
+        //     );
+        //     g_signal_connect_swapped(
+        //         scrollbar.adjustment,
+        //         "changed",
+        //         G_CALLBACK(clutter_actor_queue_relayout),
+        //         bar,
+        //     );
+
+        //     clutter_actor_queue_relayout(CLUTTER_ACTOR(bar));
+        // }
     }
 
     fn set_orientation(&self, orientation: Orientation) {
-        //    unsafe { TODO: call ffi:scroll_bar_set_orientation() }
-        unimplemented!()
+        let scrollbar = self.as_ref();
+
+        if orientation != scrollbar.orientation {
+            // scrollbar.orientation = orientation;
+
+            // if scrollbar.orientation {
+            //     stylable_set_style_class(STYLABLE(scrollbar.bw_stepper), "up-stepper");
+            //     stylable_set_style_class(STYLABLE(scrollbar.fw_stepper), "down-stepper");
+            //     stylable_set_style_class(STYLABLE(scrollbar.handle), "vhandle");
+            //     stylable_set_style_class(STYLABLE(scrollbar.trough), "vtrough");
+            // } else {
+            //     stylable_set_style_class(STYLABLE(scrollbar.fw_stepper), "forward-stepper");
+            //     stylable_set_style_class(STYLABLE(scrollbar.bw_stepper), "backward-stepper");
+            //     stylable_set_style_class(STYLABLE(scrollbar.handle), "hhandle");
+            //     stylable_set_style_class(STYLABLE(scrollbar.trough), "htrough");
+            // }
+
+            // clutter_actor_queue_relayout(CLUTTER_ACTOR(bar));
+            // g_object_notify(G_OBJECT(bar), "orientation");
+        }
     }
 
     fn connect_scroll_start<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {

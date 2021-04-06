@@ -10,7 +10,14 @@ use std::fmt;
 
 // @extends Widget, clutter::Actor;
 #[derive(Clone, Debug)]
-pub struct PathBar {}
+pub struct PathBar {
+    pub crumbs: Vec<clutter::Actor>,
+    pub current_level: usize,
+    pub overlap: i32,
+    pub editable: bool,
+    pub clear_on_change: bool,
+    pub entry: Option<Entry>,
+}
 
 impl PathBar {
     pub fn new() -> PathBar {
@@ -38,30 +45,81 @@ impl AsRef<PathBar> for PathBar {
 pub const NONE_PATH_BAR: Option<&PathBar> = None;
 
 pub trait PathBarExt: 'static {
+    /// clear:
+    /// @bar: An #PathBar
+    ///
+    /// Remove all the current buttons
+    ///
     fn clear(&self);
 
+    /// get_clear_on_change:
+    /// @bar: A #PathBar
+    ///
+    /// Get the value of the #PathBar:clear-on-change property
+    ///
+    /// Returns: the value of the "clear-on-change" property
+    ///
     fn get_clear_on_change(&self) -> bool;
 
+    /// get_editable:
+    /// @bar: A #PathBar
+    ///
+    /// Get the value of the #PathBar:editable property.
+    ///
+    /// Returns: the current value of the "editable" property.
+    ///
     fn get_editable(&self) -> bool;
 
+    /// get_entry:
+    /// @bar: A #PathBar
+    ///
+    /// Get the Entry used as the editable area in the PathBar.
+    ///
+    /// Returns: (transfer none): Entry *
+    ///
     fn get_entry(&self) -> Option<Entry>;
 
-    fn get_label(&self, level: i32) -> Option<String>;
+    fn get_label(&self, level: usize) -> Option<String>;
 
-    fn get_level(&self) -> i32;
+    fn get_level(&self) -> usize;
 
     fn get_text(&self) -> Option<String>;
 
-    fn pop(&self) -> i32;
+    fn pop(&self) -> usize;
 
-    fn push(&self, name: &str) -> i32;
+    fn push(&self, name: &str) -> usize;
 
+    /// set_clear_on_change:
+    /// @bar: A #PathBar
+    /// @clear_on_change: the new value of the property
+    ///
+    /// Set theh value of the #PathBar:clear-on-change property
+    ///
     fn set_clear_on_change(&self, clear_on_change: bool);
 
+    /// set_editable:
+    /// @bar: A #PathBar
+    /// @editable: #TRUE if the path bar should be editable
+    ///
+    /// Set the value of the #PathBar:editable property.
+    ///
     fn set_editable(&self, editable: bool);
 
-    fn set_label(&self, level: i32, label: &str);
+    /// set_label:
+    /// @bar: A #PathBar
+    /// @level: A #gint
+    /// @label: A #gchar
+    ///
+    /// Set the text on the button specified by @level
+    ///
+    fn set_label(&self, level: usize, label: &str);
 
+    /// set_text:
+    /// @bar: A #PathBar
+    /// @text: string to set the editable text to.
+    ///
+    /// Set the text in the editable area of the #PathBar
+    ///
     fn set_text(&self, text: &str);
 
     fn connect_property_clear_on_change_notify<F: Fn(&Self) + 'static>(
@@ -77,103 +135,239 @@ pub trait PathBarExt: 'static {
 }
 
 impl<O: Is<PathBar>> PathBarExt for O {
+    /// clear:
+    /// @bar: An #PathBar
+    ///
+    /// Remove all the current buttons
+    ///
     fn clear(&self) {
-        // unsafe {
-        //     ffi::path_bar_clear(self.as_ref().to_glib_none().0);
+        let pathbar = self.as_ref();
+
+        // while pathbar.current_level {
+        //     path_bar_pop(bar);
         // }
-        unimplemented!()
     }
 
+    /// get_clear_on_change:
+    /// @bar: A #PathBar
+    ///
+    /// Get the value of the #PathBar:clear-on-change property
+    ///
+    /// Returns: the value of the "clear-on-change" property
+    ///
     fn get_clear_on_change(&self) -> bool {
-        // unsafe {
-        //     from_glib(ffi::path_bar_get_clear_on_change(
-        //         self.as_ref().to_glib_none().0,
-        //     ))
-        // }
-        unimplemented!()
+        let pathbar = self.as_ref();
+        pathbar.clear_on_change
     }
 
+    /// get_editable:
+    /// @bar: A #PathBar
+    ///
+    /// Get the value of the #PathBar:editable property.
+    ///
+    /// Returns: the current value of the "editable" property.
+    ///
     fn get_editable(&self) -> bool {
-        // unsafe {
-        //     from_glib(ffi::path_bar_get_editable(
-        //         self.as_ref().to_glib_none().0,
-        //     ))
-        // }
-        unimplemented!()
+        let pathbar = self.as_ref();
+        pathbar.editable
     }
 
+    /// get_entry:
+    /// @bar: A #PathBar
+    ///
+    /// Get the Entry used as the editable area in the PathBar.
+    ///
+    /// Returns: (transfer none): Entry *
+    ///
     fn get_entry(&self) -> Option<Entry> {
-        // unsafe {
-        //     from_glib_none(ffi::path_bar_get_entry(
-        //         self.as_ref().to_glib_none().0,
-        //     ))
+        let pathbar = self.as_ref();
+        pathbar.entry.clone()
+    }
+
+    fn get_label(&self, level: usize) -> Option<String> {
+        let pathbar = self.as_ref();
+        
+        // let crumb = (ClutterActor *)g_list_nth_data(pathbar.crumbs, level - 1);
+
+        // if crumb {
+        //     button_get_label(BUTTON(crumb));
+        // } else {
+        //     None
         // }
         unimplemented!()
     }
 
-    fn get_label(&self, level: i32) -> Option<String> {
-        // unsafe {
-        //     from_glib_none(ffi::path_bar_get_label(
-        //         self.as_ref().to_glib_none().0,
-        //         level,
-        //     ))
-        // }
-        unimplemented!()
-    }
-
-    fn get_level(&self) -> i32 {
-        // unsafe { ffi::path_bar_get_level(self.as_ref().to_glib_none().0) }
-        unimplemented!()
+    fn get_level(&self) -> usize {
+        let pathbar = self.as_ref();
+        pathbar.current_level
     }
 
     fn get_text(&self) -> Option<String> {
-        // unsafe { from_glib_none(ffi::path_bar_get_text(self.as_ref().to_glib_none().0)) }
+        let pathbar = self.as_ref();
+
+        // if !pathbar.editable {
+        //     return None;
+        // }
+
+        // entry_get_text(ENTRY(pathbar.entry))
         unimplemented!()
     }
 
-    fn pop(&self) -> i32 {
-        // unsafe { ffi::path_bar_pop(self.as_ref().to_glib_none().0) }
-        unimplemented!()
+    fn pop(&self) -> usize {
+        let pathbar = self.as_ref();
+
+        // if pathbar.lear_on_change {
+        //     path_bar_set_text(bar, "");
+        // }
+
+        // if pathbar.current_level == 0 {
+        //     return 0;
+        // }
+
+        // let crumb = g_list_nth_data(pathbar.crumbs, pathbar.current_level - 1);
+
+        // path_bar_animate_button(bar, crumb, true);
+
+        // pathbar.current_level--;
+        // path_bar_reset_last_crumb(bar);
+        // g_object_notify (G_OBJECT (bar), "level");
+
+        pathbar.current_level
     }
 
-    fn push(&self, name: &str) -> i32 {
-        // unsafe { ffi::path_bar_push(self.as_ref().to_glib_none().0, name.to_glib_none().0) }
-        unimplemented!()
+    fn push(&self, name: &str) -> usize {
+        let pathbar = self.as_ref();
+                
+        // if pathbar.clear_on_change {
+        //     path_bar_set_text(bar, "");
+        // }
+
+        // let crumb = path_bar_button_new(name);
+        // clutter_actor_add_child(CLUTTER_ACTOR (bar), crumb);
+
+        // pathbar.crumbs = g_list_insert(pathbar.crumbs, crumb, pathbar.current_level);
+
+        // if !pathbar.entry {
+        //     if pathbar.current_level {
+        //         let old_last_crumb =
+        //             g_list_nth_data(pathbar.crumbs, pathbar.current_level - 1);
+
+        //         stylable_set_style_class(STYLABLE(old_last_crumb), None);
+        //     }
+
+        //     stylable_set_style_class(STYLABLE(crumb), "End");
+        // }
+
+        // pathbar.current_level++;
+
+        // g_signal_connect(crumb, "clicked",
+        //                     G_CALLBACK(path_bar_crumb_clicked_cb), bar);
+
+        // path_bar_animate_button(bar, crumb, false);
+
+        // clutter_actor_queue_relayout(CLUTTER_ACTOR(bar));
+
+        // g_object_notify(G_OBJECT(bar), "level");
+
+        pathbar.current_level
     }
 
+    /// set_clear_on_change:
+    /// @bar: A #PathBar
+    /// @clear_on_change: the new value of the property
+    ///
+    /// Set theh value of the #PathBar:clear-on-change property
+    ///
     fn set_clear_on_change(&self, clear_on_change: bool) {
-        // unsafe {
-        //     ffi::path_bar_set_clear_on_change(
-        //         self.as_ref().to_glib_none().0,
-        //         clear_on_change.to_glib(),
-        //     );
+        let pathbar = self.as_ref();
+        
+        // if pathbar.clear_on_change != clear_on_change {
+        //     pathbar.clear_on_change = clear_on_change;
+        //     g_object_notify(G_OBJECT(bar), "clear-on-change");
         // }
-        unimplemented!()
     }
 
+    /// set_editable:
+    /// @bar: A #PathBar
+    /// @editable: #TRUE if the path bar should be editable
+    ///
+    /// Set the value of the #PathBar:editable property.
+    ///
     fn set_editable(&self, editable: bool) {
-        // unsafe {
-        //     ffi::path_bar_set_editable(self.as_ref().to_glib_none().0, editable.to_glib());
+        let pathbar = self.as_ref();
+        
+        // if pathbar.editable == editable {
+        //     return;
         // }
-        unimplemented!()
+
+        // pathbar.editable = editable;
+        // if !editable  {
+        //     clutter_actor_save_easing_state(pathbar.entry);
+        //     clutter_actor_set_easing_mode(pathbar.entry, CLUTTER_EASE_OUT_QUAD);
+        //     clutter_actor_set_easing_duration(pathbar.entry, 150);
+        //     clutter_actor_set_opacity(pathbar.entry, 0x00);
+        //     clutter_actor_restore_easing_state(pathbar.entry);
+
+        //     g_signal_connect_after(pathbar.entry, "transition-stopped::opacity",
+        //                             G_CALLBACK(path_bar_entry_faded_cb),
+        //                             bar);
+        // } else {
+        //     if pathbar.entry {
+        //         g_signal_handlers_disconnect_by_func(pathbar.entry,
+        //                                                 path_bar_entry_faded_cb,
+        //                                                 bar);
+        //     } else {
+        //         pathbar.entry = entry_new();
+        //         clutter_actor_add_child(CLUTTER_ACTOR (bar), pathbar.entry);
+        //         if CLUTTER_ACTOR_IS_VISIBLE(pathbar.entry) {
+        //             clutter_actor_set_opacity(pathbar.entry, 0x00);
+        //         }
+        //     }
+
+        //     clutter_actor_save_easing_state(pathbar.entry);
+        //     clutter_actor_set_easing_mode(pathbar.entry, CLUTTER_EASE_OUT_QUAD);
+        //     clutter_actor_set_easing_duration(pathbar.entry, 150);
+        //     clutter_actor_set_opacity(pathbar.entry, 0xff);
+        //     clutter_actor_restore_easing_state(pathbar.entry);
+        // }
+
+        // path_bar_reset_last_crumb(bar);
+
+        // g_object_notify(G_OBJECT(bar), "editable");
+        // clutter_actor_queue_relayout(CLUTTER_ACTOR(bar));
     }
 
-    fn set_label(&self, level: i32, label: &str) {
-        // unsafe {
-        //     ffi::path_bar_set_label(
-        //         self.as_ref().to_glib_none().0,
-        //         level,
-        //         label.to_glib_none().0,
-        //     );
+    /// set_label:
+    /// @bar: A #PathBar
+    /// @level: A #gint
+    /// @label: A #gchar
+    ///
+    /// Set the text on the button specified by @level
+    ///
+    fn set_label(&self, level: usize, label: &str) {
+        let pathbar = self.as_ref();
+        
+        // let crumb = (ClutterActor *)g_list_nth_data(pathbar.crumbs, level - 1);
+
+        // if crumb {
+        //     button_set_label(BUTTON(crumb), label);
         // }
-        unimplemented!()
     }
 
+    /// set_text:
+    /// @bar: A #PathBar
+    /// @text: string to set the editable text to.
+    ///
+    /// Set the text in the editable area of the #PathBar
+    ///
     fn set_text(&self, text: &str) {
-        // unsafe {
-        //     ffi::path_bar_set_text(self.as_ref().to_glib_none().0, text.to_glib_none().0);
+        let pathbar = self.as_ref();
+        
+        // if !pathbar.editable {
+        //     return;
         // }
-        unimplemented!()
+
+        // entry_set_text(ENTRY(pathbar.entry), text);
     }
 
     fn connect_property_clear_on_change_notify<F: Fn(&Self) + 'static>(

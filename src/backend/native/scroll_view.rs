@@ -10,7 +10,16 @@ use std::fmt;
 
 // @extends Widget, clutter::Actor;
 #[derive(Clone, Debug)]
-pub struct ScrollView {}
+pub struct ScrollView {
+    pub child: Option<clutter::Actor>,
+    pub hscroll: Option<clutter::Actor>,
+    pub vscroll: Option<clutter::Actor>,
+    pub mouse_scroll: bool,
+    pub scrollbar_width: u32,
+    pub scrollbar_height: u32,
+    pub scroll_policy: ScrollPolicy,
+    pub scroll_visibility: ScrollPolicy,
+}
 
 impl ScrollView {
     pub fn new() -> ScrollView {
@@ -38,6 +47,13 @@ impl AsRef<ScrollView> for ScrollView {
 pub const NONE_SCROLL_VIEW: Option<&ScrollView> = None;
 
 pub trait ScrollViewExt: 'static {
+    /// scroll_view_ensure_visible:
+    /// @scroll: A #ScrollView
+    /// @geometry: The region to make visible
+    ///
+    /// Ensures that a given region is visible in the ScrollView, with the top-left
+    /// taking precedence.
+    ///
     fn ensure_visible(&self, geometry: &clutter::Geometry);
 
     fn get_enable_mouse_scrolling(&self) -> bool;
@@ -69,53 +85,75 @@ pub trait ScrollViewExt: 'static {
 }
 
 impl<O: Is<ScrollView>> ScrollViewExt for O {
+    /// scroll_view_ensure_visible:
+    /// @scroll: A #ScrollView
+    /// @geometry: The region to make visible
+    ///
+    /// Ensures that a given region is visible in the ScrollView, with the top-left
+    /// taking precedence.
+    ///
     fn ensure_visible(&self, geometry: &clutter::Geometry) {
-        // unsafe {
-        //     ffi::scroll_view_ensure_visible(
-        //         self.as_ref().to_glib_none().0,
-        //         geometry.to_glib_none().0,
-        //     );
-        // }
-        unimplemented!()
+        let scrollview = self.as_ref();
+        
+        // _scroll_view_ensure_visible_axis(SCROLL_BAR(scrollview.hscroll),
+        //                                geometry.x,
+        //                                geometry.x + geometry.width);
+        // _scroll_view_ensure_visible_axis(SCROLL_BAR(scrollview.vscroll),
+        //                                geometry.y,
+        //                                geometry.y + geometry.height);
     }
 
     fn get_enable_mouse_scrolling(&self) -> bool {
-        // unsafe {
-        //     from_glib(ffi::scroll_view_get_enable_mouse_scrolling(
-        //         self.as_ref().to_glib_none().0,
-        //     ))
-        // }
-        unimplemented!()
+        let scrollview = self.as_ref();
+        scrollview.mouse_scroll
     }
 
     fn get_scroll_policy(&self) -> ScrollPolicy {
-        //    unsafe { TODO: call ffi:scroll_view_get_scroll_policy() }
-        unimplemented!()
+        let scrollview = self.as_ref();
+        scrollview.scroll_policy
     }
 
     fn get_scroll_visibility(&self) -> ScrollPolicy {
-        //    unsafe { TODO: call ffi:scroll_view_get_scroll_visibility() }
-        unimplemented!()
+        let scrollview = self.as_ref();
+        scrollview.scroll_visibility
     }
 
     fn set_enable_mouse_scrolling(&self, enabled: bool) {
-        // unsafe {
-        //     ffi::scroll_view_set_enable_mouse_scrolling(
-        //         self.as_ref().to_glib_none().0,
-        //         enabled.to_glib(),
-        //     );
-        // }
-        unimplemented!()
+        let scrollview = self.as_ref();
+        
+        if scrollview.mouse_scroll != enabled {
+            // scrollview.mouse_scroll = enabled;
+
+            // // make sure we can receive mouse wheel events */
+            // if enabled {
+            //     clutter_actor_set_reactive((ClutterActor *)scroll, true);
+            // }
+            // g_object_notify(G_OBJECT(scroll), "enable-mouse-scrolling");
+        }
     }
 
     fn set_scroll_policy(&self, policy: ScrollPolicy) {
-        //    unsafe { TODO: call ffi:scroll_view_set_scroll_policy() }
-        unimplemented!()
+        let scrollview = self.as_ref();
+
+        if scrollview.scroll_policy != policy {
+            // scrollview.scroll_policy = policy;
+
+            // g_object_notify(G_OBJECT(scroll), "scroll-policy");
+
+            // clutter_actor_queue_relayout(CLUTTER_ACTOR(scroll));
+        }
     }
 
     fn set_scroll_visibility(&self, visibility: ScrollPolicy) {
-        //    unsafe { TODO: call ffi:scroll_view_set_scroll_visibility() }
-        unimplemented!()
+        let scrollview = self.as_ref();
+
+        if scrollview.scroll_visibility != visibility {
+            // scrollview.scroll_visibility = visibility;
+    
+            // g_object_notify(G_OBJECT(scroll), "scroll-visibility");
+    
+            // clutter_actor_queue_relayout(CLUTTER_ACTOR(scroll));
+        }
     }
 
     fn connect_property_enable_mouse_scrolling_notify<F: Fn(&Self) + 'static>(

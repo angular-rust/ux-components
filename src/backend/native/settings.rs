@@ -8,7 +8,18 @@ use glib::signal::SignalHandlerId;
 use std::fmt;
 
 #[derive(Clone, Debug)]
-pub struct Settings {}
+pub struct SettingsProvider;
+
+#[derive(Clone, Debug)]
+pub struct Settings {
+    pub provider: SettingsProvider,
+    pub icon_theme: String,
+    pub font_name: String,
+    pub long_press_timeout: u32,
+    pub drag_threshold: u32,
+    pub small_screen: bool,
+    pub touch_mode: bool,
+}
 
 impl Settings {
     pub fn get_default() -> Option<Settings> {

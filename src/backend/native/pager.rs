@@ -3,14 +3,22 @@
 // use std::boxed::Box as Box_;
 // use std::mem::transmute;
 
-use super::{Stack, Widget};
+use super::{Stack, Widget, ButtonGroup};
 use crate::prelude::*;
 use glib::signal::SignalHandlerId;
 use std::fmt;
 
 // @extends Stack, Widget, clutter::Actor;
 #[derive(Clone, Debug)]
-pub struct Pager {}
+pub struct Pager {
+    pub pages: Vec<clutter::Actor>,
+    pub current_page: Vec<clutter::Actor>,
+    pub edge_previews: bool,
+    pub button_box: Option<clutter::Actor>,
+    pub button_group: ButtonGroup,
+    // pub pages_to_buttons: GHashTable, /* ClutterActor* -> Button* */
+    pub hover_timeout: u32,
+}
 
 impl Pager {
     pub fn new() -> Pager {
@@ -38,26 +46,90 @@ impl AsRef<Pager> for Pager {
 pub const NONE_PAGER: Option<&Pager> = None;
 
 pub trait PagerExt: 'static {
+    /// pager_get_actor_for_page:
+    /// @self: a #Pager
+    /// @page: a page number
+    ///
+    /// Returns: (transfer none): the #ClutterActor for @page
+    ///
     fn get_actor_for_page(&self, page: u32) -> Option<clutter::Actor>;
 
+    /// pager_get_current_page:
+    /// @self: a #Pager
+    ///
+    /// Returns: the current page number
+    ///
     fn get_current_page(&self) -> u32;
 
+    /// pager_get_current_page_actor:
+    /// @self: a #Pager
+    ///
+    /// Returns: (transfer none): the #ClutterActor on the current page
+    ///
     fn get_current_page_actor(&self) -> Option<clutter::Actor>;
 
+    /// pager_get_edge_previews:
+    /// @self: a #Pager
+    ///
+    /// Returns: the value of the #Pager:edge-previews property
+    ///
     fn get_edge_previews(&self) -> bool;
 
-    fn get_n_pages(&self) -> u32;
+    /// pager_get_n_pages:
+    /// @self: a #Pager
+    ///
+    /// Returns: the number of pages in this pager
+    ///
+    fn get_n_pages(&self) -> usize;
 
+    /// pager_insert_page:
+    /// @self: a #Pager
+    /// @child: the page to insert
+    /// @position: the position to insert the page. If this is negative, or is
+    ///   larger than the number of pages, it will the last page
+    ///
+    /// Inserts a page into the #Pager at the position specified by @position.
+    ///
     fn insert_page<P: Is<clutter::Actor>>(&self, child: &P, position: i32);
 
+    /// pager_next:
+    /// @self: a #Pager
+    ///
+    /// Move to the next page.
+    ///
     fn next(&self);
 
+    /// pager_previous:
+    /// @self: a #Pager
+    ///
+    /// Move to the previous page.
+    ///
     fn previous(&self);
 
+    /// pager_set_current_page:
+    /// @self: a #Pager
+    /// @page: the page to move to
+    /// @animate: whether to animate the move between pages
+    ///
+    /// Move to @page.
+    ///
     fn set_current_page(&self, page: u32, animate: bool);
 
+    /// pager_set_current_page_by_actor:
+    /// @self: a #Pager
+    /// @actor: the actor of the page to move to
+    /// @animate: whether to animate the move between pages
+    ///
+    /// Move to the page containing @actor.
+    ///
     fn set_current_page_by_actor<P: Is<clutter::Actor>>(&self, actor: &P, animate: bool);
 
+    /// pager_set_edge_previews:
+    /// @self: a #Pager
+    /// @edge_previews: %TRUE to enable edge previews
+    ///
+    /// Sets the #Pager:edge-previews property.
+    ///
     fn set_edge_previews(&self, edge_previews: bool);
 
     fn get_property_page_actor(&self) -> Option<clutter::Actor>;
@@ -82,99 +154,171 @@ pub trait PagerExt: 'static {
 }
 
 impl<O: Is<Pager>> PagerExt for O {
+    /// pager_get_actor_for_page:
+    /// @self: a #Pager
+    /// @page: a page number
+    ///
+    /// Returns: (transfer none): the #ClutterActor for @page
+    ///
     fn get_actor_for_page(&self, page: u32) -> Option<clutter::Actor> {
-        // unsafe {
-        //     from_glib_none(ffi::pager_get_actor_for_page(
-        //         self.as_ref().to_glib_none().0,
-        //         page,
-        //     ))
-        // }
+        let pager = self.as_ref();
+        // CLUTTER_ACTOR(g_list_nth_data (pager.pages, page));
         unimplemented!()
     }
 
+    /// pager_get_current_page:
+    /// @self: a #Pager
+    ///
+    /// Returns: the current page number
+    ///
     fn get_current_page(&self) -> u32 {
-        // unsafe { ffi::pager_get_current_page(self.as_ref().to_glib_none().0) }
+        let pager = self.as_ref();
+        
+        // let pos = g_list_position(pager.pages, pager.current_page);
+        
         unimplemented!()
     }
 
+    /// pager_get_current_page_actor:
+    /// @self: a #Pager
+    ///
+    /// Returns: (transfer none): the #ClutterActor on the current page
+    ///
     fn get_current_page_actor(&self) -> Option<clutter::Actor> {
-        // unsafe {
-        //     from_glib_none(ffi::pager_get_current_page_actor(
-        //         self.as_ref().to_glib_none().0,
-        //     ))
-        // }
+        let pager = self.as_ref();
+        
+        // CLUTTER_ACTOR(pager.current_page.data);
         unimplemented!()
     }
 
+    /// pager_get_edge_previews:
+    /// @self: a #Pager
+    ///
+    /// Returns: the value of the #Pager:edge-previews property
+    ///
     fn get_edge_previews(&self) -> bool {
-        // unsafe {
-        //     from_glib(ffi::pager_get_edge_previews(
-        //         self.as_ref().to_glib_none().0,
-        //     ))
-        // }
-        unimplemented!()
+        let pager = self.as_ref();
+        pager.edge_previews
     }
 
-    fn get_n_pages(&self) -> u32 {
-        // unsafe { ffi::pager_get_n_pages(self.as_ref().to_glib_none().0) }
-        unimplemented!()
+    /// pager_get_n_pages:
+    /// @self: a #Pager
+    ///
+    /// Returns: the number of pages in this pager
+    ///
+    fn get_n_pages(&self) -> usize {
+        let pager = self.as_ref();
+        pager.pages.len()
     }
 
+    /// pager_insert_page:
+    /// @self: a #Pager
+    /// @child: the page to insert
+    /// @position: the position to insert the page. If this is negative, or is
+    ///   larger than the number of pages, it will the last page
+    ///
+    /// Inserts a page into the #Pager at the position specified by @position.
+    ///
     fn insert_page<P: Is<clutter::Actor>>(&self, child: &P, position: i32) {
-        // unsafe {
-        //     ffi::pager_insert_page(
-        //         self.as_ref().to_glib_none().0,
-        //         child.as_ref().to_glib_none().0,
-        //         position,
-        //     );
+        let pager = self.as_ref();
+        
+        // pager.pages = g_list_insert(pager.pages, child, position);
+
+        // pager_add_internal_actor(self, child, "fit", true, None);
+        // clutter_actor_set_child_below_sibling((ClutterActor *)self, child, None);
+
+        // pager_add_page_button(self, child);
+
+        // if pager.current_page == None {
+        //     pager_change_page(self, pager.pages, false);
+        // } else {
+        //     pager_relayout_pages(self, false);
         // }
-        unimplemented!()
     }
 
+    /// pager_next:
+    /// @self: a #Pager
+    ///
+    /// Move to the next page.
+    ///
     fn next(&self) {
-        // unsafe {
-        //     ffi::pager_next(self.as_ref().to_glib_none().0);
+        let pager = self.as_ref();
+
+        // if pager.current_page.next == None {
+        //     return;
         // }
-        unimplemented!()
+
+        // pager_change_page(self, pager.current_page.next, true);
     }
 
+    /// pager_previous:
+    /// @self: a #Pager
+    ///
+    /// Move to the previous page.
+    ///
     fn previous(&self) {
-        // unsafe {
-        //     ffi::pager_previous(self.as_ref().to_glib_none().0);
+        let pager = self.as_ref();
+        
+        // if pager.current_page.prev == None {
+        //     return;
         // }
-        unimplemented!()
+
+        // pager_change_page(self, pager.current_page.prev, true);
     }
 
+    /// pager_set_current_page:
+    /// @self: a #Pager
+    /// @page: the page to move to
+    /// @animate: whether to animate the move between pages
+    ///
+    /// Move to @page.
+    ///
     fn set_current_page(&self, page: u32, animate: bool) {
-        // unsafe {
-        //     ffi::pager_set_current_page(
-        //         self.as_ref().to_glib_none().0,
-        //         page,
-        //         animate.to_glib(),
-        //     );
-        // }
-        unimplemented!()
+        let pager = self.as_ref();
+
+        // let page_l = g_list_nth (pager.pages, page);
+        // g_return_if_fail(page_l != None);
+        // pager_change_page(self, page_l, animate);
     }
 
+    /// pager_set_current_page_by_actor:
+    /// @self: a #Pager
+    /// @actor: the actor of the page to move to
+    /// @animate: whether to animate the move between pages
+    ///
+    /// Move to the page containing @actor.
+    ///
     fn set_current_page_by_actor<P: Is<clutter::Actor>>(&self, actor: &P, animate: bool) {
-        // unsafe {
-        //     ffi::pager_set_current_page_by_actor(
-        //         self.as_ref().to_glib_none().0,
-        //         actor.as_ref().to_glib_none().0,
-        //         animate.to_glib(),
-        //     );
-        // }
-        unimplemented!()
+        let pager = self.as_ref();
+        
+        // let page_l = g_list_find (pager.pages, actor);
+        // g_return_if_fail(page_l != None);
+        // pager_change_page(self, page_l, animate);
     }
 
+    /// pager_set_edge_previews:
+    /// @self: a #Pager
+    /// @edge_previews: %TRUE to enable edge previews
+    ///
+    /// Sets the #Pager:edge-previews property.
+    ///
     fn set_edge_previews(&self, edge_previews: bool) {
-        // unsafe {
-        //     ffi::pager_set_edge_previews(
-        //         self.as_ref().to_glib_none().0,
-        //         edge_previews.to_glib(),
-        //     );
+        let pager = self.as_ref();
+        
+        // if pager.edge_previews == edge_previews {
+        //     return;
         // }
-        unimplemented!()
+
+        // if !edge_previews {
+        //     // disable any currently pending timeout
+        //     if pager.hover_timeout > 0 {
+        //         g_source_remove(pager.hover_timeout);
+        //         pager.hover_timeout = 0;
+        //     }
+        // }
+
+        // pager.edge_previews = edge_previews;
+        // g_object_notify(G_OBJECT(self), "edge-previews");
     }
 
     fn get_property_page_actor(&self) -> Option<clutter::Actor> {

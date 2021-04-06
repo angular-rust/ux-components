@@ -10,7 +10,15 @@ use std::fmt;
 
 // @extends Widget, clutter::Actor;
 #[derive(Clone, Debug)]
-pub struct Spinner {}
+pub struct Spinner {
+    // pub texture: cogl::Handle,
+    // pub material: cogl::Handle,
+    pub frames: u32,
+    pub anim_duration: u32,
+    pub current_frame: u32,
+    pub update_id: u32,
+    pub animating: bool,
+}
 
 impl Spinner {
     pub fn new() -> Spinner {
@@ -38,8 +46,22 @@ impl AsRef<Spinner> for Spinner {
 pub const NONE_SPINNER: Option<&Spinner> = None;
 
 pub trait SpinnerExt: 'static {
+    /// get_animating:
+    /// @spinner: A #Spinner widget
+    ///
+    /// Determines whether the spinner is animating.
+    ///
+    /// Returns: %TRUE if the spinner is animating, %FALSE otherwise
+    ///
     fn get_animating(&self) -> bool;
 
+    /// set_animating:
+    /// @spinner: A #Spinner widget
+    /// @animating: %TRUE to enable animation, %FALSE to disable
+    ///
+    /// Sets whether the spinner is animating. A spinner can be stopped if
+    /// the task it represents has finished, or to save energy.
+    ///
     fn set_animating(&self, animating: bool);
 
     fn connect_looped<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
@@ -48,20 +70,33 @@ pub trait SpinnerExt: 'static {
 }
 
 impl<O: Is<Spinner>> SpinnerExt for O {
+    /// get_animating:
+    /// @spinner: A #Spinner widget
+    ///
+    /// Determines whether the spinner is animating.
+    ///
+    /// Returns: %TRUE if the spinner is animating, %FALSE otherwise
+    ///
     fn get_animating(&self) -> bool {
-        // unsafe {
-        //     from_glib(ffi::spinner_get_animating(
-        //         self.as_ref().to_glib_none().0,
-        //     ))
-        // }
-        unimplemented!()
+        let spinner = self.as_ref();
+        spinner.animating
     }
 
+    /// set_animating:
+    /// @spinner: A #Spinner widget
+    /// @animating: %TRUE to enable animation, %FALSE to disable
+    ///
+    /// Sets whether the spinner is animating. A spinner can be stopped if
+    /// the task it represents has finished, or to save energy.
+    ///
     fn set_animating(&self, animating: bool) {
-        // unsafe {
-        //     ffi::spinner_set_animating(self.as_ref().to_glib_none().0, animating.to_glib());
-        // }
-        unimplemented!()
+        let spinner = self.as_ref();
+        
+        if spinner.animating != animating {
+            spinner.animating = animating;
+            update_timeout(spinner);
+            g_object_notify(G_OBJECT(spinner), "animating");
+        }
     }
 
     fn connect_looped<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
