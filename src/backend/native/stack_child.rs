@@ -9,7 +9,15 @@ use glib::signal::SignalHandlerId;
 use std::fmt;
 
 #[derive(Clone, Debug)]
-pub struct StackChild {}
+pub struct StackChild {
+    pub parent: clutter::ChildMeta,
+    pub x_fill: bool,
+    pub y_fill: bool,
+    pub fit: bool,
+    pub crop: bool,
+    pub x_align: Align,
+    pub y_align: Align,
+}
 
 impl Object for StackChild {}
 impl Is<StackChild> for StackChild {}
@@ -23,29 +31,119 @@ impl AsRef<StackChild> for StackChild {
 pub const NONE_STACK_CHILD: Option<&StackChild> = None;
 
 pub trait StackChildExt: 'static {
-    fn get_property_crop(&self) -> bool;
+    /// get_crop:
+    /// @stack: An #Stack
+    /// @child: A #ClutterActor
+    ///
+    /// Get the value of the #StackChild:fit property.
+    ///
+    /// Returns: the current value of the #StackChild:crop property
+    ///
+    fn get_crop(&self) -> bool;
 
-    fn set_property_crop(&self, crop: bool);
+    /// set_crop:
+    /// @stack: An #Stack
+    /// @child: A #ClutterActor
+    /// @crop: A #gboolean
+    ///
+    /// Set the value of the #StackChild:crop property.
+    ///
+    fn set_crop(&self, crop: bool);
 
-    fn get_property_fit(&self) -> bool;
+    /// get_fit:
+    /// @stack: An #Stack
+    /// @child: A #ClutterActor
+    ///
+    ///* Get the value of the #StackChild:fit property.
+    ///
+    /// Returns: the current value of the #StackChild:fit property
+    ///
+    fn get_fit(&self) -> bool;
 
-    fn set_property_fit(&self, fit: bool);
+    /// set_fit:
+    /// @stack: An #Stack
+    /// @child: A #ClutterActor
+    /// @fit: A #gboolean
+    ///
+    /// Set the value of the #StackChild:fit property.
+    ///
+    fn set_fit(&self, fit: bool);
 
-    fn get_property_x_align(&self) -> Align;
+    /// get_x_align:
+    /// @stack: An #Stack
+    /// @child: A #ClutterActor
+    ///
+    /// Get the value of the #StackChild:x-align property
+    ///
+    /// Returns: the current value of the "x-align" property
+    ///
+    fn get_x_align(&self) -> Align;
 
-    fn set_property_x_align(&self, x_align: Align);
+    /// set_x_align:
+    /// @stack: A #Stack
+    /// @child: A #ClutterActor
+    /// @x_align: An #Align
+    ///
+    /// Set the value of the #StackChild:x-align property.
+    ///
+    fn set_x_align(&self, x_align: Align);
 
-    fn get_property_x_fill(&self) -> bool;
+    /// get_x_fill:
+    /// @stack: A #Stack
+    /// @child: A #ClutterActor
+    ///
+    /// Get the value of the #StackChild:x-fill property.
+    ///
+    /// Returns: the current value of the "x-fill" property.
+    ///
+    fn get_x_fill(&self) -> bool;
 
-    fn set_property_x_fill(&self, x_fill: bool);
+    /// set_x_fill:
+    /// @stack: A #Stack
+    /// @child: A #ClutterActor
+    /// @x_fill: A #gboolean
+    ///
+    /// Set the value of the #StackChild:x-fill property.
+    ///
+    fn set_x_fill(&self, x_fill: bool);
 
-    fn get_property_y_align(&self) -> Align;
+    /// get_y_align:
+    /// @stack: An #Stack
+    /// @child: A #ClutterActor
+    ///
+    /// Get the value of the #StackChild:y-align property.
+    ///
+    /// Returns: the current value of the "y-align" property.
+    ///
+    fn get_y_align(&self) -> Align;
 
-    fn set_property_y_align(&self, y_align: Align);
+    /// set_y_align:
+    /// @stack: An #Stack
+    /// @child: A #ClutterActor
+    /// @y_align: An #Align
+    ///
+    /// Set the value of the #StackChild:y-align property.
+    ///
+    fn set_y_align(&self, y_align: Align);
 
-    fn get_property_y_fill(&self) -> bool;
+    /// get_y_fill:
+    /// @stack: An #Stack
+    /// @child: A #ClutterActor
+    ///
+    /// Get the value of the #StackChild:y-fill property
+    ///
+    /// Returns: the current value of the "y-fill" property
+    ///
+    fn get_y_fill(&self) -> bool;
 
-    fn set_property_y_fill(&self, y_fill: bool);
+    /// set_y_fill:
+    /// @stack: An #Stack
+    /// @child: A #ClutterActor
+    /// @y_fill: A #gboolean
+    ///
+    /// Set the value of the #StackChild:y-fill property.
+    ///
+    fn set_y_fill(&self, y_fill: bool);
 
     fn connect_property_crop_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
 
@@ -61,143 +159,166 @@ pub trait StackChildExt: 'static {
 }
 
 impl<O: Is<StackChild>> StackChildExt for O {
-    fn get_property_crop(&self) -> bool {
-        // unsafe {
-        //     let mut value = Value::from_type(<bool as StaticType>::static_type());
-        //     gobject_sys::g_object_get_property(
-        //         self.to_glib_none().0 as *mut gobject_sys::GObject,
-        //         b"crop\0".as_ptr() as *const _,
-        //         value.to_glib_none_mut().0,
-        //     );
-        //     value
-        //         .get()
-        //         .expect("Return Value for property `crop` getter")
-        //         .unwrap()
-        // }
-        unimplemented!()
+    /// get_crop:
+    /// @stack: An #Stack
+    /// @child: A #ClutterActor
+    ///
+    /// Get the value of the #StackChild:fit property.
+    ///
+    /// Returns: the current value of the #StackChild:crop property
+    ///
+    fn get_crop(&self) -> bool {
+        let stackchild = self.as_ref();
+        stackchild.crop
     }
 
-    fn set_property_crop(&self, crop: bool) {
-        // unsafe {
-        //     gobject_sys::g_object_set_property(
-        //         self.to_glib_none().0 as *mut gobject_sys::GObject,
-        //         b"crop\0".as_ptr() as *const _,
-        //         Value::from(&crop).to_glib_none().0,
-        //     );
-        // }
-        unimplemented!()
+    /// set_crop:
+    /// @stack: An #Stack
+    /// @child: A #ClutterActor
+    /// @crop: A #gboolean
+    ///
+    /// Set the value of the #StackChild:crop property.
+    ///
+    fn set_crop(&self, crop: bool) {
+        let stackchild = self.as_ref();
+
+        // stackchild.crop = crop;
+        // clutter_actor_queue_relayout(child);
     }
 
-    fn get_property_fit(&self) -> bool {
-        // unsafe {
-        //     let mut value = Value::from_type(<bool as StaticType>::static_type());
-        //     gobject_sys::g_object_get_property(
-        //         self.to_glib_none().0 as *mut gobject_sys::GObject,
-        //         b"fit\0".as_ptr() as *const _,
-        //         value.to_glib_none_mut().0,
-        //     );
-        //     value
-        //         .get()
-        //         .expect("Return Value for property `fit` getter")
-        //         .unwrap()
-        // }
-        unimplemented!()
+    /// get_fit:
+    /// @stack: An #Stack
+    /// @child: A #ClutterActor
+    ///
+    ///* Get the value of the #StackChild:fit property.
+    ///
+    /// Returns: the current value of the #StackChild:fit property
+    ///
+    fn get_fit(&self) -> bool {
+        let stackchild = self.as_ref();
+        stackchild.fit
     }
 
-    fn set_property_fit(&self, fit: bool) {
-        // unsafe {
-        //     gobject_sys::g_object_set_property(
-        //         self.to_glib_none().0 as *mut gobject_sys::GObject,
-        //         b"fit\0".as_ptr() as *const _,
-        //         Value::from(&fit).to_glib_none().0,
-        //     );
-        // }
+    /// set_fit:
+    /// @stack: An #Stack
+    /// @child: A #ClutterActor
+    /// @fit: A #gboolean
+    ///
+    /// Set the value of the #StackChild:fit property.
+    ///
+    fn set_fit(&self, fit: bool) {
+        let stackchild = self.as_ref();
+        
+        // stackchild.fit = fit;
+        // clutter_actor_queue_relayout(child);
     }
 
-    fn get_property_x_align(&self) -> Align {
-        //    unsafe {
-        //        let mut value = Value::from_type(</*Unknown type*/ as StaticType>::static_type());
-        //        gobject_sys::g_object_get_property(self.to_glib_none().0 as *mut gobject_sys::GObject, b"x-align\0".as_ptr() as *const _, value.to_glib_none_mut().0);
-        //        value.get().expect("Return Value for property `x-align` getter").unwrap()
-        //    }
-        unimplemented!()
+    /// get_x_align:
+    /// @stack: An #Stack
+    /// @child: A #ClutterActor
+    ///
+    /// Get the value of the #StackChild:x-align property
+    ///
+    /// Returns: the current value of the "x-align" property
+    ///
+    fn get_x_align(&self) -> Align {
+        let stackchild = self.as_ref();
+        stackchild.x_align
     }
 
-    fn set_property_x_align(&self, x_align: Align) {
-        //    unsafe {
-        //        gobject_sys::g_object_set_property(self.to_glib_none().0 as *mut gobject_sys::GObject, b"x-align\0".as_ptr() as *const _, Value::from(&x_align).to_glib_none().0);
-        //    }
-        unimplemented!()
+    /// set_x_align:
+    /// @stack: A #Stack
+    /// @child: A #ClutterActor
+    /// @x_align: An #Align
+    ///
+    /// Set the value of the #StackChild:x-align property.
+    ///
+    fn set_x_align(&self, x_align: Align) {
+        let stackchild = self.as_ref();
+        
+        // stackchild.x_align = x_align;
+        // clutter_actor_queue_relayout(child);
     }
 
-    fn get_property_x_fill(&self) -> bool {
-        // unsafe {
-        //     let mut value = Value::from_type(<bool as StaticType>::static_type());
-        //     gobject_sys::g_object_get_property(
-        //         self.to_glib_none().0 as *mut gobject_sys::GObject,
-        //         b"x-fill\0".as_ptr() as *const _,
-        //         value.to_glib_none_mut().0,
-        //     );
-        //     value
-        //         .get()
-        //         .expect("Return Value for property `x-fill` getter")
-        //         .unwrap()
-        // }
-        unimplemented!()
+    /// get_x_fill:
+    /// @stack: A #Stack
+    /// @child: A #ClutterActor
+    ///
+    /// Get the value of the #StackChild:x-fill property.
+    ///
+    /// Returns: the current value of the "x-fill" property.
+    ///
+    fn get_x_fill(&self) -> bool {
+        let stackchild = self.as_ref();
+        stackchild.x_fill
     }
 
-    fn set_property_x_fill(&self, x_fill: bool) {
-        // unsafe {
-        //     gobject_sys::g_object_set_property(
-        //         self.to_glib_none().0 as *mut gobject_sys::GObject,
-        //         b"x-fill\0".as_ptr() as *const _,
-        //         Value::from(&x_fill).to_glib_none().0,
-        //     );
-        // }
-        unimplemented!()
+    /// set_x_fill:
+    /// @stack: A #Stack
+    /// @child: A #ClutterActor
+    /// @x_fill: A #gboolean
+    ///
+    /// Set the value of the #StackChild:x-fill property.
+    ///
+    fn set_x_fill(&self, x_fill: bool) {
+        let stackchild = self.as_ref();
+        
+        // stackchild.x_fill = x_fill;
+        // clutter_actor_queue_relayout(child);
     }
 
-    fn get_property_y_align(&self) -> Align {
-        //    unsafe {
-        //        let mut value = Value::from_type(</*Unknown type*/ as StaticType>::static_type());
-        //        gobject_sys::g_object_get_property(self.to_glib_none().0 as *mut gobject_sys::GObject, b"y-align\0".as_ptr() as *const _, value.to_glib_none_mut().0);
-        //        value.get().expect("Return Value for property `y-align` getter").unwrap()
-        //    }
-        unimplemented!()
+    /// get_y_align:
+    /// @stack: An #Stack
+    /// @child: A #ClutterActor
+    ///
+    /// Get the value of the #StackChild:y-align property.
+    ///
+    /// Returns: the current value of the "y-align" property.
+    ///
+    fn get_y_align(&self) -> Align {
+        let stackchild = self.as_ref();
+        stackchild.y_align
     }
 
-    fn set_property_y_align(&self, y_align: Align) {
-        //    unsafe {
-        //        gobject_sys::g_object_set_property(self.to_glib_none().0 as *mut gobject_sys::GObject, b"y-align\0".as_ptr() as *const _, Value::from(&y_align).to_glib_none().0);
-        //    }
-        unimplemented!()
+    /// set_y_align:
+    /// @stack: An #Stack
+    /// @child: A #ClutterActor
+    /// @y_align: An #Align
+    ///
+    /// Set the value of the #StackChild:y-align property.
+    ///
+    fn set_y_align(&self, y_align: Align) {
+        let stackchild = self.as_ref();
+        
+        // stackchild.y_align = y_align;
+        // clutter_actor_queue_relayout(child);
     }
 
-    fn get_property_y_fill(&self) -> bool {
-        // unsafe {
-        //     let mut value = Value::from_type(<bool as StaticType>::static_type());
-        //     gobject_sys::g_object_get_property(
-        //         self.to_glib_none().0 as *mut gobject_sys::GObject,
-        //         b"y-fill\0".as_ptr() as *const _,
-        //         value.to_glib_none_mut().0,
-        //     );
-        //     value
-        //         .get()
-        //         .expect("Return Value for property `y-fill` getter")
-        //         .unwrap()
-        // }
-        unimplemented!()
+    /// get_y_fill:
+    /// @stack: An #Stack
+    /// @child: A #ClutterActor
+    ///
+    /// Get the value of the #StackChild:y-fill property
+    ///
+    /// Returns: the current value of the "y-fill" property
+    ///
+    fn get_y_fill(&self) -> bool {
+        let stackchild = self.as_ref();
+        stackchild.y_fill
     }
 
-    fn set_property_y_fill(&self, y_fill: bool) {
-        // unsafe {
-        //     gobject_sys::g_object_set_property(
-        //         self.to_glib_none().0 as *mut gobject_sys::GObject,
-        //         b"y-fill\0".as_ptr() as *const _,
-        //         Value::from(&y_fill).to_glib_none().0,
-        //     );
-        // }
-        unimplemented!()
+    /// set_y_fill:
+    /// @stack: An #Stack
+    /// @child: A #ClutterActor
+    /// @y_fill: A #gboolean
+    ///
+    /// Set the value of the #StackChild:y-fill property.
+    ///
+    fn set_y_fill(&self, y_fill: bool) {
+        let stackchild = self.as_ref();
+        
+        // stackchild.y_fill = y_fill;
+        // clutter_actor_queue_relayout(child);
     }
 
     fn connect_property_crop_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {

@@ -6,7 +6,10 @@ use std::fmt;
 
 // @extends Widget, clutter::Actor;
 #[derive(Clone, Debug)]
-pub struct Stack {}
+pub struct Stack {
+    pub current_focus: clutter::Actor,
+    pub allocation: clutter::ActorBox,
+}
 
 impl Stack {
     pub fn new() -> Stack {

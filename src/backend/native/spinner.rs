@@ -93,9 +93,9 @@ impl<O: Is<Spinner>> SpinnerExt for O {
         let spinner = self.as_ref();
         
         if spinner.animating != animating {
-            spinner.animating = animating;
-            update_timeout(spinner);
-            g_object_notify(G_OBJECT(spinner), "animating");
+            // spinner.animating = animating;
+            // update_timeout(spinner);
+            // g_object_notify(G_OBJECT(spinner), "animating");
         }
     }
 
