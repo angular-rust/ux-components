@@ -1,12 +1,11 @@
 #![allow(unused_variables)]
 
-// use std::boxed::Box as Box_;
 // use std::mem::transmute;
-
 use super::Widget;
 use crate::prelude::*;
 use glib::signal::SignalHandlerId;
 use std::fmt;
+use std::{boxed::Box as Box_, cell::RefCell};
 
 // @extends Widget, clutter::Actor;
 #[derive(Clone, Debug)]
@@ -72,7 +71,7 @@ impl<O: Is<Icon>> IconExt for O {
 
     fn set_icon_name(&self, icon_name: &str) {
         let icon = self.as_ref();
-        
+
         // // Unset the icon name if necessary
         // if !icon_name {
         //     if icon.icon_set {
@@ -85,12 +84,11 @@ impl<O: Is<Icon>> IconExt for O {
 
         // icon.icon_set = true;
 
-        // // Check if there's no change 
+        // // Check if there's no change
         // if icon.icon_name && g_str_equal (icon.icon_name, icon_name) {
         //     return;
         // }
 
-        // g_free(icon.icon_name);
         // icon.icon_name = g_strdup(icon_name);
 
         // icon_update(icon);
@@ -100,7 +98,7 @@ impl<O: Is<Icon>> IconExt for O {
 
     fn set_icon_size(&self, size: i32) {
         let icon = self.as_ref();
-        
+
         // if size < 0 {
         //     if icon.size_set {
         //         icon.size_set = false;

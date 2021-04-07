@@ -1,12 +1,11 @@
 #![allow(unused_variables)]
 
-// use std::boxed::Box as Box_;
 // use std::mem::transmute;
-
-use super::{Align, Orientation, Widget, Focusable};
+use super::{Align, Focusable, Orientation, Widget};
 use crate::prelude::*;
 use glib::signal::SignalHandlerId;
 use std::fmt;
+use std::{boxed::Box as Box_, cell::RefCell};
 
 #[derive(Clone, Debug)]
 pub struct DimensionData {
@@ -570,7 +569,7 @@ impl<O: Is<Table>> TableExt for O {
     ///
     fn set_row_spacing(&self, spacing: u32) {
         let table = self.as_ref();
-        
+
         if table.row_spacing != spacing {
             // table.row_spacing = spacing;
             // table.ignore_css_row_spacing = true;

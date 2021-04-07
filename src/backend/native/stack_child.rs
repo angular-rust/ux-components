@@ -1,12 +1,11 @@
 #![allow(unused_variables)]
 
-// use std::boxed::Box as Box_;
 // use std::mem::transmute;
-
 use super::Align;
 use crate::prelude::*;
 use glib::signal::SignalHandlerId;
 use std::fmt;
+use std::{boxed::Box as Box_, cell::RefCell};
 
 #[derive(Clone, Debug)]
 pub struct StackChild {
@@ -208,7 +207,7 @@ impl<O: Is<StackChild>> StackChildExt for O {
     ///
     fn set_fit(&self, fit: bool) {
         let stackchild = self.as_ref();
-        
+
         // stackchild.fit = fit;
         // clutter_actor_queue_relayout(child);
     }
@@ -235,7 +234,7 @@ impl<O: Is<StackChild>> StackChildExt for O {
     ///
     fn set_x_align(&self, x_align: Align) {
         let stackchild = self.as_ref();
-        
+
         // stackchild.x_align = x_align;
         // clutter_actor_queue_relayout(child);
     }
@@ -262,7 +261,7 @@ impl<O: Is<StackChild>> StackChildExt for O {
     ///
     fn set_x_fill(&self, x_fill: bool) {
         let stackchild = self.as_ref();
-        
+
         // stackchild.x_fill = x_fill;
         // clutter_actor_queue_relayout(child);
     }
@@ -289,7 +288,7 @@ impl<O: Is<StackChild>> StackChildExt for O {
     ///
     fn set_y_align(&self, y_align: Align) {
         let stackchild = self.as_ref();
-        
+
         // stackchild.y_align = y_align;
         // clutter_actor_queue_relayout(child);
     }
@@ -316,7 +315,7 @@ impl<O: Is<StackChild>> StackChildExt for O {
     ///
     fn set_y_fill(&self, y_fill: bool) {
         let stackchild = self.as_ref();
-        
+
         // stackchild.y_fill = y_fill;
         // clutter_actor_queue_relayout(child);
     }

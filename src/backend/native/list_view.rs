@@ -1,12 +1,11 @@
 #![allow(unused_variables)]
 
-// use std::boxed::Box as Box_;
 // use std::mem::transmute;
-
 use super::{BoxLayout, ItemFactory, Widget};
 use crate::prelude::*;
 use glib::signal::SignalHandlerId;
 use std::fmt;
+use std::{boxed::Box as Box_, cell::RefCell};
 
 #[derive(Clone, Debug)]
 pub struct AttributeData {
@@ -151,7 +150,7 @@ impl<O: Is<ListView>> ListViewExt for O {
     ///
     fn add_attribute(&self, attribute: &str, column: u32) {
         let listview = self.as_ref();
-        
+
         // let prop = g_new (AttributeData, 1);
         // prop.name = g_strdup (_attribute);
         // prop.col = column;
@@ -215,20 +214,20 @@ impl<O: Is<ListView>> ListViewExt for O {
     ///
     fn set_factory(&self, factory: Option<&ItemFactory>) {
         let listview = self.as_ref();
-        
+
         // if listview.factory == factory {
         //     return;
         // }
-        
+
         // if listview.factory {
         //     g_object_unref(listview.factory);
         //     listview.factory = None;
         // }
-        
+
         // if factory {
         //     listview.factory = g_object_ref(factory);
         // }
-        
+
         // g_object_notify(G_OBJECT(listview), "factory");
     }
 
@@ -241,10 +240,10 @@ impl<O: Is<ListView>> ListViewExt for O {
     ///
     fn set_item_type(&self, item_type: glib::types::Type) {
         let listview = self.as_ref();
-        
+
         // listview.item_type = item_type;
 
-        // // update the view 
+        // // update the view
         // model_changed_cb(listview.model, listview);
     }
 
@@ -256,7 +255,7 @@ impl<O: Is<ListView>> ListViewExt for O {
     ///
     fn set_model<P: Is<clutter::Model>>(&self, model: &P) {
         let listview = self.as_ref();
-        
+
         // if listview.model {
         //     g_signal_handlers_disconnect_by_func(listview.model,
         //                                         (GCallback) model_changed_cb,
@@ -292,7 +291,6 @@ impl<O: Is<ListView>> ListViewExt for O {
         //                                         G_CALLBACK(row_changed_cb),
         //                                         listview);
 
-        
         //     // model_changed_cb (called from row_changed_cb) expect the row to already
         //     // have been removed, thus we need to use _after
         //     listview.row_removed = g_signal_connect_after(listview.model,
@@ -306,7 +304,7 @@ impl<O: Is<ListView>> ListViewExt for O {
         //                                         listview);
 
         //     // Only do this inside this block, setting the model to NULL should have
-        //     // the effect of preserving the view; just disconnect the handlers        
+        //     // the effect of preserving the view; just disconnect the handlers
         //     model_changed_cb(listview.model, listview);
         // }
     }
@@ -319,7 +317,7 @@ impl<O: Is<ListView>> ListViewExt for O {
     ///
     fn thaw(&self) {
         let listview = self.as_ref();
-        
+
         // listview.is_frozen = false;
 
         // // Repopulate

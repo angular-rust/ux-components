@@ -1,14 +1,12 @@
 #![allow(unused_variables)]
 
-// use std::boxed::Box as Box_;
 // use std::mem;
 // use std::mem::transmute;
-
 use super::{Adjustment, Widget};
 use crate::prelude::*;
 use glib::signal::SignalHandlerId;
 use std::fmt;
-
+use std::{boxed::Box as Box_, cell::RefCell};
 
 // @extends Widget, clutter::Actor;
 #[derive(Clone, Debug)]
@@ -93,7 +91,7 @@ impl<O: Is<Viewport>> ViewportExt for O {
 
     fn set_origin(&self, x: f32, y: f32, z: f32) {
         let viewport = self.as_ref();
-        
+
         // g_object_freeze_notify(G_OBJECT(viewport));
 
         // if x != viewport.x {
@@ -125,7 +123,7 @@ impl<O: Is<Viewport>> ViewportExt for O {
 
     fn set_sync_adjustments(&self, sync_adjustments: bool) {
         let viewport = self.as_ref();
-        
+
         if viewport.sync_adjustments != sync_adjustments {
             // viewport.sync_adjustments = sync_adjustments;
             // g_object_notify(G_OBJECT(viewport), "sync-adjustments");

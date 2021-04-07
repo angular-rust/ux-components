@@ -1,13 +1,12 @@
 #![allow(unused_variables)]
 
-// use std::boxed::Box as Box_;
 // use std::mem::transmute;
-
-use super::{BorderImage, Menu, Padding, Style, Tooltip, Settings};
+use super::{BorderImage, Menu, Padding, Settings, Style, Tooltip};
 use crate::prelude::*;
 use glib::signal::SignalHandlerId;
 use glib_sys::GHashTable;
 use std::fmt;
+use std::{boxed::Box as Box_, cell::RefCell};
 
 #[derive(Clone, Debug)]
 pub struct Widget {
@@ -459,14 +458,14 @@ impl<O: Is<Widget>> WidgetExt for O {
             // clutter_actor_destroy (CLUTTER_ACTOR (menu));
             // widget.menu = None;
         }
-      
+
         let menu = menu.as_ref();
         // TODO: menu should be option to remove menu
         {
             // widget.menu = menu;
             // clutter_actor_add_child (CLUTTER_ACTOR (widget), CLUTTER_ACTOR (menu));
         }
-      
+
         // clutter_actor_queue_relayout (CLUTTER_ACTOR (widget));
     }
 
@@ -551,7 +550,7 @@ impl<O: Is<Widget>> WidgetExt for O {
         // x = y = G_MAXFLOAT;
         // x2 = y2 = -G_MAXFLOAT;
         // for idx in 0..verts.len() {
-        
+
         //     if verts[idx].x < x {
         //         x = verts[idx].x;
         //     }
@@ -571,7 +570,6 @@ impl<O: Is<Widget>> WidgetExt for O {
         // area.y = y;
         // area.width = x2 - x;
         // area.height = y2 - y;
-
 
         // if let Some(tooltip) = &widget.tooltip {
         //     tooltip.set_tip_area(&area);

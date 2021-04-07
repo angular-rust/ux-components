@@ -1,12 +1,11 @@
 #![allow(unused_variables)]
 
-// use std::boxed::Box as Box_;
 // use std::mem::transmute;
-
-use super::{Stack, Widget, ButtonGroup};
+use super::{ButtonGroup, Stack, Widget};
 use crate::prelude::*;
 use glib::signal::SignalHandlerId;
 use std::fmt;
+use std::{boxed::Box as Box_, cell::RefCell};
 
 // @extends Stack, Widget, clutter::Actor;
 #[derive(Clone, Debug)]
@@ -173,9 +172,9 @@ impl<O: Is<Pager>> PagerExt for O {
     ///
     fn get_current_page(&self) -> u32 {
         let pager = self.as_ref();
-        
+
         // let pos = g_list_position(pager.pages, pager.current_page);
-        
+
         unimplemented!()
     }
 
@@ -186,7 +185,7 @@ impl<O: Is<Pager>> PagerExt for O {
     ///
     fn get_current_page_actor(&self) -> Option<clutter::Actor> {
         let pager = self.as_ref();
-        
+
         // CLUTTER_ACTOR(pager.current_page.data);
         unimplemented!()
     }
@@ -221,7 +220,7 @@ impl<O: Is<Pager>> PagerExt for O {
     ///
     fn insert_page<P: Is<clutter::Actor>>(&self, child: &P, position: i32) {
         let pager = self.as_ref();
-        
+
         // pager.pages = g_list_insert(pager.pages, child, position);
 
         // pager_add_internal_actor(self, child, "fit", true, None);
@@ -258,7 +257,7 @@ impl<O: Is<Pager>> PagerExt for O {
     ///
     fn previous(&self) {
         let pager = self.as_ref();
-        
+
         // if pager.current_page.prev == None {
         //     return;
         // }
@@ -290,7 +289,7 @@ impl<O: Is<Pager>> PagerExt for O {
     ///
     fn set_current_page_by_actor<P: Is<clutter::Actor>>(&self, actor: &P, animate: bool) {
         let pager = self.as_ref();
-        
+
         // let page_l = g_list_find (pager.pages, actor);
         // g_return_if_fail(page_l != None);
         // pager_change_page(self, page_l, animate);
@@ -304,7 +303,7 @@ impl<O: Is<Pager>> PagerExt for O {
     ///
     fn set_edge_previews(&self, edge_previews: bool) {
         let pager = self.as_ref();
-        
+
         // if pager.edge_previews == edge_previews {
         //     return;
         // }

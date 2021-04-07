@@ -1,11 +1,10 @@
 #![allow(unused_variables)]
 
-// use std::boxed::Box as Box_;
 // use std::mem::transmute;
-
 use crate::prelude::*;
 use glib::signal::SignalHandlerId;
 use std::fmt;
+use std::{boxed::Box as Box_, cell::RefCell};
 
 #[derive(Clone, Debug)]
 pub struct IconTheme {
@@ -164,7 +163,7 @@ impl<O: Is<IconTheme>> IconThemeExt for O {
     ///
     fn set_search_paths(&self, paths: &[&str]) {
         let icontheme = self.as_ref();
-        
+
         // icontheme.search_paths.clear()
 
         // icontheme.search_paths = g_list_copy ((GList *)paths);
@@ -187,7 +186,7 @@ impl<O: Is<IconTheme>> IconThemeExt for O {
     ///
     fn set_theme_name(&self, theme_name: &str) {
         let icontheme = self.as_ref();
-        
+
         // if !theme_name {
         //     if icontheme.override_theme {
         //         gchar *system_theme = None;
@@ -197,7 +196,6 @@ impl<O: Is<IconTheme>> IconThemeExt for O {
         //         icontheme.override_theme = false;
         //         icon_theme_set_theme_name(theme, system_theme);
         //         icontheme.override_theme = false;
-        //         g_free(system_theme);
         //     }
 
         //     return;
@@ -213,10 +211,8 @@ impl<O: Is<IconTheme>> IconThemeExt for O {
         //     return;
         // }
 
-        // // Clear old data 
+        // // Clear old data
         // g_hash_table_remove_all(icontheme.icon_hash);
-
-        // g_free(icontheme.theme);
 
         // if icontheme.theme_file {
         //     g_hash_table_remove(icontheme.theme_path_hash, icontheme.theme_file);

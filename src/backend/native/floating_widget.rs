@@ -3,6 +3,7 @@
 use super::Widget;
 use crate::prelude::*;
 use std::fmt;
+use std::{boxed::Box as Box_, cell::RefCell};
 
 // @extends Widget, clutter::Actor;
 #[derive(Clone, Debug)]
@@ -11,7 +12,7 @@ pub struct FloatingWidget {
 
     pub paint_matrix: Option<cogl::Matrix>,
     pub pick_matrix: Option<cogl::Matrix>,
-  
+
     pub pick_handler: u64,
     pub paint_handler: u64,
 }

@@ -1,12 +1,11 @@
 #![allow(unused_variables)]
 
-// use std::boxed::Box as Box_;
 // use std::mem::transmute;
-
 use super::Widget;
 use crate::prelude::*;
 use glib::signal::SignalHandlerId;
 use std::fmt;
+use std::{boxed::Box as Box_, cell::RefCell};
 
 // @extends Widget, clutter::Actor;
 #[derive(Clone, Debug)]
@@ -91,7 +90,7 @@ impl<O: Is<Spinner>> SpinnerExt for O {
     ///
     fn set_animating(&self, animating: bool) {
         let spinner = self.as_ref();
-        
+
         if spinner.animating != animating {
             // spinner.animating = animating;
             // update_timeout(spinner);

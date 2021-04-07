@@ -1,12 +1,11 @@
 #![allow(unused_variables)]
 
-// use std::boxed::Box as Box_;
 // use std::mem::transmute;
-
-use super::{FloatingWidget, Widget, BorderImage};
+use super::{BorderImage, FloatingWidget, Widget};
 use crate::prelude::*;
 use glib::signal::SignalHandlerId;
 use std::fmt;
+use std::{boxed::Box as Box_, cell::RefCell};
 
 // @extends FloatingWidget, Widget, clutter::Actor;
 #[derive(Clone, Debug)]
@@ -150,13 +149,13 @@ impl<O: Is<Tooltip>> TooltipExt for O {
     ///
     fn hide(&self) {
         let tooltip = self.as_ref();
-        
+
         // tooltip_set_opacity(tooltip, 0x0);
 
         // g_signal_connect(tooltip, "transition-stopped::opacity",
         //                     G_CALLBACK(tooltip_hide_complete), NULL);
 
-        // // Leave browse mode after a short delay 
+        // // Leave browse mode after a short delay
         // if tooltip_browse_mode_timeout {
         //     g_source_remove (tooltip_browse_mode_timeout);
         // }
@@ -174,13 +173,13 @@ impl<O: Is<Tooltip>> TooltipExt for O {
     ///
     fn set_text(&self, text: &str) {
         let tooltip = self.as_ref();
-        
+
         // clutter_text_set_text(CLUTTER_TEXT(tooltip.label), text);
 
         // if CLUTTER_ACTOR_IS_VISIBLE(tooltip) {
         //   mx_tooltip_update_position(tooltip);
         // }
-      
+
         // g_object_notify(G_OBJECT(tooltip), "text");
     }
 
@@ -192,7 +191,7 @@ impl<O: Is<Tooltip>> TooltipExt for O {
     ///
     fn set_tip_area(&self, area: &clutter::Geometry) {
         let tooltip = self.as_ref();
-        
+
         // if tooltip.tip_area {
         //     g_boxed_free(CLUTTER_TYPE_GEOMETRY, tooltip.tip_area);
         // }
@@ -254,7 +253,7 @@ impl<O: Is<Tooltip>> TooltipExt for O {
     ///
     fn show(&self) {
         let tooltip = self.as_ref();
-        
+
         // mx_tooltip_update_position(tooltip);
 
         // // finally show the tooltip...

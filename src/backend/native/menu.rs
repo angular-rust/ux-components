@@ -1,12 +1,11 @@
 #![allow(unused_variables)]
 
-// use std::boxed::Box as Box_;
 // use std::mem::transmute;
-
 use super::{Action, FloatingWidget, Widget};
 use crate::prelude::*;
 use glib::signal::SignalHandlerId;
 use std::fmt;
+use std::{boxed::Box as Box_, cell::RefCell};
 
 #[derive(Clone, Debug)]
 pub struct MenuChild {
@@ -102,7 +101,7 @@ impl<O: Is<Menu>> MenuExt for O {
     fn add_action<P: Is<Action>>(&self, action: &P) {
         let menu = self.as_ref();
         let action = action.as_ref();
-        
+
         // let child: MenuChild;
         // child.action = g_object_ref_sink(action);
         // // TODO: Connect to notify signals in case action properties change
@@ -111,7 +110,7 @@ impl<O: Is<Menu>> MenuExt for O {
         //                             NULL);
         // button_set_action(BUTTON (child.widget), child.action);
 
-        // // align to the left 
+        // // align to the left
         // let button_child: clutter::Actor = clutter_actor_get_child_at_index((ClutterActor*)child.widget, 0);
         // clutter_actor_set_x_align(button_child, CLUTTER_ACTOR_ALIGN_START);
 
@@ -151,7 +150,7 @@ impl<O: Is<Menu>> MenuExt for O {
     ///
     fn remove_all(&self) {
         let menu = self.as_ref();
-        
+
         // if !menu.children.len() {
         //     return;
         // }
@@ -172,7 +171,7 @@ impl<O: Is<Menu>> MenuExt for O {
     ///
     fn show_with_position(&self, x: f32, y: f32) {
         let menu = self.as_ref();
-        
+
         // clutter_actor_set_position(CLUTTER_ACTOR(menu), x, y);
         // clutter_actor_show(CLUTTER_ACTOR(menu));
     }

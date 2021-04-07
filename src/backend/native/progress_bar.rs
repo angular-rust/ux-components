@@ -1,12 +1,11 @@
 #![allow(unused_variables)]
 
-// use std::boxed::Box as Box_;
 // use std::mem::transmute;
-
 use super::Widget;
 use crate::prelude::*;
 use glib::signal::SignalHandlerId;
 use std::fmt;
+use std::{boxed::Box as Box_, cell::RefCell};
 
 #[derive(Clone, Debug)]
 pub struct ProgressBarFill {
@@ -88,7 +87,7 @@ impl<O: Is<ProgressBar>> ProgressBarExt for O {
     ///
     fn set_progress(&self, progress: f64) {
         let progressbar = self.as_ref();
-        
+
         if progressbar.progress != progress {
             // progressbar.progress = progress;
             // allocate_fill(bar, NULL, 0);

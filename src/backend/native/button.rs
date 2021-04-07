@@ -1,12 +1,11 @@
 #![allow(unused_variables)]
 
-// use std::boxed::Box as Box_;
 // use std::mem::transmute;
-
 use super::{Action, Position, Widget};
 use crate::prelude::*;
 use glib::signal::SignalHandlerId;
 use std::fmt;
+use std::{boxed::Box as Box_, cell::RefCell};
 
 // @extends Widget, clutter::Actor;
 #[derive(Clone, Debug)]
@@ -438,13 +437,10 @@ impl<O: Is<Button>> ButtonExt for O {
     fn set_icon_name(&self, icon_name: Option<&str>) {
         let button = self.as_ref();
 
-        // g_free (button.icon_name);
         // button.icon_name = g_strdup (icon_name);
-
         // icon_set_icon_name (ICON (button.icon), icon_name ?
         //                        icon_name : button.style_icon_name);
         // button.update_contents ();
-
         // g_object_notify (G_OBJECT (button), "icon-name");
         // TODO: ...
     }
@@ -525,8 +521,6 @@ impl<O: Is<Button>> ButtonExt for O {
     ///
     fn set_label(&self, text: &str) {
         let button = self.as_ref();
-
-        // g_free(button.text);
 
         // if text {
         //     button.text = g_strdup(text);

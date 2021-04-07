@@ -1,13 +1,12 @@
 #![allow(unused_variables)]
 
-// use std::boxed::Box as Box_;
 // use std::mem::transmute;
 // use std::ptr;
-
 use super::{ImageScaleMode, Widget};
 use crate::prelude::*;
 use glib::signal::SignalHandlerId;
 use std::fmt;
+use std::{boxed::Box as Box_, cell::RefCell};
 
 #[derive(Clone, Debug)]
 pub struct ImageAsyncData {
@@ -403,7 +402,7 @@ impl<O: Is<Image>> ImageExt for O {
     ///
     fn animate_scale_mode(&self, mode: u64, duration: u32, scale_mode: ImageScaleMode) {
         let image = self.as_ref();
-        
+
         // if image.mode != mode {
         //     image.previous_mode = image.mode;
         //     image.mode = scale_mode;
@@ -435,7 +434,6 @@ impl<O: Is<Image>> ImageExt for O {
 
         // image.texture = cogl_object_ref(image.blank_texture);
 
-
         // if image.old_texture {
         //     cogl_object_unref(image.old_texture);
         // }
@@ -443,7 +441,6 @@ impl<O: Is<Image>> ImageExt for O {
         // image.old_texture = cogl_object_ref(image.blank_texture);
         // image.old_rotation = image.rotation;
         // image.old_mode = image.mode;
-
 
         // if image.material {
         //     cogl_object_unref(image.material);
@@ -638,85 +635,84 @@ impl<O: Is<Image>> ImageExt for O {
     ///
     // fn set_from_cogl_texture(&self, texture: cogl::Handle) -> bool {
     //     let image = self.as_ref();
-        
+
     //     gint width, height;
-      
+
     //     g_return_val_if_fail(IS_IMAGE (image), FALSE);
     //     g_return_val_if_fail(cogl_is_texture (texture), FALSE);
-      
+
     //     image_cancel_in_progress(image);
-      
-      
+
     //     width = cogl_texture_get_width(texture);
     //     height = cogl_texture_get_height(texture);
-      
+
     //     // If we have offscreen buffers, use those to add the 1-pixel border
     //     // around the image on the GPU - if not, fallback to copying the image
     //     // data into memory and use set_from_data.
     //     if clutter_feature_available(CLUTTER_FEATURE_OFFSCREEN) {
     //         CoglColor transparent;
     //         CoglMaterial *clear_material;
-      
+
     //         CoglHandle new_texture =
     //           cogl_texture_new_with_size(width + 2, height + 2,
     //                                       COGL_TEXTURE_NO_ATLAS,
     //                                       COGL_PIXEL_FORMAT_RGBA_8888);
     //         CoglHandle fbo = cogl_offscreen_new_to_texture(new_texture);
     //         CoglMaterial *tex_material = cogl_material_new();
-      
+
     //         /* Set the blending equation to directly copy the bits of the old
     //          * texture without blending the destination pixels.
     //          */
     //         cogl_material_set_blend(tex_material, "RGBA=ADD(SRC_COLOR, 0)", NULL);
     //         clear_material = cogl_material_copy(tex_material);
-      
+
     //         cogl_color_set_from_4ub(&transparent, 0, 0, 0, 0);
     //         cogl_material_set_layer(tex_material, 0, texture);
-      
+
     //         /* Push the off-screen buffer and setup an orthographic projection */
     //         cogl_push_framebuffer(fbo);
     //         cogl_ortho(0, width + 2, height +2, 0, -1, 1);
-      
+
     //         /* Draw the texture into the middle */
     //         cogl_push_source(tex_material);
     //         cogl_rectangle(1, 1, width +1, height + 1);
-      
+
     //         /* Clear the 1-pixel border around the texture */
     //         cogl_set_source(clear_material);
     //         cogl_rectangle(0, 0, width + 2, 1);
     //         cogl_rectangle(0, height + 1, width + 2, height + 2);
     //         cogl_rectangle(0, 1, 1, height + 1);
     //         cogl_rectangle(width + 1, 1, width + 2, height + 1);
-      
+
     //         cogl_pop_source();
     //         cogl_pop_framebuffer();
-      
+
     //         /* Free unneeded data */
     //         cogl_object_unref(clear_material);
     //         cogl_object_unref(tex_material);
     //         cogl_handle_unref(fbo);
-      
+
     //         /* Replace the old texture */
     //         if (priv->old_texture)
     //           cogl_object_unref(priv->old_texture);
-      
+
     //         priv->old_texture = priv->texture;
     //         priv->old_rotation = priv->rotation;
     //         priv->old_mode = priv->mode;
-      
+
     //         priv->texture = new_texture;
-      
+
     //         image_prepare_texture(image);
-      
+
     //         return true;
     //       } else {
     //         guint8 *data;
     //         gint rowstride;
     //         CoglPixelFormat format;
-      
+
     //         rowstride = cogl_texture_get_rowstride(texture);
     //         format = cogl_texture_get_format(texture);
-      
+
     //         data = g_malloc(height * rowstride);
     //         cogl_texture_get_data(texture, format, rowstride, data);
     //         return image_set_from_data(image, data, format,
@@ -766,7 +762,7 @@ impl<O: Is<Image>> ImageExt for O {
     ///
     fn set_from_file(&self, filename: &str) -> Result<(), glib::Error> {
         let image = self.as_ref();
-        image.set_from_file_at_size( filename, -1, -1)
+        image.set_from_file_at_size(filename, -1, -1)
     }
 
     /// set_from_file_at_size:
@@ -789,7 +785,7 @@ impl<O: Is<Image>> ImageExt for O {
         height: i32,
     ) -> Result<(), glib::Error> {
         let image = self.as_ref();
-                
+
         // GdkPixbuf *pixbuf;
         // ImagePrivate *priv;
         // TextureCache *cache;
@@ -848,7 +844,7 @@ impl<O: Is<Image>> ImageExt for O {
         // }
 
         // return retval;
-        
+
         unimplemented!()
     }
 
@@ -860,7 +856,7 @@ impl<O: Is<Image>> ImageExt for O {
     ///
     fn set_image_rotation(&self, rotation: f32) {
         let image = self.as_ref();
-        
+
         if image.rotation != rotation {
             // image.rotation = rotation;
 
@@ -884,7 +880,7 @@ impl<O: Is<Image>> ImageExt for O {
     ///
     fn set_load_async(&self, load_async: bool) {
         let image = self.as_ref();
-        
+
         // if image.load_async != load_async {
         //     image.load_async = load_async;
         //     g_object_notify(G_OBJECT(image), "load-async");
@@ -895,7 +891,7 @@ impl<O: Is<Image>> ImageExt for O {
         //         image.async_load_data = None;
         //     }
         // }
-        
+
         unimplemented!()
     }
 
@@ -912,7 +908,7 @@ impl<O: Is<Image>> ImageExt for O {
     ///
     fn set_scale_height_threshold(&self, pixels: u32) {
         let image = self.as_ref();
-        
+
         if image.height_threshold != pixels {
             // image.height_threshold = pixels;
             // g_object_notify(G_OBJECT (image), "scale-height-threshold");
@@ -927,7 +923,7 @@ impl<O: Is<Image>> ImageExt for O {
     ///
     fn set_scale_mode(&self, mode: ImageScaleMode) {
         let image = self.as_ref();
-        
+
         // if image.mode != mode {
         //     image.previous_mode = mode;
         //     image.mode = mode;
@@ -951,7 +947,7 @@ impl<O: Is<Image>> ImageExt for O {
     ///
     fn set_scale_width_threshold(&self, pixels: u32) {
         let image = self.as_ref();
-        
+
         if image.width_threshold != pixels {
             // image.width_threshold = pixels;
             // g_object_notify(G_OBJECT(image), "scale-width-threshold");
@@ -966,7 +962,7 @@ impl<O: Is<Image>> ImageExt for O {
     ///
     fn set_transition_duration(&self, duration: u32) {
         let image = self.as_ref();
-        
+
         if image.transition_duration != duration {
             // image.transition_duration = duration;
 

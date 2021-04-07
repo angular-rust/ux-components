@@ -1,12 +1,11 @@
 #![allow(unused_variables)]
 
-// use std::boxed::Box as Box_;
 // use std::mem::transmute;
-
 use super::{Tooltip, Widget};
 use crate::prelude::*;
 use glib::signal::SignalHandlerId;
 use std::fmt;
+use std::{boxed::Box as Box_, cell::RefCell};
 
 // @extends Widget, clutter::Actor;
 #[derive(Clone, Debug)]
@@ -313,10 +312,6 @@ impl<O: Is<Entry>> EntryExt for O {
         //     return;
         // }
 
-        // if (entry.icon_highlight_suffix) {
-        //     g_free (entry.icon_highlight_suffix);
-        // }
-
         // entry.icon_highlight_suffix = g_strdup (suffix);
 
         // _entry_create_highlight_icon (entry, 1);
@@ -356,7 +351,6 @@ impl<O: Is<Entry>> EntryExt for O {
         //     return;
         // }
 
-        // g_free(entry.placeholder);
         // entry.placeholder = g_strdup(text);
 
         // if entry.placeholder {
@@ -378,10 +372,6 @@ impl<O: Is<Entry>> EntryExt for O {
     ///
     fn set_primary_icon_from_file(&self, filename: &str) {
         let entry = self.as_ref();
-
-        // if entry.primary_icon_filename {
-        //     g_free (entry.primary_icon_filename);
-        // }
 
         // entry.primary_icon_filename = g_strdup (filename);
 
@@ -419,10 +409,6 @@ impl<O: Is<Entry>> EntryExt for O {
     ///
     fn set_secondary_icon_from_file(&self, filename: &str) {
         let entry = self.as_ref();
-
-        // if entry.secondary_icon_filename {
-        //     g_free(entry.secondary_icon_filename);
-        // }
 
         // entry.secondary_icon_filename = g_strdup(filename);
 

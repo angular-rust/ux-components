@@ -1,14 +1,13 @@
 #![allow(unused_variables)]
 
 // use std::mem::transmute;
-
 use crate::prelude::*;
 use glib::signal::SignalHandlerId;
-use std::boxed::Box as Box_;
+use std::{boxed::Box as Box_, cell::RefCell};
 use std::fmt;
 
 #[derive(Clone, Debug)]
-pub struct Action {
+pub struct ActionProps {
     pub name: Option<String>,
     // pub parameter_type: GVariantType,
     pub enabled: bool,
@@ -16,6 +15,10 @@ pub struct Action {
     // pub state: GVariant,
     pub display_name: Option<String>,
     pub icon: Option<String>,
+}
+#[derive(Clone, Debug)]
+pub struct Action {
+    pub props: RefCell<ActionProps>,
 }
 
 impl Action {
@@ -195,7 +198,7 @@ impl<O: Is<Action>> ActionExt for O {
     ///
     fn get_active(&self) -> bool {
         let action = self.as_ref();
-        action.enabled
+        action.props.borrow().enabled
     }
 
     /// get_display_name:
@@ -207,7 +210,7 @@ impl<O: Is<Action>> ActionExt for O {
     ///
     fn get_display_name(&self) -> Option<String> {
         let action = self.as_ref();
-        action.display_name.clone()
+        action.props.borrow().display_name.clone()
     }
 
     /// get_icon:
@@ -219,7 +222,7 @@ impl<O: Is<Action>> ActionExt for O {
     ///
     fn get_icon(&self) -> Option<String> {
         let action = self.as_ref();
-        action.icon.clone()
+        action.props.borrow().icon.clone()
     }
 
     /// get_name:
@@ -231,7 +234,7 @@ impl<O: Is<Action>> ActionExt for O {
     ///
     fn get_name(&self) -> Option<String> {
         let action = self.as_ref();
-        action.name.clone()
+        action.props.borrow().name.clone()
     }
 
     /// set_active:
@@ -242,10 +245,11 @@ impl<O: Is<Action>> ActionExt for O {
     ///
     fn set_active(&self, active: bool) {
         let action = self.as_ref();
+        let mut props = action.props.borrow_mut();
 
-        if action.enabled != active {
-            // action.enabled = active;
-            // g_object_notify (G_OBJECT (action), "active");
+        if props.enabled != active {
+            props.enabled = active;
+            // g_object_notify(G_OBJECT(action), "active");
             // TODO: ...
         }
     }
@@ -258,23 +262,18 @@ impl<O: Is<Action>> ActionExt for O {
     ///
     fn set_display_name(&self, name: &str) {
         let action = self.as_ref();
+        let mut props = action.props.borrow_mut();
 
-        match &action.display_name {
+        match &props.display_name {
             Some(display_name) => {
                 if display_name.as_str() != name {
-                    // g_free (action.display_name);
-                    // action.display_name = g_strdup (name);
-
+                    props.display_name = Some(name.into());
                     // g_object_notify (G_OBJECT (action), "display-name");
-                    // TODO: ...
                 }
             }
             None => {
-                // g_free (action.display_name);
-                // action.display_name = g_strdup (name);
-
+                props.display_name = Some(name.into());
                 // g_object_notify (G_OBJECT (action), "display-name");
-                // TODO: ...
             }
         }
     }
@@ -287,23 +286,18 @@ impl<O: Is<Action>> ActionExt for O {
     ///
     fn set_icon(&self, name: &str) {
         let action = self.as_ref();
+        let mut props = action.props.borrow_mut();
 
-        match &action.icon {
+        match &props.icon {
             Some(icon) => {
                 if icon.as_str() != name {
-                    // g_free (action.icon);
-                    // action.icon = g_strdup (name);
-
+                    props.icon = Some(name.into());
                     // g_object_notify (G_OBJECT (action), "icon");
-                    // TODO: ...
                 }
             }
             None => {
-                // g_free (action.icon);
-                // action.icon = g_strdup (name);
-
+                props.icon = Some(name.into());
                 // g_object_notify (G_OBJECT (action), "icon");
-                // TODO: ...
             }
         }
     }
@@ -316,22 +310,18 @@ impl<O: Is<Action>> ActionExt for O {
     ///
     fn set_name(&self, name: &str) {
         let action = self.as_ref();
-        match &action.name {
+        let mut props = action.props.borrow_mut();
+
+        match &props.name {
             Some(name) => {
                 if name.as_str() != name {
-                    // g_free (action.name);
-                    // action.name = g_strdup (name);
-
+                    props.name = Some(name.into());
                     // g_object_notify (G_OBJECT (action), "name");
-                    // TODO: ...
                 }
             }
             None=> {
-                // g_free (action.name);
-                // action.name = g_strdup (name);
-
+                props.name = Some(name.into());
                 // g_object_notify (G_OBJECT (action), "name");
-                // TODO: ...
             }
         }
     }

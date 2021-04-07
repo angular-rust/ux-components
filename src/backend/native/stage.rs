@@ -1,14 +1,12 @@
 #![allow(unused_variables)]
 
-use std::boxed::Box as Box_;
 // use std::mem;
 // use std::mem::transmute;
-
 use super::{Toolbar, WindowRotation};
 use crate::prelude::*;
-
 use glib::signal::SignalHandlerId;
 use std::fmt;
+use std::{boxed::Box as Box_, cell::RefCell};
 
 #[derive(Clone, Debug)]
 pub struct Stage {
@@ -640,7 +638,7 @@ impl<O: Is<Stage>> WindowExt for O {
     ///
     fn set_has_toolbar(&self, toolbar: bool) {
         let stage = self.as_ref();
-        
+
         if stage.has_toolbar != toolbar {
             // stage.has_toolbar = toolbar;
 
@@ -672,18 +670,16 @@ impl<O: Is<Stage>> WindowExt for O {
     ///
     fn set_icon_name(&self, icon_name: Option<&str>) {
         let stage = self.as_ref();
-        
+
         // if stage.icon_name && icon_name && g_str_equal(stage.icon_name, icon_name)) {
         //     return;
         // }
-        
+
         // if !stage.icon_name && !icon_name {
         //     return;
         // }
 
-        // g_free(stage.icon_name);
         // stage.icon_name = g_strdup(icon_name);
-
         // g_object_notify(G_OBJECT(window), "icon-name");
     }
 
@@ -731,12 +727,12 @@ impl<O: Is<Stage>> WindowExt for O {
     fn set_toolbar<P: Is<Toolbar>>(&self, toolbar: &P) {
         let stage = self.as_ref();
         let toolbar = toolbar.as_ref();
-        
+
         // if stage.toolbar == (ClutterActor *)toolbar {
         //     return;
         // }
 
-        // // Remove old toolbar 
+        // // Remove old toolbar
         // if stage.toolbar {
         //     g_signal_handlers_disconnect_by_func(stage.toolbar,
         //                                             mx_window_allocation_changed_cb,
@@ -781,7 +777,7 @@ impl<O: Is<Stage>> WindowExt for O {
     ///
     fn set_window_rotation(&self, rotation: WindowRotation) {
         let stage = self.as_ref();
-        
+
         if stage.rotation == rotation {
             return;
         }

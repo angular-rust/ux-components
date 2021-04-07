@@ -1,24 +1,23 @@
 #![allow(unused_variables)]
 
-// use std::boxed::Box as Box_;
 // use std::mem::transmute;
 // use std::ptr;
-
 use crate::prelude::*;
 use glib::signal::SignalHandlerId;
 use gobject_sys::GValue;
 use std::fmt;
+use std::{boxed::Box as Box_, cell::RefCell};
 
 #[derive(Clone, Debug)]
 pub struct StyleSheetValue {
-  pub string: String,
-  pub source: String,
+    pub string: String,
+    pub source: String,
 }
 
 #[derive(Clone, Debug)]
 pub struct StyleSheet {
-  pub selectors: Vec<Selector>,
-  pub filenames: Vec<String>,
+    pub selectors: Vec<Selector>,
+    pub filenames: Vec<String>,
 }
 
 #[derive(Clone, Debug)]
@@ -37,12 +36,10 @@ pub struct Selector {
 }
 
 #[derive(Clone, Debug)]
-pub struct SelectorMatch
-{
+pub struct SelectorMatch {
     pub selector: Selector,
     pub score: i32,
 }
-
 
 /// A style cache entry is the unique string representing all the properties
 /// that can be matched against in CSS, and the matched properties themselves.
@@ -100,10 +97,9 @@ impl Style {
     pub fn real_load_from_file(&self, filename: &str, data: &str) -> bool {
         // GError *internal_error;
         // gboolean result;
-      
+
         // g_return_val_if_fail(filename != NULL, FALSE);
-      
-      
+
         // if !data && !g_file_test(filename, G_FILE_TEST_IS_REGULAR) {
         //     internal_error = g_error_new (STYLE_ERROR,
         //                                   STYLE_ERROR_INVALID_FILE,
@@ -111,11 +107,11 @@ impl Style {
         //     g_propagate_error (error, internal_error);
         //     return false;
         //   }
-      
+
         // if !self.stylesheet {
         //     self.stylesheet = style_sheet_new();
         // }
-      
+
         // if data {
         //   result = style_sheet_add_from_data(self.stylesheet, filename, data,
         //                                          NULL);
@@ -123,7 +119,7 @@ impl Style {
         //   result = style_sheet_add_from_file(self.stylesheet, filename,
         //                                          NULL);
         // }
-      
+
         // if !result  {
         //     internal_error = g_error_new(STYLE_ERROR,
         //                                   STYLE_ERROR_PARSE_ERROR,
@@ -131,25 +127,25 @@ impl Style {
         //     g_propagate_error(error, internal_error);
         //     return FALSE;
         // }
-      
+
         // // Increment the age so we know if a style cache entry is valid
         // self.age++;
-      
+
         // g_signal_emit(style, style_signals[CHANGED], 0, NULL);
-      
+
         // if !data {
         //     GFile *file;
         //     GFileMonitor *monitor;
-      
+
         //     file = g_file_new_for_path(filename);
         //     monitor = g_file_monitor(file, G_FILE_MONITOR_NONE, NULL, NULL);
-      
+
         //     if monitor {
         //         g_signal_connect(monitor, "changed", G_CALLBACK(css_file_changed),
         //                           style);
         //     }
         // }
-      
+
         return true;
     }
 }
@@ -276,7 +272,6 @@ impl<O: Is<Style>> StyleExt for O {
         // id = g_strconcat("resource://", path, NULL);
 
         // style_real_load_from_file(style, id, g_bytes_get_data (bytes, NULL),  error, 0);
-        // g_free(id);
         // g_bytes_unref(bytes);
 
         // return true;

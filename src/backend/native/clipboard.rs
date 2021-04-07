@@ -1,9 +1,8 @@
 #![allow(unused_variables)]
 
-// use std::boxed::Box as Box_;
-
 use crate::prelude::*;
 use std::fmt;
+use std::{boxed::Box as Box_, cell::RefCell};
 
 #[derive(Clone, Debug)]
 pub struct Clipboard {}
@@ -77,17 +76,17 @@ impl<O: Is<Clipboard>> ClipboardExt for O {
         //         Box_::into_raw(super_callback0) as *mut _,
         //     );
         // }
-        
+
         // ClipboardClosure *closure;
 
         // g_return_if_fail (IS_CLIPBOARD (clipboard));
         // g_return_if_fail (callback != NULL);
-      
+
         // closure = g_slice_new (ClipboardClosure);
         // closure->clipboard = clipboard;
         // closure->callback = callback;
         // closure->user_data = user_data;
-      
+
         // g_object_add_weak_pointer (G_OBJECT (clipboard),
         //                            (gpointer *)&closure->clipboard);
         // g_idle_add ((GSourceFunc)clipboard_get_text_cb, closure);
@@ -104,7 +103,6 @@ impl<O: Is<Clipboard>> ClipboardExt for O {
         // g_return_if_fail (text != NULL);
 
         // priv = clipboard->priv;
-        // g_free (priv->text);
         // priv->text = g_strdup (text);
     }
 }

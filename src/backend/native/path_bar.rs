@@ -1,12 +1,11 @@
 #![allow(unused_variables)]
 
-// use std::boxed::Box as Box_;
 // use std::mem::transmute;
-
 use super::{Entry, Widget};
 use crate::prelude::*;
 use glib::signal::SignalHandlerId;
 use std::fmt;
+use std::{boxed::Box as Box_, cell::RefCell};
 
 // @extends Widget, clutter::Actor;
 #[derive(Clone, Debug)]
@@ -186,7 +185,7 @@ impl<O: Is<PathBar>> PathBarExt for O {
 
     fn get_label(&self, level: usize) -> Option<String> {
         let pathbar = self.as_ref();
-        
+
         // let crumb = (ClutterActor *)g_list_nth_data(pathbar.crumbs, level - 1);
 
         // if crumb {
@@ -237,7 +236,7 @@ impl<O: Is<PathBar>> PathBarExt for O {
 
     fn push(&self, name: &str) -> usize {
         let pathbar = self.as_ref();
-                
+
         // if pathbar.clear_on_change {
         //     path_bar_set_text(bar, "");
         // }
@@ -280,7 +279,7 @@ impl<O: Is<PathBar>> PathBarExt for O {
     ///
     fn set_clear_on_change(&self, clear_on_change: bool) {
         let pathbar = self.as_ref();
-        
+
         // if pathbar.clear_on_change != clear_on_change {
         //     pathbar.clear_on_change = clear_on_change;
         //     g_object_notify(G_OBJECT(bar), "clear-on-change");
@@ -295,7 +294,7 @@ impl<O: Is<PathBar>> PathBarExt for O {
     ///
     fn set_editable(&self, editable: bool) {
         let pathbar = self.as_ref();
-        
+
         // if pathbar.editable == editable {
         //     return;
         // }
@@ -346,7 +345,7 @@ impl<O: Is<PathBar>> PathBarExt for O {
     ///
     fn set_label(&self, level: usize, label: &str) {
         let pathbar = self.as_ref();
-        
+
         // let crumb = (ClutterActor *)g_list_nth_data(pathbar.crumbs, level - 1);
 
         // if crumb {
@@ -362,7 +361,7 @@ impl<O: Is<PathBar>> PathBarExt for O {
     ///
     fn set_text(&self, text: &str) {
         let pathbar = self.as_ref();
-        
+
         // if !pathbar.editable {
         //     return;
         // }

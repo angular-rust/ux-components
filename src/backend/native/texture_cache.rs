@@ -2,6 +2,7 @@
 
 use crate::prelude::*;
 use std::fmt;
+use std::{boxed::Box as Box_, cell::RefCell};
 
 #[derive(Clone, Debug)]
 pub struct FinalizedClosure {
@@ -24,15 +25,15 @@ pub struct TextureCacheItem {
 #[derive(Clone, Debug)]
 pub struct TextureCacheMetaEntry {
     // pub ident: gpointer,
-    // pub texture: cogl::Handle,
-    // pub destroy_func: GDestroyNotify,
+// pub texture: cogl::Handle,
+// pub destroy_func: GDestroyNotify,
 }
 
 #[derive(Clone, Debug)]
 pub struct TextureCache {
     // pub parent: GObject,
-    // pub cache: GHashTable,
-    // pub is_uri: GRegex,
+// pub cache: GHashTable,
+// pub is_uri: GRegex,
 }
 
 impl TextureCache {
@@ -127,7 +128,6 @@ impl<O: Is<TextureCache>> TextureCacheExt for O {
         // TextureCacheItem head;
         // CoglHandle full_texture;
 
-
         // let file = fopen(filename, "rm");
         // if !file {
         //     return;
@@ -161,14 +161,14 @@ impl<O: Is<TextureCache>> TextureCacheExt for O {
         //     ret = fread(element, sizeof(TextureCacheItem), 1, file);
 
         //     if ret < 1 {
-        //         // end of file 
+        //         // end of file
         //         texture_cache_item_free(element);
         //         break;
         //     }
 
         //     uri = texture_cache_filename_to_uri(element.filename);
         //     if (!uri) {
-        //         // Couldn't resolve path 
+        //         // Couldn't resolve path
         //         texture_cache_item_free(element);
         //         continue;
         //     }
@@ -176,7 +176,6 @@ impl<O: Is<TextureCache>> TextureCacheExt for O {
         //     if g_hash_table_lookup (cache.cache, uri) {
         //         // URI is already in the cache....
         //         texture_cache_item_free(element);
-        //         g_free(uri);
         //     } else {
         //         element.ptr = cogl_texture_new_from_sub_texture (full_texture,
         //                                                             element.posX,

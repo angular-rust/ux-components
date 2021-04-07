@@ -1,12 +1,11 @@
 #![allow(unused_variables)]
 
-// use std::boxed::Box as Box_;
 // use std::mem;
 // use std::mem::transmute;
-
 use crate::prelude::*;
 use glib::signal::SignalHandlerId;
 use std::fmt;
+use std::{boxed::Box as Box_, cell::RefCell};
 
 #[derive(Clone, Debug)]
 pub struct Adjustment {
@@ -129,7 +128,7 @@ impl Adjustment {
 
         false
     }
-    
+
     /// set_step_increment:
     /// @adjustment: A #Adjustment
     /// @increment: A #gdouble
@@ -781,7 +780,7 @@ impl<O: Is<Adjustment>> AdjustmentExt for O {
         page_size: f64,
     ) {
         // let adjustment = self.as_ref();
-        
+
         // let emit_changed = false;
 
         // g_return_if_fail (page_size >= 0 && page_size <= G_MAXDOUBLE);

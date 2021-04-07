@@ -1,12 +1,11 @@
 #![allow(unused_variables)]
 
-// use std::boxed::Box as Box_;
 // use std::mem::transmute;
-
 use super::{Adjustment, Align, Focusable, Orientation, Widget};
 use crate::prelude::*;
 use glib::signal::SignalHandlerId;
 use std::fmt;
+use std::{boxed::Box as Box_, cell::RefCell};
 
 // @extends Widget, clutter::Actor;
 #[derive(Clone, Debug)]
@@ -180,7 +179,7 @@ impl<O: Is<Grid>> GridExt for O {
 
     fn set_child_x_align(&self, value: Align) {
         let grid = self.as_ref();
-        
+
         if value != grid.child_x_align {
             // grid.child_x_align = value;
             // clutter_actor_queue_relayout(CLUTTER_ACTOR(self));
@@ -189,7 +188,7 @@ impl<O: Is<Grid>> GridExt for O {
 
     fn set_child_y_align(&self, value: Align) {
         let grid = self.as_ref();
-        
+
         if value != grid.child_y_align {
             // grid.child_y_align = value;
             // clutter_actor_queue_relayout(CLUTTER_ACTOR(self));
@@ -198,7 +197,7 @@ impl<O: Is<Grid>> GridExt for O {
 
     fn set_column_spacing(&self, value: f32) {
         let grid = self.as_ref();
-        
+
         if grid.col_spacing != value {
             // grid.ignore_css_col_spacing = true;
             // grid.col_spacing = value;
@@ -208,7 +207,7 @@ impl<O: Is<Grid>> GridExt for O {
 
     fn set_homogenous_columns(&self, value: bool) {
         let grid = self.as_ref();
-        
+
         if value != grid.homogenous_columns {
             // grid.homogenous_columns = value;
             // clutter_actor_queue_relayout(CLUTTER_ACTOR(self));
@@ -217,7 +216,7 @@ impl<O: Is<Grid>> GridExt for O {
 
     fn set_homogenous_rows(&self, value: bool) {
         let grid = self.as_ref();
-        
+
         if value != grid.homogenous_rows {
             // grid.homogenous_rows = value;
             // clutter_actor_queue_relayout(CLUTTER_ACTOR(self));
@@ -226,7 +225,7 @@ impl<O: Is<Grid>> GridExt for O {
 
     fn set_line_alignment(&self, value: Align) {
         let grid = self.as_ref();
-        
+
         if value != grid.line_alignment {
             // grid.line_alignment = value;
             // clutter_actor_queue_relayout(CLUTTER_ACTOR(self));
@@ -235,7 +234,7 @@ impl<O: Is<Grid>> GridExt for O {
 
     fn set_max_stride(&self, value: i32) {
         let grid = self.as_ref();
-        
+
         if value != grid.max_stride {
             // grid.max_stride = value;
             // clutter_actor_queue_relayout(CLUTTER_ACTOR(self));
@@ -244,7 +243,7 @@ impl<O: Is<Grid>> GridExt for O {
 
     fn set_orientation(&self, orientation: Orientation) {
         let grid = self.as_ref();
-        
+
         if grid.orientation != orientation {
             // grid.orientation = orientation;
             // clutter_actor_queue_relayout(CLUTTER_ACTOR(self));
@@ -254,7 +253,7 @@ impl<O: Is<Grid>> GridExt for O {
 
     fn set_row_spacing(&self, value: f32) {
         let grid = self.as_ref();
-        
+
         if value != grid.row_spacing {
             // grid.ignore_css_row_spacing = true;
             // grid.row_spacing = value;

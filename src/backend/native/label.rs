@@ -1,12 +1,11 @@
 #![allow(unused_variables)]
 
-// use std::boxed::Box as Box_;
 // use std::mem::transmute;
-
 use super::{Align, Widget};
 use crate::prelude::*;
 use glib::signal::SignalHandlerId;
 use std::fmt;
+use std::{boxed::Box as Box_, cell::RefCell};
 
 // @extends Widget, clutter::Actor;
 #[derive(Clone, Debug)]
@@ -211,7 +210,7 @@ impl<O: Is<Label>> LabelExt for O {
     ///
     fn get_alignment(&self) -> (Align, Align) {
         let label = self.as_ref();
-        
+
         (label.x_align, label.y_align)
     }
 
@@ -250,7 +249,7 @@ impl<O: Is<Label>> LabelExt for O {
     ///
     fn get_line_wrap(&self) -> bool {
         let label = self.as_ref();
-        
+
         // clutter_text_get_line_wrap(CLUTTER_TEXT (label.label));
         unimplemented!()
     }
@@ -276,7 +275,7 @@ impl<O: Is<Label>> LabelExt for O {
     ///
     fn get_text(&self) -> Option<String> {
         let label = self.as_ref();
-        
+
         // clutter_text_get_text(CLUTTER_TEXT(label.label));
         unimplemented!()
     }
@@ -314,7 +313,7 @@ impl<O: Is<Label>> LabelExt for O {
     ///
     fn set_alignment(&self, x_align: Align, y_align: Align) {
         let label = self.as_ref();
-        
+
         // if x_align != label.x_align {
         //     label.x_align = x_align;
         //     clutter_actor_queue_relayout(CLUTTER_ACTOR(label));
@@ -338,12 +337,12 @@ impl<O: Is<Label>> LabelExt for O {
     ///
     fn set_fade_out(&self, fade: bool) {
         let label = self.as_ref();
-        
+
         if label.fade_out != fade {
             // label.fade_out = fade;
             // g_object_notify(G_OBJECT (label), "fade-out");
 
-            // // Enable the fade-effect 
+            // // Enable the fade-effect
             // if fade {
             //     label.label_should_fade = false;
             //     clutter_text_set_single_line_mode(CLUTTER_TEXT(label.label), true);
@@ -387,7 +386,7 @@ impl<O: Is<Label>> LabelExt for O {
     ///
     fn set_show_tooltip(&self, show_tooltip: bool) {
         let label = self.as_ref();
-        
+
         if label.show_tooltip != show_tooltip {
             // label.show_tooltip = show_tooltip;
             // clutter_actor_queue_relayout(CLUTTER_ACTOR(label));
@@ -403,7 +402,7 @@ impl<O: Is<Label>> LabelExt for O {
     ///
     fn set_text(&self, text: &str) {
         let label = self.as_ref();
-        
+
         // if clutter_text_get_use_markup(CLUTTER_TEXT(label.label)) {
         //     clutter_text_set_markup(CLUTTER_TEXT(label.label), (text) ? text : "");
         // } else {
@@ -421,14 +420,14 @@ impl<O: Is<Label>> LabelExt for O {
     ///
     fn set_use_markup(&self, use_markup: bool) {
         let label = self.as_ref();
-        
+
         // clutter_text_set_use_markup(CLUTTER_TEXT(label.label), use_markup);
         // g_object_notify(G_OBJECT(label), "use-markup");
     }
 
     fn set_x_align(&self, align: Align) {
         let label = self.as_ref();
-        
+
         if align != label.x_align {
             // label.x_align = align;
             // clutter_actor_queue_relayout(CLUTTER_ACTOR(label));
@@ -438,7 +437,7 @@ impl<O: Is<Label>> LabelExt for O {
 
     fn set_y_align(&self, align: Align) {
         let label = self.as_ref();
-        
+
         if align != label.y_align {
             // label.y_align = align;
             // clutter_actor_queue_relayout(CLUTTER_ACTOR(label));

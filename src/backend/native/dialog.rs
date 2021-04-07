@@ -1,8 +1,9 @@
 #![allow(unused_variables)]
 
-use super::{Action, Widget, Button};
+use super::{Action, Button, Widget};
 use crate::prelude::*;
 use std::fmt;
+use std::{boxed::Box as Box_, cell::RefCell};
 
 // @extends Widget, clutter::Actor;
 #[derive(Clone, Debug)]
@@ -97,11 +98,11 @@ impl<O: Is<Dialog>> DialogExt for O {
     fn add_action<P: Is<Action>>(&self, action: &P) {
         let dialog = self.as_ref();
         let action = action.as_ref();
-      
+
         let button = Button::new();
         button.set_action(action);
         // clutter_actor_add_child (dialog.button_box, button);
-      
+
         // /* So we can maintain the two way relationship between action and button */
         // let da: DialogAction = g_slice_new (DialogAction);
         // da.action = action;
@@ -119,7 +120,7 @@ impl<O: Is<Dialog>> DialogExt for O {
     ///
     fn get_actions(&self) -> Vec<Action> {
         let dialog = self.as_ref();
-        
+
         // GList *a, *list;
         // list = NULL;
 
@@ -141,7 +142,7 @@ impl<O: Is<Dialog>> DialogExt for O {
     fn remove_action<P: Is<Action>>(&self, action: &P) {
         let dialog = self.as_ref();
         let action = action.as_ref();
-        
+
         // DialogAction *da;
         // GList *a;
 

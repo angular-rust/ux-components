@@ -1,12 +1,11 @@
 #![allow(unused_variables)]
 
-// use std::boxed::Box as Box_;
 // use std::mem::transmute;
-
 use super::Widget;
 use crate::prelude::*;
 use glib::signal::SignalHandlerId;
 use std::fmt;
+use std::{boxed::Box as Box_, cell::RefCell};
 
 #[derive(Clone, Debug)]
 pub struct ToggleHandle {
@@ -69,7 +68,7 @@ impl<O: Is<Toggle>> ToggleExt for O {
         let toggle = self.as_ref();
 
         if toggle.active != active || (toggle.position > 0.0 && toggle.position < 1.0) {
-            
+
             // toggle.active = active;
             // if active {
             //     mx_stylable_set_style_pseudo_class(MX_STYLABLE(toggle), "checked");
@@ -77,13 +76,13 @@ impl<O: Is<Toggle>> ToggleExt for O {
             //     mx_stylable_set_style_pseudo_class(MX_STYLABLE(toggle), NULL);
             // }
             // g_object_notify(G_OBJECT(toggle), "active");
-      
+
             // // don't run an animation if the actor is not mapped
             // if !CLUTTER_ACTOR_IS_MAPPED(CLUTTER_ACTOR(toggle)) {
             //     toggle.position = (active) ? 1 : 0;
             //     return;
             // }
-      
+
             // if active {
             //     clutter_timeline_set_direction(toggle.timeline, CLUTTER_TIMELINE_FORWARD);
             // } else {
@@ -92,16 +91,16 @@ impl<O: Is<Toggle>> ToggleExt for O {
             // if clutter_timeline_is_playing (toggle.timeline) {
             //     return;
             // }
-      
+
             // clutter_timeline_rewind(toggle.timeline);
-      
+
             // if toggle.drag_offset > -1  {
             //     clutter_timeline_set_progress_mode(toggle.timeline, CLUTTER_LINEAR);
             //     clutter_timeline_advance(toggle.timeline, toggle.position * 300);
             // } else {
             //     clutter_timeline_set_progress_mode(toggle.timeline, CLUTTER_EASE_IN_OUT_CUBIC);
             // }
-      
+
             // clutter_timeline_start(toggle.timeline);
         }
     }

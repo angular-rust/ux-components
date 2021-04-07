@@ -1,12 +1,11 @@
 #![allow(unused_variables)]
 
-// use std::boxed::Box as Box_;
 // use std::mem::transmute;
-
 use super::Widget;
 use crate::prelude::*;
 use glib::signal::SignalHandlerId;
 use std::fmt;
+use std::{boxed::Box as Box_, cell::RefCell};
 
 // @extends Widget, clutter::Actor;
 #[derive(Clone, Debug)]
@@ -90,7 +89,7 @@ impl<O: Is<Notebook>> NotebookExt for O {
     ///
     fn next_page(&self) {
         let notebook = self.as_ref();
-        
+
         // let item = g_list_find(notebook.children, notebook.current_page);
         // if !item {
         //     g_warning("Current page not found in child list");

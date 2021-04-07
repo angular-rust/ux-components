@@ -1,12 +1,11 @@
 #![allow(unused_variables)]
 
-// use std::boxed::Box as Box_;
 // use std::mem::transmute;
-
 use super::Widget;
 use crate::prelude::*;
 use glib::signal::SignalHandlerId;
 use std::fmt;
+use std::{boxed::Box as Box_, cell::RefCell};
 
 // @extends Widget, clutter::Actor;
 #[derive(Clone, Debug)]
@@ -78,7 +77,7 @@ impl<O: Is<Toolbar>> ToolbarExt for O {
     ///
     fn get_has_close_button(&self) -> bool {
         let toolbar = self.as_ref();
-        toolbar.has_close_button        
+        toolbar.has_close_button
     }
 
     /// get_has_close_button:

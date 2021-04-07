@@ -1,12 +1,11 @@
 #![allow(unused_variables)]
 
-// use std::boxed::Box as Box_;
 // use std::mem;
 // use std::mem::transmute;
-
 use crate::prelude::*;
 use glib::signal::SignalHandlerId;
 use std::fmt;
+use std::{boxed::Box as Box_, cell::RefCell};
 
 // @extends clutter::OffscreenEffect, clutter::Effect, clutter::ActorMeta;
 #[derive(Clone, Debug)]
@@ -81,7 +80,7 @@ pub trait FadeEffectExt: 'static {
     /// Retrieves the bounding box of the effect.
     ///
     fn get_bounds(&self) -> (i32, i32, u32, u32);
-    
+
     /// get_color:
     /// @effect: A #FadeEffect
     /// @color: (out): A #ClutterColor to store the color in
@@ -210,7 +209,7 @@ impl<O: Is<FadeEffect>> FadeEffectExt for O {
     ///
     fn get_border(&self) -> (u32, u32, u32, u32) {
         let fadeeffect = self.as_ref();
-        
+
         let top = fadeeffect.border[0];
         let right = fadeeffect.border[1];
         let bottom = fadeeffect.border[2];
@@ -235,7 +234,6 @@ impl<O: Is<FadeEffect>> FadeEffectExt for O {
         let width = fadeeffect.bounds_width;
         let height = fadeeffect.bounds_height;
         (x, y, width, height)
-        
     }
 
     /// get_color:
@@ -261,7 +259,7 @@ impl<O: Is<FadeEffect>> FadeEffectExt for O {
     ///
     fn set_border(&self, top: u32, right: u32, bottom: u32, left: u32) {
         let fadeeffect = self.as_ref();
-        
+
         // g_object_freeze_notify(G_OBJECT(effect));
 
         // if fadeeffect.border[0] != top {
@@ -308,7 +306,7 @@ impl<O: Is<FadeEffect>> FadeEffectExt for O {
     ///
     fn set_bounds(&self, x: i32, y: i32, width: u32, height: u32) {
         let fadeeffect = self.as_ref();
-        
+
         // g_object_freeze_notify(G_OBJECT(effect));
 
         // if fadeeffect.x != x) {
@@ -345,7 +343,7 @@ impl<O: Is<FadeEffect>> FadeEffectExt for O {
     ///
     fn set_color(&self, color: &clutter::Color) {
         let fadeeffect = self.as_ref();
-        
+
         // if !clutter_color_equal(&fadeeffect.color, color) {
         //     fadeeffect.color = *color;
         //     fadeeffect.update_vbo = true;

@@ -1,13 +1,11 @@
 #![allow(unused_variables)]
 
-// use std::boxed::Box as Box_;
 // use std::mem::transmute;
-// use Orientation;
-
 use super::{Adjustment, Align, Orientation, Widget};
 use crate::prelude::*;
 use glib::signal::SignalHandlerId;
 use std::fmt;
+use std::{boxed::Box as Box_, cell::RefCell};
 
 // @extends Widget, clutter::Actor;
 #[derive(Clone, Debug)]
@@ -317,7 +315,7 @@ impl<O: Is<BoxLayout>> BoxLayoutExt for O {
     fn insert_actor<P: Is<clutter::Actor>>(&self, actor: &P, position: i32) {
         let boxlayout = self.as_ref();
         let actor = actor.as_ref();
-        
+
         // clutter_actor_insert_child_at_index (CLUTTER_ACTOR (box), actor, position);
     }
 
@@ -369,7 +367,7 @@ impl<O: Is<BoxLayout>> BoxLayoutExt for O {
     ///
     fn set_scroll_to_focused(&self, scroll_to_focused: bool) {
         let boxlayout = self.as_ref();
-        
+
         if boxlayout.scroll_to_focused != scroll_to_focused {
             // boxlayout.scroll_to_focused = scroll_to_focused;
             // g_object_notify (G_OBJECT (box), "scroll-to-focused");

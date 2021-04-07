@@ -1,12 +1,11 @@
 #![allow(unused_variables)]
 
-// use std::boxed::Box as Box_;
 // use std::mem::transmute;
-
 use super::{ScrollPolicy, Widget};
 use crate::prelude::*;
 use glib::signal::SignalHandlerId;
 use std::fmt;
+use std::{boxed::Box as Box_, cell::RefCell};
 
 // @extends Widget, clutter::Actor;
 #[derive(Clone, Debug)]
@@ -94,7 +93,7 @@ impl<O: Is<ScrollView>> ScrollViewExt for O {
     ///
     fn ensure_visible(&self, geometry: &clutter::Geometry) {
         let scrollview = self.as_ref();
-        
+
         // _scroll_view_ensure_visible_axis(SCROLL_BAR(scrollview.hscroll),
         //                                geometry.x,
         //                                geometry.x + geometry.width);
@@ -120,7 +119,7 @@ impl<O: Is<ScrollView>> ScrollViewExt for O {
 
     fn set_enable_mouse_scrolling(&self, enabled: bool) {
         let scrollview = self.as_ref();
-        
+
         if scrollview.mouse_scroll != enabled {
             // scrollview.mouse_scroll = enabled;
 
@@ -149,9 +148,9 @@ impl<O: Is<ScrollView>> ScrollViewExt for O {
 
         if scrollview.scroll_visibility != visibility {
             // scrollview.scroll_visibility = visibility;
-    
+
             // g_object_notify(G_OBJECT(scroll), "scroll-visibility");
-    
+
             // clutter_actor_queue_relayout(CLUTTER_ACTOR(scroll));
         }
     }

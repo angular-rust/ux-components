@@ -1,12 +1,11 @@
 #![allow(unused_variables)]
 
-// use std::boxed::Box as Box_;
 // use std::mem::transmute;
-
 use super::Button;
 use crate::prelude::*;
 use glib::signal::SignalHandlerId;
 use std::fmt;
+use std::{boxed::Box as Box_, cell::RefCell};
 
 #[derive(Clone, Debug)]
 pub struct ButtonGroup {
@@ -213,7 +212,7 @@ impl<O: Is<ButtonGroup>> ButtonGroupExt for O {
     fn remove<P: Is<Button>>(&self, button: &P) {
         let buttongroup = self.as_ref();
         let button = button.as_ref();
-        
+
         // GSList *l, *prev = NULL, *next;
         // let mut found = false;
 

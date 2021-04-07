@@ -1,13 +1,12 @@
 #![allow(unused_variables)]
 
-// use std::boxed::Box as Box_;
 // use std::mem::transmute;
 // use std::ptr;
-
 use super::{AutomaticScroll, KineticScrollViewState, ScrollPolicy, Widget};
 use crate::prelude::*;
 use glib::signal::SignalHandlerId;
 use std::fmt;
+use std::{boxed::Box as Box_, cell::RefCell};
 
 #[derive(Clone, Debug)]
 pub struct KineticScrollViewMotion {
@@ -731,7 +730,7 @@ impl<O: Is<KineticScrollView>> KineticScrollViewExt for O {
     ///
     fn set_use_grab(&self, use_grab: bool) {
         let scrollview = self.as_ref();
-        
+
         if scrollview.use_grab != use_grab {
             // scrollview.use_grab = use_grab;
             // g_object_notify(G_OBJECT(scroll), "use-grab");
@@ -745,7 +744,7 @@ impl<O: Is<KineticScrollView>> KineticScrollViewExt for O {
     ///
     fn stop(&self) {
         let scrollview = self.as_ref();
-        
+
         // if scrollview.deceleration_timeline {
         //     clutter_timeline_stop(scrollview.deceleration_timeline);
         //     g_object_unref(scrollview.deceleration_timeline);

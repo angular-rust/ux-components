@@ -1,12 +1,11 @@
 #![allow(unused_variables)]
 
-// use std::boxed::Box as Box_;
 // use std::mem::transmute;
-
-use super::{Action, Icon, Label, Widget, IconTheme};
+use super::{Action, Icon, IconTheme, Label, Widget};
 use crate::prelude::*;
 use glib::signal::SignalHandlerId;
 use std::fmt;
+use std::{boxed::Box as Box_, cell::RefCell};
 
 // @extends Widget, clutter::Actor;
 #[derive(Clone, Debug)]
@@ -282,7 +281,7 @@ impl<O: Is<ComboBox>> ComboBoxExt for O {
     ///
     fn remove_text(&self, position: usize) {
         let combobox = self.as_ref();
-      
+
         // find the item, free the string and remove it from the list
         // combobox.actions.remove(position);
         // combobox.update_menu();
@@ -296,13 +295,13 @@ impl<O: Is<ComboBox>> ComboBoxExt for O {
     ///
     fn set_active_icon_name(&self, icon_name: Option<&str>) {
         let combobox = self.as_ref();
-        
+
         match &combobox.icon {
             None => {
                 if let Some(icon_name) = icon_name {
                     let icon_theme = IconTheme::get_default().unwrap();
                     if icon_theme.has_icon(icon_name) {
-                        // combobox.icon = 
+                        // combobox.icon =
                         let icon = Icon::new();
                         icon.set_icon_name(icon_name);
                         // clutter_actor_add_child (CLUTTER_ACTOR (box), combobox.icon);
@@ -337,7 +336,7 @@ impl<O: Is<ComboBox>> ComboBoxExt for O {
 
         // combobox.index = -1;
         // clutter_text_set_text ((ClutterText*)combobox.label, text);
-      
+
         // g_object_notify(G_OBJECT (box), "index");
         // g_object_notify(G_OBJECT (box), "active-text");
     }
@@ -354,7 +353,6 @@ impl<O: Is<ComboBox>> ComboBoxExt for O {
         // GSList *item;
         // Action *action;
         // const gchar *icon_name;
-
 
         // let item = g_slist_nth(combobox.actions, index);
 
