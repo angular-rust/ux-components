@@ -81,12 +81,8 @@ pub trait TextureCacheExt: 'static {
 
 impl<O: Is<TextureCache>> TextureCacheExt for O {
     fn contains(&self, uri: &str) -> bool {
-        // unsafe {
-        //     from_glib(ffi::texture_cache_contains(
-        //         self.as_ref().to_glib_none().0,
-        //         uri.to_glib_none().0,
-        //     ))
-        // }
+        let cache = self.as_ref();
+        // cache.get_item (uri, false) ? true : false;
         unimplemented!()
     }
 

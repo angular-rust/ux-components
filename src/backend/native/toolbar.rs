@@ -10,7 +10,12 @@ use std::fmt;
 
 // @extends Widget, clutter::Actor;
 #[derive(Clone, Debug)]
-pub struct Toolbar {}
+pub struct Toolbar {
+    pub has_close_button: bool,
+    pub child_has_focus: bool,
+    pub close_button: Option<clutter::Actor>,
+    pub child: Option<clutter::Actor>,
+}
 
 impl Toolbar {
     pub fn new() -> Toolbar {
@@ -38,8 +43,21 @@ impl AsRef<Toolbar> for Toolbar {
 pub const NONE_TOOLBAR: Option<&Toolbar> = None;
 
 pub trait ToolbarExt: 'static {
+    /// set_has_close_button:
+    /// @toolbar: A #Toolbar
+    /// @has_close_button: #true if a close button should be displayed
+    ///
+    /// Set the #Toolbar:has-close-button property
+    ///
     fn get_has_close_button(&self) -> bool;
 
+    /// get_has_close_button:
+    /// @toolbar: A #Toolbar
+    ///
+    /// Get the value of the #Toolbar:has-close-button property.
+    ///
+    /// Returns: the current value of the "hast-close-button" property.
+    ///
     fn set_has_close_button(&self, has_close_button: bool);
 
     fn connect_close_button_clicked<F: Fn(&Self) -> bool + 'static>(&self, f: F)
@@ -52,23 +70,48 @@ pub trait ToolbarExt: 'static {
 }
 
 impl<O: Is<Toolbar>> ToolbarExt for O {
+    /// set_has_close_button:
+    /// @toolbar: A #Toolbar
+    /// @has_close_button: #true if a close button should be displayed
+    ///
+    /// Set the #Toolbar:has-close-button property
+    ///
     fn get_has_close_button(&self) -> bool {
-        // unsafe {
-        //     from_glib(ffi::toolbar_get_has_close_button(
-        //         self.as_ref().to_glib_none().0,
-        //     ))
-        // }
-        unimplemented!()
+        let toolbar = self.as_ref();
+        toolbar.has_close_button        
     }
 
+    /// get_has_close_button:
+    /// @toolbar: A #Toolbar
+    ///
+    /// Get the value of the #Toolbar:has-close-button property.
+    ///
+    /// Returns: the current value of the "hast-close-button" property.
+    ///
     fn set_has_close_button(&self, has_close_button: bool) {
-        // unsafe {
-        //     ffi::toolbar_set_has_close_button(
-        //         self.as_ref().to_glib_none().0,
-        //         has_close_button.to_glib(),
-        //     );
-        // }
-        unimplemented!()
+        let toolbar = self.as_ref();
+
+        if toolbar.has_close_button != has_close_button {
+            // toolbar.has_close_button = has_close_button;
+
+            // if !has_close_button {
+            //     if toolbar.close_button {
+            //         clutter_actor_destroy(toolbar.close_button);
+            //         toolbar.close_button = None;
+            //     }
+            // } else {
+            //     toolbar.close_button = button_new ();
+            //     clutter_actor_set_name(toolbar.close_button, "close-button");
+            //     clutter_actor_add_child(CLUTTER_ACTOR (toolbar), toolbar.close_button);
+            //     g_signal_connect(toolbar.close_button, "clicked",
+            //                         G_CALLBACK(close_button_click_cb), toolbar);
+            //     stylable_style_changed(STYLABLE(toolbar.close_button),
+            //                                 STYLE_CHANGED_FORCE);
+            // }
+
+            // clutter_actor_queue_relayout(CLUTTER_ACTOR(toolbar));
+            // g_object_notify(G_OBJECT(toolbar), "has-close-button");
+        }
     }
 
     fn connect_close_button_clicked<F: Fn(&Self) -> bool + 'static>(
