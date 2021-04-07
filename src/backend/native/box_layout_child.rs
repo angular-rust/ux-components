@@ -8,14 +8,18 @@ use std::fmt;
 use std::{boxed::Box as Box_, cell::RefCell};
 
 #[derive(Clone, Debug)]
-pub struct BoxLayoutChild {
-    pub parent: clutter::ChildMeta,
-
+pub struct BoxLayoutChildProps {
     pub expand: bool,
     pub x_fill: bool,
     pub y_fill: bool,
     pub x_align: Align,
     pub y_align: Align,
+}
+
+#[derive(Clone, Debug)]
+pub struct BoxLayoutChild {
+    props: RefCell<BoxLayoutChildProps>,
+    pub parent: clutter::ChildMeta,
 }
 
 impl Object for BoxLayoutChild {}
@@ -148,7 +152,7 @@ impl<O: Is<BoxLayoutChild>> BoxLayoutChildExt for O {
     ///
     fn get_property_expand(&self) -> bool {
         let boxlayoutchild = self.as_ref();
-        boxlayoutchild.expand
+        boxlayoutchild.props.borrow().expand
     }
 
     /// set_expand:
@@ -160,7 +164,8 @@ impl<O: Is<BoxLayoutChild>> BoxLayoutChildExt for O {
     ///
     fn set_property_expand(&self, expand: bool) {
         let boxlayoutchild = self.as_ref();
-        // boxlayoutchild.expand = expand
+        let mut props = boxlayoutchild.props.borrow_mut();
+        props.expand = expand;
     }
 
     /// get_x_align:
@@ -173,7 +178,7 @@ impl<O: Is<BoxLayoutChild>> BoxLayoutChildExt for O {
     ///
     fn get_property_x_align(&self) -> Align {
         let boxlayoutchild = self.as_ref();
-        boxlayoutchild.x_align
+        boxlayoutchild.props.borrow().x_align
     }
 
     /// set_x_align:
@@ -185,7 +190,8 @@ impl<O: Is<BoxLayoutChild>> BoxLayoutChildExt for O {
     ///
     fn set_property_x_align(&self, x_align: Align) {
         let boxlayoutchild = self.as_ref();
-        // boxlayoutchild.x_align = x_align
+        let mut props = boxlayoutchild.props.borrow_mut();
+        props.x_align = x_align;
     }
 
     /// get_x_fill:
@@ -198,7 +204,7 @@ impl<O: Is<BoxLayoutChild>> BoxLayoutChildExt for O {
     ///
     fn get_property_x_fill(&self) -> bool {
         let boxlayoutchild = self.as_ref();
-        boxlayoutchild.x_fill
+        boxlayoutchild.props.borrow().x_fill
     }
 
     /// set_x_fill:
@@ -210,7 +216,8 @@ impl<O: Is<BoxLayoutChild>> BoxLayoutChildExt for O {
     ///
     fn set_property_x_fill(&self, x_fill: bool) {
         let boxlayoutchild = self.as_ref();
-        // boxlayoutchild.x_fill = x_fill
+        let mut props = boxlayoutchild.props.borrow_mut();
+        props.x_fill = x_fill;
     }
 
     /// get_y_align:
@@ -223,7 +230,7 @@ impl<O: Is<BoxLayoutChild>> BoxLayoutChildExt for O {
     ///
     fn get_property_y_align(&self) -> Align {
         let boxlayoutchild = self.as_ref();
-        boxlayoutchild.y_align
+        boxlayoutchild.props.borrow().y_align
     }
 
     /// set_y_align:
@@ -235,7 +242,8 @@ impl<O: Is<BoxLayoutChild>> BoxLayoutChildExt for O {
     ///
     fn set_property_y_align(&self, y_align: Align) {
         let boxlayoutchild = self.as_ref();
-        // boxlayoutchild.y_align = y_align
+        let mut props = boxlayoutchild.props.borrow_mut();
+        props.y_align = y_align;
     }
 
     /// get_y_fill:
@@ -248,7 +256,7 @@ impl<O: Is<BoxLayoutChild>> BoxLayoutChildExt for O {
     ///
     fn get_property_y_fill(&self) -> bool {
         let boxlayoutchild = self.as_ref();
-        boxlayoutchild.y_fill
+        boxlayoutchild.props.borrow().y_fill
     }
 
     /// set_y_fill:
@@ -260,7 +268,8 @@ impl<O: Is<BoxLayoutChild>> BoxLayoutChildExt for O {
     ///
     fn set_property_y_fill(&self, y_fill: bool) {
         let boxlayoutchild = self.as_ref();
-        // boxlayoutchild.y_fill = y_fill
+        let mut props = boxlayoutchild.props.borrow_mut();
+        props.y_fill = y_fill;
     }
 
     fn connect_property_expand_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {

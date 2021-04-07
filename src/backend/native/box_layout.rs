@@ -7,27 +7,29 @@ use glib::signal::SignalHandlerId;
 use std::fmt;
 use std::{boxed::Box as Box_, cell::RefCell};
 
-// @extends Widget, clutter::Actor;
 #[derive(Clone, Debug)]
-pub struct BoxLayout {
+pub struct BoxLayoutProps {
     // GList        *children;
     /// Should we ignore spacing from CSS because
     /// the application set it via set_spacing
     pub ignore_css_spacing: bool,
     pub spacing: u32,
-
     pub hadjustment: Adjustment,
     pub vadjustment: Adjustment,
-
     // pub start_allocations: GHashTable,
-    pub timeline: clutter::Timeline,
     pub alpha: clutter::Alpha,
     pub is_animating: bool,
     pub enable_animations: bool,
     pub scroll_to_focused: bool,
-
     pub orientation: Orientation,
     // pub last_focus: Focusable,
+}
+
+// @extends Widget, clutter::Actor;
+#[derive(Clone, Debug)]
+pub struct BoxLayout {
+    props: RefCell<BoxLayoutProps>,
+    pub timeline: clutter::Timeline,
 }
 
 impl BoxLayout {
@@ -268,7 +270,7 @@ impl<O: Is<BoxLayout>> BoxLayoutExt for O {
     ///
     fn get_enable_animations(&self) -> bool {
         let boxlayout = self.as_ref();
-        boxlayout.enable_animations
+        boxlayout.props.borrow().enable_animations
     }
 
     /// get_orientation:
@@ -278,7 +280,7 @@ impl<O: Is<BoxLayout>> BoxLayoutExt for O {
     ///
     fn get_orientation(&self) -> Orientation {
         let boxlayout = self.as_ref();
-        boxlayout.orientation
+        boxlayout.props.borrow().orientation
     }
 
     /// get_scroll_to_focused:
@@ -290,7 +292,7 @@ impl<O: Is<BoxLayout>> BoxLayoutExt for O {
     ///
     fn get_scroll_to_focused(&self) -> bool {
         let boxlayout = self.as_ref();
-        boxlayout.scroll_to_focused
+        boxlayout.props.borrow().scroll_to_focused
     }
 
     /// get_spacing:
@@ -302,7 +304,7 @@ impl<O: Is<BoxLayout>> BoxLayoutExt for O {
     ///
     fn get_spacing(&self) -> u32 {
         let boxlayout = self.as_ref();
-        boxlayout.spacing
+        boxlayout.props.borrow().spacing
     }
 
     /// insert_actor:
@@ -331,11 +333,11 @@ impl<O: Is<BoxLayout>> BoxLayoutExt for O {
     ///
     fn set_enable_animations(&self, enable_animations: bool) {
         let boxlayout = self.as_ref();
+        let mut props = boxlayout.props.borrow_mut();
 
-        if boxlayout.enable_animations != enable_animations {
-            // boxlayout.enable_animations = enable_animations;
+        if props.enable_animations != enable_animations {
+            props.enable_animations = enable_animations;
             // clutter_actor_queue_relayout ((ClutterActor*) box);
-
             // g_object_notify (G_OBJECT (box), "enable-animations");
         }
     }
@@ -348,9 +350,10 @@ impl<O: Is<BoxLayout>> BoxLayoutExt for O {
     ///
     fn set_orientation(&self, orientation: Orientation) {
         let boxlayout = self.as_ref();
+        let mut props = boxlayout.props.borrow_mut();
 
-        if boxlayout.orientation != orientation {
-            // boxlayout.orientation = orientation;
+        if props.orientation != orientation {
+            props.orientation = orientation;
             // boxlayout.start_animation();
             // clutter_actor_queue_relayout (CLUTTER_ACTOR (box));
 
@@ -367,9 +370,10 @@ impl<O: Is<BoxLayout>> BoxLayoutExt for O {
     ///
     fn set_scroll_to_focused(&self, scroll_to_focused: bool) {
         let boxlayout = self.as_ref();
+        let mut props = boxlayout.props.borrow_mut();
 
-        if boxlayout.scroll_to_focused != scroll_to_focused {
-            // boxlayout.scroll_to_focused = scroll_to_focused;
+        if props.scroll_to_focused != scroll_to_focused {
+            props.scroll_to_focused = scroll_to_focused;
             // g_object_notify (G_OBJECT (box), "scroll-to-focused");
         }
     }
@@ -382,13 +386,12 @@ impl<O: Is<BoxLayout>> BoxLayoutExt for O {
     ///
     fn set_spacing(&self, spacing: u32) {
         let boxlayout = self.as_ref();
+        let mut props = boxlayout.props.borrow_mut();
 
-        if boxlayout.spacing != spacing {
-            // boxlayout.spacing = spacing;
-            // boxlayout.ignore_css_spacing = true;
-
+        if props.spacing != spacing {
+            props.spacing = spacing;
+            props.ignore_css_spacing = true;
             // clutter_actor_queue_relayout (CLUTTER_ACTOR (box));
-
             // g_object_notify (G_OBJECT (box), "spacing");
         }
     }
