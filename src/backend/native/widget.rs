@@ -61,7 +61,6 @@ pub struct Widget {
 impl Widget {
     fn remove_tooltip_timeout(&self) {
         //    self.tooltip_timeout = 0;
-        // TODO: ...
     }
 }
 
@@ -243,7 +242,6 @@ impl<O: Is<Widget>> WidgetExt for O {
     ///
     fn apply_style<P: Is<Style>>(&self, style: &P) {
         // stylable_set_style (STYLABLE (widget), style);
-        // TODO: ...
     }
 
     /// get_available_area:
@@ -408,7 +406,6 @@ impl<O: Is<Widget>> WidgetExt for O {
         // if query_result {
         //     // widget.long_press_source = g_timeout_add (timeout, (GSourceFunc) widget_emit_long_press, widget);
         // }
-        // TODO: ...
     }
 
     /// widget_set_disabled:
@@ -422,7 +419,6 @@ impl<O: Is<Widget>> WidgetExt for O {
         let widget = self.as_ref();
         if widget.is_disabled != disabled {
             // widget.is_disabled = disabled;
-            // TODO: ...
             if disabled {
                 // stylable_style_pseudo_class_add (STYLABLE (widget), "disabled");
             } else {
@@ -441,7 +437,6 @@ impl<O: Is<Widget>> WidgetExt for O {
 
             // g_object_notify_by_pspec (G_OBJECT (widget),
             //                             widget_properties[PROP_DISABLED]);
-            // TODO: ...
         }
     }
 
@@ -479,7 +474,6 @@ impl<O: Is<Widget>> WidgetExt for O {
         let widget = self.as_ref();
         if widget.tooltip_delay != delay {
             // widget.tooltip_delay = delay;
-            // TODO: ...
             // g_object_notify_by_pspec (G_OBJECT (widget),
             //                     widget_properties[PROP_TOOLTIP_DELAY]);
         }
@@ -575,7 +569,6 @@ impl<O: Is<Widget>> WidgetExt for O {
         //     tooltip.set_tip_area(&area);
         //     tooltip.show();
         // }
-        // TODO: ...
     }
 
     //fn connect_long_press<Unsupported or ignored types>(&self, f: F) -> SignalHandlerId {

@@ -7,30 +7,29 @@ use glib::signal::SignalHandlerId;
 use std::fmt;
 use std::{boxed::Box as Box_, cell::RefCell};
 
-// @extends Widget, clutter::Actor;
 #[derive(Clone, Debug)]
-pub struct Button {
+pub struct ButtonProps {
     pub text: Option<String>,
     pub icon_name: Option<String>,
     pub style_icon_name: Option<String>,
     pub icon_size: u32,
     pub style_icon_size: u32,
-
     pub old_opacity: u8,
-
     pub is_pressed: bool,
     pub is_toggle: bool,
     pub is_toggled: bool,
-
-    // pub animation: clutter::Animation,
-    pub content_image: cogl::Texture,
-    pub child: clutter::Actor,
-
     pub action: Option<Action>,
     pub icon_position: Position,
     pub icon_visible: bool,
     pub label_visible: bool,
-
+}
+// @extends Widget, clutter::Actor;
+#[derive(Clone, Debug)]
+pub struct Button {
+    props: RefCell<ButtonProps>,
+    pub content_image: cogl::Texture,
+    // pub animation: clutter::Animation,
+    pub child: clutter::Actor,
     pub hbox: clutter::Actor,
     pub icon: clutter::Actor,
     pub label: clutter::Actor,
@@ -172,7 +171,7 @@ pub trait ButtonExt: 'static {
     /// will remove the icon name, or resort to the icon-name set in the current
     /// style. Setting an icon name overrides any icon set in the style.
     ///
-    fn set_icon_name(&self, icon_name: Option<&str>);
+    fn set_icon_name(&self, icon_name: Option<String>);
 
     /// set_icon_position:
     /// @button: A #Button
@@ -214,7 +213,7 @@ pub trait ButtonExt: 'static {
     ///
     /// Sets the text displayed on the button
     ///
-    fn set_label(&self, text: &str);
+    fn set_label(&self, text: Option<String>);
 
     /// set_label_visible:
     /// @button: A #Button
@@ -271,7 +270,7 @@ impl<O: Is<Button>> ButtonExt for O {
     ///
     fn get_action(&self) -> Option<Action> {
         let button = self.as_ref();
-        button.action.clone()
+        button.props.borrow().action.clone()
     }
 
     /// get_icon_name:
@@ -284,11 +283,12 @@ impl<O: Is<Button>> ButtonExt for O {
     ///
     fn get_icon_name(&self) -> Option<String> {
         let button = self.as_ref();
+        let props = button.props.borrow();
 
-        if button.icon_name.is_some() {
-            button.icon_name.clone()
+        if props.icon_name.is_some() {
+            props.icon_name.clone()
         } else {
-            button.style_icon_name.clone()
+            props.style_icon_name.clone()
         }
     }
 
@@ -301,7 +301,7 @@ impl<O: Is<Button>> ButtonExt for O {
     ///
     fn get_icon_position(&self) -> Position {
         let button = self.as_ref();
-        button.icon_position
+        button.props.borrow().icon_position
     }
 
     /// get_icon_size:
@@ -313,11 +313,12 @@ impl<O: Is<Button>> ButtonExt for O {
     ///
     fn get_icon_size(&self) -> u32 {
         let button = self.as_ref();
+        let props = button.props.borrow();
 
-        if button.icon_size != 0 {
-            button.icon_size
+        if props.icon_size != 0 {
+            props.icon_size
         } else {
-            button.style_icon_size
+            props.style_icon_size
         }
     }
 
@@ -330,7 +331,7 @@ impl<O: Is<Button>> ButtonExt for O {
     ///
     fn get_icon_visible(&self) -> bool {
         let button = self.as_ref();
-        button.icon_visible
+        button.props.borrow().icon_visible
     }
 
     /// get_is_toggle:
@@ -342,7 +343,7 @@ impl<O: Is<Button>> ButtonExt for O {
     ///
     fn get_is_toggle(&self) -> bool {
         let button = self.as_ref();
-        button.is_toggle
+        button.props.borrow().is_toggle
     }
 
     /// get_label:
@@ -354,7 +355,7 @@ impl<O: Is<Button>> ButtonExt for O {
     ///
     fn get_label(&self) -> Option<String> {
         let button = self.as_ref();
-        button.text.clone()
+        button.props.borrow().text.clone()
     }
 
     /// get_label_visible:
@@ -366,7 +367,7 @@ impl<O: Is<Button>> ButtonExt for O {
     ///
     fn get_label_visible(&self) -> bool {
         let button = self.as_ref();
-        button.label_visible
+        button.props.borrow().label_visible
     }
 
     /// get_toggled:
@@ -378,7 +379,7 @@ impl<O: Is<Button>> ButtonExt for O {
     ///
     fn get_toggled(&self) -> bool {
         let button = self.as_ref();
-        button.is_toggled
+        button.props.borrow().is_toggled
     }
 
     /// set_action:
@@ -391,12 +392,8 @@ impl<O: Is<Button>> ButtonExt for O {
     fn set_action<P: Is<Action>>(&self, action: &P) {
         let button = self.as_ref();
         let action = action.as_ref();
-
+        
         let mut display_name: String;
-
-        // if button.action {
-        //   g_object_unref (button.action);
-        // }
 
         // if button.action_label_binding {
         //   g_object_unref (button.action_label_binding);
@@ -406,15 +403,15 @@ impl<O: Is<Button>> ButtonExt for O {
         //   g_object_unref (button.action_icon_binding);
         // }
 
-        // button.action = g_object_ref_sink (action);
+        // props.action = g_object_ref_sink (action);
 
         // display_name = action.get_display_name();
 
         // icon_set_icon_name(ICON (button.icon), action.get_icon());
-        // clutter_text_set_text (CLUTTER_TEXT (button.label),
+        // clutter_text_set_text(CLUTTER_TEXT (button.label),
         //                        (display_name) ? display_name : "");
 
-        // /* bind action properties to button properties */
+        // // bind action properties to button properties
         // button.action_label_binding = g_object_bind_property (action, "display-name",
         //                                                      button.label, "text", 0);
 
@@ -423,7 +420,6 @@ impl<O: Is<Button>> ButtonExt for O {
         //                                                     0);
 
         // button.update_contents();
-        // TODO: ...
     }
 
     /// set_icon_name:
@@ -434,15 +430,15 @@ impl<O: Is<Button>> ButtonExt for O {
     /// will remove the icon name, or resort to the icon-name set in the current
     /// style. Setting an icon name overrides any icon set in the style.
     ///
-    fn set_icon_name(&self, icon_name: Option<&str>) {
+    fn set_icon_name(&self, icon_name: Option<String>) {
         let button = self.as_ref();
+        let mut props = button.props.borrow_mut();
 
-        // button.icon_name = g_strdup (icon_name);
-        // icon_set_icon_name (ICON (button.icon), icon_name ?
+        props.icon_name = icon_name;
+        // icon_set_icon_name(ICON (button.icon), icon_name ?
         //                        icon_name : button.style_icon_name);
         // button.update_contents ();
         // g_object_notify (G_OBJECT (button), "icon-name");
-        // TODO: ...
     }
 
     /// set_icon_position:
@@ -453,12 +449,12 @@ impl<O: Is<Button>> ButtonExt for O {
     ///
     fn set_icon_position(&self, position: Position) {
         let button = self.as_ref();
+        let mut props = button.props.borrow_mut();
 
-        if button.icon_position != position {
-            // button.icon_position = position;
+        if props.icon_position != position {
+            props.icon_position = position;
             // button.update_contents();
             // g_object_notify (G_OBJECT (button), "icon-position");
-            // TODO: ...
         }
     }
 
@@ -471,13 +467,13 @@ impl<O: Is<Button>> ButtonExt for O {
     ///
     fn set_icon_size(&self, icon_size: u32) {
         let button = self.as_ref();
+        let mut props = button.props.borrow_mut();
 
-        if button.icon_size != icon_size {
-            // button.icon_size = icon_size;
+        if props.icon_size != icon_size {
+            props.icon_size = icon_size;
             // icon_set_icon_size (ICON (button.icon), icon_size ?
             //                         icon_size : button.style_icon_size);
             // g_object_notify (G_OBJECT (button), "icon-size");
-            // TODO: ...
         }
     }
 
@@ -489,12 +485,12 @@ impl<O: Is<Button>> ButtonExt for O {
     ///
     fn set_icon_visible(&self, visible: bool) {
         let button = self.as_ref();
+        let mut props = button.props.borrow_mut();
 
-        if button.icon_visible != visible {
-            // button.icon_visible = visible;
+        if props.icon_visible != visible {
+            props.icon_visible = visible;
             // button.update_contents();
             // g_object_notify (G_OBJECT (button), "icon-visible");
-            // TODO: ...
         }
     }
 
@@ -507,10 +503,9 @@ impl<O: Is<Button>> ButtonExt for O {
     ///
     fn set_is_toggle(&self, toggle: bool) {
         let button = self.as_ref();
-
-        // button.is_toggle = toggle;
+        let mut props = button.props.borrow_mut();
+        props.is_toggle = toggle;
         // g_object_notify (G_OBJECT (button), "is-toggle");
-        // TODO: ...
     }
 
     /// set_label:
@@ -519,19 +514,15 @@ impl<O: Is<Button>> ButtonExt for O {
     ///
     /// Sets the text displayed on the button
     ///
-    fn set_label(&self, text: &str) {
+    fn set_label(&self, text: Option<String>) {
         let button = self.as_ref();
+        let mut props = button.props.borrow_mut();
 
-        // if text {
-        //     button.text = g_strdup(text);
-        // } else {
-        //     button.text = g_strdup("");
-        // }
-
+        props.text = text;
+        
         // clutter_text_set_text(CLUTTER_TEXT(button.label), button.text);
         // button.update_contents();
         // g_object_notify(G_OBJECT(button), "label");
-        // TODO: ...
     }
 
     /// set_label_visible:
@@ -542,12 +533,12 @@ impl<O: Is<Button>> ButtonExt for O {
     ///
     fn set_label_visible(&self, visible: bool) {
         let button = self.as_ref();
+        let mut props = button.props.borrow_mut();
 
-        if button.label_visible != visible {
-            // button.label_visible = visible;
+        if props.label_visible != visible {
+            props.label_visible = visible;
             // button.update_contents(button);
             // g_object_notify(G_OBJECT(button), "label-visible");
-            // TODO: ...
         }
     }
 
@@ -560,17 +551,17 @@ impl<O: Is<Button>> ButtonExt for O {
     ///
     fn set_toggled(&self, toggled: bool) {
         let button = self.as_ref();
+        let mut props = button.props.borrow_mut();
 
-        if button.is_toggled != toggled {
-            // button.is_toggled = toggled;
+        if props.is_toggled != toggled {
+            props.is_toggled = toggled;
 
-            // if toggled {
-            //     stylable_style_pseudo_class_add(STYLABLE(button), "checked");
-            // } else {
-            //     stylable_style_pseudo_class_remove(STYLABLE(button), "checked");
-            // }
+            if toggled {
+                // stylable_style_pseudo_class_add(STYLABLE(button), "checked");
+            } else {
+                // stylable_style_pseudo_class_remove(STYLABLE(button), "checked");
+            }
             // g_object_notify(G_OBJECT(button), "toggled");
-            // TODO: ...
         }
     }
 

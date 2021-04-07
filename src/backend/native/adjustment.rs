@@ -817,7 +817,6 @@ impl<O: Is<Adjustment>> AdjustmentExt for O {
         // }
 
         // g_object_thaw_notify(G_OBJECT (adjustment));
-        // TODO: ...
     }
 
     fn connect_changed<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {

@@ -250,7 +250,6 @@ impl<O: Is<Action>> ActionExt for O {
         if props.enabled != active {
             props.enabled = active;
             // g_object_notify(G_OBJECT(action), "active");
-            // TODO: ...
         }
     }
 

@@ -8,11 +8,15 @@ use std::fmt;
 use std::{boxed::Box as Box_, cell::RefCell};
 
 #[derive(Clone, Debug)]
-pub struct ButtonGroup {
+pub struct ButtonGroupProps {
     pub active_button: Option<Button>,
     pub children: Vec<Button>,
-
     pub allow_no_active: bool,
+}
+
+#[derive(Clone, Debug)]
+pub struct ButtonGroup {
+    props: RefCell<ButtonGroupProps>
 }
 
 impl ButtonGroup {
@@ -133,6 +137,8 @@ impl<O: Is<ButtonGroup>> ButtonGroupExt for O {
         let buttongroup = self.as_ref();
         let button = button.as_ref();
 
+        let props = buttongroup.props.borrow();
+
         // buttongroup.children.push(button);
         // g_signal_connect (button, "notify::toggled",
         //                     G_CALLBACK (button_toggled_notify_cb), group);
@@ -146,7 +152,7 @@ impl<O: Is<ButtonGroup>> ButtonGroupExt for O {
         // g_object_weak_ref (G_OBJECT (button), (GWeakNotify) button_weak_notify,
         //                     group);
 
-        if !buttongroup.allow_no_active && buttongroup.active_button.is_none() {
+        if !props.allow_no_active && props.active_button.is_none() {
             button.set_toggled(true);
         }
     }
@@ -175,7 +181,8 @@ impl<O: Is<ButtonGroup>> ButtonGroupExt for O {
     ///
     fn get_active_button(&self) -> &Option<Button> {
         let buttongroup = self.as_ref();
-        &buttongroup.active_button
+        // &buttongroup.props.borrow().active_button // TODO: OOPS
+        unimplemented!()
     }
 
     /// get_allow_no_active:
@@ -187,7 +194,7 @@ impl<O: Is<ButtonGroup>> ButtonGroupExt for O {
     ///
     fn get_allow_no_active(&self) -> bool {
         let buttongroup = self.as_ref();
-        buttongroup.allow_no_active
+        buttongroup.props.borrow().allow_no_active
     }
 
     /// get_buttons:
@@ -200,7 +207,8 @@ impl<O: Is<ButtonGroup>> ButtonGroupExt for O {
     ///
     fn get_buttons(&self) -> &Vec<Button> {
         let buttongroup = self.as_ref();
-        &buttongroup.children
+        // &buttongroup.props.borrow().children // TODO: OOPS
+        unimplemented!()
     }
 
     /// remove:
@@ -212,6 +220,7 @@ impl<O: Is<ButtonGroup>> ButtonGroupExt for O {
     fn remove<P: Is<Button>>(&self, button: &P) {
         let buttongroup = self.as_ref();
         let button = button.as_ref();
+        let props = buttongroup.props.borrow();
 
         // GSList *l, *prev = NULL, *next;
         // let mut found = false;
@@ -238,11 +247,11 @@ impl<O: Is<ButtonGroup>> ButtonGroupExt for O {
 
         // g_object_weak_unref (G_OBJECT (button), (GWeakNotify) button_weak_notify, group);
 
-        // if buttongroup.active_button == button {
+        // if props.active_button == button {
         //     /* Try and select another button if the one we've removed is active.
         //     * But we shouldn't do this in the case where we allow no active button.
         //     */
-        //     if buttongroup.allow_no_active {
+        //     if props.allow_no_active {
         //         buttongroup.set_active_button (None);
         //     } else if prev {
         //         buttongroup.set_active_button ((Button *) prev->data);
@@ -266,13 +275,13 @@ impl<O: Is<ButtonGroup>> ButtonGroupExt for O {
     fn set_active_button<P: Is<Button>>(&self, button: Option<&P>) {
         let buttongroup = self.as_ref();
         let button = button.as_ref();
+        let mut props = buttongroup.props.borrow_mut();
 
-        // if let Some(active_button) = buttongroup.active_button {
+        // if let Some(active_button) = props.active_button {
         //     if let Some(button) = button {
         //         // if *button == active_button {
         //         //     return;
         //         // }
-        //         // TODO: ...
         //     }
         //     active_button.set_toggled(false);
         // }
@@ -281,7 +290,16 @@ impl<O: Is<ButtonGroup>> ButtonGroupExt for O {
         //     button.set_toggled(true);
         // }
 
-        // buttongroup.active_button = button;
+        match button {
+            Some(button) => {
+                let button = button.as_ref();
+                // props.active_button = Some(button); //TODO: OOPS
+            }
+            None => {
+                props.active_button = None;
+            }
+        }
+        
         // g_object_notify (G_OBJECT (group), "active-button");
     }
 
@@ -293,9 +311,10 @@ impl<O: Is<ButtonGroup>> ButtonGroupExt for O {
     ///
     fn set_allow_no_active(&self, allow_no_active: bool) {
         let buttongroup = self.as_ref();
+        let mut props = buttongroup.props.borrow_mut();
 
-        if buttongroup.allow_no_active != allow_no_active {
-            // buttongroup.allow_no_active = allow_no_active;
+        if props.allow_no_active != allow_no_active {
+            props.allow_no_active = allow_no_active;
             // g_object_notify (G_OBJECT (group), "allow-no-active");
         }
     }

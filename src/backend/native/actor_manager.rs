@@ -278,7 +278,6 @@ impl<O: Is<ActorManager>> ActorManagerExt for O {
 
         // manager.op_free(op_link, FALSE);
         // g_list_free(op_link);
-        // TODO: ...
     }
 
     /// cancel_operations:
@@ -303,7 +302,6 @@ impl<O: Is<ActorManager>> ActorManagerExt for O {
         //     actor_manager_op_free (manager, op_link, FALSE);
         //     g_list_free (op_link);
         // }
-        // TODO: ...
     }
 
     /// create_actor:
@@ -433,7 +431,6 @@ impl<O: Is<ActorManager>> ActorManagerExt for O {
         // }
 
         // manager.ensure_processing();
-        // TODO: ...
     }
 
     /// set_time_slice:
