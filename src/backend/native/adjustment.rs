@@ -4,11 +4,11 @@
 // use std::mem::transmute;
 use crate::prelude::*;
 use glib::signal::SignalHandlerId;
-use std::fmt;
+use std::{borrow::BorrowMut, fmt};
 use std::{boxed::Box as Box_, cell::RefCell};
 
 #[derive(Clone, Debug)]
-pub struct Adjustment {
+pub struct AdjustmentProps {
     // Do not sanity-check values while constructing, not all properties may be set yet.
     pub is_constructing: bool,
     pub clamp_value: bool,
@@ -31,9 +31,14 @@ pub struct Adjustment {
     pub changed_source: u32,
 
     // For interpolation
-    pub interpolation: clutter::Timeline,
     pub old_position: f64,
     pub new_position: f64,
+}
+
+#[derive(Clone, Debug)]
+pub struct Adjustment {
+    props: RefCell<AdjustmentProps>,
+    pub interpolation: Option<clutter::Timeline>,
 }
 
 impl Adjustment {
@@ -72,13 +77,15 @@ impl Adjustment {
     /// Set the value of the #Adjustment:lower property.
     ///
     fn set_lower(&self, lower: f64) -> bool {
-        if self.lower != lower {
-            // self.lower = lower;
+        let mut props = self.props.borrow_mut();
+
+        if props.lower != lower {
+            props.lower = lower;
 
             // adjustment_emit_changed (adjustment);
 
-            // if !self.lower_source {
-            //     self.lower_source =
+            // if !props.lower_source {
+            //     props.lower_source =
             //     g_idle_add_full (CLUTTER_PRIORITY_REDRAW,
             //                     (GSourceFunc)adjustment_lower_notify_cb,
             //                     adjustment,
@@ -86,11 +93,11 @@ impl Adjustment {
             // }
 
             // /* Defer clamp until after construction. */
-            // if !self.is_constructing && self.clamp_value {
-            //     self.clamp_page(self.lower, self.upper);
+            // if !props.is_constructing && props.clamp_value {
+            //     self.clamp_page(props.lower, props.upper);
             // }
 
-            // return true;
+            return true;
         }
 
         false
@@ -104,14 +111,15 @@ impl Adjustment {
     ///
     fn set_upper(&self, upper: f64) -> bool {
         let adjustment = self.as_ref();
+        let mut props = self.props.borrow_mut();
 
-        if self.upper != upper {
-            // self.upper = upper;
+        if props.upper != upper {
+            props.upper = upper;
 
             // adjustment_emit_changed (adjustment);
 
-            // if !self.upper_source {
-            //     self.upper_source =
+            // if !props.upper_source {
+            //     props.upper_source =
             //     g_idle_add_full (CLUTTER_PRIORITY_REDRAW,
             //                     (GSourceFunc)adjustment_upper_notify_cb,
             //                     adjustment,
@@ -119,11 +127,11 @@ impl Adjustment {
             // }
 
             // // Defer clamp until after construction.
-            // if !self.is_constructing && self.clamp_value {
-            //     adjustment_clamp_page (adjustment, self.lower, self.upper);
+            // if !props.is_constructing && props.clamp_value {
+            //     adjustment_clamp_page (adjustment, props.lower, props.upper);
             // }
 
-            // return true;
+            return true;
         }
 
         false
@@ -137,21 +145,22 @@ impl Adjustment {
     ///
     fn set_step_increment(&self, increment: f64) -> bool {
         let adjustment = self.as_ref();
+        let mut props = self.props.borrow_mut();
 
-        if self.step_increment != increment {
-            // self.step_increment = increment;
+        if props.step_increment != increment {
+            props.step_increment = increment;
 
             // adjustment_emit_changed (adjustment);
 
-            // if !self.step_inc_source {
-            //     self.step_inc_source =
+            // if !props.step_inc_source {
+            //     props.step_inc_source =
             //     g_idle_add_full (CLUTTER_PRIORITY_REDRAW,
             //                     (GSourceFunc)adjustment_step_inc_notify_cb,
             //                     adjustment,
             //                     None);
             // }
 
-            // return true;
+            return true;
         }
 
         false
@@ -165,14 +174,15 @@ impl Adjustment {
     ///
     fn set_page_size(&self, page_size: f64) -> bool {
         let adjustment = self.as_ref();
+        let mut props = self.props.borrow_mut();
 
-        if self.page_size != page_size {
-            // self.page_size = page_size;
+        if props.page_size != page_size {
+            props.page_size = page_size;
 
             // adjustment_emit_changed (adjustment);
 
-            // if !self.page_size_source {
-            //     self.page_size_source =
+            // if !props.page_size_source {
+            //     props.page_size_source =
             //     g_idle_add_full (CLUTTER_PRIORITY_REDRAW,
             //                     (GSourceFunc)adjustment_page_size_notify_cb,
             //                     adjustment,
@@ -180,11 +190,11 @@ impl Adjustment {
             // }
 
             // // Well explicitely clamp after construction.
-            // if !self.is_constructing && self.clamp_value {
-            //         adjustment_clamp_page (adjustment, self.lower, self.upper);
+            // if !props.is_constructing && props.clamp_value {
+            //         adjustment_clamp_page (adjustment, props.lower, props.upper);
             // }
 
-            // return true;
+            return true;
         }
 
         false
@@ -197,21 +207,23 @@ impl Adjustment {
     /// Set the value of the #Adjustment:page-increment property.
     ///
     fn set_page_increment(&self, increment: f64) -> bool {
-        // if self.page_increment != increment {
-        //     self.page_increment = increment;
+        let mut props = self.props.borrow_mut();
 
-        //     adjustment_emit_changed (adjustment);
+        if props.page_increment != increment {
+            props.page_increment = increment;
 
-        //     if !self.page_inc_source {
-        //         self.page_inc_source =
-        //         g_idle_add_full (CLUTTER_PRIORITY_REDRAW,
-        //                         (GSourceFunc)adjustment_page_inc_notify_cb,
-        //                         adjustment,
-        //                         None);
-        //     }
+            // adjustment_emit_changed (adjustment);
 
-        //     return true;
-        // }
+            // if !props.page_inc_source {
+            //     props.page_inc_source =
+            //     g_idle_add_full (CLUTTER_PRIORITY_REDRAW,
+            //                     (GSourceFunc)adjustment_page_inc_notify_cb,
+            //                     adjustment,
+            //                     None);
+            // }
+
+            return true;
+        }
 
         false
     }
@@ -466,7 +478,7 @@ impl<O: Is<Adjustment>> AdjustmentExt for O {
     ///
     fn get_clamp_value(&self) -> bool {
         let adjustment = self.as_ref();
-        adjustment.clamp_value
+        adjustment.props.borrow().clamp_value
     }
 
     /// get_elastic:
@@ -478,7 +490,7 @@ impl<O: Is<Adjustment>> AdjustmentExt for O {
     ///
     fn get_elastic(&self) -> bool {
         let adjustment = self.as_ref();
-        adjustment.elastic
+        adjustment.props.borrow().elastic
     }
 
     /// get_lower:
@@ -490,7 +502,7 @@ impl<O: Is<Adjustment>> AdjustmentExt for O {
     ///
     fn get_lower(&self) -> f64 {
         let adjustment = self.as_ref();
-        adjustment.lower
+        adjustment.props.borrow().lower
     }
 
     /// get_page_increment:
@@ -502,7 +514,7 @@ impl<O: Is<Adjustment>> AdjustmentExt for O {
     ///
     fn get_page_increment(&self) -> f64 {
         let adjustment = self.as_ref();
-        adjustment.page_increment
+        adjustment.props.borrow().page_increment
     }
 
     /// get_page_size:
@@ -514,7 +526,7 @@ impl<O: Is<Adjustment>> AdjustmentExt for O {
     ///
     fn get_page_size(&self) -> f64 {
         let adjustment = self.as_ref();
-        adjustment.page_size
+        adjustment.props.borrow().page_size
     }
 
     /// get_step_increment:
@@ -526,7 +538,7 @@ impl<O: Is<Adjustment>> AdjustmentExt for O {
     ///
     fn get_step_increment(&self) -> f64 {
         let adjustment = self.as_ref();
-        adjustment.step_increment
+        adjustment.props.borrow().step_increment
     }
 
     /// get_upper:
@@ -538,7 +550,7 @@ impl<O: Is<Adjustment>> AdjustmentExt for O {
     ///
     fn get_upper(&self) -> f64 {
         let adjustment = self.as_ref();
-        adjustment.upper
+        adjustment.props.borrow().upper
     }
 
     /// get_value:
@@ -550,7 +562,7 @@ impl<O: Is<Adjustment>> AdjustmentExt for O {
     ///
     fn get_value(&self) -> f64 {
         let adjustment = self.as_ref();
-        adjustment.value
+        adjustment.props.borrow().value
     }
 
     /// get_values:
@@ -566,13 +578,14 @@ impl<O: Is<Adjustment>> AdjustmentExt for O {
     ///
     fn get_values(&self) -> (f64, f64, f64, f64, f64, f64) {
         let adjustment = self.as_ref();
+        let props = adjustment.props.borrow();
         (
-            adjustment.value,
-            adjustment.lower,
-            adjustment.upper,
-            adjustment.step_increment,
-            adjustment.page_increment,
-            adjustment.page_size,
+            props.value,
+            props.lower,
+            props.upper,
+            props.step_increment,
+            props.page_increment,
+            props.page_size,
         )
     }
 
@@ -596,10 +609,11 @@ impl<O: Is<Adjustment>> AdjustmentExt for O {
             return;
         }
 
-        // adjustment.old_position = adjustment.value;
-        // adjustment.new_position = value;
+        let mut props = adjustment.props.borrow_mut();
+        props.old_position = props.value;
+        props.new_position = value;
 
-        // if !adjustment.interpolation {
+        // if !props.interpolation {
         //     adjustment.interpolation = clutter_timeline_new(duration);
 
         //     g_signal_connect(
@@ -624,8 +638,6 @@ impl<O: Is<Adjustment>> AdjustmentExt for O {
         // }
         // clutter_timeline_set_progress_mode(adjustment.interpolation, mode);
         // clutter_timeline_start(adjustment.interpolation);
-
-        // TODO: ...
     }
 
     /// interpolate_relative:
@@ -639,14 +651,14 @@ impl<O: Is<Adjustment>> AdjustmentExt for O {
     ///
     fn interpolate_relative(&self, offset: f64, duration: u32, mode: u64) {
         let adjustment = self.as_ref();
+        let props = adjustment.props.borrow();
+        let offset = if adjustment.interpolation.is_some() {
+            offset + props.new_position
+        } else {
+            offset + props.value
+        };
 
-        // if adjustment.interpolation {
-        //     offset += adjustment.new_position;
-        // } else {
-        //     offset += adjustment.value;
-        // }
-
-        // adjustment.interpolate(offset, duration, mode);
+        self.interpolate(offset, duration, mode);
     }
 
     /// set_clamp_value:
@@ -657,8 +669,8 @@ impl<O: Is<Adjustment>> AdjustmentExt for O {
     ///
     fn set_clamp_value(&self, clamp: bool) {
         let adjustment = self.as_ref();
-        // adjustment.clamp_value = clamp;
-        // TODO: ...
+        let mut props = adjustment.props.borrow_mut();
+        props.clamp_value = clamp;
     }
 
     /// set_elastic:
@@ -669,8 +681,8 @@ impl<O: Is<Adjustment>> AdjustmentExt for O {
     ///
     fn set_elastic(&self, elastic: bool) {
         let adjustment = self.as_ref();
-        // adjustment.elastic = elastic;
-        // TODO: ...
+        let mut props = adjustment.props.borrow_mut();
+        props.elastic = elastic;
     }
 
     /// set_lower:
@@ -736,27 +748,25 @@ impl<O: Is<Adjustment>> AdjustmentExt for O {
     ///
     fn set_value(&self, value: f64) {
         let adjustment = self.as_ref();
+        let mut props = adjustment.props.borrow_mut();
+        
+        // Defer clamp until after construction.
+        if !props.is_constructing {
+            if !props.elastic && props.clamp_value {
+                // value = CLAMP(
+                //     value,
+                //     adjustment.lower,
+                //     MAX(adjustment.lower, adjustment.upper - adjustment.page_size),
+                // );
+            }
+        }
 
-        // // Defer clamp until after construction.
-        // if !adjustment.is_constructing {
-        //     if !adjustment.elastic && adjustment.clamp_value {
-        //         value = CLAMP(
-        //             value,
-        //             adjustment.lower,
-        //             MAX(adjustment.lower, adjustment.upper - adjustment.page_size),
-        //         );
-        //     }
-        // }
-
-        // if adjustment.value != value {
-        //     stop_interpolation(adjustment);
-
-        //     adjustment.value = value;
-
-        //     g_object_notify(G_OBJECT(adjustment), "value");
-        //     adjustment_emit_changed(adjustment);
-        // }
-        unimplemented!()
+        if props.value != value {
+            // stop_interpolation(adjustment);
+            props.value = value;
+            // g_object_notify(G_OBJECT(adjustment), "value");
+            // adjustment_emit_changed(adjustment);
+        }
     }
 
     /// set_values:

@@ -7,15 +7,20 @@ use std::fmt;
 use std::{boxed::Box as Box_, cell::RefCell};
 
 #[derive(Clone, Debug)]
-pub struct ActorManager {
+pub struct ActorManagerProps {
     // pub ops: GQueue,
     // pub actor_op_links: GHashTable,
     pub source: u32,
     pub post_paint_handler: u64,
     // pub timer: GTimer,
-    pub time_slice: u32,
-    pub stage: Option<clutter::Stage>,
     pub quark_set: bool,
+    pub time_slice: u32,
+}
+
+#[derive(Clone, Debug)]
+pub struct ActorManager {
+    props: RefCell<ActorManagerProps>,
+    pub stage: Option<clutter::Stage>,
 }
 
 impl ActorManager {
@@ -353,7 +358,7 @@ impl<O: Is<ActorManager>> ActorManagerExt for O {
     ///
     fn get_time_slice(&self) -> u32 {
         let manager = self.as_ref();
-        manager.time_slice
+        manager.props.borrow().time_slice
     }
 
     /// remove_actor:
@@ -443,11 +448,10 @@ impl<O: Is<ActorManager>> ActorManagerExt for O {
     ///
     fn set_time_slice(&self, msecs: u32) {
         let manager = self.as_ref();
-
-        if manager.time_slice != msecs {
-            // manager.time_slice = msecs;
+        let mut props = manager.props.borrow_mut();
+        if props.time_slice != msecs {
+            props.time_slice = msecs;
             // g_object_notify (G_OBJECT (manager), "time-slice");
-            // TODO: ...
         }
     }
 

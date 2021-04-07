@@ -18,7 +18,7 @@ pub struct ActionProps {
 }
 #[derive(Clone, Debug)]
 pub struct Action {
-    pub props: RefCell<ActionProps>,
+    props: RefCell<ActionProps>,
 }
 
 impl Action {
