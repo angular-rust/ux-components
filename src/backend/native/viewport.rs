@@ -4,14 +4,23 @@
 // use std::mem;
 // use std::mem::transmute;
 
-use super::Widget;
+use super::{Adjustment, Widget};
 use crate::prelude::*;
 use glib::signal::SignalHandlerId;
 use std::fmt;
 
+
 // @extends Widget, clutter::Actor;
 #[derive(Clone, Debug)]
-pub struct Viewport {}
+pub struct Viewport {
+    pub x: f32,
+    pub y: f32,
+    pub z: f32,
+    pub hadjustment: Adjustment,
+    pub vadjustment: Adjustment,
+    pub sync_adjustments: bool,
+    pub child: Option<clutter::Actor>,
+}
 
 impl Viewport {
     pub fn new() -> Viewport {
@@ -45,7 +54,7 @@ pub trait ViewportExt: 'static {
 
     fn set_origin(&self, x: f32, y: f32, z: f32);
 
-    fn set_sync_adjustments(&self, sync: bool);
+    fn set_sync_adjustments(&self, sync_adjustments: bool);
 
     fn get_property_x_origin(&self) -> f32;
 
@@ -73,51 +82,58 @@ pub trait ViewportExt: 'static {
 
 impl<O: Is<Viewport>> ViewportExt for O {
     fn get_origin(&self) -> (f32, f32, f32) {
-        // unsafe {
-        //     let mut x = mem::MaybeUninit::uninit();
-        //     let mut y = mem::MaybeUninit::uninit();
-        //     let mut z = mem::MaybeUninit::uninit();
-        //     ffi::viewport_get_origin(
-        //         self.as_ref().to_glib_none().0,
-        //         x.as_mut_ptr(),
-        //         y.as_mut_ptr(),
-        //         z.as_mut_ptr(),
-        //     );
-        //     let x = x.assume_init();
-        //     let y = y.assume_init();
-        //     let z = z.assume_init();
-        //     (x, y, z)
-        // }
-        unimplemented!()
+        let viewport = self.as_ref();
+        (viewport.x, viewport.y, viewport.z)
     }
 
     fn get_sync_adjustments(&self) -> bool {
-        // unsafe {
-        //     from_glib(ffi::viewport_get_sync_adjustments(
-        //         self.as_ref().to_glib_none().0,
-        //     ))
-        // }
-        unimplemented!()
+        let viewport = self.as_ref();
+        viewport.sync_adjustments
     }
 
     fn set_origin(&self, x: f32, y: f32, z: f32) {
-        // unsafe {
-        //     ffi::viewport_set_origin(self.as_ref().to_glib_none().0, x, y, z);
+        let viewport = self.as_ref();
+        
+        // g_object_freeze_notify(G_OBJECT(viewport));
+
+        // if x != viewport.x {
+        //     viewport.x = x;
+        //     g_object_notify(G_OBJECT(viewport), "x-origin");
+
+        //     if viewport.hadjustment {
+        //         mx_adjustment_set_value(viewport.hadjustment, (float)(x));
+        //     }
         // }
-        unimplemented!()
+
+        // if y != viewport.y {
+        //     viewport.y = y;
+        //     g_object_notify(G_OBJECT(viewport), "y-origin");
+
+        //     if viewport.vadjustment {
+        //         mx_adjustment_set_value(viewport.vadjustment, (float)(y));
+        //     }
+        // }
+
+        // if z != viewport.z {
+        //     viewport.z = z;
+        //     g_object_notify(G_OBJECT(viewport), "z-origin");
+        // }
+
+        // g_object_thaw_notify(G_OBJECT(viewport));
+        // clutter_actor_queue_redraw(CLUTTER_ACTOR(viewport));
     }
 
-    fn set_sync_adjustments(&self, sync: bool) {
-        // unsafe {
-        //     ffi::viewport_set_sync_adjustments(
-        //         self.as_ref().to_glib_none().0,
-        //         sync.to_glib(),
-        //     );
-        // }
-        unimplemented!()
+    fn set_sync_adjustments(&self, sync_adjustments: bool) {
+        let viewport = self.as_ref();
+        
+        if viewport.sync_adjustments != sync_adjustments {
+            // viewport.sync_adjustments = sync_adjustments;
+            // g_object_notify(G_OBJECT(viewport), "sync-adjustments");
+        }
     }
 
     fn get_property_x_origin(&self) -> f32 {
+        let viewport = self.as_ref();
         // unsafe {
         //     let mut value = Value::from_type(<f32 as StaticType>::static_type());
         //     gobject_sys::g_object_get_property(
@@ -134,6 +150,7 @@ impl<O: Is<Viewport>> ViewportExt for O {
     }
 
     fn set_property_x_origin(&self, x_origin: f32) {
+        let viewport = self.as_ref();
         // unsafe {
         //     gobject_sys::g_object_set_property(
         //         self.to_glib_none().0 as *mut gobject_sys::GObject,
@@ -145,6 +162,7 @@ impl<O: Is<Viewport>> ViewportExt for O {
     }
 
     fn get_property_y_origin(&self) -> f32 {
+        let viewport = self.as_ref();
         // unsafe {
         //     let mut value = Value::from_type(<f32 as StaticType>::static_type());
         //     gobject_sys::g_object_get_property(
@@ -161,6 +179,7 @@ impl<O: Is<Viewport>> ViewportExt for O {
     }
 
     fn set_property_y_origin(&self, y_origin: f32) {
+        let viewport = self.as_ref();
         // unsafe {
         //     gobject_sys::g_object_set_property(
         //         self.to_glib_none().0 as *mut gobject_sys::GObject,
@@ -172,6 +191,7 @@ impl<O: Is<Viewport>> ViewportExt for O {
     }
 
     fn get_property_z_origin(&self) -> f32 {
+        let viewport = self.as_ref();
         // unsafe {
         //     let mut value = Value::from_type(<f32 as StaticType>::static_type());
         //     gobject_sys::g_object_get_property(
@@ -188,6 +208,7 @@ impl<O: Is<Viewport>> ViewportExt for O {
     }
 
     fn set_property_z_origin(&self, z_origin: f32) {
+        let viewport = self.as_ref();
         // unsafe {
         //     gobject_sys::g_object_set_property(
         //         self.to_glib_none().0 as *mut gobject_sys::GObject,
