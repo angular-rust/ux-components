@@ -35,11 +35,21 @@ impl Spinner {
             update_id: 0,
             animating: false,
         };
-
-        Self{
+        
+        println!("create spinner");
+        
+        let spinner = Self{
             props: RefCell::new(props),
             widget: Widget::new(),
-        }
+        };
+
+        let actor: &clutter::Actor = spinner.widget.as_ref();
+        let color = clutter::Color::new(255, 0, 0, 255);
+        actor.set_background_color(Some(&color));
+        actor.set_size(100_f32, 100_f32);
+        actor.set_position(100_f32, 100_f32);
+
+        spinner
     }
 }
 

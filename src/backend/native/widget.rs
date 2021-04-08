@@ -8,12 +8,20 @@ use glib_sys::GHashTable;
 use std::fmt;
 use std::{boxed::Box as Box_, cell::RefCell};
 
-#[derive(Clone, Debug)]
-pub struct WidgetProps {
-}
+// should be located in concrete widget
+// tooltip: Option<Tooltip>,
+
+// should be located in concrete widget
+// menu: Option<Menu>,
+
+// should be located in concrete widget
+// tooltip_timeout: u32,
+
+// should be located in concrete widget
+// tooltip_delay: u32,
 
 #[derive(Clone, Debug)]
-pub struct Widget {
+pub struct WidgetProps {
     border: Padding,
     padding: Padding,
     style: Style,
@@ -25,17 +33,12 @@ pub struct Widget {
     // border_image: clutter::Handle,
     // old_border_image: clutter::Handle,
     // background_image: clutter::Handle,
-    background_image_box: clutter::ActorBox,
-    bg_color: clutter::Color,
+    background_image_box: Option<clutter::ActorBox>,
+    bg_color: Option<clutter::Color>,
     opacity: f64,
     is_disabled: bool,
     parent_disabled: bool,
-    tooltip: Option<Tooltip>,
-    menu: Option<Menu>,
-
     long_press_source: u32,
-    tooltip_timeout: u32,
-    tooltip_delay: u32,
     in_dispose: bool,
     // sequences: GHashTable,
 
@@ -58,18 +61,68 @@ pub struct Widget {
     old_opacity: i64,
     // previous visible state if the "display" style property was set to "none"
     old_visible: bool,
+}
 
+#[derive(Clone, Debug)]
+pub struct Widget {
+    props: RefCell<WidgetProps>,
     inner: clutter::Actor,
 }
 
 impl Widget {
     pub fn new() -> Self {
-        unimplemented!()
+        let props = WidgetProps {
+            border: Default::default(),
+            padding: Default::default(),
+            style: Default::default(),
+            pseudo_class: Default::default(),
+            style_class: Default::default(),
+            ux_border_image: Default::default(),
+            ux_background_image: Default::default(),
+        
+            // border_image: clutter::Handle,
+            // old_border_image: clutter::Handle,
+            // background_image: clutter::Handle,
+            background_image_box: None,
+            bg_color: None,
+            opacity: 0.0,
+            is_disabled: false,
+            parent_disabled: false,
+            long_press_source: 0,
+            in_dispose: false,
+            // sequences: GHashTable,
+        
+            // width/height set by css
+            css_width: 0.0,
+            css_height: 0.0,
+        
+            // previous size state before css width/height were applied
+            old_min_width: 0.0,
+            old_min_height: 0.0,
+            old_nat_width: 0.0,
+            old_nat_height: 0.0,
+        
+            old_min_width_set: false,
+            old_min_height_set: false,
+            old_nat_width_set: false,
+            old_nat_height_set: false,
+            old_opacity: 0,
+            old_visible: false,
+        };
+
+        println!("create widget");
+
+        let widget = Self{
+            props: RefCell::new(props),
+            inner: clutter::Actor::new(),
+        };
+
+        widget
     }
 
-    fn remove_tooltip_timeout(&self) {
-        //    self.tooltip_timeout = 0;
-    }
+    // fn remove_tooltip_timeout(&self) {
+    //     //    self.tooltip_timeout = 0;
+    // }
 }
 
 impl Default for Widget {
@@ -128,7 +181,7 @@ pub trait WidgetExt: 'static {
     /// Returns: (transfer none): a #ClutterColor
     fn get_background_color(&self) -> Option<clutter::Color>;
 
-    //fn get_background_texture(&self) -> /*Ignored*/Option<cogl::Handle>;
+    //fn get_background_texture(&self) -> Option<cogl::Handle>;
 
     /// get_disabled:
     /// @widget: an #Widget
@@ -137,14 +190,15 @@ pub trait WidgetExt: 'static {
     ///
     fn get_disabled(&self) -> bool;
 
-    /// get_menu:
-    /// @widget: A #Widget
-    ///
-    /// Get the object in the #Widget:menu property.
-    ///
-    /// Returns: (transfer none): The current object in the "menu" property.
-    ///
-    fn get_menu(&self) -> Option<Menu>;
+    // should be located in concrete widget
+    // /// get_menu:
+    // /// @widget: A #Widget
+    // ///
+    // /// Get the object in the #Widget:menu property.
+    // ///
+    // /// Returns: (transfer none): The current object in the "menu" property.
+    // ///
+    // fn get_menu(&self) -> Option<Menu>;
 
     /// get_padding:
     /// @widget: A #Widget
@@ -155,30 +209,33 @@ pub trait WidgetExt: 'static {
     ///
     fn get_padding(&self) -> Padding;
 
-    /// get_tooltip_delay:
-    /// @widget: an #Widget
-    ///
-    /// Get the value of the "tooltip-delay" property.
-    ///
-    /// Returns: the current delay value in milliseconds
-    ///
-    fn get_tooltip_delay(&self) -> u32;
+    // should be located in concrete widget
+    // /// get_tooltip_delay:
+    // /// @widget: an #Widget
+    // ///
+    // /// Get the value of the "tooltip-delay" property.
+    // ///
+    // /// Returns: the current delay value in milliseconds
+    // ///
+    // fn get_tooltip_delay(&self) -> u32;
 
-    /// get_tooltip_text:
-    /// @widget: A #Widget
-    ///
-    /// Get the current tooltip string
-    ///
-    /// Returns: The current tooltip string, owned by the #Widget
-    ///
-    fn get_tooltip_text(&self) -> Option<String>;
+    // should be located in concrete widget
+    // /// get_tooltip_text:
+    // /// @widget: A #Widget
+    // ///
+    // /// Get the current tooltip string
+    // ///
+    // /// Returns: The current tooltip string, owned by the #Widget
+    // ///
+    // fn get_tooltip_text(&self) -> Option<String>;
 
-    /// hide_tooltip:
-    /// @widget: A #Widget
-    ///
-    /// Hide the tooltip for @widget
-    ///
-    fn hide_tooltip(&self);
+    // should be located in concrete widget
+    // /// hide_tooltip:
+    // /// @widget: A #Widget
+    // ///
+    // /// Hide the tooltip for @widget
+    // ///
+    // fn hide_tooltip(&self);
 
     /// long_press_cancel:
     /// @widget: An Widget
@@ -205,39 +262,43 @@ pub trait WidgetExt: 'static {
     ///
     fn set_disabled(&self, disabled: bool);
 
-    /// widget_set_menu:
-    /// @widget: A #Widget
-    /// @menu: A #Menu
-    ///
-    /// Set the value of the #Widget:menu property.
-    ///
-    fn set_menu<P: Is<Menu>>(&self, menu: &P);
+    // should be located in concrete widget
+    // /// widget_set_menu:
+    // /// @widget: A #Widget
+    // /// @menu: A #Menu
+    // ///
+    // /// Set the value of the #Widget:menu property.
+    // ///
+    // fn set_menu<P: Is<Menu>>(&self, menu: &P);
 
-    /// set_tooltip_delay:
-    /// @widget: an #Widget
-    ///
-    /// Set the value, in milliseconds, of the "tooltip-delay" property.
-    /// This is initially set to WIDGET_TOOLTIP_TIMEOUT.
-    ///
-    fn set_tooltip_delay(&self, delay: u32);
+    // should be located in concrete widget
+    // /// set_tooltip_delay:
+    // /// @widget: an #Widget
+    // ///
+    // /// Set the value, in milliseconds, of the "tooltip-delay" property.
+    // /// This is initially set to WIDGET_TOOLTIP_TIMEOUT.
+    // ///
+    // fn set_tooltip_delay(&self, delay: u32);
 
-    /// set_tooltip_text:
-    /// @widget: A #Widget
-    /// @text: text to set as the tooltip
-    ///
-    /// Set the tooltip text of the widget. Note that setting tooltip text will cause
-    /// the widget to be set reactive. If you no longer need tooltips and you do not
-    /// need the widget to be reactive, you must set ClutterActor::reactive to
-    /// %false.
-    ///
-    fn set_tooltip_text(&self, text: &str);
+    // should be located in concrete widget
+    // /// set_tooltip_text:
+    // /// @widget: A #Widget
+    // /// @text: text to set as the tooltip
+    // ///
+    // /// Set the tooltip text of the widget. Note that setting tooltip text will cause
+    // /// the widget to be set reactive. If you no longer need tooltips and you do not
+    // /// need the widget to be reactive, you must set ClutterActor::reactive to
+    // /// %false.
+    // ///
+    // fn set_tooltip_text(&self, text: &str);
 
-    /// show_tooltip:
-    /// @widget: A #Widget
-    ///
-    /// Show the tooltip for @widget
-    ///
-    fn show_tooltip(&self);
+    // should be located in concrete widget
+    // /// show_tooltip:
+    // /// @widget: A #Widget
+    // ///
+    // /// Show the tooltip for @widget
+    // ///
+    // fn show_tooltip(&self);
 
     //fn connect_long_press<Unsupported or ignored types>(&self, f: F) -> SignalHandlerId;
 
@@ -277,12 +338,14 @@ impl<O: Is<Widget>> WidgetExt for O {
     ///
     fn get_available_area(&self, allocation: &clutter::ActorBox, area: &mut clutter::ActorBox) {
         let widget = self.as_ref();
-        let x1 = widget.padding.left;
-        let y1 = widget.padding.top;
+        let props = widget.props.borrow();
+
+        let x1 = props.padding.left;
+        let y1 = props.padding.top;
 
         let (width, height) = allocation.get_size();
-        let x2 = f64::max(x1, width as f64 - widget.padding.right);
-        let y2 = f64::max(y1, height as f64 - widget.padding.bottom);
+        let x2 = f64::max(x1, width as f64 - props.padding.right);
+        let y2 = f64::max(y1, height as f64 - props.padding.bottom);
         // TODO: put x1,y2,x2,y2 into area
     }
 
@@ -296,11 +359,12 @@ impl<O: Is<Widget>> WidgetExt for O {
     /// Returns: (transfer none): a #ClutterColor
     fn get_background_color(&self) -> Option<clutter::Color> {
         let widget = self.as_ref();
-        let ret = widget.bg_color.clone();
-        Some(ret)
+        let props = widget.props.borrow();
+
+        props.bg_color.clone()
     }
 
-    //fn get_background_texture(&self) -> /*Ignored*/Option<cogl::Handle> {
+    //fn get_background_texture(&self) -> Option<cogl::Handle> {
     //    unsafe { TODO: call ffi:widget_get_background_texture() }
     //}
 
@@ -311,20 +375,23 @@ impl<O: Is<Widget>> WidgetExt for O {
     ///
     fn get_disabled(&self) -> bool {
         let widget = self.as_ref();
-        widget.is_disabled || widget.parent_disabled
+        let props = widget.props.borrow();
+
+        props.is_disabled || props.parent_disabled
     }
 
-    /// get_menu:
-    /// @widget: A #Widget
-    ///
-    /// Get the object in the #Widget:menu property.
-    ///
-    /// Returns: (transfer none): The current object in the "menu" property.
-    ///
-    fn get_menu(&self) -> Option<Menu> {
-        let widget = self.as_ref();
-        widget.menu.clone()
-    }
+    // should be located in concrete widget
+    // /// get_menu:
+    // /// @widget: A #Widget
+    // ///
+    // /// Get the object in the #Widget:menu property.
+    // ///
+    // /// Returns: (transfer none): The current object in the "menu" property.
+    // ///
+    // fn get_menu(&self) -> Option<Menu> {
+    //     let widget = self.as_ref();
+    //     widget.menu.clone()
+    // }
 
     /// get_padding:
     /// @widget: A #Widget
@@ -335,48 +402,53 @@ impl<O: Is<Widget>> WidgetExt for O {
     ///
     fn get_padding(&self) -> Padding {
         let widget = self.as_ref();
-        widget.padding.clone()
+        let props = widget.props.borrow();
+
+        props.padding.clone()
     }
 
-    /// get_tooltip_delay:
-    /// @widget: an #Widget
-    ///
-    /// Get the value of the "tooltip-delay" property.
-    ///
-    /// Returns: the current delay value in milliseconds
-    ///
-    fn get_tooltip_delay(&self) -> u32 {
-        let widget = self.as_ref();
-        widget.tooltip_delay
-    }
+    // should be located in concrete widget
+    // /// get_tooltip_delay:
+    // /// @widget: an #Widget
+    // ///
+    // /// Get the value of the "tooltip-delay" property.
+    // ///
+    // /// Returns: the current delay value in milliseconds
+    // ///
+    // fn get_tooltip_delay(&self) -> u32 {
+    //     let widget = self.as_ref();
+    //     widget.tooltip_delay
+    // }
 
-    /// get_tooltip_text:
-    /// @widget: A #Widget
-    ///
-    /// Get the current tooltip string
-    ///
-    /// Returns: The current tooltip string, owned by the #Widget
-    ///
-    fn get_tooltip_text(&self) -> Option<String> {
-        let widget = self.as_ref();
-        match &widget.tooltip {
-            Some(tooltip) => tooltip.get_text(),
-            None => None,
-        }
-    }
+    // should be located in concrete widget
+    // /// get_tooltip_text:
+    // /// @widget: A #Widget
+    // ///
+    // /// Get the current tooltip string
+    // ///
+    // /// Returns: The current tooltip string, owned by the #Widget
+    // ///
+    // fn get_tooltip_text(&self) -> Option<String> {
+    //     let widget = self.as_ref();
+    //     match &widget.tooltip {
+    //         Some(tooltip) => tooltip.get_text(),
+    //         None => None,
+    //     }
+    // }
 
-    /// hide_tooltip:
-    /// @widget: A #Widget
-    ///
-    /// Hide the tooltip for @widget
-    ///
-    fn hide_tooltip(&self) {
-        let widget = self.as_ref();
-        widget.remove_tooltip_timeout();
-        if let Some(tooltip) = &widget.tooltip {
-            tooltip.hide();
-        }
-    }
+    // should be located in concrete widget
+    // /// hide_tooltip:
+    // /// @widget: A #Widget
+    // ///
+    // /// Hide the tooltip for @widget
+    // ///
+    // fn hide_tooltip(&self) {
+    //     let widget = self.as_ref();
+    //     widget.remove_tooltip_timeout();
+    //     if let Some(tooltip) = &widget.tooltip {
+    //         tooltip.hide();
+    //     }
+    // }
 
     /// long_press_cancel:
     /// @widget: An Widget
@@ -386,8 +458,10 @@ impl<O: Is<Widget>> WidgetExt for O {
     ///
     fn long_press_cancel(&self) {
         let widget = self.as_ref();
-        if widget.long_press_source != 0 {
-            // widget.long_press_source = 0;
+        let mut props = widget.props.borrow_mut();
+
+        if props.long_press_source != 0 {
+            props.long_press_source = 0;
             // g_source_remove (widget.long_press_source);
             // TODO: emit signal LONG_PRESS_CANCEL
         }
@@ -400,7 +474,7 @@ impl<O: Is<Widget>> WidgetExt for O {
     /// Emit the long-press query signal and start a long-press timeout if required.
     ///
     fn long_press_query(&self, event: &mut clutter::Event) {
-        // let widget = self.as_ref();
+        let widget = self.as_ref();
         // let query_result = false;
         // let settings = Settings::get_default();
         // let timeout: usize = 0;
@@ -439,8 +513,10 @@ impl<O: Is<Widget>> WidgetExt for O {
     ///
     fn set_disabled(&self, disabled: bool) {
         let widget = self.as_ref();
-        if widget.is_disabled != disabled {
-            // widget.is_disabled = disabled;
+        let mut props = widget.props.borrow_mut();
+
+        if props.is_disabled != disabled {
+            props.is_disabled = disabled;
             if disabled {
                 // stylable_style_pseudo_class_add (STYLABLE (widget), "disabled");
             } else {
@@ -448,7 +524,7 @@ impl<O: Is<Widget>> WidgetExt for O {
             }
 
             // Propagate the disabled state to our children, if necessary
-            if !widget.parent_disabled {
+            if !props.parent_disabled {
                 // propogate_disabled((ClutterActor*)widget, disabled)
             }
 
@@ -462,136 +538,140 @@ impl<O: Is<Widget>> WidgetExt for O {
         }
     }
 
-    /// widget_set_menu:
-    /// @widget: A #Widget
-    /// @menu: A #Menu
-    ///
-    /// Set the value of the #Widget:menu property.
-    ///
-    fn set_menu<P: Is<Menu>>(&self, menu: &P) {
-        let widget = self.as_ref();
+    // should be located in concrete widget
+    // /// widget_set_menu:
+    // /// @widget: A #Widget
+    // /// @menu: A #Menu
+    // ///
+    // /// Set the value of the #Widget:menu property.
+    // ///
+    // fn set_menu<P: Is<Menu>>(&self, menu: &P) {
+    //     let widget = self.as_ref();
 
-        if let Some(menu) = &widget.menu {
-            // clutter_actor_destroy (CLUTTER_ACTOR (menu));
-            // widget.menu = None;
-        }
+    //     if let Some(menu) = &widget.menu {
+    //         // clutter_actor_destroy (CLUTTER_ACTOR (menu));
+    //         // widget.menu = None;
+    //     }
 
-        let menu = menu.as_ref();
-        // TODO: menu should be option to remove menu
-        {
-            // widget.menu = menu;
-            // clutter_actor_add_child (CLUTTER_ACTOR (widget), CLUTTER_ACTOR (menu));
-        }
+    //     let menu = menu.as_ref();
+    //     // TODO: menu should be option to remove menu
+    //     {
+    //         // widget.menu = menu;
+    //         // clutter_actor_add_child (CLUTTER_ACTOR (widget), CLUTTER_ACTOR (menu));
+    //     }
 
-        // clutter_actor_queue_relayout (CLUTTER_ACTOR (widget));
-    }
+    //     // clutter_actor_queue_relayout (CLUTTER_ACTOR (widget));
+    // }
 
-    /// set_tooltip_delay:
-    /// @widget: an #Widget
-    ///
-    /// Set the value, in milliseconds, of the "tooltip-delay" property.
-    /// This is initially set to WIDGET_TOOLTIP_TIMEOUT.
-    ///
-    fn set_tooltip_delay(&self, delay: u32) {
-        let widget = self.as_ref();
-        if widget.tooltip_delay != delay {
-            // widget.tooltip_delay = delay;
-            // g_object_notify_by_pspec (G_OBJECT (widget),
-            //                     widget_properties[PROP_TOOLTIP_DELAY]);
-        }
-    }
+    // should be located in concrete widget
+    // /// set_tooltip_delay:
+    // /// @widget: an #Widget
+    // ///
+    // /// Set the value, in milliseconds, of the "tooltip-delay" property.
+    // /// This is initially set to WIDGET_TOOLTIP_TIMEOUT.
+    // ///
+    // fn set_tooltip_delay(&self, delay: u32) {
+    //     let widget = self.as_ref();
+    //     if widget.tooltip_delay != delay {
+    //         // widget.tooltip_delay = delay;
+    //         // g_object_notify_by_pspec (G_OBJECT (widget),
+    //         //                     widget_properties[PROP_TOOLTIP_DELAY]);
+    //     }
+    // }
 
-    /// set_tooltip_text:
-    /// @widget: A #Widget
-    /// @text: text to set as the tooltip
-    ///
-    /// Set the tooltip text of the widget. Note that setting tooltip text will cause
-    /// the widget to be set reactive. If you no longer need tooltips and you do not
-    /// need the widget to be reactive, you must set ClutterActor::reactive to
-    /// %false.
-    ///
-    fn set_tooltip_text(&self, text: &str) {
-        let widget = self.as_ref();
-        // let mut old_text: Option<String> = None;
+    // should be located in concrete widget
+    // /// set_tooltip_text:
+    // /// @widget: A #Widget
+    // /// @text: text to set as the tooltip
+    // ///
+    // /// Set the tooltip text of the widget. Note that setting tooltip text will cause
+    // /// the widget to be set reactive. If you no longer need tooltips and you do not
+    // /// need the widget to be reactive, you must set ClutterActor::reactive to
+    // /// %false.
+    // ///
+    // fn set_tooltip_text(&self, text: &str) {
+    //     let widget = self.as_ref();
+    //     // let mut old_text: Option<String> = None;
 
-        // if let Some(tooltip) = &widget.tooltip {
-        //     old_text = tooltip.get_text();
-        // }
+    //     // if let Some(tooltip) = &widget.tooltip {
+    //     //     old_text = tooltip.get_text();
+    //     // }
 
-        // Don't do anything if the text hasn't changed
-        // if (text == old_text) ||
-        //     (text && old_text && g_str_equal (text, old_text)) {
-        //         return;
-        // }
+    //     // Don't do anything if the text hasn't changed
+    //     // if (text == old_text) ||
+    //     //     (text && old_text && g_str_equal (text, old_text)) {
+    //     //         return;
+    //     // }
 
-        // if text == None {
-        //     widget.set_has_tooltip(false);
-        // } else {
-        //     widget.set_has_tooltip(true);
-        // }
+    //     // if text == None {
+    //     //     widget.set_has_tooltip(false);
+    //     // } else {
+    //     //     widget.set_has_tooltip(true);
+    //     // }
 
-        if let Some(tooltip) = &widget.tooltip {
-            tooltip.set_text(text);
-        }
+    //     if let Some(tooltip) = &widget.tooltip {
+    //         tooltip.set_text(text);
+    //     }
 
-        // g_object_notify_by_pspec (G_OBJECT (widget),
-        //                             widget_properties[PROP_TOOLTIP_TEXT]);
-    }
+    //     // g_object_notify_by_pspec (G_OBJECT (widget),
+    //     //                             widget_properties[PROP_TOOLTIP_TEXT]);
+    // }
 
-    /// show_tooltip:
-    /// @widget: A #Widget
-    ///
-    /// Show the tooltip for @widget
-    ///
-    fn show_tooltip(&self) {
-        let widget = self.as_ref();
+    // should be located in concrete widget
+    // /// show_tooltip:
+    // /// @widget: A #Widget
+    // ///
+    // /// Show the tooltip for @widget
+    // ///
+    // fn show_tooltip(&self) {
+    //     let widget = self.as_ref();
 
-        // clutter::Geometry area;
-        // clutter::Vertex verts[4];
+    //     // clutter::Geometry area;
+    //     // clutter::Vertex verts[4];
 
-        /* Remove any timeout so we don't show the tooltip again */
-        // widget.remove_tooltip_timeout();
+    //     /* Remove any timeout so we don't show the tooltip again */
+    //     // widget.remove_tooltip_timeout();
 
-        /* XXX not necceary, but first allocate transform is wrong */
+    //     /* XXX not necceary, but first allocate transform is wrong */
 
-        /* Work out the bounding box */
-        // clutter_actor_get_abs_allocation_vertices ((ClutterActor*) widget,
-        //                                             verts);
+    //     /* Work out the bounding box */
+    //     // clutter_actor_get_abs_allocation_vertices ((ClutterActor*) widget,
+    //     //                                             verts);
 
-        // let mut x: f64;
-        // let mut y: f64;
-        // let mut x2: f64;
-        // let mut y2: f64;
+    //     // let mut x: f64;
+    //     // let mut y: f64;
+    //     // let mut x2: f64;
+    //     // let mut y2: f64;
 
-        // x = y = G_MAXFLOAT;
-        // x2 = y2 = -G_MAXFLOAT;
-        // for idx in 0..verts.len() {
+    //     // x = y = G_MAXFLOAT;
+    //     // x2 = y2 = -G_MAXFLOAT;
+    //     // for idx in 0..verts.len() {
 
-        //     if verts[idx].x < x {
-        //         x = verts[idx].x;
-        //     }
-        //     if verts[idx].x > x2 {
-        //         x2 = verts[i].x;
-        //     }
-        //     if verts[idx].y < y {
-        //         y = verts[idx].y;
-        //     }
+    //     //     if verts[idx].x < x {
+    //     //         x = verts[idx].x;
+    //     //     }
+    //     //     if verts[idx].x > x2 {
+    //     //         x2 = verts[i].x;
+    //     //     }
+    //     //     if verts[idx].y < y {
+    //     //         y = verts[idx].y;
+    //     //     }
 
-        //     if verts[idx].y > y2 {
-        //         y2 = verts[idx].y;
-        //     }
-        // }
+    //     //     if verts[idx].y > y2 {
+    //     //         y2 = verts[idx].y;
+    //     //     }
+    //     // }
 
-        // area.x = x;
-        // area.y = y;
-        // area.width = x2 - x;
-        // area.height = y2 - y;
+    //     // area.x = x;
+    //     // area.y = y;
+    //     // area.width = x2 - x;
+    //     // area.height = y2 - y;
 
-        // if let Some(tooltip) = &widget.tooltip {
-        //     tooltip.set_tip_area(&area);
-        //     tooltip.show();
-        // }
-    }
+    //     // if let Some(tooltip) = &widget.tooltip {
+    //     //     tooltip.set_tip_area(&area);
+    //     //     tooltip.show();
+    //     // }
+    // }
 
     //fn connect_long_press<Unsupported or ignored types>(&self, f: F) -> SignalHandlerId {
     //    Ignored p1: LongPressAction

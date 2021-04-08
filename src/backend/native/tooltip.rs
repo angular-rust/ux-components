@@ -18,7 +18,7 @@ pub struct Tooltip {
     pub border_image: BorderImage,
     pub text_allocation: Option<clutter::ActorBox>,
     // pub border_image_texture: cogl::Handle,
-    // widget: FloatingWidget,
+    widget: FloatingWidget,
 }
 
 impl Tooltip {
@@ -52,8 +52,7 @@ impl Is<FloatingWidget> for Tooltip {}
 
 impl AsRef<FloatingWidget> for Tooltip {
     fn as_ref(&self) -> &FloatingWidget {
-        // &self.widget
-        unimplemented!()
+        &self.widget
     }
 }
 
@@ -61,8 +60,8 @@ impl Is<Widget> for Tooltip {}
 
 impl AsRef<Widget> for Tooltip {
     fn as_ref(&self) -> &Widget {
-        // &self.widget
-        unimplemented!()
+        let widget: &Widget = self.widget.as_ref();
+        widget
     }
 }
 
@@ -70,9 +69,8 @@ impl Is<clutter::Actor> for Tooltip {}
 
 impl AsRef<clutter::Actor> for Tooltip {
     fn as_ref(&self) -> &clutter::Actor {
-        // let actor: &clutter::Actor = self.widget.as_ref();
-        // actor
-        unimplemented!()
+        let actor: &clutter::Actor = self.widget.as_ref();
+        actor
     }
 }
 

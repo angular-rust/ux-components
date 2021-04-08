@@ -8,7 +8,7 @@ use std::fmt;
 use std::{boxed::Box as Box_, cell::RefCell};
 
 #[derive(Clone, Debug)]
-pub struct Entry {
+pub struct EntryProps {
     pub entry: Option<clutter::Actor>,
     pub placeholder: Option<String>,
     pub primary_icon: Option<clutter::Actor>,
@@ -30,6 +30,11 @@ pub struct Entry {
     pub pointer_in_entry: bool,
     pub preedit_string: String,
     pub tooltip_timeout: u32,
+}
+
+#[derive(Clone, Debug)]
+pub struct Entry {
+    props: RefCell<EntryProps>,
     widget: Widget,
 }
 
@@ -85,15 +90,15 @@ impl AsRef<clutter::Actor> for Entry {
 pub const NONE_ENTRY: Option<&Entry> = None;
 
 pub trait EntryExt: 'static {
-    /// get_clutter_text:
-    /// @entry: a #Entry
-    ///
-    /// Retrieve the internal #ClutterText so that extra parameters can be set
-    ///
-    /// Returns: (transfer none): the #ClutterText used by #Entry. The entry is
-    /// owned by the #Entry and should not be unref'ed by the application.
-    ///
-    fn get_clutter_text(&self) -> &Option<clutter::Actor>;
+    // /// get_clutter_text:
+    // /// @entry: a #Entry
+    // ///
+    // /// Retrieve the internal #ClutterText so that extra parameters can be set
+    // ///
+    // /// Returns: (transfer none): the #ClutterText used by #Entry. The entry is
+    // /// owned by the #Entry and should not be unref'ed by the application.
+    // ///
+    // fn get_clutter_text(&self) -> &Option<clutter::Actor>;
 
     /// get_icon_highlight_suffix:
     /// @entry: a #Entry
@@ -250,18 +255,20 @@ pub trait EntryExt: 'static {
 }
 
 impl<O: Is<Entry>> EntryExt for O {
-    /// get_clutter_text:
-    /// @entry: a #Entry
-    ///
-    /// Retrieve the internal #ClutterText so that extra parameters can be set
-    ///
-    /// Returns: (transfer none): the #ClutterText used by #Entry. The entry is
-    /// owned by the #Entry and should not be unref'ed by the application.
-    ///
-    fn get_clutter_text(&self) -> &Option<clutter::Actor> {
-        let entry = self.as_ref();
-        &entry.entry
-    }
+    // /// get_clutter_text:
+    // /// @entry: a #Entry
+    // ///
+    // /// Retrieve the internal #ClutterText so that extra parameters can be set
+    // ///
+    // /// Returns: (transfer none): the #ClutterText used by #Entry. The entry is
+    // /// owned by the #Entry and should not be unref'ed by the application.
+    // ///
+    // fn get_clutter_text(&self) -> &Option<clutter::Actor> {
+    //     let entry = self.as_ref();
+    //     let props = entry.props.borrow();
+        
+    //     &props.entry
+    // }
 
     /// get_icon_highlight_suffix:
     /// @entry: a #Entry
@@ -274,7 +281,9 @@ impl<O: Is<Entry>> EntryExt for O {
     ///
     fn get_icon_highlight_suffix(&self) -> Option<String> {
         let entry = self.as_ref();
-        entry.icon_highlight_suffix.clone()
+        let props = entry.props.borrow();
+        
+        props.icon_highlight_suffix.clone()
     }
 
     /// get_password_char:
@@ -286,7 +295,9 @@ impl<O: Is<Entry>> EntryExt for O {
     ///
     fn get_password_char(&self) -> char {
         let entry = self.as_ref();
-        entry.password_char
+        let props = entry.props.borrow();
+
+        props.password_char
     }
 
     /// get_placeholder:
@@ -299,7 +310,7 @@ impl<O: Is<Entry>> EntryExt for O {
     ///
     fn get_placeholder(&self) -> Option<String> {
         let entry = self.as_ref();
-        entry.placeholder.clone()
+        entry.props.borrow().placeholder.clone()
     }
 
     /// get_text:

@@ -8,7 +8,7 @@ use std::fmt;
 use std::{boxed::Box as Box_, cell::RefCell};
 
 #[derive(Clone, Debug)]
-pub struct FocusManager {
+pub struct FocusManagerProps {
     pub stage: Option<clutter::Stage>,
 
     pub focused: Option<Focusable>,
@@ -16,8 +16,13 @@ pub struct FocusManager {
     pub refocus_idle: u32,
 }
 
+#[derive(Clone, Debug)]
+pub struct FocusManager {
+    props: RefCell<FocusManagerProps>,
+}
+
 impl FocusManager {
-    //pub fn get_for_stage(stage: /*Ignored*/&clutter::Stage) -> Option<FocusManager> {
+    //pub fn get_for_stage(stage: &clutter::Stage) -> Option<FocusManager> {
     //    unsafe { TODO: call ffi:focus_manager_get_for_stage() }
     //}
 }
@@ -99,7 +104,9 @@ impl<O: Is<FocusManager>> FocusManagerExt for O {
     ///
     fn get_focused(&self) -> Option<Focusable> {
         let focusmanager = self.as_ref();
-        focusmanager.focused.clone()
+        let props = focusmanager.props.borrow();
+
+        props.focused.clone()
     }
 
     /// focus_manager_get_stage:
@@ -111,7 +118,9 @@ impl<O: Is<FocusManager>> FocusManagerExt for O {
     ///
     fn get_stage(&self) -> Option<clutter::Stage> {
         let focusmanager = self.as_ref();
-        focusmanager.stage.clone()
+        let props = focusmanager.props.borrow();
+
+        props.stage.clone()
     }
 
     /// focus_manager_move_focus:
@@ -122,62 +131,61 @@ impl<O: Is<FocusManager>> FocusManagerExt for O {
     ///
     fn move_focus(&self, direction: FocusDirection) {
         let focusmanager = self.as_ref();
+        let props = focusmanager.props.borrow();
 
         // let mut new_focused;
 
-        // let old_focus = focusmanager.focused.clone();
+        let old_focus = props.focused.clone();
 
-        // if focusmanager.focused {
-        //     new_focused = focusable_move_focus(focusmanager.focused,
-        //                                             direction,
-        //                                             focusmanager.focused);
-        //     focus_manager_set_focused(manager, new_focused);
-        // }
-
-        // if !focusmanager.focused {
-        //     // If we're going next or previous, we wrap around, otherwise
-        //     // re-focus the last actor.
-        //     match direction {
-        //         FocusDirection::Next => {
-        //             if old_focus {
-        //                 focus_manager_start_focus(manager, FocusHint::First);
-        //             } else {
-        //                 focus_manager_ensure_focused(
-        //                     manager,
-        //                     CLUTTER_STAGE(focusmanager.stage),
-        //                     FocusHint::First,
-        //                 );
-        //             }
-        //         }
-        //         FocusDirection::Previous => {
-        //             if old_focus {
-        //                 focus_manager_start_focus(manager, FocusHint::Last);
-        //             } else {
-        //                 focus_manager_ensure_focused(
-        //                     manager,
-        //                     CLUTTER_STAGE(focusmanager.stage),
-        //                     FocusHint::Last,
-        //                 );
-        //             }
-        //         }
-        //         _ => {
-        //             // re-focus the original
-        //             if old_focus && (direction != FocusDirection::Out) {
-        //                 new_focused = focusable_accept_focus(old_focus, 0);
-        //                 focus_manager_set_focused(manager, new_focused);
-        //             } else {
-        //                 focus_manager_ensure_focused(
-        //                     manager,
-        //                     CLUTTER_STAGE(focusmanager.stage),
-        //                     FocusHint::First,
-        //                 );
-        //             }
-        //         }
-        //     }
-        // }
+        if props.focused.is_some() {
+            // new_focused = focusable_move_focus(focusmanager.focused,
+            //                                         direction,
+            //                                         focusmanager.focused);
+            // focus_manager_set_focused(manager, new_focused);
+        } else {
+            // // If we're going next or previous, we wrap around, otherwise
+            // // re-focus the last actor.
+            // match direction {
+            //     FocusDirection::Next => {
+            //         if old_focus {
+            //             focus_manager_start_focus(manager, FocusHint::First);
+            //         } else {
+            //             focus_manager_ensure_focused(
+            //                 manager,
+            //                 CLUTTER_STAGE(focusmanager.stage),
+            //                 FocusHint::First,
+            //             );
+            //         }
+            //     }
+            //     FocusDirection::Previous => {
+            //         if old_focus {
+            //             focus_manager_start_focus(manager, FocusHint::Last);
+            //         } else {
+            //             focus_manager_ensure_focused(
+            //                 manager,
+            //                 CLUTTER_STAGE(focusmanager.stage),
+            //                 FocusHint::Last,
+            //             );
+            //         }
+            //     }
+            //     _ => {
+            //         // re-focus the original
+            //         if old_focus && (direction != FocusDirection::Out) {
+            //             new_focused = focusable_accept_focus(old_focus, 0);
+            //             focus_manager_set_focused(manager, new_focused);
+            //         } else {
+            //             focus_manager_ensure_focused(
+            //                 manager,
+            //                 CLUTTER_STAGE(focusmanager.stage),
+            //                 FocusHint::First,
+            //             );
+            //         }
+            //     }
+            // }
+        }
 
         // // Notify if the focus has changed
-        // if focusmanager.focused != old_focus {
+        // if props.focused != old_focus {
         //     g_object_notify(G_OBJECT(manager), "focused");
         // }
     }

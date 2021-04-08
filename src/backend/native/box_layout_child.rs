@@ -14,12 +14,12 @@ pub struct BoxLayoutChildProps {
     pub y_fill: bool,
     pub x_align: Align,
     pub y_align: Align,
+    pub parent: clutter::ChildMeta,
 }
 
 #[derive(Clone, Debug)]
 pub struct BoxLayoutChild {
     props: RefCell<BoxLayoutChildProps>,
-    pub parent: clutter::ChildMeta,
 }
 
 impl Object for BoxLayoutChild {}

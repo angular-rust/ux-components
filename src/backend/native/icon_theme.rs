@@ -79,7 +79,7 @@ pub trait IconThemeExt: 'static {
     ///
     /// Return value: (transfer none): a #CoglHandle of the icon, or %None.
     ///
-    //fn lookup(&self, icon_name: &str, size: i32) -> /*Ignored*/Option<cogl::Handle>;
+    //fn lookup(&self, icon_name: &str, size: i32) -> Option<cogl::Handle>;
 
     ///set_search_paths:
     /// @theme: a #IconTheme

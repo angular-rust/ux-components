@@ -15,20 +15,20 @@ pub struct ActorManagerProps {
     // pub timer: GTimer,
     pub quark_set: bool,
     pub time_slice: u32,
+    pub stage: Option<clutter::Stage>,
 }
 
 #[derive(Clone, Debug)]
 pub struct ActorManager {
     props: RefCell<ActorManagerProps>,
-    pub stage: Option<clutter::Stage>,
 }
 
 impl ActorManager {
-    //pub fn new(stage: /*Ignored*/&clutter::Stage) -> ActorManager {
+    //pub fn new(stage: &clutter::Stage) -> ActorManager {
     //    unsafe { TODO: call ffi:actor_manager_new() }
     //}
 
-    //pub fn get_for_stage(stage: /*Ignored*/&clutter::Stage) -> Option<ActorManager> {
+    //pub fn get_for_stage(stage: &clutter::Stage) -> Option<ActorManager> {
     //    unsafe { TODO: call ffi:actor_manager_get_for_stage() }
     //}
 }
@@ -344,7 +344,9 @@ impl<O: Is<ActorManager>> ActorManagerExt for O {
     ///
     fn get_stage(&self) -> Option<clutter::Stage> {
         let manager = self.as_ref();
-        manager.stage.clone()
+        let props = manager.props.borrow();
+        
+        props.stage.clone()
     }
 
     /// get_time_slice:

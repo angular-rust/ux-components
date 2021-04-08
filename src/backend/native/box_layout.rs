@@ -23,12 +23,12 @@ pub struct BoxLayoutProps {
     pub scroll_to_focused: bool,
     pub orientation: Orientation,
     // pub last_focus: Focusable,
+    pub timeline: clutter::Timeline,
 }
 
 #[derive(Clone, Debug)]
 pub struct BoxLayout {
     props: RefCell<BoxLayoutProps>,
-    pub timeline: clutter::Timeline,
     widget: Widget,
 }
 

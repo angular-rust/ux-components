@@ -453,7 +453,8 @@ pub trait WindowExt: 'static {
     /// show:
     /// @window: A #Stage
     ///
-    /// Show the window
+    /// Show the window. Should called after size of stage is set,
+    /// for proper reallocation is happen.
     ///
     fn show(&self) -> &Self;
 
@@ -772,7 +773,7 @@ impl<O: Is<Stage>> WindowExt for O {
         }
     }
 
-    //fn set_icon_from_cogl_texture(&self, texture: /*Ignored*/cogl::Handle) {
+    //fn set_icon_from_cogl_texture(&self, texture: cogl::Handle) {
     //    unsafe { TODO: call ffi:window_set_icon_from_cogl_texture() }
     //}
 
@@ -967,7 +968,8 @@ impl<O: Is<Stage>> WindowExt for O {
     /// show:
     /// @window: A #Stage
     ///
-    /// Show the window
+    /// Show the window. Should called after size of stage is set,
+    /// for proper reallocation is happen.
     ///
     fn show(&self) -> &Self {
         let stage = self.as_ref();

@@ -33,12 +33,12 @@ pub struct AdjustmentProps {
     // For interpolation
     pub old_position: f64,
     pub new_position: f64,
+    pub interpolation: Option<clutter::Timeline>,
 }
 
 #[derive(Clone, Debug)]
 pub struct Adjustment {
     props: RefCell<AdjustmentProps>,
-    pub interpolation: Option<clutter::Timeline>,
 }
 
 impl Adjustment {
@@ -652,7 +652,8 @@ impl<O: Is<Adjustment>> AdjustmentExt for O {
     fn interpolate_relative(&self, offset: f64, duration: u32, mode: u64) {
         let adjustment = self.as_ref();
         let props = adjustment.props.borrow();
-        let offset = if adjustment.interpolation.is_some() {
+
+        let offset = if props.interpolation.is_some() {
             offset + props.new_position
         } else {
             offset + props.value

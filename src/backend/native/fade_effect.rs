@@ -8,7 +8,7 @@ use std::fmt;
 use std::{boxed::Box as Box_, cell::RefCell};
 
 #[derive(Clone, Debug)]
-pub struct FadeEffect {
+pub struct FadeEffectProps {
     pub x: i32,
     pub y: i32,
     pub bounds_width: u32,
@@ -30,6 +30,11 @@ pub struct FadeEffect {
 
     pub update_vbo: bool,
     pub freeze_update: bool,
+}
+
+#[derive(Clone, Debug)]
+pub struct FadeEffect {
+    props: RefCell<FadeEffectProps>,
 }
 
 impl FadeEffect {
@@ -236,11 +241,13 @@ impl<O: Is<FadeEffect>> FadeEffectExt for O {
     ///
     fn get_border(&self) -> (u32, u32, u32, u32) {
         let fadeeffect = self.as_ref();
+        let props = fadeeffect.props.borrow();
 
-        let top = fadeeffect.border[0];
-        let right = fadeeffect.border[1];
-        let bottom = fadeeffect.border[2];
-        let left = fadeeffect.border[3];
+        let top = props.border[0];
+        let right = props.border[1];
+        let bottom = props.border[2];
+        let left = props.border[3];
+
         (top, right, bottom, left)
     }
 
@@ -255,11 +262,13 @@ impl<O: Is<FadeEffect>> FadeEffectExt for O {
     ///
     fn get_bounds(&self) -> (i32, i32, u32, u32) {
         let fadeeffect = self.as_ref();
+        let props = fadeeffect.props.borrow();
 
-        let x = fadeeffect.x;
-        let y = fadeeffect.y;
-        let width = fadeeffect.bounds_width;
-        let height = fadeeffect.bounds_height;
+        let x = props.x;
+        let y = props.y;
+        let width = props.bounds_width;
+        let height = props.bounds_height;
+
         (x, y, width, height)
     }
 
@@ -271,7 +280,9 @@ impl<O: Is<FadeEffect>> FadeEffectExt for O {
     ///
     fn get_color(&self) -> clutter::Color {
         let fadeeffect = self.as_ref();
-        fadeeffect.color.clone()
+        let props = fadeeffect.props.borrow();
+
+        props.color.clone()
     }
 
     /// set_border:
@@ -286,30 +297,31 @@ impl<O: Is<FadeEffect>> FadeEffectExt for O {
     ///
     fn set_border(&self, top: u32, right: u32, bottom: u32, left: u32) {
         let fadeeffect = self.as_ref();
+        let mut props = fadeeffect.props.borrow_mut();
 
         // g_object_freeze_notify(G_OBJECT(effect));
 
-        // if fadeeffect.border[0] != top {
-        //     fadeeffect.border[0] = top;
+        if props.border[0] != top {
+            props.border[0] = top;
         //     g_object_notify(G_OBJECT(effect), "border-top");
-        // }
+        }
 
-        // if fadeeffect.border[1] != right {
-        //     fadeeffect.border[1] = right;
+        if props.border[1] != right {
+            props.border[1] = right;
         //     g_object_notify(G_OBJECT(effect), "border-right");
-        // }
+        }
 
-        // if fadeeffect.border[2] != bottom {
-        //     fadeeffect.border[2] = bottom;
+        if props.border[2] != bottom {
+            props.border[2] = bottom;
         //     g_object_notify(G_OBJECT(effect), "border-bottom");
-        // }
+        }
 
-        // if fadeeffect.border[3] != left {
-        //     fadeeffect.border[3] = left;
+        if props.border[3] != left {
+            props.border[3] = left;
         //     g_object_notify(G_OBJECT(effect), "border-left");
-        // }
+        }
 
-        // fadeeffect.update_vbo = true;
+        props.update_vbo = true;
 
         // g_object_thaw_notify(G_OBJECT(effect));
     }
@@ -333,30 +345,31 @@ impl<O: Is<FadeEffect>> FadeEffectExt for O {
     ///
     fn set_bounds(&self, x: i32, y: i32, width: u32, height: u32) {
         let fadeeffect = self.as_ref();
+        let mut props = fadeeffect.props.borrow_mut();
 
         // g_object_freeze_notify(G_OBJECT(effect));
 
-        // if fadeeffect.x != x) {
-        //     fadeeffect.x = x;
+        if props.x != x {
+            props.x = x;
         //     g_object_notify(G_OBJECT(effect), "bounds-x");
-        // }
+        }
 
-        // if fadeeffect.y != y {
-        //     fadeeffect.y = y;
+        if props.y != y {
+            props.y = y;
         //     g_object_notify(G_OBJECT(effect), "bounds-y");
-        // }
+        }
 
-        // if fadeeffect.bounds_width != width {
-        //     fadeeffect.bounds_width = width;
+        if props.bounds_width != width {
+            props.bounds_width = width;
         //     g_object_notify(G_OBJECT(effect), "bounds-width");
-        // }
+        }
 
-        // if fadeeffect.bounds_height != height {
-        //     fadeeffect.bounds_height = height;
+        if props.bounds_height != height {
+            props.bounds_height = height;
         //     g_object_notify(G_OBJECT(effect), "bounds-height");
-        // }
+        }
 
-        // fadeeffect.update_vbo = true;
+        props.update_vbo = true;
 
         // g_object_thaw_notify(G_OBJECT(effect));
     }
@@ -370,10 +383,11 @@ impl<O: Is<FadeEffect>> FadeEffectExt for O {
     ///
     fn set_color(&self, color: &clutter::Color) {
         let fadeeffect = self.as_ref();
+        // let mut props = fadeeffect.props.borrow_mut();
 
         // if !clutter_color_equal(&fadeeffect.color, color) {
-        //     fadeeffect.color = *color;
-        //     fadeeffect.update_vbo = true;
+        //     props.color = color;
+        //     props.update_vbo = true;
         //     g_object_notify(G_OBJECT(effect), "color");
         // }
     }

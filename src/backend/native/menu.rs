@@ -27,7 +27,7 @@ pub struct Menu {
     pub down_button: Option<clutter::Actor>,
     pub up_source: u64,
     pub down_source: u64,
-    // widget: FloatingWidget,
+    widget: FloatingWidget,
 }
 
 impl Menu {
@@ -57,8 +57,7 @@ impl Is<FloatingWidget> for Menu {}
 
 impl AsRef<FloatingWidget> for Menu {
     fn as_ref(&self) -> &FloatingWidget {
-        // &self.widget
-        unimplemented!()
+        &self.widget
     }
 }
 
@@ -66,8 +65,8 @@ impl Is<Widget> for Menu {}
 
 impl AsRef<Widget> for Menu {
     fn as_ref(&self) -> &Widget {
-        // &self.widget
-        unimplemented!()
+        let widget: &Widget = self.widget.as_ref();
+        widget
     }
 }
 
@@ -75,9 +74,8 @@ impl Is<clutter::Actor> for Menu {}
 
 impl AsRef<clutter::Actor> for Menu {
     fn as_ref(&self) -> &clutter::Actor {
-        // let actor: &clutter::Actor = self.widget.as_ref();
-        // actor
-        unimplemented!()
+        let actor: &clutter::Actor = self.widget.as_ref();
+        actor
     }
 }
 

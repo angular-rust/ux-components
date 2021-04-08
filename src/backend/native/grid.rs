@@ -8,7 +8,7 @@ use std::fmt;
 use std::{boxed::Box as Box_, cell::RefCell};
 
 #[derive(Clone, Debug)]
-pub struct Grid {
+pub struct GridProps {
     // pub hash_table: GHashTable,
     pub homogenous_rows: bool,
     pub homogenous_columns: bool,
@@ -29,6 +29,11 @@ pub struct Grid {
     pub last_focus: Focusable,
     pub ignore_css_col_spacing: bool,
     pub ignore_css_row_spacing: bool,
+}
+
+#[derive(Clone, Debug)]
+pub struct Grid {
+    props: RefCell<GridProps>,
     widget: Widget,
 }
 
@@ -151,118 +156,144 @@ pub trait GridExt: 'static {
 impl<O: Is<Grid>> GridExt for O {
     fn get_child_x_align(&self) -> Align {
         let grid = self.as_ref();
-        grid.child_x_align
+        let props = grid.props.borrow();
+
+        props.child_x_align
     }
 
     fn get_child_y_align(&self) -> Align {
         let grid = self.as_ref();
-        grid.child_y_align
+        let props = grid.props.borrow();
+        
+        props.child_y_align
     }
 
     fn get_column_spacing(&self) -> f32 {
         let grid = self.as_ref();
-        grid.col_spacing
+        let props = grid.props.borrow();
+        
+        props.col_spacing
     }
 
     fn get_homogenous_columns(&self) -> bool {
         let grid = self.as_ref();
-        grid.homogenous_columns
+        let props = grid.props.borrow();
+        
+        props.homogenous_columns
     }
 
     fn get_homogenous_rows(&self) -> bool {
         let grid = self.as_ref();
-        grid.homogenous_rows
+        let props = grid.props.borrow();
+        
+        props.homogenous_rows
     }
 
     fn get_line_alignment(&self) -> Align {
         let grid = self.as_ref();
-        grid.line_alignment
+        let props = grid.props.borrow();
+        
+        props.line_alignment
     }
 
     fn get_max_stride(&self) -> i32 {
         let grid = self.as_ref();
-        grid.max_stride
+        let props = grid.props.borrow();
+        
+        props.max_stride
     }
 
     fn get_orientation(&self) -> Orientation {
         let grid = self.as_ref();
-        grid.orientation
+        let props = grid.props.borrow();
+        
+        props.orientation
     }
 
     fn get_row_spacing(&self) -> f32 {
         let grid = self.as_ref();
-        grid.row_spacing
+        let props = grid.props.borrow();
+        
+        props.row_spacing
     }
 
     fn set_child_x_align(&self, value: Align) {
         let grid = self.as_ref();
-
-        if value != grid.child_x_align {
-            // grid.child_x_align = value;
+        let mut props = grid.props.borrow_mut();
+        
+        if value != props.child_x_align {
+            props.child_x_align = value;
             // clutter_actor_queue_relayout(CLUTTER_ACTOR(self));
         }
     }
 
     fn set_child_y_align(&self, value: Align) {
         let grid = self.as_ref();
+        let mut props = grid.props.borrow_mut();
 
-        if value != grid.child_y_align {
-            // grid.child_y_align = value;
+        if value != props.child_y_align {
+            props.child_y_align = value;
             // clutter_actor_queue_relayout(CLUTTER_ACTOR(self));
         }
     }
 
     fn set_column_spacing(&self, value: f32) {
         let grid = self.as_ref();
+        let mut props = grid.props.borrow_mut();
 
-        if grid.col_spacing != value {
-            // grid.ignore_css_col_spacing = true;
-            // grid.col_spacing = value;
+        if props.col_spacing != value {
+            props.ignore_css_col_spacing = true;
+            props.col_spacing = value;
             // clutter_actor_queue_relayout(CLUTTER_ACTOR(self));
         }
     }
 
     fn set_homogenous_columns(&self, value: bool) {
         let grid = self.as_ref();
+        let mut props = grid.props.borrow_mut();
 
-        if value != grid.homogenous_columns {
-            // grid.homogenous_columns = value;
+        if value != props.homogenous_columns {
+            props.homogenous_columns = value;
             // clutter_actor_queue_relayout(CLUTTER_ACTOR(self));
         }
     }
 
     fn set_homogenous_rows(&self, value: bool) {
         let grid = self.as_ref();
+        let mut props = grid.props.borrow_mut();
 
-        if value != grid.homogenous_rows {
-            // grid.homogenous_rows = value;
+        if value != props.homogenous_rows {
+            props.homogenous_rows = value;
             // clutter_actor_queue_relayout(CLUTTER_ACTOR(self));
         }
     }
 
     fn set_line_alignment(&self, value: Align) {
         let grid = self.as_ref();
+        let mut props = grid.props.borrow_mut();
 
-        if value != grid.line_alignment {
-            // grid.line_alignment = value;
+        if value != props.line_alignment {
+            props.line_alignment = value;
             // clutter_actor_queue_relayout(CLUTTER_ACTOR(self));
         }
     }
 
     fn set_max_stride(&self, value: i32) {
         let grid = self.as_ref();
+        let mut props = grid.props.borrow_mut();
 
-        if value != grid.max_stride {
-            // grid.max_stride = value;
+        if value != props.max_stride {
+            props.max_stride = value;
             // clutter_actor_queue_relayout(CLUTTER_ACTOR(self));
         }
     }
 
     fn set_orientation(&self, orientation: Orientation) {
         let grid = self.as_ref();
+        let mut props = grid.props.borrow_mut();
 
-        if grid.orientation != orientation {
-            // grid.orientation = orientation;
+        if props.orientation != orientation {
+            props.orientation = orientation;
             // clutter_actor_queue_relayout(CLUTTER_ACTOR(self));
             // g_object_notify(G_OBJECT(self), "orientation");
         }
@@ -270,10 +301,11 @@ impl<O: Is<Grid>> GridExt for O {
 
     fn set_row_spacing(&self, value: f32) {
         let grid = self.as_ref();
+        let mut props = grid.props.borrow_mut();
 
-        if value != grid.row_spacing {
-            // grid.ignore_css_row_spacing = true;
-            // grid.row_spacing = value;
+        if value != props.row_spacing {
+            props.ignore_css_row_spacing = true;
+            props.row_spacing = value;
             // clutter_actor_queue_relayout(CLUTTER_ACTOR(self));
         }
     }

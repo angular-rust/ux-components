@@ -22,11 +22,6 @@ pub struct ButtonProps {
     pub icon_position: Position,
     pub icon_visible: bool,
     pub label_visible: bool,
-}
-
-#[derive(Clone, Debug)]
-pub struct Button {
-    props: RefCell<ButtonProps>,
     pub content_image: cogl::Texture,
     // pub animation: clutter::Animation,
     pub child: clutter::Actor,
@@ -35,6 +30,11 @@ pub struct Button {
     pub label: clutter::Actor,
     // pub action_label_binding: GBinding,
     // pub action_icon_binding: GBinding,
+}
+
+#[derive(Clone, Debug)]
+pub struct Button {
+    props: RefCell<ButtonProps>,
     widget: Widget,
 }
 

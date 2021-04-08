@@ -8,19 +8,19 @@ use gobject_sys::GValue;
 use std::fmt;
 use std::{boxed::Box as Box_, cell::RefCell};
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Default, Debug)]
 pub struct StyleSheetValue {
     pub string: String,
     pub source: String,
 }
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Default, Debug)]
 pub struct StyleSheet {
     pub selectors: Vec<Selector>,
     pub filenames: Vec<String>,
 }
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Default, Debug)]
 pub struct Selector {
     pub selector_type: String,
     pub id: String,
@@ -35,7 +35,7 @@ pub struct Selector {
     pub priority: i32,
 }
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Default, Debug)]
 pub struct SelectorMatch {
     pub selector: Selector,
     pub score: i32,
@@ -44,7 +44,7 @@ pub struct SelectorMatch {
 /// A style cache entry is the unique string representing all the properties
 /// that can be matched against in CSS, and the matched properties themselves.
 ///
-#[derive(Clone, Debug)]
+#[derive(Clone, Default, Debug)]
 pub struct StyleCacheEntry {
     pub style_string: String,
     pub age: u32,
@@ -54,7 +54,7 @@ pub struct StyleCacheEntry {
 /// This is the per-stylable cache store. We need a reference back to the
 /// parent style so that we can maintain the count of alive stylables.
 ///
-#[derive(Clone, Debug)]
+#[derive(Clone, Default, Debug)]
 pub struct StylableCache {
     pub styles: Vec<String>,
     pub string: String,
@@ -67,11 +67,11 @@ pub struct StyleProperty {
     pub value: GValue,
 }
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Default, Debug)]
 pub struct Stylable;
 
-#[derive(Clone, Debug)]
-pub struct Style {
+#[derive(Clone, Default, Debug)]
+pub struct StyleProps {
     pub stylesheet: StyleSheet,
     // pub style_hash: GHashTable,
     // pub node_hash: GHashTable,
@@ -81,11 +81,16 @@ pub struct Style {
     pub age: u32,
 }
 
+#[derive(Clone, Debug)]
+pub struct Style {
+    props: RefCell<StyleProps>
+}
+
 impl Style {
     pub fn new() -> Style {
-        // assert_initialized_main_thread!();
-        // unsafe { from_glib_full(ffi::style_new()) }
-        unimplemented!()
+        Self {
+            props: Default::default()
+        }
     }
 
     pub fn get_default() -> Option<Style> {

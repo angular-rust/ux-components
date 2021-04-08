@@ -245,7 +245,7 @@ pub trait ImageExt: 'static {
     ///
     /// Returns: %true on success, %false on failure
     ///
-    //fn set_from_cogl_texture(&self, texture: /*Ignored*/cogl::Handle) -> bool;
+    //fn set_from_cogl_texture(&self, texture: cogl::Handle) -> bool;
 
     /// set_from_data:
     /// @image: An #Image

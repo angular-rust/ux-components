@@ -8,7 +8,7 @@ use std::fmt;
 use std::{boxed::Box as Box_, cell::RefCell};
 
 #[derive(Clone, Debug)]
-pub struct Expander {
+pub struct ExpanderProps {
     pub label: Option<clutter::Actor>,
     pub arrow: Option<clutter::Actor>,
     pub spacing: f64,
@@ -16,6 +16,11 @@ pub struct Expander {
     pub progress: u64,
     pub expanded: bool,
     pub child: Option<clutter::Actor>,
+}
+
+#[derive(Clone, Debug)]
+pub struct Expander {
+    props: RefCell<ExpanderProps>,
     widget: Widget,
 }
 
@@ -107,7 +112,9 @@ impl<O: Is<Expander>> ExpanderExt for O {
     ///
     fn get_expanded(&self) -> bool {
         let expander = self.as_ref();
-        expander.expanded
+        let props = expander.props.borrow();
+
+        props.expanded
     }
 
     /// set_expanded:
@@ -119,9 +126,10 @@ impl<O: Is<Expander>> ExpanderExt for O {
     ///
     fn set_expanded(&self, expanded: bool) {
         let expander = self.as_ref();
+        let mut props = expander.props.borrow_mut();
 
-        if expander.expanded != expanded {
-            // expander.expanded = expanded;
+        if props.expanded != expanded {
+            props.expanded = expanded;
 
             // expander.update();
             // g_object_notify (G_OBJECT (expander), "expanded");
