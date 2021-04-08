@@ -30,29 +30,30 @@ pub struct ImageAsyncData {
 }
 
 #[derive(Clone, Debug)]
-pub struct Image {
+pub struct ImageProps {
     pub mode: ImageScaleMode,
     pub previous_mode: ImageScaleMode,
     pub load_async: bool,
     pub upscale: bool,
     pub width_threshold: u32,
     pub height_threshold: u32,
-
     // pub texture: cogl::Handle,
     // pub old_texture: cogl::Handle,
     // pub blank_texture: cogl::Handle,
     pub rotation: f32,
     pub old_rotation: f32,
     pub old_mode: ImageScaleMode,
-
     // pub template_material: cogl::Material,
     // pub material: cogl::Material,
     pub timeline: clutter::Timeline,
     pub redraw_timeline: clutter::Timeline,
-
     pub transition_duration: u32,
+    pub async_load_data: Option<ImageAsyncData>,
+}
 
-    pub async_load_data: ImageAsyncData,
+#[derive(Clone, Debug)]
+pub struct Image {
+    props: RefCell<ImageProps>,
 }
 
 impl Image {
@@ -478,7 +479,9 @@ impl<O: Is<Image>> ImageExt for O {
     ///
     fn get_allow_upscale(&self) -> bool {
         let image = self.as_ref();
-        image.upscale
+        let props = image.props.borrow();
+
+        props.upscale
     }
 
     /// get_image_rotation:
@@ -490,7 +493,9 @@ impl<O: Is<Image>> ImageExt for O {
     ///
     fn get_image_rotation(&self) -> f32 {
         let image = self.as_ref();
-        image.rotation
+        let props = image.props.borrow();
+
+        props.rotation
     }
 
     /// get_load_async:
@@ -502,7 +507,9 @@ impl<O: Is<Image>> ImageExt for O {
     ///
     fn get_load_async(&self) -> bool {
         let image = self.as_ref();
-        image.load_async
+        let props = image.props.borrow();
+
+        props.load_async
     }
 
     /// get_scale_height_threshold:
@@ -514,7 +521,9 @@ impl<O: Is<Image>> ImageExt for O {
     ///
     fn get_scale_height_threshold(&self) -> u32 {
         let image = self.as_ref();
-        image.height_threshold
+        let props = image.props.borrow();
+
+        props.height_threshold
     }
 
     /// get_scale_mode:
@@ -526,7 +535,9 @@ impl<O: Is<Image>> ImageExt for O {
     ///
     fn get_scale_mode(&self) -> ImageScaleMode {
         let image = self.as_ref();
-        image.mode
+        let props = image.props.borrow();
+
+        props.mode
     }
 
     /// get_scale_width_threshold:
@@ -538,7 +549,9 @@ impl<O: Is<Image>> ImageExt for O {
     ///
     fn get_scale_width_threshold(&self) -> u32 {
         let image = self.as_ref();
-        image.width_threshold
+        let props = image.props.borrow();
+
+        props.width_threshold
     }
 
     /// get_transition_duration:
@@ -550,7 +563,9 @@ impl<O: Is<Image>> ImageExt for O {
     ///
     fn get_transition_duration(&self) -> u32 {
         let image = self.as_ref();
-        image.transition_duration
+        let props = image.props.borrow();
+
+        props.transition_duration
     }
 
     /// set_allow_upscale:
@@ -566,9 +581,10 @@ impl<O: Is<Image>> ImageExt for O {
     ///
     fn set_allow_upscale(&self, allow: bool) {
         let image = self.as_ref();
+        let mut props = image.props.borrow_mut();
 
-        if image.upscale != allow {
-            // image.upscale = allow;
+        if props.upscale != allow {
+            props.upscale = allow;
             // g_object_notify(G_OBJECT(image), "allow-upscale");
         }
     }
@@ -617,11 +633,12 @@ impl<O: Is<Image>> ImageExt for O {
         height: i32,
     ) -> Result<(), glib::Error> {
         let image = self.as_ref();
+        let props = image.props.borrow();
 
-        // if image.load_async {
+        if props.load_async {
         //     return image.set_async(None, buffer, buffer_size,
         //                             buffer_free_func, width, height, error);
-        // }
+        }
 
         // let pixbuf: GdkPixbuf = Image::pixbuf_new(None, buffer, buffer_size, width, height,
         //     image.width_threshold, image.height_threshold,
@@ -873,9 +890,10 @@ impl<O: Is<Image>> ImageExt for O {
     ///
     fn set_image_rotation(&self, rotation: f32) {
         let image = self.as_ref();
+        let mut props = image.props.borrow_mut();
 
-        if image.rotation != rotation {
-            // image.rotation = rotation;
+        if props.rotation != rotation {
+            props.rotation = rotation;
 
             // clutter_actor_queue_redraw(CLUTTER_ACTOR(image));
 
@@ -897,19 +915,18 @@ impl<O: Is<Image>> ImageExt for O {
     ///
     fn set_load_async(&self, load_async: bool) {
         let image = self.as_ref();
+        let mut props = image.props.borrow_mut();
 
-        // if image.load_async != load_async {
-        //     image.load_async = load_async;
-        //     g_object_notify(G_OBJECT(image), "load-async");
+        if props.load_async != load_async {
+            props.load_async = load_async;
+            // g_object_notify(G_OBJECT(image), "load-async");
 
-        //     // Cancel the old transfer if we're turning async off
-        //     if !load_async && image.async_load_data {
-        //         image.async_load_data.cancelled = true;
-        //         image.async_load_data = None;
-        //     }
-        // }
-
-        unimplemented!()
+            // Cancel the old transfer if we're turning async off
+            if !load_async && props.async_load_data.is_some() {
+                // props.async_load_data.cancelled = true;
+                props.async_load_data = None;
+            }
+        }
     }
 
     /// set_scale_height_threshold:
@@ -925,9 +942,10 @@ impl<O: Is<Image>> ImageExt for O {
     ///
     fn set_scale_height_threshold(&self, pixels: u32) {
         let image = self.as_ref();
+        let mut props = image.props.borrow_mut();
 
-        if image.height_threshold != pixels {
-            // image.height_threshold = pixels;
+        if props.height_threshold != pixels {
+            props.height_threshold = pixels;
             // g_object_notify(G_OBJECT (image), "scale-height-threshold");
         }
     }
@@ -940,13 +958,14 @@ impl<O: Is<Image>> ImageExt for O {
     ///
     fn set_scale_mode(&self, mode: ImageScaleMode) {
         let image = self.as_ref();
+        let mut props = image.props.borrow_mut();
 
-        // if image.mode != mode {
-        //     image.previous_mode = mode;
-        //     image.mode = mode;
+        if props.mode != mode {
+            props.previous_mode = mode;
+            props.mode = mode;
 
-        //     g_object_notify(G_OBJECT(image), "scale-mode");
-        // }
+            // g_object_notify(G_OBJECT(image), "scale-mode");
+        }
 
         // clutter_actor_queue_redraw(CLUTTER_ACTOR (image));
     }
@@ -964,9 +983,10 @@ impl<O: Is<Image>> ImageExt for O {
     ///
     fn set_scale_width_threshold(&self, pixels: u32) {
         let image = self.as_ref();
+        let mut props = image.props.borrow_mut();
 
-        if image.width_threshold != pixels {
-            // image.width_threshold = pixels;
+        if props.width_threshold != pixels {
+            props.width_threshold = pixels;
             // g_object_notify(G_OBJECT(image), "scale-width-threshold");
         }
     }
@@ -979,14 +999,14 @@ impl<O: Is<Image>> ImageExt for O {
     ///
     fn set_transition_duration(&self, duration: u32) {
         let image = self.as_ref();
+        let mut props = image.props.borrow_mut();
 
-        if image.transition_duration != duration {
-            // image.transition_duration = duration;
+        if props.transition_duration != duration {
+            props.transition_duration = duration;
 
-            // if duration != 0 {
-            //     clutter_timeline_set_duration(image.timeline, duration);
-            // }
-
+            if duration != 0 {
+                // clutter_timeline_set_duration(image.timeline, duration);
+            }
             // g_object_notify(G_OBJECT (image), "transition-duration");
         }
     }

@@ -8,7 +8,7 @@ use std::fmt;
 use std::{boxed::Box as Box_, cell::RefCell};
 
 #[derive(Clone, Debug)]
-pub struct ScrollView {
+pub struct ScrollViewProps {
     pub child: Option<clutter::Actor>,
     pub hscroll: Option<clutter::Actor>,
     pub vscroll: Option<clutter::Actor>,
@@ -17,6 +17,11 @@ pub struct ScrollView {
     pub scrollbar_height: u32,
     pub scroll_policy: ScrollPolicy,
     pub scroll_visibility: ScrollPolicy,
+}
+
+#[derive(Clone, Debug)]
+pub struct ScrollView {
+    props: RefCell<ScrollViewProps>,
     widget: Widget,
 }
 
@@ -121,53 +126,58 @@ impl<O: Is<ScrollView>> ScrollViewExt for O {
 
     fn get_enable_mouse_scrolling(&self) -> bool {
         let scrollview = self.as_ref();
-        scrollview.mouse_scroll
+        let props = scrollview.props.borrow();
+
+        props.mouse_scroll
     }
 
     fn get_scroll_policy(&self) -> ScrollPolicy {
         let scrollview = self.as_ref();
-        scrollview.scroll_policy
+        let props = scrollview.props.borrow();
+        
+        props.scroll_policy
     }
 
     fn get_scroll_visibility(&self) -> ScrollPolicy {
         let scrollview = self.as_ref();
-        scrollview.scroll_visibility
+        let props = scrollview.props.borrow();
+        
+        props.scroll_visibility
     }
 
     fn set_enable_mouse_scrolling(&self, enabled: bool) {
         let scrollview = self.as_ref();
+        let mut props = scrollview.props.borrow_mut();
+        
+        if props.mouse_scroll != enabled {
+            props.mouse_scroll = enabled;
 
-        if scrollview.mouse_scroll != enabled {
-            // scrollview.mouse_scroll = enabled;
-
-            // // make sure we can receive mouse wheel events */
-            // if enabled {
-            //     clutter_actor_set_reactive((ClutterActor *)scroll, true);
-            // }
+            // make sure we can receive mouse wheel events */
+            if enabled {
+                // clutter_actor_set_reactive((ClutterActor *)scroll, true);
+            }
             // g_object_notify(G_OBJECT(scroll), "enable-mouse-scrolling");
         }
     }
 
     fn set_scroll_policy(&self, policy: ScrollPolicy) {
         let scrollview = self.as_ref();
+        let mut props = scrollview.props.borrow_mut();
 
-        if scrollview.scroll_policy != policy {
-            // scrollview.scroll_policy = policy;
-
+        if props.scroll_policy != policy {
+            props.scroll_policy = policy;
             // g_object_notify(G_OBJECT(scroll), "scroll-policy");
-
             // clutter_actor_queue_relayout(CLUTTER_ACTOR(scroll));
         }
     }
 
     fn set_scroll_visibility(&self, visibility: ScrollPolicy) {
         let scrollview = self.as_ref();
+        let mut props = scrollview.props.borrow_mut();
 
-        if scrollview.scroll_visibility != visibility {
-            // scrollview.scroll_visibility = visibility;
-
+        if props.scroll_visibility != visibility {
+            props.scroll_visibility = visibility;
             // g_object_notify(G_OBJECT(scroll), "scroll-visibility");
-
             // clutter_actor_queue_relayout(CLUTTER_ACTOR(scroll));
         }
     }

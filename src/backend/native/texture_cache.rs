@@ -30,10 +30,14 @@ pub struct TextureCacheMetaEntry {
 }
 
 #[derive(Clone, Debug)]
-pub struct TextureCache {
+pub struct TextureCacheProps {
     // pub parent: GObject,
 // pub cache: GHashTable,
 // pub is_uri: GRegex,
+}
+#[derive(Clone, Debug)]
+pub struct TextureCache {
+    props: RefCell<TextureCacheProps>,
 }
 
 impl TextureCache {

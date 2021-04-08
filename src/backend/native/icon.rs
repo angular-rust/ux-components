@@ -8,14 +8,19 @@ use std::fmt;
 use std::{boxed::Box as Box_, cell::RefCell};
 
 #[derive(Clone, Debug)]
-pub struct Icon {
+pub struct IconProps {
     pub icon_set: bool,
     pub size_set: bool,
     pub is_content_image: bool,
     pub icon_texture: Option<cogl::Texture>,
     pub icon_name: Option<String>,
     pub icon_suffix: Option<String>,
-    pub icon_size: i32,
+    pub icon_size: usize,
+}
+
+#[derive(Clone, Debug)]
+pub struct Icon {
+    props: RefCell<IconProps>,
     widget: Widget,
 }
 
@@ -64,11 +69,11 @@ pub const NONE_ICON: Option<&Icon> = None;
 pub trait IconExt: 'static {
     fn get_icon_name(&self) -> Option<String>;
 
-    fn get_icon_size(&self) -> i32;
+    fn get_icon_size(&self) -> usize;
 
-    fn set_icon_name(&self, icon_name: &str);
+    fn set_icon_name(&self, icon_name: Option<String>);
 
-    fn set_icon_size(&self, size: i32);
+    fn set_icon_size(&self, size: usize);
 
     fn connect_property_icon_name_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
 
@@ -78,59 +83,63 @@ pub trait IconExt: 'static {
 impl<O: Is<Icon>> IconExt for O {
     fn get_icon_name(&self) -> Option<String> {
         let icon = self.as_ref();
-        icon.icon_name.clone()
+        let props = icon.props.borrow();
+
+        props.icon_name.clone()
     }
 
-    fn get_icon_size(&self) -> i32 {
+    fn get_icon_size(&self) -> usize {
         let icon = self.as_ref();
-        icon.icon_size
+        let props = icon.props.borrow();
+
+        props.icon_size
     }
 
-    fn set_icon_name(&self, icon_name: &str) {
+    fn set_icon_name(&self, icon_name: Option<String>) {
         let icon = self.as_ref();
+        let mut props = icon.props.borrow_mut();
 
         // // Unset the icon name if necessary
         // if !icon_name {
-        //     if icon.icon_set {
-        //         icon.icon_set = false;
+        //     if props.icon_set {
+        //         props.icon_set = false;
         //         stylable_style_changed(STYLABLE (icon), STYLE_CHANGED_NONE);
         //     }
 
         //     return;
         // }
 
-        // icon.icon_set = true;
+        props.icon_set = true;
 
         // // Check if there's no change
-        // if icon.icon_name && g_str_equal (icon.icon_name, icon_name) {
+        // if props.icon_name && g_str_equal (props.icon_name, icon_name) {
         //     return;
         // }
 
-        // icon.icon_name = g_strdup(icon_name);
+        // props.icon_name = g_strdup(icon_name);
 
         // icon_update(icon);
 
         // g_object_notify(G_OBJECT(icon), "icon-name");
     }
 
-    fn set_icon_size(&self, size: i32) {
+    fn set_icon_size(&self, size: usize) {
         let icon = self.as_ref();
+        let mut props = icon.props.borrow_mut();
 
-        // if size < 0 {
-        //     if icon.size_set {
-        //         icon.size_set = false;
-        //         stylable_style_changed(STYLABLE(icon), STYLE_CHANGED_NONE);
-        //     }
+        if size == 0 {
+            if props.size_set {
+                props.size_set = false;
+                // stylable_style_changed(STYLABLE(icon), STYLE_CHANGED_NONE);
+            }
+            return;
+        } else if props.icon_size != size {
+            props.icon_size = size;
+            // icon_update(icon);
+            // g_object_notify(G_OBJECT(icon), "icon-size");
+        }
 
-        //     return;
-        // } else if icon.icon_size != size {
-        //     icon.icon_size = size;
-        //     icon_update(icon);
-
-        //     g_object_notify(G_OBJECT(icon), "icon-size");
-        // }
-
-        // icon.size_set = true;
+        props.size_set = true;
     }
 
     fn connect_property_icon_name_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {

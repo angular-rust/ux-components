@@ -8,7 +8,7 @@ use std::fmt;
 use std::{boxed::Box as Box_, cell::RefCell};
 
 #[derive(Clone, Debug)]
-pub struct StackChild {
+pub struct StackChildProps {
     pub parent: clutter::ChildMeta,
     pub x_fill: bool,
     pub y_fill: bool,
@@ -16,6 +16,11 @@ pub struct StackChild {
     pub crop: bool,
     pub x_align: Align,
     pub y_align: Align,
+}
+
+#[derive(Clone, Debug)]
+pub struct StackChild {
+    props: RefCell<StackChildProps>,
 }
 
 impl Object for StackChild {}
@@ -168,7 +173,9 @@ impl<O: Is<StackChild>> StackChildExt for O {
     ///
     fn get_crop(&self) -> bool {
         let stackchild = self.as_ref();
-        stackchild.crop
+        let props = stackchild.props.borrow();
+
+        props.crop
     }
 
     /// set_crop:
@@ -180,8 +187,9 @@ impl<O: Is<StackChild>> StackChildExt for O {
     ///
     fn set_crop(&self, crop: bool) {
         let stackchild = self.as_ref();
+        let mut props = stackchild.props.borrow_mut();
 
-        // stackchild.crop = crop;
+        props.crop = crop;
         // clutter_actor_queue_relayout(child);
     }
 
@@ -195,7 +203,9 @@ impl<O: Is<StackChild>> StackChildExt for O {
     ///
     fn get_fit(&self) -> bool {
         let stackchild = self.as_ref();
-        stackchild.fit
+        let props = stackchild.props.borrow();
+
+        props.fit
     }
 
     /// set_fit:
@@ -207,8 +217,9 @@ impl<O: Is<StackChild>> StackChildExt for O {
     ///
     fn set_fit(&self, fit: bool) {
         let stackchild = self.as_ref();
+        let mut props = stackchild.props.borrow_mut();
 
-        // stackchild.fit = fit;
+        props.fit = fit;
         // clutter_actor_queue_relayout(child);
     }
 
@@ -222,7 +233,9 @@ impl<O: Is<StackChild>> StackChildExt for O {
     ///
     fn get_x_align(&self) -> Align {
         let stackchild = self.as_ref();
-        stackchild.x_align
+        let props = stackchild.props.borrow();
+
+        props.x_align
     }
 
     /// set_x_align:
@@ -234,8 +247,9 @@ impl<O: Is<StackChild>> StackChildExt for O {
     ///
     fn set_x_align(&self, x_align: Align) {
         let stackchild = self.as_ref();
+        let mut props = stackchild.props.borrow_mut();
 
-        // stackchild.x_align = x_align;
+        props.x_align = x_align;
         // clutter_actor_queue_relayout(child);
     }
 
@@ -249,7 +263,9 @@ impl<O: Is<StackChild>> StackChildExt for O {
     ///
     fn get_x_fill(&self) -> bool {
         let stackchild = self.as_ref();
-        stackchild.x_fill
+        let props = stackchild.props.borrow();
+
+        props.x_fill
     }
 
     /// set_x_fill:
@@ -261,8 +277,9 @@ impl<O: Is<StackChild>> StackChildExt for O {
     ///
     fn set_x_fill(&self, x_fill: bool) {
         let stackchild = self.as_ref();
+        let mut props = stackchild.props.borrow_mut();
 
-        // stackchild.x_fill = x_fill;
+        props.x_fill = x_fill;
         // clutter_actor_queue_relayout(child);
     }
 
@@ -276,7 +293,9 @@ impl<O: Is<StackChild>> StackChildExt for O {
     ///
     fn get_y_align(&self) -> Align {
         let stackchild = self.as_ref();
-        stackchild.y_align
+        let props = stackchild.props.borrow();
+
+        props.y_align
     }
 
     /// set_y_align:
@@ -288,8 +307,9 @@ impl<O: Is<StackChild>> StackChildExt for O {
     ///
     fn set_y_align(&self, y_align: Align) {
         let stackchild = self.as_ref();
+        let mut props = stackchild.props.borrow_mut();
 
-        // stackchild.y_align = y_align;
+        props.y_align = y_align;
         // clutter_actor_queue_relayout(child);
     }
 
@@ -303,7 +323,9 @@ impl<O: Is<StackChild>> StackChildExt for O {
     ///
     fn get_y_fill(&self) -> bool {
         let stackchild = self.as_ref();
-        stackchild.y_fill
+        let props = stackchild.props.borrow();
+
+        props.y_fill
     }
 
     /// set_y_fill:
@@ -315,8 +337,9 @@ impl<O: Is<StackChild>> StackChildExt for O {
     ///
     fn set_y_fill(&self, y_fill: bool) {
         let stackchild = self.as_ref();
+        let mut props = stackchild.props.borrow_mut();
 
-        // stackchild.y_fill = y_fill;
+        props.y_fill = y_fill;
         // clutter_actor_queue_relayout(child);
     }
 

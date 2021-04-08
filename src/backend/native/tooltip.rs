@@ -8,7 +8,7 @@ use std::fmt;
 use std::{boxed::Box as Box_, cell::RefCell};
 
 #[derive(Clone, Debug)]
-pub struct Tooltip {
+pub struct TooltipProps {
     pub label: Option<clutter::Actor>,
     pub arrow_box: Option<clutter::ActorBox>,
     pub arrow_offset: f32,
@@ -18,6 +18,11 @@ pub struct Tooltip {
     pub border_image: BorderImage,
     pub text_allocation: Option<clutter::ActorBox>,
     // pub border_image_texture: cogl::Handle,
+}
+
+#[derive(Clone, Debug)]
+pub struct Tooltip {
+    props: RefCell<TooltipProps>,
     widget: FloatingWidget,
 }
 
@@ -165,7 +170,9 @@ impl<O: Is<Tooltip>> TooltipExt for O {
     ///
     fn get_tip_area(&self) -> Option<clutter::Geometry> {
         let tooltip = self.as_ref();
-        tooltip.tip_area.clone()
+        let props = tooltip.props.borrow();
+
+        props.tip_area.clone()
     }
 
     /// hide:
@@ -203,7 +210,7 @@ impl<O: Is<Tooltip>> TooltipExt for O {
         // clutter_text_set_text(CLUTTER_TEXT(tooltip.label), text);
 
         // if CLUTTER_ACTOR_IS_VISIBLE(tooltip) {
-        //   mx_tooltip_update_position(tooltip);
+        //   tooltip_update_position(tooltip);
         // }
 
         // g_object_notify(G_OBJECT(tooltip), "text");
@@ -217,10 +224,11 @@ impl<O: Is<Tooltip>> TooltipExt for O {
     ///
     fn set_tip_area(&self, area: &clutter::Geometry) {
         let tooltip = self.as_ref();
-
-        // if tooltip.tip_area {
-        //     g_boxed_free(CLUTTER_TYPE_GEOMETRY, tooltip.tip_area);
-        // }
+        let props = tooltip.props.borrow();
+        
+        if props.tip_area.is_some() {
+            // g_boxed_free(CLUTTER_TYPE_GEOMETRY, tooltip.tip_area);
+        }
         // tooltip.tip_area = g_boxed_copy(CLUTTER_TYPE_GEOMETRY, area);
     }
 
@@ -280,19 +288,19 @@ impl<O: Is<Tooltip>> TooltipExt for O {
     fn show(&self) {
         let tooltip = self.as_ref();
 
-        // mx_tooltip_update_position(tooltip);
+        // tooltip_update_position(tooltip);
 
         // // finally show the tooltip...
-        // CLUTTER_ACTOR_CLASS(mx_tooltip_parent_class)->show(CLUTTER_ACTOR (tooltip));
+        // CLUTTER_ACTOR_CLASS(tooltip_parent_class)->show(CLUTTER_ACTOR (tooltip));
 
-        // mx_tooltip_set_opacity(tooltip, 0xff);
+        // tooltip_set_opacity(tooltip, 0xff);
 
         // // Enter browse mode
-        // mx_tooltip_in_browse_mode = true;
+        // tooltip_in_browse_mode = true;
         // // Disable any previous queued attempts to leave browse mode
-        // if mx_tooltip_browse_mode_timeout {
-        //     g_source_remove(mx_tooltip_browse_mode_timeout);
-        //     mx_tooltip_browse_mode_timeout = 0;
+        // if tooltip_browse_mode_timeout {
+        //     g_source_remove(tooltip_browse_mode_timeout);
+        //     tooltip_browse_mode_timeout = 0;
         // }
     }
 

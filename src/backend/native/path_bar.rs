@@ -8,13 +8,18 @@ use std::fmt;
 use std::{boxed::Box as Box_, cell::RefCell};
 
 #[derive(Clone, Debug)]
-pub struct PathBar {
+pub struct PathBarProps {
     pub crumbs: Vec<clutter::Actor>,
     pub current_level: usize,
     pub overlap: i32,
     pub editable: bool,
     pub clear_on_change: bool,
     pub entry: Option<Entry>,
+}
+
+#[derive(Clone, Debug)]
+pub struct PathBar {
+    props: RefCell<PathBarProps>,
     widget: Widget,
 }
 
@@ -174,7 +179,9 @@ impl<O: Is<PathBar>> PathBarExt for O {
     ///
     fn get_clear_on_change(&self) -> bool {
         let pathbar = self.as_ref();
-        pathbar.clear_on_change
+        let props = pathbar.props.borrow();
+
+        props.clear_on_change
     }
 
     /// get_editable:
@@ -186,7 +193,9 @@ impl<O: Is<PathBar>> PathBarExt for O {
     ///
     fn get_editable(&self) -> bool {
         let pathbar = self.as_ref();
-        pathbar.editable
+        let props = pathbar.props.borrow();
+
+        props.editable
     }
 
     /// get_entry:
@@ -198,7 +207,9 @@ impl<O: Is<PathBar>> PathBarExt for O {
     ///
     fn get_entry(&self) -> Option<Entry> {
         let pathbar = self.as_ref();
-        pathbar.entry.clone()
+        let props = pathbar.props.borrow();
+
+        props.entry.clone()
     }
 
     fn get_label(&self, level: usize) -> Option<String> {
@@ -216,15 +227,18 @@ impl<O: Is<PathBar>> PathBarExt for O {
 
     fn get_level(&self) -> usize {
         let pathbar = self.as_ref();
-        pathbar.current_level
+        let props = pathbar.props.borrow();
+
+        props.current_level
     }
 
     fn get_text(&self) -> Option<String> {
         let pathbar = self.as_ref();
+        let props = pathbar.props.borrow();
 
-        // if !pathbar.editable {
-        //     return None;
-        // }
+        if !props.editable {
+            return None;
+        }
 
         // entry_get_text(ENTRY(pathbar.entry))
         unimplemented!()
@@ -232,36 +246,37 @@ impl<O: Is<PathBar>> PathBarExt for O {
 
     fn pop(&self) -> usize {
         let pathbar = self.as_ref();
+        let mut props = pathbar.props.borrow_mut();
 
-        // if pathbar.lear_on_change {
-        //     path_bar_set_text(bar, "");
-        // }
+        if props.clear_on_change {
+            // path_bar_set_text(bar, "");
+        }
 
-        // if pathbar.current_level == 0 {
-        //     return 0;
-        // }
+        if props.current_level == 0 {
+            return 0;
+        }
 
         // let crumb = g_list_nth_data(pathbar.crumbs, pathbar.current_level - 1);
 
         // path_bar_animate_button(bar, crumb, true);
 
-        // pathbar.current_level--;
+        props.current_level -= 1; // FIXME: warn on usize
         // path_bar_reset_last_crumb(bar);
         // g_object_notify (G_OBJECT (bar), "level");
 
-        pathbar.current_level
+        props.current_level
     }
 
     fn push(&self, name: &str) -> usize {
         let pathbar = self.as_ref();
+        let mut props = pathbar.props.borrow_mut();
 
-        // if pathbar.clear_on_change {
-        //     path_bar_set_text(bar, "");
-        // }
+        if props.clear_on_change {
+            // path_bar_set_text(bar, "");
+        }
 
         // let crumb = path_bar_button_new(name);
         // clutter_actor_add_child(CLUTTER_ACTOR (bar), crumb);
-
         // pathbar.crumbs = g_list_insert(pathbar.crumbs, crumb, pathbar.current_level);
 
         // if !pathbar.entry {
@@ -275,18 +290,16 @@ impl<O: Is<PathBar>> PathBarExt for O {
         //     stylable_set_style_class(STYLABLE(crumb), "End");
         // }
 
-        // pathbar.current_level++;
+        props.current_level += 1;
 
         // g_signal_connect(crumb, "clicked",
         //                     G_CALLBACK(path_bar_crumb_clicked_cb), bar);
 
         // path_bar_animate_button(bar, crumb, false);
-
         // clutter_actor_queue_relayout(CLUTTER_ACTOR(bar));
-
         // g_object_notify(G_OBJECT(bar), "level");
 
-        pathbar.current_level
+        props.current_level
     }
 
     /// set_clear_on_change:
@@ -297,11 +310,12 @@ impl<O: Is<PathBar>> PathBarExt for O {
     ///
     fn set_clear_on_change(&self, clear_on_change: bool) {
         let pathbar = self.as_ref();
+        let mut props = pathbar.props.borrow_mut();
 
-        // if pathbar.clear_on_change != clear_on_change {
-        //     pathbar.clear_on_change = clear_on_change;
-        //     g_object_notify(G_OBJECT(bar), "clear-on-change");
-        // }
+        if props.clear_on_change != clear_on_change {
+            props.clear_on_change = clear_on_change;
+            // g_object_notify(G_OBJECT(bar), "clear-on-change");
+        }
     }
 
     /// set_editable:
@@ -312,41 +326,43 @@ impl<O: Is<PathBar>> PathBarExt for O {
     ///
     fn set_editable(&self, editable: bool) {
         let pathbar = self.as_ref();
+        let mut props = pathbar.props.borrow_mut();
 
-        // if pathbar.editable == editable {
-        //     return;
-        // }
+        if props.editable == editable {
+            return;
+        }
 
-        // pathbar.editable = editable;
-        // if !editable  {
-        //     clutter_actor_save_easing_state(pathbar.entry);
-        //     clutter_actor_set_easing_mode(pathbar.entry, CLUTTER_EASE_OUT_QUAD);
-        //     clutter_actor_set_easing_duration(pathbar.entry, 150);
-        //     clutter_actor_set_opacity(pathbar.entry, 0x00);
-        //     clutter_actor_restore_easing_state(pathbar.entry);
+        props.editable = editable;
 
-        //     g_signal_connect_after(pathbar.entry, "transition-stopped::opacity",
-        //                             G_CALLBACK(path_bar_entry_faded_cb),
-        //                             bar);
-        // } else {
-        //     if pathbar.entry {
-        //         g_signal_handlers_disconnect_by_func(pathbar.entry,
-        //                                                 path_bar_entry_faded_cb,
-        //                                                 bar);
-        //     } else {
-        //         pathbar.entry = entry_new();
-        //         clutter_actor_add_child(CLUTTER_ACTOR (bar), pathbar.entry);
-        //         if CLUTTER_ACTOR_IS_VISIBLE(pathbar.entry) {
-        //             clutter_actor_set_opacity(pathbar.entry, 0x00);
-        //         }
-        //     }
+        if !editable  {
+            // clutter_actor_save_easing_state(pathbar.entry);
+            // clutter_actor_set_easing_mode(pathbar.entry, CLUTTER_EASE_OUT_QUAD);
+            // clutter_actor_set_easing_duration(pathbar.entry, 150);
+            // clutter_actor_set_opacity(pathbar.entry, 0x00);
+            // clutter_actor_restore_easing_state(pathbar.entry);
 
-        //     clutter_actor_save_easing_state(pathbar.entry);
-        //     clutter_actor_set_easing_mode(pathbar.entry, CLUTTER_EASE_OUT_QUAD);
-        //     clutter_actor_set_easing_duration(pathbar.entry, 150);
-        //     clutter_actor_set_opacity(pathbar.entry, 0xff);
-        //     clutter_actor_restore_easing_state(pathbar.entry);
-        // }
+            // g_signal_connect_after(pathbar.entry, "transition-stopped::opacity",
+            //                         G_CALLBACK(path_bar_entry_faded_cb),
+            //                         bar);
+        } else {
+            // if props.entry {
+            //     g_signal_handlers_disconnect_by_func(pathbar.entry,
+            //                                             path_bar_entry_faded_cb,
+            //                                             bar);
+            // } else {
+            //     props.entry = entry_new();
+            //     clutter_actor_add_child(CLUTTER_ACTOR (bar), pathbar.entry);
+            //     if CLUTTER_ACTOR_IS_VISIBLE(pathbar.entry) {
+            //         clutter_actor_set_opacity(pathbar.entry, 0x00);
+            //     }
+            // }
+
+            // clutter_actor_save_easing_state(pathbar.entry);
+            // clutter_actor_set_easing_mode(pathbar.entry, CLUTTER_EASE_OUT_QUAD);
+            // clutter_actor_set_easing_duration(pathbar.entry, 150);
+            // clutter_actor_set_opacity(pathbar.entry, 0xff);
+            // clutter_actor_restore_easing_state(pathbar.entry);
+        }
 
         // path_bar_reset_last_crumb(bar);
 
@@ -379,10 +395,11 @@ impl<O: Is<PathBar>> PathBarExt for O {
     ///
     fn set_text(&self, text: &str) {
         let pathbar = self.as_ref();
+        let props = pathbar.props.borrow();
 
-        // if !pathbar.editable {
-        //     return;
-        // }
+        if !props.editable {
+            return;
+        }
 
         // entry_set_text(ENTRY(pathbar.entry), text);
     }

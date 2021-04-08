@@ -8,7 +8,7 @@ use std::fmt;
 use std::{boxed::Box as Box_, cell::RefCell};
 
 #[derive(Clone, Debug)]
-pub struct Pager {
+pub struct PagerProps {
     pub pages: Vec<clutter::Actor>,
     pub current_page: Vec<clutter::Actor>,
     pub edge_previews: bool,
@@ -16,6 +16,11 @@ pub struct Pager {
     pub button_group: ButtonGroup,
     // pub pages_to_buttons: GHashTable, /* ClutterActor* -> Button* */
     pub hover_timeout: u32,
+}
+
+#[derive(Clone, Debug)]
+pub struct Pager {
+    props: RefCell<PagerProps>,
     widget: Widget,
 }
 
@@ -223,7 +228,9 @@ impl<O: Is<Pager>> PagerExt for O {
     ///
     fn get_edge_previews(&self) -> bool {
         let pager = self.as_ref();
-        pager.edge_previews
+        let props = pager.props.borrow();
+
+        props.edge_previews
     }
 
     /// pager_get_n_pages:
@@ -233,7 +240,9 @@ impl<O: Is<Pager>> PagerExt for O {
     ///
     fn get_n_pages(&self) -> usize {
         let pager = self.as_ref();
-        pager.pages.len()
+        let props = pager.props.borrow();
+
+        props.pages.len()
     }
 
     /// pager_insert_page:

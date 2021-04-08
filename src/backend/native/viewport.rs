@@ -9,14 +9,19 @@ use std::fmt;
 use std::{boxed::Box as Box_, cell::RefCell};
 
 #[derive(Clone, Debug)]
-pub struct Viewport {
+pub struct ViewportProps {
     pub x: f32,
     pub y: f32,
     pub z: f32,
-    pub hadjustment: Adjustment,
-    pub vadjustment: Adjustment,
+    pub hadjustment: Option<Adjustment>,
+    pub vadjustment: Option<Adjustment>,
     pub sync_adjustments: bool,
     pub child: Option<clutter::Actor>,
+}
+
+#[derive(Clone, Debug)]
+pub struct Viewport {
+    props: RefCell<ViewportProps>,
     widget: Widget,
 }
 
@@ -98,41 +103,46 @@ pub trait ViewportExt: 'static {
 impl<O: Is<Viewport>> ViewportExt for O {
     fn get_origin(&self) -> (f32, f32, f32) {
         let viewport = self.as_ref();
-        (viewport.x, viewport.y, viewport.z)
+        let props = viewport.props.borrow();
+
+        (props.x, props.y, props.z)
     }
 
     fn get_sync_adjustments(&self) -> bool {
         let viewport = self.as_ref();
-        viewport.sync_adjustments
+        let props = viewport.props.borrow();
+
+        props.sync_adjustments
     }
 
     fn set_origin(&self, x: f32, y: f32, z: f32) {
         let viewport = self.as_ref();
+        let mut props = viewport.props.borrow_mut();
 
         // g_object_freeze_notify(G_OBJECT(viewport));
 
-        // if x != viewport.x {
-        //     viewport.x = x;
-        //     g_object_notify(G_OBJECT(viewport), "x-origin");
+        if x != props.x {
+            props.x = x;
+            // g_object_notify(G_OBJECT(viewport), "x-origin");
 
-        //     if viewport.hadjustment {
-        //         mx_adjustment_set_value(viewport.hadjustment, (float)(x));
-        //     }
-        // }
+            if props.hadjustment.is_some() {
+                // adjustment_set_value(viewport.hadjustment, (float)(x));
+            }
+        }
 
-        // if y != viewport.y {
-        //     viewport.y = y;
-        //     g_object_notify(G_OBJECT(viewport), "y-origin");
+        if y != props.y {
+            props.y = y;
+            // g_object_notify(G_OBJECT(viewport), "y-origin");
 
-        //     if viewport.vadjustment {
-        //         mx_adjustment_set_value(viewport.vadjustment, (float)(y));
-        //     }
-        // }
+            if props.vadjustment.is_some() {
+                // adjustment_set_value(viewport.vadjustment, (float)(y));
+            }
+        }
 
-        // if z != viewport.z {
-        //     viewport.z = z;
-        //     g_object_notify(G_OBJECT(viewport), "z-origin");
-        // }
+        if z != props.z {
+            props.z = z;
+            // g_object_notify(G_OBJECT(viewport), "z-origin");
+        }
 
         // g_object_thaw_notify(G_OBJECT(viewport));
         // clutter_actor_queue_redraw(CLUTTER_ACTOR(viewport));
@@ -140,9 +150,10 @@ impl<O: Is<Viewport>> ViewportExt for O {
 
     fn set_sync_adjustments(&self, sync_adjustments: bool) {
         let viewport = self.as_ref();
+        let mut props = viewport.props.borrow_mut();
 
-        if viewport.sync_adjustments != sync_adjustments {
-            // viewport.sync_adjustments = sync_adjustments;
+        if props.sync_adjustments != sync_adjustments {
+            props.sync_adjustments = sync_adjustments;
             // g_object_notify(G_OBJECT(viewport), "sync-adjustments");
         }
     }

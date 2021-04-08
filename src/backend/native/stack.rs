@@ -6,9 +6,14 @@ use std::fmt;
 use std::{boxed::Box as Box_, cell::RefCell};
 
 #[derive(Clone, Debug)]
-pub struct Stack {
+pub struct StackProps {
     pub current_focus: clutter::Actor,
     pub allocation: clutter::ActorBox,
+}
+
+#[derive(Clone, Debug)]
+pub struct Stack {
+    props: RefCell<StackProps>,
     widget: Widget,
 }
 

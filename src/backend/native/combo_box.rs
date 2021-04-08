@@ -155,7 +155,7 @@ pub trait ComboBoxExt: 'static {
     ///
     /// Set the icon displayed in the combo box.
     ///
-    fn set_active_icon_name(&self, icon_name: Option<&str>);
+    fn set_active_icon_name(&self, icon_name: Option<String>);
 
     /// set_active_text:
     /// @box: A #ComboBox
@@ -321,17 +321,17 @@ impl<O: Is<ComboBox>> ComboBoxExt for O {
     ///
     /// Set the icon displayed in the combo box.
     ///
-    fn set_active_icon_name(&self, icon_name: Option<&str>) {
+    fn set_active_icon_name(&self, icon_name: Option<String>) {
         let combobox = self.as_ref();
         let mut props = combobox.props.borrow_mut();
 
         match &props.icon {
             None => {
-                if let Some(icon_name) = icon_name {
+                if let Some(icon_name) = &icon_name {
                     let icon_theme = IconTheme::get_default().unwrap();
                     if icon_theme.has_icon(icon_name) {
                         let icon = Icon::new();
-                        icon.set_icon_name(icon_name);
+                        icon.set_icon_name(Some(icon_name.clone()));
                         // clutter_actor_add_child (CLUTTER_ACTOR (box), combobox.icon);
                         props.icon = Some(icon);
                     }
@@ -339,7 +339,7 @@ impl<O: Is<ComboBox>> ComboBoxExt for O {
             }
             Some(icon) => {
                 if let Some(icon_name) = icon_name {
-                    icon.set_icon_name(icon_name);
+                    icon.set_icon_name(Some(icon_name));
                 } else {
                     // clutter_actor_destroy (priv->icon);
                     props.icon = None;

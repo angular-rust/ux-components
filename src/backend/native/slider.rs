@@ -8,7 +8,7 @@ use std::fmt;
 use std::{boxed::Box as Box_, cell::RefCell};
 
 #[derive(Clone, Debug)]
-pub struct Slider {
+pub struct SliderProps {
     pub trough_bg: Option<clutter::Actor>,
     pub fill: Option<clutter::Actor>,
     pub trough: Option<clutter::Actor>,
@@ -31,6 +31,11 @@ pub struct Slider {
 
     pub value: f64,
     pub buffer_value: f64,
+}
+
+#[derive(Clone, Debug)]
+pub struct Slider {
+    props: RefCell<SliderProps>,
     widget: Widget,
 }
 
@@ -131,7 +136,9 @@ impl<O: Is<Slider>> SliderExt for O {
     ///
     fn get_buffer_value(&self) -> f64 {
         let slider = self.as_ref();
-        slider.buffer_value
+        let props = slider.props.borrow();
+
+        props.buffer_value
     }
 
     /// get_value:
@@ -143,7 +150,9 @@ impl<O: Is<Slider>> SliderExt for O {
     ///
     fn get_value(&self) -> f64 {
         let slider = self.as_ref();
-        slider.value
+        let props = slider.props.borrow();
+
+        props.value
     }
 
     /// set_buffer_value:
@@ -154,12 +163,13 @@ impl<O: Is<Slider>> SliderExt for O {
     ///
     fn set_buffer_value(&self, value: f64) {
         let slider = self.as_ref();
+        let mut props = slider.props.borrow_mut();
 
-        // if slider.buffer_value == value {
-        //     return;
-        // }
+        if props.buffer_value == value {
+            return;
+        }
 
-        // slider.buffer_value = value;
+        props.buffer_value = value;
         // clutter_actor_queue_relayout(CLUTTER_ACTOR(slider));
         // g_object_notify(G_OBJECT(slider), "buffer-value");
     }
@@ -172,8 +182,9 @@ impl<O: Is<Slider>> SliderExt for O {
     ///
     fn set_value(&self, value: f64) {
         let slider = self.as_ref();
+        let mut props = slider.props.borrow_mut();
 
-        if slider.value == value {
+        if props.value == value {
             return;
         }
 
@@ -182,9 +193,9 @@ impl<O: Is<Slider>> SliderExt for O {
         //     return;
         // }
 
-        // slider.value = value;
+        props.value = value;
 
-        // if !slider.capture_handler {
+        // if !props.capture_handler {
         //     slider_allocate_fill_handle(slider, None, 0);
         //     clutter_actor_queue_redraw(CLUTTER_ACTOR(slider));
         // }

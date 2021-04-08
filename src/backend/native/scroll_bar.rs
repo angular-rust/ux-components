@@ -1,4 +1,5 @@
 #![allow(unused_variables)]
+#![allow(dead_code)]
 
 // use std::mem::transmute;
 use super::{Adjustment, Orientation, Widget};
@@ -15,7 +16,7 @@ pub enum ScrollBarDirection {
 }
 
 #[derive(Clone, Debug)]
-pub struct ScrollBar {
+pub struct ScrollBarProps {
     pub adjustment: Option<Adjustment>,
     pub capture_handler: u64,
     pub x_origin: f32,
@@ -35,6 +36,11 @@ pub struct ScrollBar {
     pub stepper_forward: bool,
     pub stepper_source_id: u32,
     pub orientation: Orientation,
+}
+
+#[derive(Clone, Debug)]
+pub struct ScrollBar {
+    props: RefCell<ScrollBarProps>,
     widget: Widget,
 }
 
@@ -124,34 +130,39 @@ impl<O: Is<ScrollBar>> ScrollBarExt for O {
     ///
     fn get_adjustment(&self) -> Option<Adjustment> {
         let scrollbar = self.as_ref();
-        scrollbar.adjustment.clone()
+        let props = scrollbar.props.borrow();
+
+        props.adjustment.clone()
     }
 
     fn get_orientation(&self) -> Orientation {
         let scrollbar = self.as_ref();
-        scrollbar.orientation
+        let props = scrollbar.props.borrow();
+
+        props.orientation
     }
 
     fn set_adjustment<P: Is<Adjustment>>(&self, adjustment: &P) {
         let scrollbar = self.as_ref();
+        let mut props = scrollbar.props.borrow_mut();
 
-        // if scrollbar.adjustment {
-        //     g_signal_handlers_disconnect_by_func(
-        //         scrollbar.adjustment,
-        //         clutter_actor_queue_relayout,
-        //         bar,
-        //     );
-        //     g_signal_handlers_disconnect_by_func(
-        //         scrollbar.adjustment,
-        //         clutter_actor_queue_relayout,
-        //         bar,
-        //     );
-        //     g_object_unref(scrollbar.adjustment);
-        //     scrollbar.adjustment = None;
-        // }
+        if props.adjustment.is_some() {
+            // g_signal_handlers_disconnect_by_func(
+            //     scrollbar.adjustment,
+            //     clutter_actor_queue_relayout,
+            //     bar,
+            // );
+            // g_signal_handlers_disconnect_by_func(
+            //     scrollbar.adjustment,
+            //     clutter_actor_queue_relayout,
+            //     bar,
+            // );
+            // g_object_unref(scrollbar.adjustment);
+            props.adjustment = None;
+        }
 
         // if adjustment {
-        //     scrollbar.adjustment = g_object_ref(adjustment);
+        //     props.adjustment = g_object_ref(adjustment);
 
         //     g_signal_connect_swapped(
         //         scrollbar.adjustment,
@@ -172,21 +183,22 @@ impl<O: Is<ScrollBar>> ScrollBarExt for O {
 
     fn set_orientation(&self, orientation: Orientation) {
         let scrollbar = self.as_ref();
+        let mut props = scrollbar.props.borrow_mut();
 
-        if orientation != scrollbar.orientation {
-            // scrollbar.orientation = orientation;
+        if orientation != props.orientation {
+            props.orientation = orientation;
 
-            // if scrollbar.orientation {
-            //     stylable_set_style_class(STYLABLE(scrollbar.bw_stepper), "up-stepper");
-            //     stylable_set_style_class(STYLABLE(scrollbar.fw_stepper), "down-stepper");
-            //     stylable_set_style_class(STYLABLE(scrollbar.handle), "vhandle");
-            //     stylable_set_style_class(STYLABLE(scrollbar.trough), "vtrough");
-            // } else {
-            //     stylable_set_style_class(STYLABLE(scrollbar.fw_stepper), "forward-stepper");
-            //     stylable_set_style_class(STYLABLE(scrollbar.bw_stepper), "backward-stepper");
-            //     stylable_set_style_class(STYLABLE(scrollbar.handle), "hhandle");
-            //     stylable_set_style_class(STYLABLE(scrollbar.trough), "htrough");
-            // }
+            if props.orientation == Orientation::Vertical {
+                // stylable_set_style_class(STYLABLE(scrollbar.bw_stepper), "up-stepper");
+                // stylable_set_style_class(STYLABLE(scrollbar.fw_stepper), "down-stepper");
+                // stylable_set_style_class(STYLABLE(scrollbar.handle), "vhandle");
+                // stylable_set_style_class(STYLABLE(scrollbar.trough), "vtrough");
+            } else {
+                // stylable_set_style_class(STYLABLE(scrollbar.fw_stepper), "forward-stepper");
+                // stylable_set_style_class(STYLABLE(scrollbar.bw_stepper), "backward-stepper");
+                // stylable_set_style_class(STYLABLE(scrollbar.handle), "hhandle");
+                // stylable_set_style_class(STYLABLE(scrollbar.trough), "htrough");
+            }
 
             // clutter_actor_queue_relayout(CLUTTER_ACTOR(bar));
             // g_object_notify(G_OBJECT(bar), "orientation");

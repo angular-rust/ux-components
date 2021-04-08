@@ -17,7 +17,7 @@ pub struct KineticScrollViewMotion {
 }
 
 #[derive(Clone, Debug)]
-pub struct KineticScrollView {
+pub struct KineticScrollViewProps {
     pub child: Option<clutter::Actor>,
     pub use_captured: bool,
     pub use_grab: bool,
@@ -52,6 +52,11 @@ pub struct KineticScrollView {
     pub clamp_duration: u32,
     pub clamp_mode: u64,
     pub state: KineticScrollViewState,
+}
+
+#[derive(Clone, Debug)]
+pub struct KineticScrollView {
+    props: RefCell<KineticScrollViewProps>,
     widget: Widget,
 }
 
@@ -409,7 +414,9 @@ impl<O: Is<KineticScrollView>> KineticScrollViewExt for O {
     ///
     fn get_acceleration_factor(&self) -> f64 {
         let scrollview = self.as_ref();
-        scrollview.acceleration_factor
+        let props = scrollview.props.borrow();
+
+        props.acceleration_factor
     }
 
     /// get_clamp_duration:
@@ -421,7 +428,9 @@ impl<O: Is<KineticScrollView>> KineticScrollViewExt for O {
     ///
     fn get_clamp_duration(&self) -> u32 {
         let scrollview = self.as_ref();
-        scrollview.clamp_duration
+        let props = scrollview.props.borrow();
+
+        props.clamp_duration
     }
 
     /// get_clamp_mode:
@@ -433,7 +442,9 @@ impl<O: Is<KineticScrollView>> KineticScrollViewExt for O {
     ///
     fn get_clamp_mode(&self) -> u64 {
         let scrollview = self.as_ref();
-        scrollview.clamp_mode
+        let props = scrollview.props.borrow();
+
+        props.clamp_mode
     }
 
     /// get_clamp_to_center:
@@ -445,7 +456,9 @@ impl<O: Is<KineticScrollView>> KineticScrollViewExt for O {
     ///
     fn get_clamp_to_center(&self) -> bool {
         let scrollview = self.as_ref();
-        scrollview.clamp_to_center
+        let props = scrollview.props.borrow();
+
+        props.clamp_to_center
     }
 
     /// get_deceleration:
@@ -457,7 +470,9 @@ impl<O: Is<KineticScrollView>> KineticScrollViewExt for O {
     ///
     fn get_deceleration(&self) -> f64 {
         let scrollview = self.as_ref();
-        scrollview.decel_rate
+        let props = scrollview.props.borrow();
+
+        props.decel_rate
     }
 
     /// get_input:
@@ -470,8 +485,9 @@ impl<O: Is<KineticScrollView>> KineticScrollViewExt for O {
     ///
     fn get_input(&self) -> (Option<clutter::InputDevice>, Option<clutter::EventSequence>) {
         let scrollview = self.as_ref();
+        let props = scrollview.props.borrow();
 
-        (scrollview.device.clone(), scrollview.sequence.clone())
+        (props.device.clone(), props.sequence.clone())
     }
 
     /// get_mouse_button:
@@ -484,7 +500,9 @@ impl<O: Is<KineticScrollView>> KineticScrollViewExt for O {
     ///
     fn get_mouse_button(&self) -> u32 {
         let scrollview = self.as_ref();
-        scrollview.button
+        let props = scrollview.props.borrow();
+
+        props.button
     }
 
     /// get_overshoot:
@@ -495,7 +513,9 @@ impl<O: Is<KineticScrollView>> KineticScrollViewExt for O {
     ///
     fn get_overshoot(&self) -> f64 {
         let scrollview = self.as_ref();
-        scrollview.overshoot
+        let props = scrollview.props.borrow();
+
+        props.overshoot
     }
 
     /// get_scroll_policy:
@@ -505,7 +525,9 @@ impl<O: Is<KineticScrollView>> KineticScrollViewExt for O {
     ///
     fn get_scroll_policy(&self) -> ScrollPolicy {
         let scrollview = self.as_ref();
-        scrollview.scroll_policy
+        let props = scrollview.props.borrow();
+
+        props.scroll_policy
     }
 
     /// get_snap_on_page:
@@ -517,7 +539,9 @@ impl<O: Is<KineticScrollView>> KineticScrollViewExt for O {
     ///
     fn get_snap_on_page(&self) -> bool {
         let scrollview = self.as_ref();
-        scrollview.snap_on_page
+        let props = scrollview.props.borrow();
+
+        props.snap_on_page
     }
 
     /// get_use_captured:
@@ -529,7 +553,9 @@ impl<O: Is<KineticScrollView>> KineticScrollViewExt for O {
     ///
     fn get_use_captured(&self) -> bool {
         let scrollview = self.as_ref();
-        scrollview.use_captured
+        let props = scrollview.props.borrow();
+
+        props.use_captured
     }
 
     /// get_use_grab:
@@ -541,7 +567,9 @@ impl<O: Is<KineticScrollView>> KineticScrollViewExt for O {
     ///
     fn get_use_grab(&self) -> bool {
         let scrollview = self.as_ref();
-        scrollview.use_grab
+        let props = scrollview.props.borrow();
+
+        props.use_grab
     }
 
     /// set_acceleration_factor:
@@ -552,9 +580,10 @@ impl<O: Is<KineticScrollView>> KineticScrollViewExt for O {
     ///
     fn set_acceleration_factor(&self, acceleration_factor: f64) {
         let scrollview = self.as_ref();
+        let mut props = scrollview.props.borrow_mut();
 
-        if scrollview.acceleration_factor != acceleration_factor {
-            // scrollview.acceleration_factor = acceleration_factor;
+        if props.acceleration_factor != acceleration_factor {
+            props.acceleration_factor = acceleration_factor;
             // g_object_notify(G_OBJECT(scroll), "acceleration-factor");
         }
     }
@@ -567,9 +596,10 @@ impl<O: Is<KineticScrollView>> KineticScrollViewExt for O {
     ///
     fn set_clamp_duration(&self, clamp_duration: u32) {
         let scrollview = self.as_ref();
+        let mut props = scrollview.props.borrow_mut();
 
-        if scrollview.clamp_duration != clamp_duration {
-            // scrollview.clamp_duration = clamp_duration;
+        if props.clamp_duration != clamp_duration {
+            props.clamp_duration = clamp_duration;
             // g_object_notify(G_OBJECT(scroll), "clamp-duration");
         }
     }
@@ -582,9 +612,10 @@ impl<O: Is<KineticScrollView>> KineticScrollViewExt for O {
     ///
     fn set_clamp_mode(&self, clamp_mode: u64) {
         let scrollview = self.as_ref();
+        let mut props = scrollview.props.borrow_mut();
 
-        if scrollview.clamp_mode != clamp_mode {
-            // scrollview.clamp_mode = clamp_mode;
+        if props.clamp_mode != clamp_mode {
+            props.clamp_mode = clamp_mode;
             // g_object_notify(G_OBJECT(scroll), "clamp-mode");
         }
     }
@@ -597,9 +628,10 @@ impl<O: Is<KineticScrollView>> KineticScrollViewExt for O {
     ///
     fn set_clamp_to_center(&self, clamp_to_center: bool) {
         let scrollview = self.as_ref();
+        let mut props = scrollview.props.borrow_mut();
 
-        if scrollview.clamp_to_center != clamp_to_center {
-            // scrollview.clamp_to_center = !!clamp_to_center;
+        if props.clamp_to_center != clamp_to_center {
+            props.clamp_to_center = !!clamp_to_center;
             // g_object_notify(G_OBJECT(scroll), "clamp-to-center");
         }
     }
@@ -614,9 +646,10 @@ impl<O: Is<KineticScrollView>> KineticScrollViewExt for O {
     ///
     fn set_deceleration(&self, rate: f64) {
         let scrollview = self.as_ref();
+        let mut props = scrollview.props.borrow_mut();
 
-        if scrollview.decel_rate != rate {
-            // scrollview.decel_rate = rate;
+        if props.decel_rate != rate {
+            props.decel_rate = rate;
             // g_object_notify(G_OBJECT(scroll), "deceleration");
         }
     }
@@ -630,9 +663,10 @@ impl<O: Is<KineticScrollView>> KineticScrollViewExt for O {
     ///
     fn set_mouse_button(&self, button: u32) {
         let scrollview = self.as_ref();
+        let mut props = scrollview.props.borrow_mut();
 
-        if scrollview.button != button {
-            // scrollview.button = button;
+        if props.button != button {
+            props.button = button;
             // g_object_notify(G_OBJECT(scroll), "mouse-button");
         }
     }
@@ -651,9 +685,10 @@ impl<O: Is<KineticScrollView>> KineticScrollViewExt for O {
     ///
     fn set_overshoot(&self, overshoot: f64) {
         let scrollview = self.as_ref();
+        let mut props = scrollview.props.borrow_mut();
 
-        if scrollview.overshoot != overshoot {
-            // scrollview.overshoot = overshoot;
+        if props.overshoot != overshoot {
+            props.overshoot = overshoot;
             // g_object_notify(G_OBJECT(scroll), "overshoot");
         }
     }
@@ -667,9 +702,10 @@ impl<O: Is<KineticScrollView>> KineticScrollViewExt for O {
     ///
     fn set_scroll_policy(&self, policy: ScrollPolicy) {
         let scrollview = self.as_ref();
+        let mut props = scrollview.props.borrow_mut();
 
-        if scrollview.scroll_policy != policy {
-            // scrollview.scroll_policy = policy;
+        if props.scroll_policy != policy {
+            props.scroll_policy = policy;
             // g_object_notify(G_OBJECT(scroll), "scroll-policy");
         }
     }
@@ -682,9 +718,10 @@ impl<O: Is<KineticScrollView>> KineticScrollViewExt for O {
     ///
     fn set_snap_on_page(&self, snap_on_page: bool) {
         let scrollview = self.as_ref();
+        let mut props = scrollview.props.borrow_mut();
 
-        if scrollview.snap_on_page != snap_on_page {
-            // scrollview.snap_on_page = !!snap_on_page;
+        if props.snap_on_page != snap_on_page {
+            props.snap_on_page = !!snap_on_page;
             // g_object_notify(G_OBJECT(scroll), "snap-on-page");
         }
     }
@@ -699,33 +736,34 @@ impl<O: Is<KineticScrollView>> KineticScrollViewExt for O {
     ///
     fn set_use_captured(&self, use_captured: bool) {
         let scrollview = self.as_ref();
+        let mut props = scrollview.props.borrow_mut();
 
-        if scrollview.use_captured != use_captured {
-            // scrollview.use_captured = use_captured;
+        if props.use_captured != use_captured {
+            props.use_captured = use_captured;
 
             // g_signal_handlers_disconnect_by_func(scroll, button_press_event_cb, scroll);
 
-            // if use_captured {
-            //     g_signal_connect(
-            //         scroll,
-            //         "captured-event",
-            //         G_CALLBACK(button_press_event_cb),
-            //         scroll,
-            //     );
-            // } else {
-            //     g_signal_connect(
-            //         scroll,
-            //         "button-press-event",
-            //         G_CALLBACK(button_press_event_cb),
-            //         scroll,
-            //     );
-            //     g_signal_connect(
-            //         scroll,
-            //         "touch-event",
-            //         G_CALLBACK(button_press_event_cb),
-            //         scroll,
-            //     );
-            // }
+            if use_captured {
+                // g_signal_connect(
+                //     scroll,
+                //     "captured-event",
+                //     G_CALLBACK(button_press_event_cb),
+                //     scroll,
+                // );
+            } else {
+                // g_signal_connect(
+                //     scroll,
+                //     "button-press-event",
+                //     G_CALLBACK(button_press_event_cb),
+                //     scroll,
+                // );
+                // g_signal_connect(
+                //     scroll,
+                //     "touch-event",
+                //     G_CALLBACK(button_press_event_cb),
+                //     scroll,
+                // );
+            }
 
             // g_object_notify(G_OBJECT(scroll), "use-captured");
         }
@@ -741,9 +779,10 @@ impl<O: Is<KineticScrollView>> KineticScrollViewExt for O {
     ///
     fn set_use_grab(&self, use_grab: bool) {
         let scrollview = self.as_ref();
+        let mut props = scrollview.props.borrow_mut();
 
-        if scrollview.use_grab != use_grab {
-            // scrollview.use_grab = use_grab;
+        if props.use_grab != use_grab {
+            props.use_grab = use_grab;
             // g_object_notify(G_OBJECT(scroll), "use-grab");
         }
     }
@@ -755,12 +794,13 @@ impl<O: Is<KineticScrollView>> KineticScrollViewExt for O {
     ///
     fn stop(&self) {
         let scrollview = self.as_ref();
+        let mut props = scrollview.props.borrow_mut();
 
-        // if scrollview.deceleration_timeline {
+        if props.deceleration_timeline.is_some() {
         //     clutter_timeline_stop(scrollview.deceleration_timeline);
         //     g_object_unref(scrollview.deceleration_timeline);
-        //     scrollview.deceleration_timeline = None;
-        // }
+            props.deceleration_timeline = None;
+        }
     }
 
     fn get_property_snap_on_page(&self) -> bool {

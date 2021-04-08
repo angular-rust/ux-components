@@ -13,7 +13,7 @@ pub struct ToggleHandle {
 }
 
 #[derive(Clone, Debug)]
-pub struct Toggle {
+pub struct ToggleProps {
     pub active: bool,
     pub handle: Option<clutter::Actor>,
     pub handle_filename: String,
@@ -22,6 +22,11 @@ pub struct Toggle {
     pub drag_offset: f32,
     pub slide_length: f32,
     pub last_move: f32,
+}
+
+#[derive(Clone, Debug)]
+pub struct Toggle {
+    props: RefCell<ToggleProps>,
     widget: Widget,
 }
 
@@ -78,20 +83,24 @@ pub trait ToggleExt: 'static {
 impl<O: Is<Toggle>> ToggleExt for O {
     fn get_active(&self) -> bool {
         let toggle = self.as_ref();
-        toggle.active
+        let props = toggle.props.borrow();
+
+        props.active
     }
 
     fn set_active(&self, active: bool) {
         let toggle = self.as_ref();
+        let mut props = toggle.props.borrow_mut();
 
-        if toggle.active != active || (toggle.position > 0.0 && toggle.position < 1.0) {
+        if props.active != active || (props.position > 0.0 && props.position < 1.0) {
 
-            // toggle.active = active;
-            // if active {
-            //     mx_stylable_set_style_pseudo_class(MX_STYLABLE(toggle), "checked");
-            // } else {
-            //     mx_stylable_set_style_pseudo_class(MX_STYLABLE(toggle), None);
-            // }
+            props.active = active;
+            if active {
+                // stylable_set_style_pseudo_class(MX_STYLABLE(toggle), "checked");
+            } else {
+                // stylable_set_style_pseudo_class(MX_STYLABLE(toggle), None);
+            }
+
             // g_object_notify(G_OBJECT(toggle), "active");
 
             // // don't run an animation if the actor is not mapped
@@ -100,23 +109,24 @@ impl<O: Is<Toggle>> ToggleExt for O {
             //     return;
             // }
 
-            // if active {
-            //     clutter_timeline_set_direction(toggle.timeline, CLUTTER_TIMELINE_FORWARD);
-            // } else {
-            //     clutter_timeline_set_direction(toggle.timeline, CLUTTER_TIMELINE_BACKWARD);
-            // }
+            if active {
+                // clutter_timeline_set_direction(toggle.timeline, CLUTTER_TIMELINE_FORWARD);
+            } else {
+                // clutter_timeline_set_direction(toggle.timeline, CLUTTER_TIMELINE_BACKWARD);
+            }
+
             // if clutter_timeline_is_playing (toggle.timeline) {
             //     return;
             // }
 
             // clutter_timeline_rewind(toggle.timeline);
 
-            // if toggle.drag_offset > -1  {
-            //     clutter_timeline_set_progress_mode(toggle.timeline, CLUTTER_LINEAR);
-            //     clutter_timeline_advance(toggle.timeline, toggle.position * 300);
-            // } else {
-            //     clutter_timeline_set_progress_mode(toggle.timeline, CLUTTER_EASE_IN_OUT_CUBIC);
-            // }
+            if props.drag_offset > -1.0  {
+                // clutter_timeline_set_progress_mode(toggle.timeline, CLUTTER_LINEAR);
+                // clutter_timeline_advance(toggle.timeline, toggle.position * 300);
+            } else {
+                // clutter_timeline_set_progress_mode(toggle.timeline, CLUTTER_EASE_IN_OUT_CUBIC);
+            }
 
             // clutter_timeline_start(toggle.timeline);
         }

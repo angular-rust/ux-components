@@ -14,7 +14,7 @@ pub struct AttributeData {
 }
 
 #[derive(Clone, Debug)]
-pub struct ListView {
+pub struct ListViewProps {
     pub model: Option<clutter::Model>,
     pub attributes: Vec<AttributeData>,
     pub item_type: glib::types::Type,
@@ -25,6 +25,11 @@ pub struct ListView {
     pub row_removed: u64,
     pub sort_changed: u64,
     pub is_frozen: bool,
+}
+
+#[derive(Clone, Debug)]
+pub struct ListView {
+    props: RefCell<ListViewProps>,
     widget: Widget,
 }
 
@@ -205,7 +210,9 @@ impl<O: Is<ListView>> ListViewExt for O {
     ///
     fn get_factory(&self) -> Option<ItemFactory> {
         let listview = self.as_ref();
-        listview.factory.clone()
+        let props = listview.props.borrow();
+
+        props.factory.clone()
     }
 
     /// get_item_type:
@@ -217,7 +224,9 @@ impl<O: Is<ListView>> ListViewExt for O {
     ///
     fn get_item_type(&self) -> glib::types::Type {
         let listview = self.as_ref();
-        listview.item_type
+        let props = listview.props.borrow();
+
+        props.item_type
     }
 
     /// get_model:
@@ -229,7 +238,9 @@ impl<O: Is<ListView>> ListViewExt for O {
     ///
     fn get_model(&self) -> Option<clutter::Model> {
         let listview = self.as_ref();
-        listview.model.clone()
+        let props = listview.props.borrow();
+
+        props.model.clone()
     }
 
     /// set_factory:
@@ -240,19 +251,20 @@ impl<O: Is<ListView>> ListViewExt for O {
     ///
     fn set_factory(&self, factory: Option<&ItemFactory>) {
         let listview = self.as_ref();
+        let mut props = listview.props.borrow_mut();
 
         // if listview.factory == factory {
         //     return;
         // }
 
-        // if listview.factory {
-        //     g_object_unref(listview.factory);
-        //     listview.factory = None;
-        // }
+        if props.factory.is_some() {
+            // g_object_unref(listview.factory);
+            props.factory = None;
+        }
 
-        // if factory {
-        //     listview.factory = g_object_ref(factory);
-        // }
+        if factory.is_some() {
+            // props.factory = g_object_ref(factory);
+        }
 
         // g_object_notify(G_OBJECT(listview), "factory");
     }
@@ -266,8 +278,9 @@ impl<O: Is<ListView>> ListViewExt for O {
     ///
     fn set_item_type(&self, item_type: glib::types::Type) {
         let listview = self.as_ref();
+        let mut props = listview.props.borrow_mut();
 
-        // listview.item_type = item_type;
+        props.item_type = item_type;
 
         // // update the view
         // model_changed_cb(listview.model, listview);
@@ -281,50 +294,51 @@ impl<O: Is<ListView>> ListViewExt for O {
     ///
     fn set_model<P: Is<clutter::Model>>(&self, model: &P) {
         let listview = self.as_ref();
+        let mut props = listview.props.borrow_mut();
 
-        // if listview.model {
-        //     g_signal_handlers_disconnect_by_func(listview.model,
-        //                                         (GCallback) model_changed_cb,
-        //                                         listview);
-        //     g_signal_handlers_disconnect_by_func(listview.model,
-        //                                         (GCallback) row_changed_cb,
-        //                                         listview);
-        //     g_signal_handlers_disconnect_by_func(listview.model,
-        //                                         (GCallback) row_removed_cb,
-        //                                         listview);
-        //     g_object_unref(listview.model);
+        if props.model.is_some() {
+            // g_signal_handlers_disconnect_by_func(listview.model,
+            //                                     (GCallback) model_changed_cb,
+            //                                     listview);
+            // g_signal_handlers_disconnect_by_func(listview.model,
+            //                                     (GCallback) row_changed_cb,
+            //                                     listview);
+            // g_signal_handlers_disconnect_by_func(listview.model,
+            //                                     (GCallback) row_removed_cb,
+            //                                     listview);
+            // g_object_unref(listview.model);
 
-        //     listview.model = None;
-        // }
+            props.model = None;
+        }
 
         // if model {
         //     g_return_if_fail(CLUTTER_IS_MODEL(model));
 
-        //     listview.model = g_object_ref (model);
+        //     props.model = g_object_ref (model);
 
-        //     listview.filter_changed = g_signal_connect(listview.model,
+        //     props.filter_changed = g_signal_connect(listview.model,
         //                                         "filter-changed",
         //                                         G_CALLBACK(model_changed_cb),
         //                                         listview);
 
-        //     listview.row_added = g_signal_connec (listview.model,
+        //     props.row_added = g_signal_connec (listview.model,
         //                                     "row-added",
         //                                     G_CALLBAC (row_changed_cb),
         //                                     listview);
 
-        //     listview.row_changed = g_signal_connect (listview.model,
+        //     props.row_changed = g_signal_connect (listview.model,
         //                                         "row-changed",
         //                                         G_CALLBACK(row_changed_cb),
         //                                         listview);
 
         //     // model_changed_cb (called from row_changed_cb) expect the row to already
         //     // have been removed, thus we need to use _after
-        //     listview.row_removed = g_signal_connect_after(listview.model,
+        //     props.row_removed = g_signal_connect_after(listview.model,
         //                                             "row-removed",
         //                                             G_CALLBACK(row_removed_cb),
         //                                             listview);
 
-        //     listview.sort_changed = g_signal_connect(listview.model,
+        //     props.sort_changed = g_signal_connect(listview.model,
         //                                         "sort-changed",
         //                                         G_CALLBACK(model_changed_cb),
         //                                         listview);
@@ -343,8 +357,9 @@ impl<O: Is<ListView>> ListViewExt for O {
     ///
     fn thaw(&self) {
         let listview = self.as_ref();
+        let mut props = listview.props.borrow_mut();
 
-        // listview.is_frozen = false;
+        props.is_frozen = false;
 
         // // Repopulate
         // model_changed_cb(listview.model, listview);

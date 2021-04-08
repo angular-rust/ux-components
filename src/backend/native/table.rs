@@ -17,7 +17,7 @@ pub struct DimensionData {
 }
 
 #[derive(Clone, Debug)]
-pub struct Table {
+pub struct TableProps {
     pub ignore_css_col_spacing: bool,
     pub ignore_css_row_spacing: bool,
     pub col_spacing: u32,
@@ -36,6 +36,11 @@ pub struct Table {
     pub rows: Vec<String>,
 
     pub last_focus: Focusable,
+}
+
+#[derive(Clone, Debug)]
+pub struct Table {
+    props: RefCell<TableProps>,
     widget: Widget,
 }
 
@@ -476,7 +481,9 @@ impl<O: Is<Table>> TableExt for O {
     ///
     fn get_column_count(&self) -> u32 {
         let table = self.as_ref();
-        table.n_cols
+        let props = table.props.borrow();
+
+        props.n_cols
     }
 
     /// get_column_spacing:
@@ -488,7 +495,9 @@ impl<O: Is<Table>> TableExt for O {
     ///
     fn get_column_spacing(&self) -> u32 {
         let table = self.as_ref();
-        table.col_spacing
+        let props = table.props.borrow();
+
+        props.col_spacing
     }
 
     /// get_row_count:
@@ -500,7 +509,9 @@ impl<O: Is<Table>> TableExt for O {
     ///
     fn get_row_count(&self) -> u32 {
         let table = self.as_ref();
-        table.n_rows
+        let props = table.props.borrow();
+
+        props.n_rows
     }
 
     /// get_row_spacing:
@@ -512,7 +523,9 @@ impl<O: Is<Table>> TableExt for O {
     ///
     fn get_row_spacing(&self) -> u32 {
         let table = self.as_ref();
-        table.row_spacing
+        let props = table.props.borrow();
+
+        props.row_spacing
     }
 
     /// insert_actor:
@@ -570,9 +583,11 @@ impl<O: Is<Table>> TableExt for O {
     ///
     fn set_column_spacing(&self, spacing: u32) {
         let table = self.as_ref();
-        if table.col_spacing != spacing {
-            // table.col_spacing = spacing;
-            // table.ignore_css_col_spacing = true;
+        let mut props = table.props.borrow_mut();
+
+        if props.col_spacing != spacing {
+            props.col_spacing = spacing;
+            props.ignore_css_col_spacing = true;
             // clutter_actor_queue_relayout(CLUTTER_ACTOR(table));
             // g_object_notify(G_OBJECT(table), "column-spacing");
         }
@@ -586,10 +601,11 @@ impl<O: Is<Table>> TableExt for O {
     ///
     fn set_row_spacing(&self, spacing: u32) {
         let table = self.as_ref();
+        let mut props = table.props.borrow_mut();
 
-        if table.row_spacing != spacing {
-            // table.row_spacing = spacing;
-            // table.ignore_css_row_spacing = true;
+        if props.row_spacing != spacing {
+            props.row_spacing = spacing;
+            props.ignore_css_row_spacing = true;
             // clutter_actor_queue_relayout(CLUTTER_ACTOR (table));
             // g_object_notify(G_OBJECT(table), "row-spacing");
         }

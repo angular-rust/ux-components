@@ -14,7 +14,7 @@ pub struct MenuChild {
 }
 
 #[derive(Clone, Debug)]
-pub struct Menu {
+pub struct MenuProps {
     pub children: Vec<MenuChild>,
     pub transition_out: bool,
     pub stage: Option<clutter::Actor>,
@@ -27,6 +27,11 @@ pub struct Menu {
     pub down_button: Option<clutter::Actor>,
     pub up_source: u64,
     pub down_source: u64,
+}
+
+#[derive(Clone, Debug)]
+pub struct Menu {
+    props: RefCell<MenuProps>,
     widget: FloatingWidget,
 }
 

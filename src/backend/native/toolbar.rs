@@ -8,11 +8,16 @@ use std::fmt;
 use std::{boxed::Box as Box_, cell::RefCell};
 
 #[derive(Clone, Debug)]
-pub struct Toolbar {
+pub struct ToolbarProps {
     pub has_close_button: bool,
     pub child_has_focus: bool,
     pub close_button: Option<clutter::Actor>,
     pub child: Option<clutter::Actor>,
+}
+
+#[derive(Clone, Debug)]
+pub struct Toolbar {
+    props: RefCell<ToolbarProps>,
     widget: Widget,
 }
 
@@ -94,7 +99,9 @@ impl<O: Is<Toolbar>> ToolbarExt for O {
     ///
     fn get_has_close_button(&self) -> bool {
         let toolbar = self.as_ref();
-        toolbar.has_close_button
+        let props = toolbar.props.borrow();
+
+        props.has_close_button
     }
 
     /// get_has_close_button:
@@ -106,24 +113,25 @@ impl<O: Is<Toolbar>> ToolbarExt for O {
     ///
     fn set_has_close_button(&self, has_close_button: bool) {
         let toolbar = self.as_ref();
+        let mut props = toolbar.props.borrow_mut();
 
-        if toolbar.has_close_button != has_close_button {
-            // toolbar.has_close_button = has_close_button;
+        if props.has_close_button != has_close_button {
+            props.has_close_button = has_close_button;
 
-            // if !has_close_button {
-            //     if toolbar.close_button {
-            //         clutter_actor_destroy(toolbar.close_button);
-            //         toolbar.close_button = None;
-            //     }
-            // } else {
-            //     toolbar.close_button = button_new ();
-            //     clutter_actor_set_name(toolbar.close_button, "close-button");
-            //     clutter_actor_add_child(CLUTTER_ACTOR (toolbar), toolbar.close_button);
-            //     g_signal_connect(toolbar.close_button, "clicked",
-            //                         G_CALLBACK(close_button_click_cb), toolbar);
-            //     stylable_style_changed(STYLABLE(toolbar.close_button),
-            //                                 STYLE_CHANGED_FORCE);
-            // }
+            if !has_close_button {
+                if props.close_button.is_some() {
+                    // clutter_actor_destroy(toolbar.close_button);
+                    props.close_button = None;
+                }
+            } else {
+                // props.close_button = button_new ();
+                // clutter_actor_set_name(props.close_button, "close-button");
+                // clutter_actor_add_child(CLUTTER_ACTOR (toolbar), props.close_button);
+                // g_signal_connect(props.close_button, "clicked",
+                //                     G_CALLBACK(close_button_click_cb), toolbar);
+                // stylable_style_changed(STYLABLE(props.close_button),
+                //                             STYLE_CHANGED_FORCE);
+            }
 
             // clutter_actor_queue_relayout(CLUTTER_ACTOR(toolbar));
             // g_object_notify(G_OBJECT(toolbar), "has-close-button");

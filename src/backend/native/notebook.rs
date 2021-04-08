@@ -8,9 +8,14 @@ use std::fmt;
 use std::{boxed::Box as Box_, cell::RefCell};
 
 #[derive(Clone, Debug)]
-pub struct Notebook {
+pub struct NotebookProps {
     pub current_page: Option<clutter::Actor>,
     pub children: Vec<clutter::Actor>,
+}
+
+#[derive(Clone, Debug)]
+pub struct Notebook {
+    props: RefCell<NotebookProps>,
     widget: Widget,
 }
 
@@ -96,7 +101,9 @@ impl<O: Is<Notebook>> NotebookExt for O {
     ///
     fn get_current_page(&self) -> Option<clutter::Actor> {
         let notebook = self.as_ref();
-        notebook.current_page.clone()
+        let props = notebook.props.borrow();
+
+        props.current_page.clone()
     }
 
     /// notebook_next_page:
@@ -148,12 +155,13 @@ impl<O: Is<Notebook>> NotebookExt for O {
     fn set_current_page<P: Is<clutter::Actor>>(&self, page: &P) {
         let notebook = self.as_ref();
         let page = page.as_ref();
+        let props = notebook.props.borrow();
 
-        // if page == notebook.current_page {
+        // if page == props.current_page {
         //     return;
         // }
 
-        // notebook.current_page = page;
+        // props.current_page = page;
 
         // // ensure the correct child is visible
         // notebook_update_children(book);

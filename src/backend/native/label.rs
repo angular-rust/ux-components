@@ -8,7 +8,7 @@ use std::fmt;
 use std::{boxed::Box as Box_, cell::RefCell};
 
 #[derive(Clone, Debug)]
-pub struct Label {
+pub struct LabelProps {
     pub label: Option<clutter::Actor>,
     pub fade_effect: Option<clutter::Effect>,
     pub x_align: Align,
@@ -18,6 +18,11 @@ pub struct Label {
     pub fade_out: bool,
     pub label_should_fade: bool,
     pub show_tooltip: bool,
+}
+
+#[derive(Clone, Debug)]
+pub struct Label {
+    props: RefCell<LabelProps>,
     widget: Widget,
 }
 
@@ -227,8 +232,9 @@ impl<O: Is<Label>> LabelExt for O {
     ///
     fn get_alignment(&self) -> (Align, Align) {
         let label = self.as_ref();
+        let props = label.props.borrow();
 
-        (label.x_align, label.y_align)
+        (props.x_align, props.y_align)
     }
 
     /// get_clutter_text:
@@ -241,7 +247,9 @@ impl<O: Is<Label>> LabelExt for O {
     ///
     fn get_clutter_text(&self) -> Option<clutter::Actor> {
         let label = self.as_ref();
-        label.label.clone()
+        let props = label.props.borrow();
+
+        props.label.clone()
     }
 
     /// get_fade_out:
@@ -254,7 +262,9 @@ impl<O: Is<Label>> LabelExt for O {
     ///
     fn get_fade_out(&self) -> bool {
         let label = self.as_ref();
-        label.fade_out
+        let props = label.props.borrow();
+
+        props.fade_out
     }
 
     /// get_line_wrap:
@@ -280,7 +290,9 @@ impl<O: Is<Label>> LabelExt for O {
     ///
     fn get_show_tooltip(&self) -> bool {
         let label = self.as_ref();
-        label.show_tooltip
+        let props = label.props.borrow();
+
+        props.show_tooltip
     }
 
     /// get_text:
@@ -313,12 +325,16 @@ impl<O: Is<Label>> LabelExt for O {
 
     fn get_x_align(&self) -> Align {
         let label = self.as_ref();
-        label.x_align
+        let props = label.props.borrow();
+
+        props.x_align
     }
 
     fn get_y_align(&self) -> Align {
         let label = self.as_ref();
-        label.y_align
+        let props = label.props.borrow();
+
+        props.y_align
     }
 
     /// set_alignment:
@@ -330,18 +346,19 @@ impl<O: Is<Label>> LabelExt for O {
     ///
     fn set_alignment(&self, x_align: Align, y_align: Align) {
         let label = self.as_ref();
+        let mut props = label.props.borrow_mut();
 
-        // if x_align != label.x_align {
-        //     label.x_align = x_align;
-        //     clutter_actor_queue_relayout(CLUTTER_ACTOR(label));
-        //     g_object_notify(G_OBJECT(label), "x-align");
-        // }
+        if x_align != props.x_align {
+            props.x_align = x_align;
+            // clutter_actor_queue_relayout(CLUTTER_ACTOR(label));
+            // g_object_notify(G_OBJECT(label), "x-align");
+        }
 
-        // if y_align != label.y_align {
-        //     label.y_align = y_align;
-        //     clutter_actor_queue_relayout(CLUTTER_ACTOR(label));
-        //     g_object_notify(G_OBJECT(label), "y-align");
-        // }
+        if y_align != props.y_align {
+            props.y_align = y_align;
+            // clutter_actor_queue_relayout(CLUTTER_ACTOR(label));
+            // g_object_notify(G_OBJECT(label), "y-align");
+        }
     }
 
     /// set_fade_out:
@@ -354,31 +371,32 @@ impl<O: Is<Label>> LabelExt for O {
     ///
     fn set_fade_out(&self, fade: bool) {
         let label = self.as_ref();
+        let mut props = label.props.borrow_mut();
 
-        if label.fade_out != fade {
-            // label.fade_out = fade;
+        if props.fade_out != fade {
+            props.fade_out = fade;
             // g_object_notify(G_OBJECT (label), "fade-out");
 
             // // Enable the fade-effect
-            // if fade {
-            //     label.label_should_fade = false;
-            //     clutter_text_set_single_line_mode(CLUTTER_TEXT(label.label), true);
-            //     clutter_text_set_ellipsize(CLUTTER_TEXT(label.label),
-            //                                 PANGO_ELLIPSIZE_NONE);
-            // }
+            if fade {
+                props.label_should_fade = false;
+                // clutter_text_set_single_line_mode(CLUTTER_TEXT(label.label), true);
+                // clutter_text_set_ellipsize(CLUTTER_TEXT(label.label),
+                //                             PANGO_ELLIPSIZE_NONE);
+            }
 
-            // // If we need to fade, listen for the font-description changing so
-            // // we can keep track of the em-width of the label.
-            // if fade {
-            //     g_signal_connect(label.label, "notify::font-description",
-            //                         G_CALLBACK(label_font_description_cb), label);
-            //     label_font_description_cb(CLUTTER_TEXT(label.label),
-            //                                     None, label);
-            // } else {
-            //     g_signal_handlers_disconnect_by_func(label.label,
-            //                                         label_font_description_cb,
-            //                                         label);
-            // }
+            // If we need to fade, listen for the font-description changing so
+            // we can keep track of the em-width of the label.
+            if fade {
+                // g_signal_connect(label.label, "notify::font-description",
+                //                     G_CALLBACK(label_font_description_cb), label);
+                // label_font_description_cb(CLUTTER_TEXT(label.label),
+                //                                 None, label);
+            } else {
+                // g_signal_handlers_disconnect_by_func(label.label,
+                //                                     label_font_description_cb,
+                //                                     label);
+            }
         }
     }
 
@@ -403,9 +421,10 @@ impl<O: Is<Label>> LabelExt for O {
     ///
     fn set_show_tooltip(&self, show_tooltip: bool) {
         let label = self.as_ref();
+        let mut props = label.props.borrow_mut();
 
-        if label.show_tooltip != show_tooltip {
-            // label.show_tooltip = show_tooltip;
+        if props.show_tooltip != show_tooltip {
+            props.show_tooltip = show_tooltip;
             // clutter_actor_queue_relayout(CLUTTER_ACTOR(label));
             // g_object_notify(G_OBJECT(label), "show-tooltip");
         }
@@ -444,9 +463,10 @@ impl<O: Is<Label>> LabelExt for O {
 
     fn set_x_align(&self, align: Align) {
         let label = self.as_ref();
+        let mut props = label.props.borrow_mut();
 
-        if align != label.x_align {
-            // label.x_align = align;
+        if align != props.x_align {
+            props.x_align = align;
             // clutter_actor_queue_relayout(CLUTTER_ACTOR(label));
             // g_object_notify(G_OBJECT(label), "x-align");
         }
@@ -454,9 +474,10 @@ impl<O: Is<Label>> LabelExt for O {
 
     fn set_y_align(&self, align: Align) {
         let label = self.as_ref();
+        let mut props = label.props.borrow_mut();
 
-        if align != label.y_align {
-            // label.y_align = align;
+        if align != props.y_align {
+            props.y_align = align;
             // clutter_actor_queue_relayout(CLUTTER_ACTOR(label));
             // g_object_notify(G_OBJECT(label), "y-align");
         }

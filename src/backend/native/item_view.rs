@@ -14,7 +14,7 @@ pub struct AttributeData {
 }
 
 #[derive(Clone, Debug)]
-pub struct ItemView {
+pub struct ItemViewProps {
     pub model: Option<clutter::Model>,
     pub attributes: Vec<AttributeData>,
     pub item_type: glib::types::Type,
@@ -25,6 +25,11 @@ pub struct ItemView {
     pub row_removed: u64,
     pub sort_changed: u64,
     pub is_frozen: bool,
+}
+
+#[derive(Clone, Debug)]
+pub struct ItemView {
+    props: RefCell<ItemViewProps>,
     widget: Widget,
 }
 
@@ -205,7 +210,9 @@ impl<O: Is<ItemView>> ItemViewExt for O {
     ///
     fn get_factory(&self) -> Option<ItemFactory> {
         let itemview = self.as_ref();
-        itemview.factory.clone()
+        let props = itemview.props.borrow();
+
+        props.factory.clone()
     }
 
     /// get_item_type:
@@ -217,7 +224,9 @@ impl<O: Is<ItemView>> ItemViewExt for O {
     ///
     fn get_item_type(&self) -> glib::types::Type {
         let itemview = self.as_ref();
-        itemview.item_type
+        let props = itemview.props.borrow();
+
+        props.item_type
     }
 
     /// get_model:
@@ -229,7 +238,9 @@ impl<O: Is<ItemView>> ItemViewExt for O {
     ///
     fn get_model(&self) -> Option<clutter::Model> {
         let itemview = self.as_ref();
-        itemview.model.clone()
+        let props = itemview.props.borrow();
+
+        props.model.clone()
     }
 
     /// set_factory:
@@ -240,19 +251,21 @@ impl<O: Is<ItemView>> ItemViewExt for O {
     ///
     fn set_factory(&self, factory: Option<&ItemFactory>) {
         let itemview = self.as_ref();
+        let mut props = itemview.props.borrow_mut();
 
+        
         // if itemview.factory == factory {
         //     return;
         // }
 
-        // if itemview.factory {
-        //     g_object_unref(itemview.factory);
-        //     itemview.factory = None;
-        // }
+        if props.factory.is_some() {
+            // g_object_unref(itemview.factory);
+            props.factory = None;
+        }
 
-        // if factory {
-        //     itemview.factory = g_object_ref(factory);
-        // }
+        if factory.is_some() {
+            // itemview.factory = g_object_ref(factory);
+        }
 
         // g_object_notify(G_OBJECT(item_view), "factory");
     }

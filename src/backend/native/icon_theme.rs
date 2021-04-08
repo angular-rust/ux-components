@@ -7,7 +7,7 @@ use std::fmt;
 use std::{boxed::Box as Box_, cell::RefCell};
 
 #[derive(Clone, Debug)]
-pub struct IconTheme {
+pub struct IconThemeProps {
     pub override_theme: bool,
     pub search_paths: Vec<String>,
     // pub icon_hash: GHashTable,
@@ -16,6 +16,11 @@ pub struct IconTheme {
     // pub theme_file: File, // GKeyFile
     pub theme_fallbacks: Vec<String>,
     // pub hicolor_file: File, // GKeyFile
+}
+
+#[derive(Clone, Debug)]
+pub struct IconTheme {
+    props: RefCell<IconThemeProps>
 }
 
 impl IconTheme {
@@ -68,7 +73,7 @@ pub trait IconThemeExt: 'static {
     ///
     fn get_theme_name(&self) -> Option<String>;
 
-    fn has_icon(&self, icon_name: &str) -> bool;
+    fn has_icon(&self, icon_name: &String) -> bool;
 
     ///lookup:
     /// @theme: an #IconTheme
@@ -117,7 +122,9 @@ impl<O: Is<IconTheme>> IconThemeExt for O {
     ///
     fn get_search_paths(&self) -> Vec<String> {
         let icontheme = self.as_ref();
-        icontheme.search_paths.clone()
+        let props = icontheme.props.borrow();
+
+        props.search_paths.clone()
     }
 
     ///get_theme_name:
@@ -129,10 +136,12 @@ impl<O: Is<IconTheme>> IconThemeExt for O {
     ///
     fn get_theme_name(&self) -> Option<String> {
         let icontheme = self.as_ref();
-        icontheme.theme.clone()
+        let props = icontheme.props.borrow();
+
+        props.theme.clone()
     }
 
-    fn has_icon(&self, icon_name: &str) -> bool {
+    fn has_icon(&self, icon_name: &String) -> bool {
         let icontheme = self.as_ref();
         // if icon_theme_get_icons(theme, icon_name) {
         //     return true;

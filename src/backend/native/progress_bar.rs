@@ -14,9 +14,14 @@ pub struct ProgressBarFill {
 }
 
 #[derive(Clone, Debug)]
-pub struct ProgressBar {
+pub struct ProgressBarProps {
     pub fill: Option<clutter::Actor>,
     pub progress: f64,
+}
+
+#[derive(Clone, Debug)]
+pub struct ProgressBar {
+    props: RefCell<ProgressBarProps>,
     widget: Widget,
 }
 
@@ -93,7 +98,9 @@ impl<O: Is<ProgressBar>> ProgressBarExt for O {
     ///
     fn get_progress(&self) -> f64 {
         let progressbar = self.as_ref();
-        progressbar.progress
+        let props = progressbar.props.borrow();
+
+        props.progress
     }
 
     /// set_progress:
@@ -104,9 +111,10 @@ impl<O: Is<ProgressBar>> ProgressBarExt for O {
     ///
     fn set_progress(&self, progress: f64) {
         let progressbar = self.as_ref();
+        let mut props = progressbar.props.borrow_mut();
 
-        if progressbar.progress != progress {
-            // progressbar.progress = progress;
+        if props.progress != progress {
+            props.progress = progress;
             // allocate_fill(bar, None, 0);
             // clutter_actor_queue_redraw(CLUTTER_ACTOR(bar));
             // g_object_notify(G_OBJECT(bar), "progress");

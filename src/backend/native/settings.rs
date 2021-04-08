@@ -10,7 +10,7 @@ use std::{boxed::Box as Box_, cell::RefCell};
 pub struct SettingsProvider;
 
 #[derive(Clone, Debug)]
-pub struct Settings {
+pub struct SettingsProps {
     pub provider: SettingsProvider,
     pub icon_theme: String,
     pub font_name: String,
@@ -18,6 +18,11 @@ pub struct Settings {
     pub drag_threshold: u32,
     pub small_screen: bool,
     pub touch_mode: bool,
+}
+
+#[derive(Clone, Debug)]
+pub struct Settings {
+    props: RefCell<SettingsProps>,
 }
 
 impl Settings {
