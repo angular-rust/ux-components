@@ -45,6 +45,10 @@ cogl-rs = "0.1.3"
 clutter-rs = "0.1"
 ruex = "0.1"
 ux-macro = "0.1"
+ux-primitives = "0.1"
+ux-dataflow = "0.1"
+ux-animate = { version = "0.1", features = ["cairo"] }
+ux-charts = { version = "0.1", features = ["cairo"] }
 
 # starup notifications
 notify-rust = "4"

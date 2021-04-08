@@ -7,7 +7,6 @@ use glib::signal::SignalHandlerId;
 use std::fmt;
 use std::{boxed::Box as Box_, cell::RefCell};
 
-// @extends Widget, clutter::Actor;
 #[derive(Clone, Debug)]
 pub struct ScrollView {
     pub child: Option<clutter::Actor>,
@@ -18,6 +17,7 @@ pub struct ScrollView {
     pub scrollbar_height: u32,
     pub scroll_policy: ScrollPolicy,
     pub scroll_visibility: ScrollPolicy,
+    widget: Widget,
 }
 
 impl ScrollView {
@@ -40,6 +40,23 @@ impl Is<ScrollView> for ScrollView {}
 impl AsRef<ScrollView> for ScrollView {
     fn as_ref(&self) -> &ScrollView {
         self
+    }
+}
+
+impl Is<Widget> for ScrollView {}
+
+impl AsRef<Widget> for ScrollView {
+    fn as_ref(&self) -> &Widget {
+        &self.widget
+    }
+}
+
+impl Is<clutter::Actor> for ScrollView {}
+
+impl AsRef<clutter::Actor> for ScrollView {
+    fn as_ref(&self) -> &clutter::Actor {
+        let actor: &clutter::Actor = self.widget.as_ref();
+        actor
     }
 }
 

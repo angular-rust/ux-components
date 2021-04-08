@@ -8,7 +8,6 @@ use glib::signal::SignalHandlerId;
 use std::fmt;
 use std::{boxed::Box as Box_, cell::RefCell};
 
-// @extends Widget, clutter::Actor;
 #[derive(Clone, Debug)]
 pub struct Viewport {
     pub x: f32,
@@ -18,6 +17,7 @@ pub struct Viewport {
     pub vadjustment: Adjustment,
     pub sync_adjustments: bool,
     pub child: Option<clutter::Actor>,
+    widget: Widget,
 }
 
 impl Viewport {
@@ -40,6 +40,23 @@ impl Is<Viewport> for Viewport {}
 impl AsRef<Viewport> for Viewport {
     fn as_ref(&self) -> &Viewport {
         self
+    }
+}
+
+impl Is<Widget> for Viewport {}
+
+impl AsRef<Widget> for Viewport {
+    fn as_ref(&self) -> &Widget {
+        &self.widget
+    }
+}
+
+impl Is<clutter::Actor> for Viewport {}
+
+impl AsRef<clutter::Actor> for Viewport {
+    fn as_ref(&self) -> &clutter::Actor {
+        let actor: &clutter::Actor = self.widget.as_ref();
+        actor
     }
 }
 

@@ -5,17 +5,13 @@ use crate::prelude::*;
 use std::fmt;
 use std::{boxed::Box as Box_, cell::RefCell};
 
-// @extends Widget, clutter::Actor;
 #[derive(Clone, Debug)]
-pub struct Dialog {
+pub struct DialogProps {
     pub child: Option<clutter::Actor>,
-
     pub visible: bool,
     pub child_has_focus: bool,
-
     pub transition_time: u32,
     pub angle: f32,
-
     pub timeline: Option<clutter::Timeline>,
     pub zoom: f32,
 
@@ -24,6 +20,12 @@ pub struct Dialog {
     pub button_box: Option<clutter::Actor>,
     pub spacing: u32,
     pub actions: Vec<Action>,
+}
+
+#[derive(Clone, Debug)]
+pub struct Dialog {
+    props: RefCell<DialogProps>,
+    widget: Widget,
 }
 
 impl Dialog {
@@ -46,6 +48,23 @@ impl Is<Dialog> for Dialog {}
 impl AsRef<Dialog> for Dialog {
     fn as_ref(&self) -> &Dialog {
         self
+    }
+}
+
+impl Is<Widget> for Dialog {}
+
+impl AsRef<Widget> for Dialog {
+    fn as_ref(&self) -> &Widget {
+        &self.widget
+    }
+}
+
+impl Is<clutter::Actor> for Dialog {}
+
+impl AsRef<clutter::Actor> for Dialog {
+    fn as_ref(&self) -> &clutter::Actor {
+        let actor: &clutter::Actor = self.widget.as_ref();
+        actor
     }
 }
 
@@ -98,16 +117,17 @@ impl<O: Is<Dialog>> DialogExt for O {
     fn add_action<P: Is<Action>>(&self, action: &P) {
         let dialog = self.as_ref();
         let action = action.as_ref();
+        // let mut props = dialog.props.borrow_mut();
 
         let button = Button::new();
         button.set_action(action);
-        // clutter_actor_add_child (dialog.button_box, button);
+        // clutter_actor_add_child (props.button_box, button);
 
         // /* So we can maintain the two way relationship between action and button */
         // let da: DialogAction = g_slice_new (DialogAction);
         // da.action = action;
         // da.button = button;
-        // dialog.actions.push(da);
+        // props.actions.push(da);
     }
 
     /// get_actions:
@@ -122,7 +142,7 @@ impl<O: Is<Dialog>> DialogExt for O {
         let dialog = self.as_ref();
 
         // GList *a, *list;
-        // list = NULL;
+        // list = None;
 
         // for (a = dialog.actions; a; a = a.next) {
         //     DialogAction *da = a.data;
@@ -146,7 +166,7 @@ impl<O: Is<Dialog>> DialogExt for O {
         // DialogAction *da;
         // GList *a;
 
-        // da = NULL;
+        // da = None;
         // for (a = dialog.actions; a; a = a.next) {
         //     DialogAction *data = a.data;
 
@@ -157,7 +177,7 @@ impl<O: Is<Dialog>> DialogExt for O {
         //     }
         // }
 
-        // if (da == NULL) {
+        // if (da == None) {
         //     g_warning ("Action '%s' was not found in dialog",
         //                 action_get_name (action));
         //     return;

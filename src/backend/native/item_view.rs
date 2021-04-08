@@ -13,21 +13,19 @@ pub struct AttributeData {
     pub col: i32,
 }
 
-// @extends Grid, Widget, clutter::Actor;
 #[derive(Clone, Debug)]
 pub struct ItemView {
     pub model: Option<clutter::Model>,
     pub attributes: Vec<AttributeData>,
     pub item_type: glib::types::Type,
     pub factory: Option<ItemFactory>,
-
     pub filter_changed: u64,
     pub row_added: u64,
     pub row_changed: u64,
     pub row_removed: u64,
     pub sort_changed: u64,
-
     pub is_frozen: bool,
+    widget: Widget,
 }
 
 impl ItemView {
@@ -50,6 +48,32 @@ impl Is<ItemView> for ItemView {}
 impl AsRef<ItemView> for ItemView {
     fn as_ref(&self) -> &ItemView {
         self
+    }
+}
+
+impl Is<Grid> for ItemView {}
+
+impl AsRef<Grid> for ItemView {
+    fn as_ref(&self) -> &Grid {
+        // &self.widget
+        unimplemented!()
+    }
+}
+
+impl Is<Widget> for ItemView {}
+
+impl AsRef<Widget> for ItemView {
+    fn as_ref(&self) -> &Widget {
+        &self.widget
+    }
+}
+
+impl Is<clutter::Actor> for ItemView {}
+
+impl AsRef<clutter::Actor> for ItemView {
+    fn as_ref(&self) -> &clutter::Actor {
+        let actor: &clutter::Actor = self.widget.as_ref();
+        actor
     }
 }
 
@@ -304,7 +328,7 @@ impl<O: Is<ItemView>> ItemViewExt for O {
         //                                             G_CALLBACK(model_changed_cb),
         //                                             item_view);
 
-        //     // Only do this inside this block, setting the model to NULL should have
+        //     // Only do this inside this block, setting the model to None should have
         //     // the effect of preserving the view; just disconnect the handlers
         //     model_changed_cb(itemview.model, itemview);
         // }

@@ -16,7 +16,6 @@ pub struct DimensionData {
     pub final_size: f32,
 }
 
-// @extends Widget, clutter::Actor;
 #[derive(Clone, Debug)]
 pub struct Table {
     pub ignore_css_col_spacing: bool,
@@ -37,6 +36,7 @@ pub struct Table {
     pub rows: Vec<String>,
 
     pub last_focus: Focusable,
+    widget: Widget,
 }
 
 impl Table {
@@ -59,6 +59,23 @@ impl Is<Table> for Table {}
 impl AsRef<Table> for Table {
     fn as_ref(&self) -> &Table {
         self
+    }
+}
+
+impl Is<Widget> for Table {}
+
+impl AsRef<Widget> for Table {
+    fn as_ref(&self) -> &Widget {
+        &self.widget
+    }
+}
+
+impl Is<clutter::Actor> for Table {}
+
+impl AsRef<clutter::Actor> for Table {
+    fn as_ref(&self) -> &clutter::Actor {
+        let actor: &clutter::Actor = self.widget.as_ref();
+        actor
     }
 }
 
@@ -112,7 +129,7 @@ pub trait TableExt: 'static {
     ///
     /// Get an actor at a given position in @table.
     ///
-    /// Return value: (transfer none): the #ClutterActor a the given position, or NULL.
+    /// Return value: (transfer none): the #ClutterActor a the given position, or None.
     ///
     fn get_actor_at(&self, row: u32, column: u32) -> Option<clutter::Actor>;
 
@@ -170,7 +187,7 @@ pub trait TableExt: 'static {
     /// @row: the row to place the child into
     /// @column: the column to place the child into
     /// @first_property_name: name of the first property to set
-    /// @...: value for the first property, followed optionally by more name/value pairs terminated with NULL.
+    /// @...: value for the first property, followed optionally by more name/value pairs terminated with None.
     ///
     /// Add an actor into at the specified row and column, with additional child
     /// properties to set.
@@ -442,7 +459,7 @@ impl<O: Is<Table>> TableExt for O {
     ///
     /// Get an actor at a given position in @table.
     ///
-    /// Return value: (transfer none): the #ClutterActor a the given position, or NULL.
+    /// Return value: (transfer none): the #ClutterActor a the given position, or None.
     ///
     fn get_actor_at(&self, row: u32, column: u32) -> Option<clutter::Actor> {
         let table = self.as_ref();
@@ -536,7 +553,7 @@ impl<O: Is<Table>> TableExt for O {
     /// @row: the row to place the child into
     /// @column: the column to place the child into
     /// @first_property_name: name of the first property to set
-    /// @...: value for the first property, followed optionally by more name/value pairs terminated with NULL.
+    /// @...: value for the first property, followed optionally by more name/value pairs terminated with None.
     ///
     /// Add an actor into at the specified row and column, with additional child
     /// properties to set.

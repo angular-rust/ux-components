@@ -7,7 +7,6 @@ use glib::signal::SignalHandlerId;
 use std::fmt;
 use std::{boxed::Box as Box_, cell::RefCell};
 
-// @extends Widget, clutter::Actor;
 #[derive(Clone, Debug)]
 pub struct Slider {
     pub trough_bg: Option<clutter::Actor>,
@@ -32,6 +31,7 @@ pub struct Slider {
 
     pub value: f64,
     pub buffer_value: f64,
+    widget: Widget,
 }
 
 impl Slider {
@@ -54,6 +54,23 @@ impl Is<Slider> for Slider {}
 impl AsRef<Slider> for Slider {
     fn as_ref(&self) -> &Slider {
         self
+    }
+}
+
+impl Is<Widget> for Slider {}
+
+impl AsRef<Widget> for Slider {
+    fn as_ref(&self) -> &Widget {
+        &self.widget
+    }
+}
+
+impl Is<clutter::Actor> for Slider {}
+
+impl AsRef<clutter::Actor> for Slider {
+    fn as_ref(&self) -> &clutter::Actor {
+        let actor: &clutter::Actor = self.widget.as_ref();
+        actor
     }
 }
 
@@ -168,7 +185,7 @@ impl<O: Is<Slider>> SliderExt for O {
         // slider.value = value;
 
         // if !slider.capture_handler {
-        //     slider_allocate_fill_handle(slider, NULL, 0);
+        //     slider_allocate_fill_handle(slider, None, 0);
         //     clutter_actor_queue_redraw(CLUTTER_ACTOR(slider));
         // }
 

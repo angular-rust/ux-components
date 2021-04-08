@@ -167,7 +167,7 @@ impl<O: Is<ButtonGroup>> ButtonGroupExt for O {
     fn foreach<P: FnMut(&clutter::Actor)>(&self, callback: P) {
         let buttongroup = self.as_ref();
         // g_return_if_fail (IS_BUTTON_GROUP (group));
-        // g_return_if_fail (callback != NULL);
+        // g_return_if_fail (callback != None);
 
         // g_slist_foreach (buttongroup.children, (GFunc) callback, userdata);
     }
@@ -222,7 +222,7 @@ impl<O: Is<ButtonGroup>> ButtonGroupExt for O {
         let button = button.as_ref();
         let props = buttongroup.props.borrow();
 
-        // GSList *l, *prev = NULL, *next;
+        // GSList *l, *prev = None, *next;
         // let mut found = false;
 
         // // check the button exists in this group
@@ -260,7 +260,7 @@ impl<O: Is<ButtonGroup>> ButtonGroupExt for O {
         //     } else if buttongroup.children {
         //         buttongroup.set_active_button ((Button *) priv->children->data);
         //     } else {
-        //         buttongroup.set_active_button (NULL);
+        //         buttongroup.set_active_button (None);
         //     }
         // }
     }

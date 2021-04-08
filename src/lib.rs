@@ -62,7 +62,19 @@ pub mod prelude {
 }
 
 impl prelude::Object for clutter::Actor {}
+impl prelude::Is<clutter::Actor> for clutter::Actor {}
+
 impl prelude::Object for clutter::Model {}
+impl prelude::Is<clutter::Model> for clutter::Model {}
+
+impl prelude::Object for clutter::OffscreenEffect {}
+impl prelude::Is<clutter::OffscreenEffect> for clutter::OffscreenEffect {}
+
+impl prelude::Object for clutter::Effect {}
+impl prelude::Is<clutter::Effect> for clutter::Effect {}
+
+impl prelude::Object for clutter::ActorMeta {}
+impl prelude::Is<clutter::ActorMeta> for clutter::ActorMeta {}
 
 #[cfg(test)]
 mod tests {

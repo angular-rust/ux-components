@@ -29,7 +29,6 @@ pub struct ImageAsyncData {
     // pub error: GError,
 }
 
-// @extends Widget, clutter::Actor;
 #[derive(Clone, Debug)]
 pub struct Image {
     pub mode: ImageScaleMode,
@@ -76,6 +75,24 @@ impl Is<Image> for Image {}
 impl AsRef<Image> for Image {
     fn as_ref(&self) -> &Image {
         self
+    }
+}
+
+impl Is<Widget> for Image {}
+
+impl AsRef<Widget> for Image {
+    fn as_ref(&self) -> &Widget {
+        // &self.widget
+        unimplemented!()
+    }
+}
+
+impl Is<clutter::Actor> for Image {}
+
+impl AsRef<clutter::Actor> for Image {
+    fn as_ref(&self) -> &clutter::Actor {
+        // &self.widget
+        unimplemented!()
     }
 }
 
@@ -183,8 +200,8 @@ pub trait ImageExt: 'static {
     /// @buffer: (array length=buffer_size) (transfer full): A buffer
     ///   pointing to encoded image data
     /// @buffer_size: The size of @buffer, in bytes
-    /// @buffer_free_func: (allow-none): A function to free @buffer, or %NULL
-    /// @error: Return location for a #GError, or #NULL
+    /// @buffer_free_func: (allow-none): A function to free @buffer, or %None
+    /// @error: Return location for a #GError, or #None
     ///
     /// Set the image data from unencoded image data, stored in memory. In case of
     /// failure, #false is returned and @error is set. It is expected that @buffer
@@ -200,10 +217,10 @@ pub trait ImageExt: 'static {
     /// @buffer: (array length=buffer_size) (transfer full): A buffer
     ///   pointing to encoded image data
     /// @buffer_size: The size of @buffer, in bytes
-    /// @buffer_free_func: (allow-none): A function to free @buffer, or %NULL
+    /// @buffer_free_func: (allow-none): A function to free @buffer, or %None
     /// @width: Width to scale the image to, or -1
     /// @height: Height to scale the image to, or -1
-    /// @error: Return location for a #GError, or #NULL
+    /// @error: Return location for a #GError, or #None
     ///
     /// Set the image data from unencoded image data, stored in memory, and scales
     /// it while loading. In case of failure, #false is returned and @error is set.
@@ -237,7 +254,7 @@ pub trait ImageExt: 'static {
     /// @width: Width in pixels of image data.
     /// @height: Height in pixels of image data
     /// @rowstride: Distance in bytes between row starts.
-    /// @error: Return location for a #GError, or #NULL
+    /// @error: Return location for a #GError, or #None
     ///
     /// Set the image data from a buffer. In case of failure, #false is returned
     /// and @error is set.
@@ -256,7 +273,7 @@ pub trait ImageExt: 'static {
     /// set_from_file:
     /// @image: An #Image
     /// @filename: Filename to read the file from
-    /// @error: Return location for a #GError, or #NULL
+    /// @error: Return location for a #GError, or #None
     ///
     /// Set the image data from an image file. In case of failure, #false is returned
     /// and @error is set.
@@ -270,7 +287,7 @@ pub trait ImageExt: 'static {
     /// @filename: Filename to read the file from
     /// @width: Width to scale the image to, or -1
     /// @height: Height to scale the image to, or -1
-    /// @error: Return location for a #GError, or #NULL
+    /// @error: Return location for a #GError, or #None
     ///
     /// Set the image data from an image file, and scale the image during loading.
     /// In case of failure, #false is returned and @error is set. The aspect ratio
@@ -561,8 +578,8 @@ impl<O: Is<Image>> ImageExt for O {
     /// @buffer: (array length=buffer_size) (transfer full): A buffer
     ///   pointing to encoded image data
     /// @buffer_size: The size of @buffer, in bytes
-    /// @buffer_free_func: (allow-none): A function to free @buffer, or %NULL
-    /// @error: Return location for a #GError, or #NULL
+    /// @buffer_free_func: (allow-none): A function to free @buffer, or %None
+    /// @error: Return location for a #GError, or #None
     ///
     /// Set the image data from unencoded image data, stored in memory. In case of
     /// failure, #false is returned and @error is set. It is expected that @buffer
@@ -580,10 +597,10 @@ impl<O: Is<Image>> ImageExt for O {
     /// @buffer: (array length=buffer_size) (transfer full): A buffer
     ///   pointing to encoded image data
     /// @buffer_size: The size of @buffer, in bytes
-    /// @buffer_free_func: (allow-none): A function to free @buffer, or %NULL
+    /// @buffer_free_func: (allow-none): A function to free @buffer, or %None
     /// @width: Width to scale the image to, or -1
     /// @height: Height to scale the image to, or -1
-    /// @error: Return location for a #GError, or #NULL
+    /// @error: Return location for a #GError, or #None
     ///
     /// Set the image data from unencoded image data, stored in memory, and scales
     /// it while loading. In case of failure, #false is returned and @error is set.
@@ -606,14 +623,14 @@ impl<O: Is<Image>> ImageExt for O {
         //                             buffer_free_func, width, height, error);
         // }
 
-        // let pixbuf: GdkPixbuf = Image::pixbuf_new(NULL, buffer, buffer_size, width, height,
+        // let pixbuf: GdkPixbuf = Image::pixbuf_new(None, buffer, buffer_size, width, height,
         //     image.width_threshold, image.height_threshold,
         //     image.upscale, None, error);
         // if !pixbuf {
         //     return false;
         // }
 
-        // let retval = image.set_from_pixbuf(pixbuf, NULL, error);
+        // let retval = image.set_from_pixbuf(pixbuf, None, error);
 
         // g_object_unref(pixbuf);
 
@@ -663,7 +680,7 @@ impl<O: Is<Image>> ImageExt for O {
     //         /* Set the blending equation to directly copy the bits of the old
     //          * texture without blending the destination pixels.
     //          */
-    //         cogl_material_set_blend(tex_material, "RGBA=ADD(SRC_COLOR, 0)", NULL);
+    //         cogl_material_set_blend(tex_material, "RGBA=ADD(SRC_COLOR, 0)", None);
     //         clear_material = cogl_material_copy(tex_material);
 
     //         cogl_color_set_from_4ub(&transparent, 0, 0, 0, 0);
@@ -716,7 +733,7 @@ impl<O: Is<Image>> ImageExt for O {
     //         data = g_malloc(height * rowstride);
     //         cogl_texture_get_data(texture, format, rowstride, data);
     //         return image_set_from_data(image, data, format,
-    //                                        width, height, rowstride, NULL);
+    //                                        width, height, rowstride, None);
     //       }
     // }
 
@@ -727,7 +744,7 @@ impl<O: Is<Image>> ImageExt for O {
     /// @width: Width in pixels of image data.
     /// @height: Height in pixels of image data
     /// @rowstride: Distance in bytes between row starts.
-    /// @error: Return location for a #GError, or #NULL
+    /// @error: Return location for a #GError, or #None
     ///
     /// Set the image data from a buffer. In case of failure, #false is returned
     /// and @error is set.
@@ -744,7 +761,7 @@ impl<O: Is<Image>> ImageExt for O {
     ) -> Result<(), glib::Error> {
         let image = self.as_ref();
 
-        // image.set_from_data_internal(image, data, NULL, FALSE,
+        // image.set_from_data_internal(image, data, None, FALSE,
         //                                       pixel_format, width, height,
         //                                       rowstride, error);
         unimplemented!()
@@ -753,7 +770,7 @@ impl<O: Is<Image>> ImageExt for O {
     /// set_from_file:
     /// @image: An #Image
     /// @filename: Filename to read the file from
-    /// @error: Return location for a #GError, or #NULL
+    /// @error: Return location for a #GError, or #None
     ///
     /// Set the image data from an image file. In case of failure, #false is returned
     /// and @error is set.
@@ -770,7 +787,7 @@ impl<O: Is<Image>> ImageExt for O {
     /// @filename: Filename to read the file from
     /// @width: Width to scale the image to, or -1
     /// @height: Height to scale the image to, or -1
-    /// @error: Return location for a #GError, or #NULL
+    /// @error: Return location for a #GError, or #None
     ///
     /// Set the image data from an image file, and scale the image during loading.
     /// In case of failure, #false is returned and @error is set. The aspect ratio
@@ -810,7 +827,7 @@ impl<O: Is<Image>> ImageExt for O {
         //             // Add the processed image to the cache
         //             texture_cache_insert_meta (cache, filename,
         //                                         GINT_TO_POINTER (image_cache_quark),
-        //                                         image.texture, NULL);
+        //                                         image.texture, None);
         //             return true;
         //         } else {
         //             g_set_error (error, IMAGE_ERROR, IMAGE_ERROR_INTERNAL,
@@ -822,12 +839,12 @@ impl<O: Is<Image>> ImageExt for O {
 
         //     // Load the pixbuf in a thread, then later on upload it to the GPU
         //     if image.load_async {
-        //         return image.set_async(filename, NULL, 0, NULL,
+        //         return image.set_async(filename, None, 0, None,
         //                                 width, height, error);
         //     }
 
         //     // Synchronously load the pixbuf and set it
-        //     pixbuf = image_pixbuf_new(filename, NULL, 0, width, height,
+        //     pixbuf = image_pixbuf_new(filename, None, 0, width, height,
         //         image.width_threshold,
         //         image.height_threshold,
         //         image.upscale, &use_cache, error);
@@ -837,7 +854,7 @@ impl<O: Is<Image>> ImageExt for O {
         //     }
         // }
 
-        // retval = image.set_from_pixbuf(pixbuf, use_cache ? filename : NULL, error);
+        // retval = image.set_from_pixbuf(pixbuf, use_cache ? filename : None, error);
 
         // if pixbuf {
         //     g_object_unref (pixbuf);

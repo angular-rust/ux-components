@@ -13,7 +13,6 @@ pub struct AttributeData {
     pub col: usize,
 }
 
-// @extends BoxLayout, Widget, clutter::Actor;
 #[derive(Clone, Debug)]
 pub struct ListView {
     pub model: Option<clutter::Model>,
@@ -26,6 +25,7 @@ pub struct ListView {
     pub row_removed: u64,
     pub sort_changed: u64,
     pub is_frozen: bool,
+    widget: Widget,
 }
 
 impl ListView {
@@ -48,6 +48,32 @@ impl Is<ListView> for ListView {}
 impl AsRef<ListView> for ListView {
     fn as_ref(&self) -> &ListView {
         self
+    }
+}
+
+impl Is<BoxLayout> for ListView {}
+
+impl AsRef<BoxLayout> for ListView {
+    fn as_ref(&self) -> &BoxLayout {
+        // &self.widget
+        unimplemented!()
+    }
+}
+
+impl Is<Widget> for ListView {}
+
+impl AsRef<Widget> for ListView {
+    fn as_ref(&self) -> &Widget {
+        &self.widget
+    }
+}
+
+impl Is<clutter::Actor> for ListView {}
+
+impl AsRef<clutter::Actor> for ListView {
+    fn as_ref(&self) -> &clutter::Actor {
+        let actor: &clutter::Actor = self.widget.as_ref();
+        actor
     }
 }
 
@@ -303,7 +329,7 @@ impl<O: Is<ListView>> ListViewExt for O {
         //                                         G_CALLBACK(model_changed_cb),
         //                                         listview);
 
-        //     // Only do this inside this block, setting the model to NULL should have
+        //     // Only do this inside this block, setting the model to None should have
         //     // the effect of preserving the view; just disconnect the handlers
         //     model_changed_cb(listview.model, listview);
         // }

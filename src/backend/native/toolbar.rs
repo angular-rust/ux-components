@@ -7,13 +7,13 @@ use glib::signal::SignalHandlerId;
 use std::fmt;
 use std::{boxed::Box as Box_, cell::RefCell};
 
-// @extends Widget, clutter::Actor;
 #[derive(Clone, Debug)]
 pub struct Toolbar {
     pub has_close_button: bool,
     pub child_has_focus: bool,
     pub close_button: Option<clutter::Actor>,
     pub child: Option<clutter::Actor>,
+    widget: Widget,
 }
 
 impl Toolbar {
@@ -36,6 +36,23 @@ impl Is<Toolbar> for Toolbar {}
 impl AsRef<Toolbar> for Toolbar {
     fn as_ref(&self) -> &Toolbar {
         self
+    }
+}
+
+impl Is<Widget> for Toolbar {}
+
+impl AsRef<Widget> for Toolbar {
+    fn as_ref(&self) -> &Widget {
+        &self.widget
+    }
+}
+
+impl Is<clutter::Actor> for Toolbar {}
+
+impl AsRef<clutter::Actor> for Toolbar {
+    fn as_ref(&self) -> &clutter::Actor {
+        let actor: &clutter::Actor = self.widget.as_ref();
+        actor
     }
 }
 

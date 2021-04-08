@@ -7,7 +7,6 @@ use glib::signal::SignalHandlerId;
 use std::fmt;
 use std::{boxed::Box as Box_, cell::RefCell};
 
-// @extends Stack, Widget, clutter::Actor;
 #[derive(Clone, Debug)]
 pub struct Pager {
     pub pages: Vec<clutter::Actor>,
@@ -17,6 +16,7 @@ pub struct Pager {
     pub button_group: ButtonGroup,
     // pub pages_to_buttons: GHashTable, /* ClutterActor* -> Button* */
     pub hover_timeout: u32,
+    widget: Widget,
 }
 
 impl Pager {
@@ -39,6 +39,32 @@ impl Is<Pager> for Pager {}
 impl AsRef<Pager> for Pager {
     fn as_ref(&self) -> &Pager {
         self
+    }
+}
+
+impl Is<Stack> for Pager {}
+
+impl AsRef<Stack> for Pager {
+    fn as_ref(&self) -> &Stack {
+        // &self.widget
+        unimplemented!()
+    }
+}
+
+impl Is<Widget> for Pager {}
+
+impl AsRef<Widget> for Pager {
+    fn as_ref(&self) -> &Widget {
+        &self.widget
+    }
+}
+
+impl Is<clutter::Actor> for Pager {}
+
+impl AsRef<clutter::Actor> for Pager {
+    fn as_ref(&self) -> &clutter::Actor {
+        let actor: &clutter::Actor = self.widget.as_ref();
+        actor
     }
 }
 
@@ -125,7 +151,7 @@ pub trait PagerExt: 'static {
 
     /// pager_set_edge_previews:
     /// @self: a #Pager
-    /// @edge_previews: %TRUE to enable edge previews
+    /// @edge_previews: %true to enable edge previews
     ///
     /// Sets the #Pager:edge-previews property.
     ///
@@ -297,7 +323,7 @@ impl<O: Is<Pager>> PagerExt for O {
 
     /// pager_set_edge_previews:
     /// @self: a #Pager
-    /// @edge_previews: %TRUE to enable edge previews
+    /// @edge_previews: %true to enable edge previews
     ///
     /// Sets the #Pager:edge-previews property.
     ///

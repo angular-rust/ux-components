@@ -7,7 +7,6 @@ use glib::signal::SignalHandlerId;
 use std::fmt;
 use std::{boxed::Box as Box_, cell::RefCell};
 
-// @extends Widget, clutter::Actor;
 #[derive(Clone, Debug)]
 pub struct Grid {
     // pub hash_table: GHashTable,
@@ -30,6 +29,7 @@ pub struct Grid {
     pub last_focus: Focusable,
     pub ignore_css_col_spacing: bool,
     pub ignore_css_row_spacing: bool,
+    widget: Widget,
 }
 
 impl Grid {
@@ -52,6 +52,23 @@ impl Is<Grid> for Grid {}
 impl AsRef<Grid> for Grid {
     fn as_ref(&self) -> &Grid {
         self
+    }
+}
+
+impl Is<Widget> for Grid {}
+
+impl AsRef<Widget> for Grid {
+    fn as_ref(&self) -> &Widget {
+        &self.widget
+    }
+}
+
+impl Is<clutter::Actor> for Grid {}
+
+impl AsRef<clutter::Actor> for Grid {
+    fn as_ref(&self) -> &clutter::Actor {
+        let actor: &clutter::Actor = self.widget.as_ref();
+        actor
     }
 }
 

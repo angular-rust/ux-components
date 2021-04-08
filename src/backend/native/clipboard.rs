@@ -5,7 +5,13 @@ use std::fmt;
 use std::{boxed::Box as Box_, cell::RefCell};
 
 #[derive(Clone, Debug)]
-pub struct Clipboard {}
+pub struct ClipboardProps {
+    text: Option<String>
+}
+#[derive(Clone, Debug)]
+pub struct Clipboard {
+    props: RefCell<ClipboardProps>,
+}
 
 impl Clipboard {
     pub fn get_default() -> Option<Clipboard> {
@@ -43,7 +49,7 @@ pub trait ClipboardExt: 'static {
     ///
     /// Sets text as the current contents of the clipboard.
     ///
-    fn set_text(&self, text: &str);
+    fn set_text(&self, text: Option<String>);
 }
 
 impl<O: Is<Clipboard>> ClipboardExt for O {
@@ -56,6 +62,7 @@ impl<O: Is<Clipboard>> ClipboardExt for O {
     /// when the data is retreived.
     ///
     fn get_text<P: FnOnce(&Clipboard, &str) + 'static>(&self, callback: P) {
+        let clipboard = self.as_ref();
         // let callback_data: Box_<P> = Box_::new(callback);
         // unsafe extern "C" fn callback_func<P: FnOnce(&Clipboard, &str) + 'static>(
         //     clipboard: *mut ffi::Clipboard,
@@ -80,7 +87,7 @@ impl<O: Is<Clipboard>> ClipboardExt for O {
         // ClipboardClosure *closure;
 
         // g_return_if_fail (IS_CLIPBOARD (clipboard));
-        // g_return_if_fail (callback != NULL);
+        // g_return_if_fail (callback != None);
 
         // closure = g_slice_new (ClipboardClosure);
         // closure->clipboard = clipboard;
@@ -98,12 +105,10 @@ impl<O: Is<Clipboard>> ClipboardExt for O {
     ///
     /// Sets text as the current contents of the clipboard.
     ///
-    fn set_text(&self, text: &str) {
-        // g_return_if_fail (IS_CLIPBOARD (clipboard));
-        // g_return_if_fail (text != NULL);
-
-        // priv = clipboard->priv;
-        // priv->text = g_strdup (text);
+    fn set_text(&self, text: Option<String>) {
+        let clipboard = self.as_ref();
+        let mut props = clipboard.props.borrow_mut();
+        props.text = text;
     }
 }
 

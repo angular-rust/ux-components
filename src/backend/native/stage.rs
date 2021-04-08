@@ -3,56 +3,40 @@
 // use std::mem;
 // use std::mem::transmute;
 use super::{Toolbar, WindowRotation};
-use crate::prelude::*;
+use crate::{prelude::*, Icon};
+use clutter::Color;
 use glib::signal::SignalHandlerId;
 use std::fmt;
 use std::{boxed::Box as Box_, cell::RefCell};
 
 #[derive(Clone, Debug)]
-pub struct Stage {
-    pub inner: clutter::Stage,
-
+pub struct StageProps {
     // pub native_window: NativeWindow,
     pub has_toolbar: bool,
     pub small_screen: bool,
     pub fullscreen: bool,
     pub rotate_size: bool,
-
-    pub icon_name: String,
-    // pub icon_texture: cogl::Handle,
-    pub stage: Option<clutter::Actor>,
-    pub toolbar: Option<Toolbar>,
-    pub child: Option<clutter::Actor>,
-    pub resize_grip: Option<clutter::Actor>,
-    pub debug_actor: Option<clutter::Actor>,
-
+    pub icon_name: Option<String>,
     pub rotation: WindowRotation,
-    pub rotation_timeline: Option<clutter::Timeline>,
     pub start_angle: f32,
     pub end_angle: f32,
     pub angle: f32,
+    // pub icon_texture: cogl::Handle,
+    pub toolbar: Option<Toolbar>,
+    pub resize_grip: Option<clutter::Actor>,
+    pub debug_actor: Option<clutter::Actor>,
+    pub rotation_timeline: Option<clutter::Timeline>,
+}
+
+#[derive(Clone, Debug)]
+pub struct Stage {
+    props: RefCell<StageProps>,
+    pub inner: clutter::Stage, // previous called stage
 }
 
 impl Stage {
     pub fn new() -> Stage {
-        Self {
-            inner: clutter::Stage::new(),
-            has_toolbar: false,
-            small_screen: false,
-            fullscreen: false,
-            rotate_size: false,
-            icon_name: "".into(),
-            stage: None,
-            toolbar: None,
-            child: None,
-            resize_grip: None,
-            debug_actor: None,
-            rotation: WindowRotation::Rotation0,
-            rotation_timeline: None,
-            start_angle: 0.0,
-            end_angle: 0.0,
-            angle: 0.0,
-        }
+        Default::default()
     }
 
     /// new_with_clutter_stage:
@@ -74,7 +58,7 @@ impl Stage {
     ///
     /// Gets the #Stage parent of the #ClutterStage, if it exists.
     ///
-    /// Returns: (transfer none): A #Stage, or %NULL
+    /// Returns: (transfer none): A #Stage, or %None
     ///
     pub fn get_for_stage(stage: &clutter::Stage) -> Option<Stage> {
         //    unsafe { TODO: call ffi:window_get_for_stage() }
@@ -84,28 +68,145 @@ impl Stage {
     pub fn test_check(&self) -> String {
         "HERE".into()
     }
+
+    fn reallocate(&self) {
+        let allocation_box = self.inner.get_allocation_box();
+        self.allocation_changed_cb(&self.inner, &allocation_box, clutter::AllocationFlags::ALLOCATION_NONE);
+    }
+
+    fn allocation_changed_cb(&self, actor: &clutter::Stage, allocation_box: &clutter::ActorBox,
+          flags: clutter::AllocationFlags) 
+    {
+        // let padding: Padding;
+        
+        // MxWindowPrivate *priv;
+        let toolbar_height = 0.0;
+
+        // Note, ideally this would happen just before allocate, but there's
+        // no signal we can connect to for that without overriding an actor.
+        //
+        // Instead, we do this each time the allocation is changed on the stage
+        // or the toolbar. This shouldn't be a frequent occurence, but
+        // unfortunately can happen multiple times before the actual relayout
+        // happens.
+
+        // priv = self.priv;
+
+        // let from_toolbar = actor == props.toolbar;
+        // actor = props.stage;
+
+        // let (width, height) = self.inner.get_size();
+        // let (stage_width, stage_height) = actor.get_size();
+
+        // let x = (stage_width - width) / 2.0;
+        // let y = (stage_height - height) / 2.0;
+
+        // UGLY
+        // if !props.has_toolbar || props.small_screen || props.fullscreen {
+        //     padding.top = padding.right = padding.bottom = padding.left = 0;
+        // } else {
+        //     padding.top = padding.right = padding.bottom = padding.left = 1;
+        // }
+
+        // if props.has_toolbar && props.toolbar {
+        //     clutter_actor_get_preferred_height(props.toolbar,
+        //                         width - padding.left -
+        //                         padding.right,
+        //                         NULL, &toolbar_height);
+
+        //     if !from_toolbar {
+        //         clutter_actor_set_position (props.toolbar,
+        //                         padding.left + x,
+        //                         padding.top + y);
+        //         clutter_actor_set_pivot_point(props.toolbar,
+        //                         (width / 2.0 - padding.left) / clutter_actor_get_width (props.toolbar),
+        //                         (height / 2.0 - padding.top) / clutter_actor_get_height (props.toolbar));
+        //         clutter_actor_set_rotation_angle(props.toolbar,
+        //                         CLUTTER_Z_AXIS,
+        //                         props.angle);
+        //         g_object_set(G_OBJECT(props.toolbar),
+        //                         "natural-width",
+        //                         width - padding.left - padding.right,
+        //                         NULL);
+        //     }
+        // } else {
+        //     toolbar_height = 0;
+        // }
+
+        // if props.child {
+        //     g_object_set(G_OBJECT(props.child),
+        //                         "natural-width", width - padding.left - padding.right,
+        //                         "natural-height", height - toolbar_height -
+        //                                     padding.top - padding.bottom,
+        //                         "x", padding.left + x,
+        //                         "y", toolbar_height + padding.top + y,
+        //                         NULL);
+        //     clutter_actor_set_rotation_angle(props.child, CLUTTER_Z_AXIS, props.angle);
+        //     clutter_actor_set_pivot_point(props.child,
+        //                         (width / 2.0 - padding.left) / clutter_actor_get_width (props.child),
+        //                         (height / 2.0 - padding.top - toolbar_height) / clutter_actor_get_height (props.child));
+        // }
+
+        // if props.resize_grip {
+        //     clutter_actor_get_preferred_size(props.resize_grip,
+        //                         NULL, NULL,
+        //                         &width, &height);
+        //     clutter_actor_set_position(props.resize_grip,
+        //                         stage_width - width - padding.right,
+        //                         stage_height - height - padding.bottom);
+        // }
+    }
 }
 
 impl Default for Stage {
     fn default() -> Self {
-        Self {
-            inner: clutter::Stage::new(),
-            has_toolbar: false,
+        let timeline = clutter::Timeline::new(400);
+        timeline.set_progress_mode(clutter::AnimationMode::EaseInOutQuad);
+
+        let inner = clutter::Stage::new();
+        inner.set_user_resizable(true);
+
+        let props = StageProps {
+            has_toolbar: true,
             small_screen: false,
             fullscreen: false,
             rotate_size: false,
-            icon_name: "".into(),
-            stage: None,
+            icon_name: None,
             toolbar: None,
-            child: None,
             resize_grip: None,
             debug_actor: None,
             rotation: WindowRotation::Rotation0,
-            rotation_timeline: None,
+            rotation_timeline: Some(timeline),
             start_angle: 0.0,
             end_angle: 0.0,
             angle: 0.0,
-        }
+        };
+
+        let stage = Self {
+            inner,
+            props: RefCell::new(props),
+        };
+
+        // focus_manager_get_for_stage ((ClutterStage *)stage.inner)
+        // let toolbar = Toolbar::new();
+        // stage.set_toolbar(&toolbar);
+        // let resize_grip = Icon::new();
+        // stylable_set_style_class(MX_STYLABLE (stage.resize_grip), "ResizeGrip");
+        // clutter_actor_add_child(stage.inner, stage.resize_grip);
+
+        // if stage.fullscreen || !clutter_stage_get_user_resizable(CLUTTER_STAGE(stage.inner)) || !stage.has_toolbar {
+        //   clutter_actor_hide (stage.resize_grip);
+        // }
+
+        // #ifdef HAVE_X11
+        //     stage.native_window = _window_x11_new (self);
+        // #endif
+
+        // #ifdef HAVE_WAYLAND
+        //     stage.native_window = _window_wayland_new (self);
+        // #endif
+
+        stage
     }
 }
 
@@ -126,7 +227,7 @@ pub trait WindowExt: 'static {
     ///
     /// Get the primary child of the window. See set_child().
     ///
-    /// Returns: (transfer none): A #ClutterActor, or %NULL
+    /// Returns: (transfer none): A #ClutterActor, or %None
     ///
     fn get_child(&self) -> Option<clutter::Actor>;
 
@@ -162,10 +263,10 @@ pub trait WindowExt: 'static {
     /// get_icon_name:
     /// @window: A #Stage
     ///
-    /// Gets the currently set window icon name. This will be %NULL if there is none
+    /// Gets the currently set window icon name. This will be %None if there is none
     /// set, or the icon was set with set_icon_from_cogl_texture().
     ///
-    /// Returns: The window icon name, or %NULL
+    /// Returns: The window icon name, or %None
     ///
     fn get_icon_name(&self) -> Option<String>;
 
@@ -242,6 +343,8 @@ pub trait WindowExt: 'static {
     ///
     fn present(&self);
 
+    fn set_background_color(&self, color: &clutter::Color);
+
     /// set_child:
     /// @window: A #Stage
     /// @actor: A #ClutterActor
@@ -279,12 +382,12 @@ pub trait WindowExt: 'static {
 
     /// set_icon_name:
     /// @window: A #Stage
-    /// @icon_name: (allow-none): An icon name, or %NULL
+    /// @icon_name: (allow-none): An icon name, or %None
     ///
     /// Set an icon-name to use for the window icon. The icon will be looked up
     /// from the default theme.
     ///
-    fn set_icon_name(&self, icon_name: Option<&str>);
+    fn set_icon_name(&self, icon_name: Option<String>);
 
     fn set_resizable(&self, resizable: bool) -> &Self;
 
@@ -406,12 +509,13 @@ impl<O: Is<Stage>> WindowExt for O {
     ///
     /// Get the primary child of the window. See set_child().
     ///
-    /// Returns: (transfer none): A #ClutterActor, or %NULL
+    /// Returns: (transfer none): A #ClutterActor, or %None
     ///
     fn get_child(&self) -> Option<clutter::Actor> {
-        // unsafe { from_glib_none(ffi::window_get_child(self.as_ref().to_glib_none().0)) }
         let stage = self.as_ref();
-        stage.child.clone()
+        let props = stage.props.borrow();
+        // props.child.clone()
+        unimplemented!()
     }
 
     /// get_clutter_stage:
@@ -449,20 +553,22 @@ impl<O: Is<Stage>> WindowExt for O {
     ///
     fn get_has_toolbar(&self) -> bool {
         let stage = self.as_ref();
-        stage.has_toolbar
+        let props = stage.props.borrow();
+        props.has_toolbar
     }
 
     /// get_icon_name:
     /// @window: A #Stage
     ///
-    /// Gets the currently set window icon name. This will be %NULL if there is none
+    /// Gets the currently set window icon name. This will be %None if there is none
     /// set, or the icon was set with set_icon_from_cogl_texture().
     ///
-    /// Returns: The window icon name, or %NULL
+    /// Returns: The window icon name, or %None
     ///
     fn get_icon_name(&self) -> Option<String> {
         let stage = self.as_ref();
-        Some(stage.icon_name.clone())
+        let props = stage.props.borrow();
+        props.icon_name.clone()
     }
 
     fn get_resisable(&self) -> bool {
@@ -480,7 +586,8 @@ impl<O: Is<Stage>> WindowExt for O {
     ///
     fn get_small_screen(&self) -> bool {
         let stage = self.as_ref();
-        stage.small_screen
+        let props = stage.props.borrow();
+        props.small_screen
     }
 
     /// get_title:
@@ -507,7 +614,8 @@ impl<O: Is<Stage>> WindowExt for O {
     ///
     fn get_toolbar(&self) -> Option<Toolbar> {
         let stage = self.as_ref();
-        stage.toolbar.clone()
+        let props = stage.props.borrow();
+        props.toolbar.clone()
     }
 
     /// get_window_position:
@@ -536,7 +644,8 @@ impl<O: Is<Stage>> WindowExt for O {
     ///
     fn get_window_rotation(&self) -> WindowRotation {
         let stage = self.as_ref();
-        stage.rotation
+        let props = stage.props.borrow();
+        props.rotation
     }
 
     /// get_window_size:
@@ -578,6 +687,13 @@ impl<O: Is<Stage>> WindowExt for O {
         // }
     }
 
+    fn set_background_color(&self, color: &clutter::Color) {
+        let stage = self.as_ref();
+        let inner = &stage.inner;
+
+        inner.set_background_color(Some(color));
+    }
+
     /// set_child:
     /// @window: A #Stage
     /// @actor: A #ClutterActor
@@ -590,24 +706,22 @@ impl<O: Is<Stage>> WindowExt for O {
         let stage = self.as_ref();
         let actor = actor.as_ref();
 
-        // if !stage.stage {
-        //     return;
+        // TODO: we should to find other way to control primary child, so atm disable it
+        // // if there are other childs we remove them all,
+        // // coz by original design we should have only primaty child Actor
+        // if stage.inner.get_n_children() > 0 {
+        //     stage.inner.remove_all_children();
         // }
 
-        // if stage.child == actor {
-        //     return;
-        // }
+        stage.inner.add_child(actor);
+        
+        // actor.real_queue_relayout();
+        // actor.queue_redraw();
 
-        // if stage.child {
-        //     clutter_actor_remove_child(stage.stage, stage.child);
-        // }
-
-        // if actor {
-        //     stage.child = actor;
-        //     clutter_actor_add_child(stage.stage, stage.child);
-        // }
-
-        // window_reallocate(window);
+        stage.reallocate();
+        stage.inner.queue_relayout();
+        // stage.inner.queue_redraw();
+        // stage.inner.ensure_redraw();
         // g_object_notify(G_OBJECT(window), "child");
     }
 
@@ -638,22 +752,23 @@ impl<O: Is<Stage>> WindowExt for O {
     ///
     fn set_has_toolbar(&self, toolbar: bool) {
         let stage = self.as_ref();
+        let mut props = stage.props.borrow_mut();
 
-        if stage.has_toolbar != toolbar {
-            // stage.has_toolbar = toolbar;
+        if props.has_toolbar != toolbar {
+            props.has_toolbar = toolbar;
 
-            // if !toolbar {
-            //     clutter_actor_hide(stage.toolbar);
-            //     clutter_actor_hide(stage.resize_grip);
-            // } else {
-            //     clutter_actor_show(stage.toolbar);
-            //     if clutter_stage_get_user_resizable((ClutterStage *)stage.stage) {
-            //         clutter_actor_show(stage.resize_grip);
-            //     }
-            // }
+            if !toolbar {
+                // clutter_actor_hide(stage.toolbar);
+                // clutter_actor_hide(stage.resize_grip);
+            } else {
+                // clutter_actor_show(stage.toolbar);
+                // if clutter_stage_get_user_resizable((ClutterStage *)stage.stage) {
+                //     clutter_actor_show(stage.resize_grip);
+                // }
+            }
 
             // g_object_notify(G_OBJECT(window), "has-toolbar");
-            // window_reallocate(window);
+            // stage.reallocate(window);
         }
     }
 
@@ -663,23 +778,24 @@ impl<O: Is<Stage>> WindowExt for O {
 
     /// set_icon_name:
     /// @window: A #Stage
-    /// @icon_name: (allow-none): An icon name, or %NULL
+    /// @icon_name: (allow-none): An icon name, or %None
     ///
     /// Set an icon-name to use for the window icon. The icon will be looked up
     /// from the default theme.
     ///
-    fn set_icon_name(&self, icon_name: Option<&str>) {
+    fn set_icon_name(&self, icon_name: Option<String>) {
         let stage = self.as_ref();
+        let mut props = stage.props.borrow_mut();
 
-        // if stage.icon_name && icon_name && g_str_equal(stage.icon_name, icon_name)) {
+        // if props.icon_name && icon_name && g_str_equal(stage.icon_name, icon_name)) {
         //     return;
         // }
 
-        // if !stage.icon_name && !icon_name {
-        //     return;
-        // }
+        if props.icon_name.is_none() && icon_name.is_none() {
+            return;
+        }
 
-        // stage.icon_name = g_strdup(icon_name);
+        props.icon_name = icon_name;
         // g_object_notify(G_OBJECT(window), "icon-name");
     }
 
@@ -699,9 +815,10 @@ impl<O: Is<Stage>> WindowExt for O {
     ///
     fn set_small_screen(&self, small_screen: bool) {
         let stage = self.as_ref();
+        let mut props = stage.props.borrow_mut();
 
-        if stage.small_screen != small_screen {
-            // stage.small_screen = small_screen;
+        if props.small_screen != small_screen {
+            props.small_screen = small_screen;
             // g_object_notify(G_OBJECT(window), "small-screen");
         }
     }
@@ -735,7 +852,7 @@ impl<O: Is<Stage>> WindowExt for O {
         // // Remove old toolbar
         // if stage.toolbar {
         //     g_signal_handlers_disconnect_by_func(stage.toolbar,
-        //                                             mx_window_allocation_changed_cb,
+        //                                             stage.allocation_changed_cb,
         //                                             window);
         //     g_object_remove_weak_pointer(G_OBJECT(stage.toolbar), (gpointer *)&stage.toolbar);
         //     clutter_actor_remove_child(stage.stage, stage.toolbar);
@@ -748,7 +865,7 @@ impl<O: Is<Stage>> WindowExt for O {
         //     clutter_actor_add_child(stage.stage, stage.toolbar);
         //     g_object_add_weak_pointer(G_OBJECT (stage.toolbar), (gpointer *)&stage.toolbar);
         //     g_signal_connect(stage.toolbar, "allocation-changed",
-        //                         G_CALLBACK(mx_window_allocation_changed_cb), window);
+        //                         G_CALLBACK(stage.allocation_changed_cb), window);
         // }
 
         // stage.has_toolbar = stage.toolbar ? true : false;
@@ -776,52 +893,53 @@ impl<O: Is<Stage>> WindowExt for O {
     /// Set the rotation of the window.
     ///
     fn set_window_rotation(&self, rotation: WindowRotation) {
-        let stage = self.as_ref();
+        use WindowRotation::*;
 
-        if stage.rotation == rotation {
+        let stage = self.as_ref();
+        let mut props = stage.props.borrow_mut();
+
+        if props.rotation == rotation {
             return;
         }
 
-        // if ((stage.rotation == WindowRotation::Rotation0) ||
-        //     (stage.rotation == WindowRotation::Rotation180)) &&
-        //     ((rotation == WindowRotation::Rotation90) ||
-        //     (rotation == WindowRotation::Rotation270)) {
-        //     stage.rotate_size = true;
-        // } else if ((stage.rotation == WindowRotation::Rotation90) ||
-        //             (stage.rotation == WindowRotation::Rotation270)) &&
-        //         ((rotation == WindowRotation::Rotation0) ||
-        //             (rotation == WindowRotation::Rotation180)) {
-        //             stage.rotate_size = true;
-        // }
+        if ((props.rotation == Rotation0) || (props.rotation == Rotation180))
+            && ((rotation == Rotation90) || (rotation == Rotation270))
+        {
+            props.rotate_size = true;
+        } else if ((props.rotation == Rotation90) || (props.rotation == Rotation270))
+            && ((rotation == Rotation0) || (rotation == Rotation180))
+        {
+            props.rotate_size = true;
+        }
 
-        // stage.rotation = rotation;
+        props.rotation = rotation;
+        props.start_angle = props.angle;
 
-        // stage.start_angle = stage.angle;
-        // match rotation {
-        //     WindowRotation::Rotation0 => {
-        //         stage.end_angle = 0.0;
-        //     }
-        //     WindowRotation::Rotation90 => {
-        //         stage.end_angle = 90.0;
-        //     }
-        //     WindowRotation::Rotation180 => {
-        //         stage.end_angle = 180.0;
-        //     }
-        //     WindowRotation::Rotation270 => {
-        //         stage.end_angle = 270.0;
-        //     }
-        // }
+        match rotation {
+            Rotation0 => {
+                props.end_angle = 0.0;
+            }
+            Rotation90 => {
+                props.end_angle = 90.0;
+            }
+            Rotation180 => {
+                props.end_angle = 180.0;
+            }
+            Rotation270 => {
+                props.end_angle = 270.0;
+            }
+        }
 
-        // if stage.end_angle - stage.start_angle > 180.0 {
-        //     stage.end_angle -= 360.0;
-        // } else if stage.end_angle - stage.start_angle < -180.0 {
-        //     stage.end_angle += 360.0;
-        // }
+        if props.end_angle - props.start_angle > 180.0 {
+            props.end_angle -= 360.0;
+        } else if props.end_angle - props.start_angle < -180.0 {
+            props.end_angle += 360.0;
+        }
 
-        // let msecs = (guint)((ABS(stage.end_angle - stage.start_angle) / 90.0) * 400.0);
-        // clutter_timeline_rewind(stage.rotation_timeline);
-        // clutter_timeline_set_duration(stage.rotation_timeline, msecs);
-        // clutter_timeline_start(stage.rotation_timeline);
+        // let msecs = (guint)((ABS(props.end_angle - props.start_angle) / 90.0) * 400.0);
+        // clutter_timeline_rewind(props.rotation_timeline);
+        // clutter_timeline_set_duration(props.rotation_timeline, msecs);
+        // clutter_timeline_start(props.rotation_timeline);
 
         // g_object_notify(G_OBJECT(window), "window-rotation");
     }

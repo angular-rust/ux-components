@@ -7,7 +7,6 @@ use glib::signal::SignalHandlerId;
 use std::fmt;
 use std::{boxed::Box as Box_, cell::RefCell};
 
-// @extends Widget, clutter::Actor;
 #[derive(Clone, Debug)]
 pub struct Label {
     pub label: Option<clutter::Actor>,
@@ -19,6 +18,7 @@ pub struct Label {
     pub fade_out: bool,
     pub label_should_fade: bool,
     pub show_tooltip: bool,
+    widget: Widget,
 }
 
 impl Label {
@@ -50,6 +50,23 @@ impl Is<Label> for Label {}
 impl AsRef<Label> for Label {
     fn as_ref(&self) -> &Label {
         self
+    }
+}
+
+impl Is<Widget> for Label {}
+
+impl AsRef<Widget> for Label {
+    fn as_ref(&self) -> &Widget {
+        &self.widget
+    }
+}
+
+impl Is<clutter::Actor> for Label {}
+
+impl AsRef<clutter::Actor> for Label {
+    fn as_ref(&self) -> &clutter::Actor {
+        let actor: &clutter::Actor = self.widget.as_ref();
+        actor
     }
 }
 
@@ -356,7 +373,7 @@ impl<O: Is<Label>> LabelExt for O {
             //     g_signal_connect(label.label, "notify::font-description",
             //                         G_CALLBACK(label_font_description_cb), label);
             //     label_font_description_cb(CLUTTER_TEXT(label.label),
-            //                                     NULL, label);
+            //                                     None, label);
             // } else {
             //     g_signal_handlers_disconnect_by_func(label.label,
             //                                         label_font_description_cb,

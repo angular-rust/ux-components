@@ -85,7 +85,7 @@ pub trait ActorManagerExt: 'static {
     /// create_actor:
     /// @manager: A #ActorManager
     /// @create_func: A #ClutterActor creation function
-    /// @userdata: data to be passed to the function, or %NULL
+    /// @userdata: data to be passed to the function, or %None
     /// @destroy_func: callback to invoke before the operation is removed
     ///
     /// Creates a #ClutterActor. The actor may not be created immediately,
@@ -307,7 +307,7 @@ impl<O: Is<ActorManager>> ActorManagerExt for O {
     /// create_actor:
     /// @manager: A #ActorManager
     /// @create_func: A #ClutterActor creation function
-    /// @userdata: data to be passed to the function, or %NULL
+    /// @userdata: data to be passed to the function, or %None
     /// @destroy_func: callback to invoke before the operation is removed
     ///
     /// Creates a #ClutterActor. The actor may not be created immediately,

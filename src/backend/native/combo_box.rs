@@ -7,9 +7,8 @@ use glib::signal::SignalHandlerId;
 use std::fmt;
 use std::{boxed::Box as Box_, cell::RefCell};
 
-// @extends Widget, clutter::Actor;
 #[derive(Clone, Debug)]
-pub struct ComboBox {
+pub struct ComboBoxProps {
     pub label: Option<Label>, //clutter::Actor,
     pub icon: Option<Icon>,   // clutter::Actor
 
@@ -20,6 +19,12 @@ pub struct ComboBox {
     pub clip_y: f64,
     pub index: i32,
     pub spacing: i32,
+}
+
+#[derive(Clone, Debug)]
+pub struct ComboBox {
+    props: RefCell<ComboBoxProps>,
+    widget: Widget,
 }
 
 impl ComboBox {
@@ -45,6 +50,24 @@ impl AsRef<ComboBox> for ComboBox {
     }
 }
 
+impl Is<Widget> for ComboBox {}
+
+impl AsRef<Widget> for ComboBox {
+    fn as_ref(&self) -> &Widget {
+        &self.widget
+    }
+}
+
+impl Is<clutter::Actor> for ComboBox {}
+
+impl AsRef<clutter::Actor> for ComboBox {
+    fn as_ref(&self) -> &clutter::Actor {
+        let actor: &clutter::Actor = self.widget.as_ref();
+        actor
+    }
+}
+
+
 pub const NONE_COMBO_BOX: Option<&ComboBox> = None;
 
 pub trait ComboBoxExt: 'static {
@@ -62,7 +85,7 @@ pub trait ComboBoxExt: 'static {
     /// Get the name of the icon displayed in the combo box
     ///
     /// Returns: the text string of the name of the displayed icon, owned by
-    ///          the combo box, or %NULL if there is no active icon.
+    ///          the combo box, or %None if there is no active icon.
     ///
     fn get_active_icon_name(&self) -> Option<String>;
 
@@ -177,11 +200,13 @@ impl<O: Is<ComboBox>> ComboBoxExt for O {
     /// Get the name of the icon displayed in the combo box
     ///
     /// Returns: the text string of the name of the displayed icon, owned by
-    ///          the combo box, or %NULL if there is no active icon.
+    ///          the combo box, or %None if there is no active icon.
     ///
     fn get_active_icon_name(&self) -> Option<String> {
         let combobox = self.as_ref();
-        match &combobox.icon {
+        let props = combobox.props.borrow();
+
+        match &props.icon {
             Some(icon) => icon.get_icon_name(),
             None => None,
         }
@@ -196,7 +221,9 @@ impl<O: Is<ComboBox>> ComboBoxExt for O {
     ///
     fn get_active_text(&self) -> Option<String> {
         let combobox = self.as_ref();
-        match &combobox.label {
+        let props = combobox.props.borrow();
+
+        match &props.label {
             Some(label) => label.get_text(),
             None => None,
         }
@@ -211,7 +238,8 @@ impl<O: Is<ComboBox>> ComboBoxExt for O {
     ///
     fn get_index(&self) -> i32 {
         let combobox = self.as_ref();
-        combobox.index
+        let props = combobox.props.borrow();
+        props.index
     }
 
     /// insert_text:
@@ -295,17 +323,17 @@ impl<O: Is<ComboBox>> ComboBoxExt for O {
     ///
     fn set_active_icon_name(&self, icon_name: Option<&str>) {
         let combobox = self.as_ref();
+        let mut props = combobox.props.borrow_mut();
 
-        match &combobox.icon {
+        match &props.icon {
             None => {
                 if let Some(icon_name) = icon_name {
                     let icon_theme = IconTheme::get_default().unwrap();
                     if icon_theme.has_icon(icon_name) {
-                        // combobox.icon =
                         let icon = Icon::new();
                         icon.set_icon_name(icon_name);
                         // clutter_actor_add_child (CLUTTER_ACTOR (box), combobox.icon);
-                        // combobox.icon = icon;
+                        props.icon = Some(icon);
                     }
                 }
             }
@@ -314,13 +342,13 @@ impl<O: Is<ComboBox>> ComboBoxExt for O {
                     icon.set_icon_name(icon_name);
                 } else {
                     // clutter_actor_destroy (priv->icon);
-                    // combobox.icon = None;
+                    props.icon = None;
                     // clutter_actor_queue_relayout (CLUTTER_ACTOR (box));
                 }
             }
         }
 
-        // combobox.index = -1;
+        props.index = -1;
         // g_object_notify (G_OBJECT (box), "index");
         // g_object_notify (G_OBJECT (box), "active-icon-name");
     }
@@ -333,9 +361,10 @@ impl<O: Is<ComboBox>> ComboBoxExt for O {
     ///
     fn set_active_text(&self, text: &str) {
         let combobox = self.as_ref();
+        let mut props = combobox.props.borrow_mut();
 
-        // combobox.index = -1;
-        // clutter_text_set_text ((ClutterText*)combobox.label, text);
+        props.index = -1;
+        // clutter_text_set_text((ClutterText*)combobox.label, text);
 
         // g_object_notify(G_OBJECT (box), "index");
         // g_object_notify(G_OBJECT (box), "active-text");
@@ -349,6 +378,7 @@ impl<O: Is<ComboBox>> ComboBoxExt for O {
     ///
     fn set_index(&self, index: i32) {
         let combobox = self.as_ref();
+        let mut props = combobox.props.borrow_mut();
 
         // GSList *item;
         // Action *action;
@@ -362,21 +392,21 @@ impl<O: Is<ComboBox>> ComboBoxExt for O {
         //     return;
         // }
 
-        // combobox.index = index;
+        props.index = index;
         // action = (Action *)item.data;
         // clutter_text_set_text((ClutterText*) combobox.label,
         //                         action_get_display_name(action));
 
-        // if combobox.icon {
+        if props.icon.is_some() {
         //     clutter_actor_destroy(combobox.icon);
-        //     combobox.icon = NULL;
-        // }
+            props.icon = None;
+        }
 
         // icon_name = action_get_icon(item.data);
         // if icon_name {
         //     let icon_theme = IconTheme::get_default().unwrap();
         //     if icon_theme.has_icon(icon_name) {
-        //         combobox.icon = icon_new ();
+        //         props.icon = icon_new ();
         //         icon_set_icon_name(ICON (combobox.icon), icon_name);
         //         clutter_actor_add_child(CLUTTER_ACTOR (box), combobox.icon);
         //     }

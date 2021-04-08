@@ -7,7 +7,6 @@ use glib::signal::SignalHandlerId;
 use std::fmt;
 use std::{boxed::Box as Box_, cell::RefCell};
 
-// @extends Widget, clutter::Actor;
 #[derive(Clone, Debug)]
 pub struct PathBar {
     pub crumbs: Vec<clutter::Actor>,
@@ -16,6 +15,7 @@ pub struct PathBar {
     pub editable: bool,
     pub clear_on_change: bool,
     pub entry: Option<Entry>,
+    widget: Widget,
 }
 
 impl PathBar {
@@ -38,6 +38,24 @@ impl Is<PathBar> for PathBar {}
 impl AsRef<PathBar> for PathBar {
     fn as_ref(&self) -> &PathBar {
         self
+    }
+}
+
+impl Is<Widget> for PathBar {}
+
+impl AsRef<Widget> for PathBar {
+    fn as_ref(&self) -> &Widget {
+        &self.widget
+    }
+}
+
+
+impl Is<clutter::Actor> for PathBar {}
+
+impl AsRef<clutter::Actor> for PathBar {
+    fn as_ref(&self) -> &clutter::Actor {
+        let actor: &clutter::Actor = self.widget.as_ref();
+        actor
     }
 }
 
@@ -98,7 +116,7 @@ pub trait PathBarExt: 'static {
 
     /// set_editable:
     /// @bar: A #PathBar
-    /// @editable: #TRUE if the path bar should be editable
+    /// @editable: #true if the path bar should be editable
     ///
     /// Set the value of the #PathBar:editable property.
     ///
@@ -288,7 +306,7 @@ impl<O: Is<PathBar>> PathBarExt for O {
 
     /// set_editable:
     /// @bar: A #PathBar
-    /// @editable: #TRUE if the path bar should be editable
+    /// @editable: #true if the path bar should be editable
     ///
     /// Set the value of the #PathBar:editable property.
     ///

@@ -98,7 +98,7 @@ impl Style {
         // GError *internal_error;
         // gboolean result;
 
-        // g_return_val_if_fail(filename != NULL, FALSE);
+        // g_return_val_if_fail(filename != None, FALSE);
 
         // if !data && !g_file_test(filename, G_FILE_TEST_IS_REGULAR) {
         //     internal_error = g_error_new (STYLE_ERROR,
@@ -114,10 +114,10 @@ impl Style {
 
         // if data {
         //   result = style_sheet_add_from_data(self.stylesheet, filename, data,
-        //                                          NULL);
+        //                                          None);
         // } else {
         //   result = style_sheet_add_from_file(self.stylesheet, filename,
-        //                                          NULL);
+        //                                          None);
         // }
 
         // if !result  {
@@ -131,14 +131,14 @@ impl Style {
         // // Increment the age so we know if a style cache entry is valid
         // self.age++;
 
-        // g_signal_emit(style, style_signals[CHANGED], 0, NULL);
+        // g_signal_emit(style, style_signals[CHANGED], 0, None);
 
         // if !data {
         //     GFile *file;
         //     GFileMonitor *monitor;
 
         //     file = g_file_new_for_path(filename);
-        //     monitor = g_file_monitor(file, G_FILE_MONITOR_NONE, NULL, NULL);
+        //     monitor = g_file_monitor(file, G_FILE_MONITOR_NONE, None, None);
 
         //     if monitor {
         //         g_signal_connect(monitor, "changed", G_CALLBACK(css_file_changed),
@@ -178,7 +178,7 @@ pub trait StyleExt: 'static {
     /// @style: a #Style
     /// @d: identifier of the style sheet to load
     /// @data: CSS data to parse
-    /// @error: a #GError or #NULL
+    /// @error: a #GError or #None
     ///
     /// Load style information from @data, using @id to identify the stylesheet.
     /// @id is usually the file name of the style sheet, which is used in the search
@@ -192,7 +192,7 @@ pub trait StyleExt: 'static {
     /// load_from_file:
     /// @style: a #Style
     /// @filename: filename of the style sheet to load
-    /// @error: a #GError or #NULL
+    /// @error: a #GError or #None
     ///
     /// Load style information from the specified file.
     ///
@@ -223,7 +223,7 @@ impl<O: Is<Style>> StyleExt for O {
     /// @style: a #Style
     /// @d: identifier of the style sheet to load
     /// @data: CSS data to parse
-    /// @error: a #GError or #NULL
+    /// @error: a #GError or #None
     ///
     /// Load style information from @data, using @id to identify the stylesheet.
     /// @id is usually the file name of the style sheet, which is used in the search
@@ -242,7 +242,7 @@ impl<O: Is<Style>> StyleExt for O {
     /// load_from_file:
     /// @style: a #Style
     /// @filename: filename of the style sheet to load
-    /// @error: a #GError or #NULL
+    /// @error: a #GError or #None
     ///
     /// Load style information from the specified file.
     ///
@@ -251,13 +251,13 @@ impl<O: Is<Style>> StyleExt for O {
     ///
     fn load_from_file(&self, filename: &str) -> Result<(), glib::Error> {
         let style = self.as_ref();
-        // style_real_load_from_file (style, filename, NULL, error, 0);
+        // style_real_load_from_file (style, filename, None, error, 0);
         unimplemented!()
     }
 
     fn load_from_resource(&self, path: &str) -> Result<(), glib::Error> {
         // GBytes *bytes;
-        // GError *internal_error = NULL;
+        // GError *internal_error = None;
         // gchar *id;
 
         // bytes = g_resources_lookup_data(path, G_RESOURCE_LOOKUP_FLAGS_NONE,
@@ -269,9 +269,9 @@ impl<O: Is<Style>> StyleExt for O {
         //     return false;
         // }
 
-        // id = g_strconcat("resource://", path, NULL);
+        // id = g_strconcat("resource://", path, None);
 
-        // style_real_load_from_file(style, id, g_bytes_get_data (bytes, NULL),  error, 0);
+        // style_real_load_from_file(style, id, g_bytes_get_data (bytes, None),  error, 0);
         // g_bytes_unref(bytes);
 
         // return true;

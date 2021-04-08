@@ -7,7 +7,6 @@ use glib::signal::SignalHandlerId;
 use std::fmt;
 use std::{boxed::Box as Box_, cell::RefCell};
 
-// @extends Widget, clutter::Actor;
 #[derive(Clone, Debug)]
 pub struct Icon {
     pub icon_set: bool,
@@ -17,6 +16,7 @@ pub struct Icon {
     pub icon_name: Option<String>,
     pub icon_suffix: Option<String>,
     pub icon_size: i32,
+    widget: Widget,
 }
 
 impl Icon {
@@ -39,6 +39,23 @@ impl Is<Icon> for Icon {}
 impl AsRef<Icon> for Icon {
     fn as_ref(&self) -> &Icon {
         self
+    }
+}
+
+impl Is<Widget> for Icon {}
+
+impl AsRef<Widget> for Icon {
+    fn as_ref(&self) -> &Widget {
+        &self.widget
+    }
+}
+
+impl Is<clutter::Actor> for Icon {}
+
+impl AsRef<clutter::Actor> for Icon {
+    fn as_ref(&self) -> &clutter::Actor {
+        let actor: &clutter::Actor = self.widget.as_ref();
+        actor
     }
 }
 

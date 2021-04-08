@@ -77,7 +77,7 @@ pub trait IconThemeExt: 'static {
     ///
     /// If the icon is available, returns a #CoglHandle of the icon.
     ///
-    /// Return value: (transfer none): a #CoglHandle of the icon, or %NULL.
+    /// Return value: (transfer none): a #CoglHandle of the icon, or %None.
     ///
     //fn lookup(&self, icon_name: &str, size: i32) -> /*Ignored*/Option<cogl::Handle>;
 
@@ -92,7 +92,7 @@ pub trait IconThemeExt: 'static {
 
     ///set_theme_name:
     /// @theme: A #IconTheme
-    /// @theme_name: the name of an icon theme to load, or %NULL
+    /// @theme_name: the name of an icon theme to load, or %None
     ///
     /// Set the value of the #IconTheme:theme-name property. This will cause the
     /// icon theme to be loaded if it differs from the existing theme name. If the
@@ -100,7 +100,7 @@ pub trait IconThemeExt: 'static {
     /// (hicolor).
     ///
     /// This will override the system's theme setting. To revert to the system
-    /// icon theme, this function can be called with a %NULL @theme_name argument.
+    /// icon theme, this function can be called with a %None @theme_name argument.
     ///
     fn set_theme_name(&self, theme_name: &str);
 
@@ -148,7 +148,7 @@ impl<O: Is<IconTheme>> IconThemeExt for O {
     ///
     /// If the icon is available, returns a #CoglHandle of the icon.
     ///
-    /// Return value: (transfer none): a #CoglHandle of the icon, or %NULL.
+    /// Return value: (transfer none): a #CoglHandle of the icon, or %None.
     ///
     // fn lookup(&self, icon_name: &str, size: i32) -> Option<cogl::Handle> {
     //     let icontheme = self.as_ref();
@@ -174,7 +174,7 @@ impl<O: Is<IconTheme>> IconThemeExt for O {
 
     ///set_theme_name:
     /// @theme: A #IconTheme
-    /// @theme_name: the name of an icon theme to load, or %NULL
+    /// @theme_name: the name of an icon theme to load, or %None
     ///
     /// Set the value of the #IconTheme:theme-name property. This will cause the
     /// icon theme to be loaded if it differs from the existing theme name. If the
@@ -182,7 +182,7 @@ impl<O: Is<IconTheme>> IconThemeExt for O {
     /// (hicolor).
     ///
     /// This will override the system's theme setting. To revert to the system
-    /// icon theme, this function can be called with a %NULL @theme_name argument.
+    /// icon theme, this function can be called with a %None @theme_name argument.
     ///
     fn set_theme_name(&self, theme_name: &str) {
         let icontheme = self.as_ref();
@@ -236,7 +236,7 @@ impl<O: Is<IconTheme>> IconThemeExt for O {
         // }
 
         // // Load fallbacks
-        // icon_theme_load_fallbacks(theme, icontheme.theme_file, TRUE);
+        // icon_theme_load_fallbacks(theme, icontheme.theme_file, true);
 
         // g_object_notify(G_OBJECT(theme), "theme-name");
     }

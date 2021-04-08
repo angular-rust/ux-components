@@ -12,7 +12,6 @@ pub struct ToggleHandle {
     pub parent: Widget,
 }
 
-// @extends Widget, clutter::Actor;
 #[derive(Clone, Debug)]
 pub struct Toggle {
     pub active: bool,
@@ -23,6 +22,7 @@ pub struct Toggle {
     pub drag_offset: f32,
     pub slide_length: f32,
     pub last_move: f32,
+    widget: Widget,
 }
 
 impl Toggle {
@@ -45,6 +45,23 @@ impl Is<Toggle> for Toggle {}
 impl AsRef<Toggle> for Toggle {
     fn as_ref(&self) -> &Toggle {
         self
+    }
+}
+
+impl Is<Widget> for Toggle {}
+
+impl AsRef<Widget> for Toggle {
+    fn as_ref(&self) -> &Widget {
+        &self.widget
+    }
+}
+
+impl Is<clutter::Actor> for Toggle {}
+
+impl AsRef<clutter::Actor> for Toggle {
+    fn as_ref(&self) -> &clutter::Actor {
+        let actor: &clutter::Actor = self.widget.as_ref();
+        actor
     }
 }
 
@@ -73,7 +90,7 @@ impl<O: Is<Toggle>> ToggleExt for O {
             // if active {
             //     mx_stylable_set_style_pseudo_class(MX_STYLABLE(toggle), "checked");
             // } else {
-            //     mx_stylable_set_style_pseudo_class(MX_STYLABLE(toggle), NULL);
+            //     mx_stylable_set_style_pseudo_class(MX_STYLABLE(toggle), None);
             // }
             // g_object_notify(G_OBJECT(toggle), "active");
 

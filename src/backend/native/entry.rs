@@ -7,7 +7,6 @@ use glib::signal::SignalHandlerId;
 use std::fmt;
 use std::{boxed::Box as Box_, cell::RefCell};
 
-// @extends Widget, clutter::Actor;
 #[derive(Clone, Debug)]
 pub struct Entry {
     pub entry: Option<clutter::Actor>,
@@ -31,6 +30,7 @@ pub struct Entry {
     pub pointer_in_entry: bool,
     pub preedit_string: String,
     pub tooltip_timeout: u32,
+    widget: Widget,
 }
 
 impl Entry {
@@ -62,6 +62,23 @@ impl Is<Entry> for Entry {}
 impl AsRef<Entry> for Entry {
     fn as_ref(&self) -> &Entry {
         self
+    }
+}
+
+impl Is<Widget> for Entry {}
+
+impl AsRef<Widget> for Entry {
+    fn as_ref(&self) -> &Widget {
+        &self.widget
+    }
+}
+
+impl Is<clutter::Actor> for Entry {}
+
+impl AsRef<clutter::Actor> for Entry {
+    fn as_ref(&self) -> &clutter::Actor {
+        let actor: &clutter::Actor = self.widget.as_ref();
+        actor
     }
 }
 
@@ -142,7 +159,7 @@ pub trait EntryExt: 'static {
     ///
     /// Sets the text to display when the entry is empty and unfocused. When the
     /// entry is displaying the hint, it has a pseudo class of "indeterminate".
-    /// A value of NULL unsets the hint.
+    /// A value of None unsets the hint.
     ///
     fn set_placeholder(&self, text: &str);
 
@@ -342,7 +359,7 @@ impl<O: Is<Entry>> EntryExt for O {
     ///
     /// Sets the text to display when the entry is empty and unfocused. When the
     /// entry is displaying the hint, it has a pseudo class of "indeterminate".
-    /// A value of NULL unsets the hint.
+    /// A value of None unsets the hint.
     ///
     fn set_placeholder(&self, text: &str) {
         let entry = self.as_ref();
@@ -389,7 +406,7 @@ impl<O: Is<Entry>> EntryExt for O {
         let entry = self.as_ref();
 
         // if !entry.primary_icon_tooltip {
-        //     entry.primary_icon_tooltip = g_object_new(TYPE_TOOLTIP, "text", text, NULL);
+        //     entry.primary_icon_tooltip = g_object_new(TYPE_TOOLTIP, "text", text, None);
 
         //     tooltip_set_text(entry.primary_icon_tooltip, text);
         //     clutter_actor_add_child(
@@ -426,7 +443,7 @@ impl<O: Is<Entry>> EntryExt for O {
         let entry = self.as_ref();
 
         // if !entry.secondary_icon_tooltip {
-        //     entry.secondary_icon_tooltip = g_object_new(TYPE_TOOLTIP, "text", text, NULL);
+        //     entry.secondary_icon_tooltip = g_object_new(TYPE_TOOLTIP, "text", text, None);
 
         //     tooltip_set_text(entry.secondary_icon_tooltip, text);
         //     clutter_actor_add_child(

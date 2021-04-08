@@ -23,7 +23,7 @@ pub struct ButtonProps {
     pub icon_visible: bool,
     pub label_visible: bool,
 }
-// @extends Widget, clutter::Actor;
+
 #[derive(Clone, Debug)]
 pub struct Button {
     props: RefCell<ButtonProps>,
@@ -35,6 +35,7 @@ pub struct Button {
     pub label: clutter::Actor,
     // pub action_label_binding: GBinding,
     // pub action_icon_binding: GBinding,
+    widget: Widget,
 }
 
 impl Button {
@@ -69,6 +70,23 @@ impl AsRef<Button> for Button {
     }
 }
 
+impl Is<Widget> for Button {}
+
+impl AsRef<Widget> for Button {
+    fn as_ref(&self) -> &Widget {
+        &self.widget
+    }
+}
+
+impl Is<clutter::Actor> for Button {}
+
+impl AsRef<clutter::Actor> for Button {
+    fn as_ref(&self) -> &clutter::Actor {
+        let actor: &clutter::Actor = self.widget.as_ref();
+        actor
+    }
+}
+
 pub const NONE_BUTTON: Option<&Button> = None;
 
 pub trait ButtonExt: 'static {
@@ -86,7 +104,7 @@ pub trait ButtonExt: 'static {
     ///
     /// Get the icon-name being used on the button.
     ///
-    /// Returns: the icon-name. This must not be freed by the application. %NULL if
+    /// Returns: the icon-name. This must not be freed by the application. %None if
     ///   no icon has been set
     ///
     fn get_icon_name(&self) -> Option<String>;
@@ -167,7 +185,7 @@ pub trait ButtonExt: 'static {
     /// @button: a #Button
     /// @icon_name: (allow-none): icon-name to use on the button
     ///
-    /// Sets the icon-name used to display an icon on the button. Setting %NULL
+    /// Sets the icon-name used to display an icon on the button. Setting %None
     /// will remove the icon name, or resort to the icon-name set in the current
     /// style. Setting an icon name overrides any icon set in the style.
     ///
@@ -278,7 +296,7 @@ impl<O: Is<Button>> ButtonExt for O {
     ///
     /// Get the icon-name being used on the button.
     ///
-    /// Returns: the icon-name. This must not be freed by the application. %NULL if
+    /// Returns: the icon-name. This must not be freed by the application. %None if
     ///   no icon has been set
     ///
     fn get_icon_name(&self) -> Option<String> {
@@ -426,7 +444,7 @@ impl<O: Is<Button>> ButtonExt for O {
     /// @button: a #Button
     /// @icon_name: (allow-none): icon-name to use on the button
     ///
-    /// Sets the icon-name used to display an icon on the button. Setting %NULL
+    /// Sets the icon-name used to display an icon on the button. Setting %None
     /// will remove the icon name, or resort to the icon-name set in the current
     /// style. Setting an icon name overrides any icon set in the style.
     ///

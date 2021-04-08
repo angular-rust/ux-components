@@ -7,9 +7,8 @@ use glib::signal::SignalHandlerId;
 use std::fmt;
 use std::{boxed::Box as Box_, cell::RefCell};
 
-// @extends Widget, clutter::Actor;
 #[derive(Clone, Debug)]
-pub struct Spinner {
+pub struct SpinnerProps {
     // pub texture: cogl::Handle,
     // pub material: cogl::Handle,
     pub frames: u32,
@@ -19,11 +18,28 @@ pub struct Spinner {
     pub animating: bool,
 }
 
+#[derive(Clone, Debug)]
+pub struct Spinner {
+    props: RefCell<SpinnerProps>,
+    widget: Widget,
+}
+
 impl Spinner {
     pub fn new() -> Spinner {
-        // assert_initialized_main_thread!();
-        // unsafe { clutter::Actor::from_glib_none(ffi::spinner_new()).unsafe_cast() }
-        unimplemented!()
+        let props = SpinnerProps {
+            // texture: cogl::Handle,
+            // material: cogl::Handle,
+            frames: 0,
+            anim_duration: 0,
+            current_frame: 0,
+            update_id: 0,
+            animating: false,
+        };
+
+        Self{
+            props: RefCell::new(props),
+            widget: Widget::new(),
+        }
     }
 }
 
@@ -42,6 +58,23 @@ impl AsRef<Spinner> for Spinner {
     }
 }
 
+impl Is<Widget> for Spinner {}
+
+impl AsRef<Widget> for Spinner {
+    fn as_ref(&self) -> &Widget {
+        &self.widget
+    }
+}
+
+impl Is<clutter::Actor> for Spinner {}
+
+impl AsRef<clutter::Actor> for Spinner {
+    fn as_ref(&self) -> &clutter::Actor {
+        let actor: &clutter::Actor = self.widget.as_ref();
+        actor
+    }
+}
+
 pub const NONE_SPINNER: Option<&Spinner> = None;
 
 pub trait SpinnerExt: 'static {
@@ -50,13 +83,13 @@ pub trait SpinnerExt: 'static {
     ///
     /// Determines whether the spinner is animating.
     ///
-    /// Returns: %TRUE if the spinner is animating, %FALSE otherwise
+    /// Returns: %true if the spinner is animating, %FALSE otherwise
     ///
     fn get_animating(&self) -> bool;
 
     /// set_animating:
     /// @spinner: A #Spinner widget
-    /// @animating: %TRUE to enable animation, %FALSE to disable
+    /// @animating: %true to enable animation, %FALSE to disable
     ///
     /// Sets whether the spinner is animating. A spinner can be stopped if
     /// the task it represents has finished, or to save energy.
@@ -74,25 +107,27 @@ impl<O: Is<Spinner>> SpinnerExt for O {
     ///
     /// Determines whether the spinner is animating.
     ///
-    /// Returns: %TRUE if the spinner is animating, %FALSE otherwise
+    /// Returns: %true if the spinner is animating, %FALSE otherwise
     ///
     fn get_animating(&self) -> bool {
         let spinner = self.as_ref();
-        spinner.animating
+        let props = spinner.props.borrow();
+        props.animating
     }
 
     /// set_animating:
     /// @spinner: A #Spinner widget
-    /// @animating: %TRUE to enable animation, %FALSE to disable
+    /// @animating: %true to enable animation, %FALSE to disable
     ///
     /// Sets whether the spinner is animating. A spinner can be stopped if
     /// the task it represents has finished, or to save energy.
     ///
     fn set_animating(&self, animating: bool) {
         let spinner = self.as_ref();
+        let mut props = spinner.props.borrow_mut();
 
-        if spinner.animating != animating {
-            // spinner.animating = animating;
+        if props.animating != animating {
+            props.animating = animating;
             // update_timeout(spinner);
             // g_object_notify(G_OBJECT(spinner), "animating");
         }

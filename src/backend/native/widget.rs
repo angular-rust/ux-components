@@ -9,6 +9,10 @@ use std::fmt;
 use std::{boxed::Box as Box_, cell::RefCell};
 
 #[derive(Clone, Debug)]
+pub struct WidgetProps {
+}
+
+#[derive(Clone, Debug)]
 pub struct Widget {
     border: Padding,
     padding: Padding,
@@ -59,8 +63,18 @@ pub struct Widget {
 }
 
 impl Widget {
+    pub fn new() -> Self {
+        unimplemented!()
+    }
+
     fn remove_tooltip_timeout(&self) {
         //    self.tooltip_timeout = 0;
+    }
+}
+
+impl Default for Widget {
+    fn default() -> Self {
+        Self::new()
     }
 }
 
@@ -70,6 +84,14 @@ impl Is<Widget> for Widget {}
 impl AsRef<Widget> for Widget {
     fn as_ref(&self) -> &Widget {
         self
+    }
+}
+
+impl Is<clutter::Actor> for Widget {}
+
+impl AsRef<clutter::Actor> for Widget {
+    fn as_ref(&self) -> &clutter::Actor {
+        &self.inner
     }
 }
 
@@ -383,7 +405,7 @@ impl<O: Is<Widget>> WidgetExt for O {
         // let settings = Settings::get_default();
         // let timeout: usize = 0;
 
-        // // g_object_get (settings, "long-press-timeout", &timeout, NULL);
+        // // g_object_get (settings, "long-press-timeout", &timeout, None);
         // let event_type = event.get_event_type();
         // match event_type {
         //     clutter::ButtonPress => {

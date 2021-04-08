@@ -13,7 +13,6 @@ pub struct MenuChild {
     pub widget: Widget, // called `box` before
 }
 
-// @extends FloatingWidget, Widget, clutter::Actor
 #[derive(Clone, Debug)]
 pub struct Menu {
     pub children: Vec<MenuChild>,
@@ -28,6 +27,7 @@ pub struct Menu {
     pub down_button: Option<clutter::Actor>,
     pub up_source: u64,
     pub down_source: u64,
+    // widget: FloatingWidget,
 }
 
 impl Menu {
@@ -50,6 +50,34 @@ impl Is<Menu> for Menu {}
 impl AsRef<Menu> for Menu {
     fn as_ref(&self) -> &Menu {
         self
+    }
+}
+
+impl Is<FloatingWidget> for Menu {}
+
+impl AsRef<FloatingWidget> for Menu {
+    fn as_ref(&self) -> &FloatingWidget {
+        // &self.widget
+        unimplemented!()
+    }
+}
+
+impl Is<Widget> for Menu {}
+
+impl AsRef<Widget> for Menu {
+    fn as_ref(&self) -> &Widget {
+        // &self.widget
+        unimplemented!()
+    }
+}
+
+impl Is<clutter::Actor> for Menu {}
+
+impl AsRef<clutter::Actor> for Menu {
+    fn as_ref(&self) -> &clutter::Actor {
+        // let actor: &clutter::Actor = self.widget.as_ref();
+        // actor
+        unimplemented!()
     }
 }
 
@@ -107,7 +135,7 @@ impl<O: Is<Menu>> MenuExt for O {
         // // TODO: Connect to notify signals in case action properties change
         // child.widget = g_object_new(TYPE_BUTTON,
         //                             "action", child.action,
-        //                             NULL);
+        //                             None);
         // button_set_action(BUTTON (child.widget), child.action);
 
         // // align to the left
@@ -137,7 +165,7 @@ impl<O: Is<Menu>> MenuExt for O {
         //     MenuChild *child = &g_array_index (menu.children, MenuChild, i);
 
         //     if child->action == action {
-        //         menu_free_action_at (menu, i, TRUE);
+        //         menu_free_action_at (menu, i, true);
         //         break;
         //     }
         // }

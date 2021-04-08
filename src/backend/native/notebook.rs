@@ -7,11 +7,11 @@ use glib::signal::SignalHandlerId;
 use std::fmt;
 use std::{boxed::Box as Box_, cell::RefCell};
 
-// @extends Widget, clutter::Actor;
 #[derive(Clone, Debug)]
 pub struct Notebook {
     pub current_page: Option<clutter::Actor>,
     pub children: Vec<clutter::Actor>,
+    widget: Widget,
 }
 
 impl Notebook {
@@ -34,6 +34,23 @@ impl Is<Notebook> for Notebook {}
 impl AsRef<Notebook> for Notebook {
     fn as_ref(&self) -> &Notebook {
         self
+    }
+}
+
+impl Is<Widget> for Notebook {}
+
+impl AsRef<Widget> for Notebook {
+    fn as_ref(&self) -> &Widget {
+        &self.widget
+    }
+}
+
+impl Is<clutter::Actor> for Notebook {}
+
+impl AsRef<clutter::Actor> for Notebook {
+    fn as_ref(&self) -> &clutter::Actor {
+        let actor: &clutter::Actor = self.widget.as_ref();
+        actor
     }
 }
 

@@ -25,11 +25,11 @@ pub struct BoxLayoutProps {
     // pub last_focus: Focusable,
 }
 
-// @extends Widget, clutter::Actor;
 #[derive(Clone, Debug)]
 pub struct BoxLayout {
     props: RefCell<BoxLayoutProps>,
     pub timeline: clutter::Timeline,
+    widget: Widget,
 }
 
 impl BoxLayout {
@@ -63,6 +63,23 @@ impl AsRef<BoxLayout> for BoxLayout {
     }
 }
 
+impl Is<Widget> for BoxLayout {}
+
+impl AsRef<Widget> for BoxLayout {
+    fn as_ref(&self) -> &Widget {
+        &self.widget
+    }
+}
+
+impl Is<clutter::Actor> for BoxLayout {}
+
+impl AsRef<clutter::Actor> for BoxLayout {
+    fn as_ref(&self) -> &clutter::Actor {
+        let actor: &clutter::Actor = self.widget.as_ref();
+        actor
+    }
+}
+
 pub const NONE_BOX_LAYOUT: Option<&BoxLayout> = None;
 
 pub trait BoxLayoutExt: 'static {
@@ -91,7 +108,7 @@ pub trait BoxLayoutExt: 'static {
     ///
     /// Get the value of the #BoxLayout:enable-animations property.
     ///
-    /// Returns: #TRUE if animations enabled
+    /// Returns: #true if animations enabled
     ///
     fn get_enable_animations(&self) -> bool;
 
@@ -107,7 +124,7 @@ pub trait BoxLayoutExt: 'static {
     ///
     /// Get the value of the #BoxLayout:scroll-to-focused property.
     ///
-    /// Returns: #TRUE if automatically scrolling to the focused actor is enabled
+    /// Returns: #true if automatically scrolling to the focused actor is enabled
     ///
     fn get_scroll_to_focused(&self) -> bool;
 
@@ -133,7 +150,7 @@ pub trait BoxLayoutExt: 'static {
 
     /// set_enable_animations:
     /// @box: A #BoxLayout
-    /// @enable_animations: #TRUE to enable animations
+    /// @enable_animations: #true to enable animations
     ///
     /// Enable animations when certain properties change.
     ///
@@ -149,7 +166,7 @@ pub trait BoxLayoutExt: 'static {
 
     /// set_scroll_to_focused:
     /// @box: A #BoxLayout
-    /// @scroll_to_focused: #TRUE to enable automatically scrolling to the
+    /// @scroll_to_focused: #true to enable automatically scrolling to the
     ///   focused actor
     ///
     /// Enables or disables automatic scrolling to the focused actor.
@@ -266,7 +283,7 @@ impl<O: Is<BoxLayout>> BoxLayoutExt for O {
     ///
     /// Get the value of the #BoxLayout:enable-animations property.
     ///
-    /// Returns: #TRUE if animations enabled
+    /// Returns: #true if animations enabled
     ///
     fn get_enable_animations(&self) -> bool {
         let boxlayout = self.as_ref();
@@ -288,7 +305,7 @@ impl<O: Is<BoxLayout>> BoxLayoutExt for O {
     ///
     /// Get the value of the #BoxLayout:scroll-to-focused property.
     ///
-    /// Returns: #TRUE if automatically scrolling to the focused actor is enabled
+    /// Returns: #true if automatically scrolling to the focused actor is enabled
     ///
     fn get_scroll_to_focused(&self) -> bool {
         let boxlayout = self.as_ref();
@@ -327,7 +344,7 @@ impl<O: Is<BoxLayout>> BoxLayoutExt for O {
 
     /// set_enable_animations:
     /// @box: A #BoxLayout
-    /// @enable_animations: #TRUE to enable animations
+    /// @enable_animations: #true to enable animations
     ///
     /// Enable animations when certain properties change.
     ///
@@ -363,7 +380,7 @@ impl<O: Is<BoxLayout>> BoxLayoutExt for O {
 
     /// set_scroll_to_focused:
     /// @box: A #BoxLayout
-    /// @scroll_to_focused: #TRUE to enable automatically scrolling to the
+    /// @scroll_to_focused: #true to enable automatically scrolling to the
     ///   focused actor
     ///
     /// Enables or disables automatic scrolling to the focused actor.

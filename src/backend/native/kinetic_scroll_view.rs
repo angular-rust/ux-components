@@ -16,11 +16,9 @@ pub struct KineticScrollViewMotion {
     pub time: u64, // GTimeVal,
 }
 
-// @extends Widget, clutter::Actor;
 #[derive(Clone, Debug)]
 pub struct KineticScrollView {
     pub child: Option<clutter::Actor>,
-
     pub use_captured: bool,
     pub use_grab: bool,
     pub in_drag: bool,
@@ -31,13 +29,11 @@ pub struct KineticScrollView {
     pub vclamping: bool,
     pub clamp_to_center: bool,
     pub snap_on_page: bool,
-
     pub button: u32,
     pub device: Option<clutter::InputDevice>,
     pub sequence: Option<clutter::EventSequence>,
     pub source_press_actor: Option<clutter::Actor>,
     pub cancel_event: Option<clutter::Event>,
-
     pub in_automatic_scroll: AutomaticScroll,
 
     // Mouse motion event information
@@ -52,13 +48,11 @@ pub struct KineticScrollView {
     pub overshoot: f64,
     pub accumulated_delta: f64,
     pub acceleration_factor: f64,
-
     pub scroll_policy: ScrollPolicy,
-
     pub clamp_duration: u32,
     pub clamp_mode: u64,
-
     pub state: KineticScrollViewState,
+    widget: Widget,
 }
 
 impl KineticScrollView {
@@ -83,6 +77,23 @@ impl Is<KineticScrollView> for KineticScrollView {}
 impl AsRef<KineticScrollView> for KineticScrollView {
     fn as_ref(&self) -> &KineticScrollView {
         self
+    }
+}
+
+impl Is<Widget> for KineticScrollView {}
+
+impl AsRef<Widget> for KineticScrollView {
+    fn as_ref(&self) -> &Widget {
+        &self.widget
+    }
+}
+
+impl Is<clutter::Actor> for KineticScrollView {}
+
+impl AsRef<clutter::Actor> for KineticScrollView {
+    fn as_ref(&self) -> &clutter::Actor {
+        let actor: &clutter::Actor = self.widget.as_ref();
+        actor
     }
 }
 

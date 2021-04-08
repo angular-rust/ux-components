@@ -13,34 +13,29 @@ pub enum ScrollBarDirection {
     Up,
     Down,
 }
-// @extends Widget, clutter::Actor;
+
 #[derive(Clone, Debug)]
 pub struct ScrollBar {
     pub adjustment: Option<Adjustment>,
-
     pub capture_handler: u64,
     pub x_origin: f32,
     pub y_origin: f32,
-
     pub bw_stepper: Option<clutter::Actor>,
     pub fw_stepper: Option<clutter::Actor>,
     pub trough: Option<clutter::Actor>,
     pub handle: Option<clutter::Actor>,
-
     pub move_x: f32,
     pub move_y: f32,
-
     pub handle_min_size: u32,
 
     // Trough-click handling.
     pub paging_direction: ScrollBarDirection,
     pub paging_source_id: u32,
     pub paging_event_no: u32,
-
     pub stepper_forward: bool,
     pub stepper_source_id: u32,
-
     pub orientation: Orientation,
+    widget: Widget,
 }
 
 impl ScrollBar {
@@ -74,6 +69,23 @@ impl Is<ScrollBar> for ScrollBar {}
 impl AsRef<ScrollBar> for ScrollBar {
     fn as_ref(&self) -> &ScrollBar {
         self
+    }
+}
+
+impl Is<Widget> for ScrollBar {}
+
+impl AsRef<Widget> for ScrollBar {
+    fn as_ref(&self) -> &Widget {
+        &self.widget
+    }
+}
+
+impl Is<clutter::Actor> for ScrollBar {}
+
+impl AsRef<clutter::Actor> for ScrollBar {
+    fn as_ref(&self) -> &clutter::Actor {
+        let actor: &clutter::Actor = self.widget.as_ref();
+        actor
     }
 }
 

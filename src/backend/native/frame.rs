@@ -5,10 +5,10 @@ use crate::prelude::*;
 use std::fmt;
 use std::{boxed::Box as Box_, cell::RefCell};
 
-// @extends Widget, clutter::Actor;
 #[derive(Clone, Debug)]
 pub struct Frame {
     pub child: Option<clutter::Actor>,
+    widget: Widget,
 }
 
 impl Frame {
@@ -31,6 +31,23 @@ impl Is<Frame> for Frame {}
 impl AsRef<Frame> for Frame {
     fn as_ref(&self) -> &Frame {
         self
+    }
+}
+
+impl Is<Widget> for Frame {}
+
+impl AsRef<Widget> for Frame {
+    fn as_ref(&self) -> &Widget {
+        &self.widget
+    }
+}
+
+impl Is<clutter::Actor> for Frame {}
+
+impl AsRef<clutter::Actor> for Frame {
+    fn as_ref(&self) -> &clutter::Actor {
+        let actor: &clutter::Actor = self.widget.as_ref();
+        actor
     }
 }
 

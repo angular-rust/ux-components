@@ -7,7 +7,6 @@ use glib::signal::SignalHandlerId;
 use std::fmt;
 use std::{boxed::Box as Box_, cell::RefCell};
 
-// @extends Widget, clutter::Actor;
 #[derive(Clone, Debug)]
 pub struct Expander {
     pub label: Option<clutter::Actor>,
@@ -17,6 +16,7 @@ pub struct Expander {
     pub progress: u64,
     pub expanded: bool,
     pub child: Option<clutter::Actor>,
+    widget: Widget,
 }
 
 impl Expander {
@@ -39,6 +39,23 @@ impl Is<Expander> for Expander {}
 impl AsRef<Expander> for Expander {
     fn as_ref(&self) -> &Expander {
         self
+    }
+}
+
+impl Is<Widget> for Expander {}
+
+impl AsRef<Widget> for Expander {
+    fn as_ref(&self) -> &Widget {
+        &self.widget
+    }
+}
+
+impl Is<clutter::Actor> for Expander {}
+
+impl AsRef<clutter::Actor> for Expander {
+    fn as_ref(&self) -> &clutter::Actor {
+        let actor: &clutter::Actor = self.widget.as_ref();
+        actor
     }
 }
 

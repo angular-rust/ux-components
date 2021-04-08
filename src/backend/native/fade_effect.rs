@@ -7,7 +7,6 @@ use glib::signal::SignalHandlerId;
 use std::fmt;
 use std::{boxed::Box as Box_, cell::RefCell};
 
-// @extends clutter::OffscreenEffect, clutter::Effect, clutter::ActorMeta;
 #[derive(Clone, Debug)]
 pub struct FadeEffect {
     pub x: i32,
@@ -53,6 +52,34 @@ impl Is<FadeEffect> for FadeEffect {}
 impl AsRef<FadeEffect> for FadeEffect {
     fn as_ref(&self) -> &FadeEffect {
         self
+    }
+}
+
+impl Is<clutter::OffscreenEffect> for FadeEffect {}
+
+impl AsRef<clutter::OffscreenEffect> for FadeEffect {
+    fn as_ref(&self) -> &clutter::OffscreenEffect {
+        // &self.widget
+        unimplemented!()
+    }
+}
+
+
+impl Is<clutter::Effect> for FadeEffect {}
+
+impl AsRef<clutter::Effect> for FadeEffect {
+    fn as_ref(&self) -> &clutter::Effect {
+        // &self.widget
+        unimplemented!()
+    }
+}
+
+impl Is<clutter::ActorMeta> for FadeEffect {}
+
+impl AsRef<clutter::ActorMeta> for FadeEffect {
+    fn as_ref(&self) -> &clutter::ActorMeta {
+        // &self.widget
+        unimplemented!()
     }
 }
 

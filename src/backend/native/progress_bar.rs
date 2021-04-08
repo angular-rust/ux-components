@@ -13,11 +13,11 @@ pub struct ProgressBarFill {
     pub height: u32,
 }
 
-// @extends Widget, clutter::Actor;
 #[derive(Clone, Debug)]
 pub struct ProgressBar {
     pub fill: Option<clutter::Actor>,
     pub progress: f64,
+    widget: Widget,
 }
 
 impl ProgressBar {
@@ -40,6 +40,23 @@ impl Is<ProgressBar> for ProgressBar {}
 impl AsRef<ProgressBar> for ProgressBar {
     fn as_ref(&self) -> &ProgressBar {
         self
+    }
+}
+
+impl Is<Widget> for ProgressBar {}
+
+impl AsRef<Widget> for ProgressBar {
+    fn as_ref(&self) -> &Widget {
+        &self.widget
+    }
+}
+
+impl Is<clutter::Actor> for ProgressBar {}
+
+impl AsRef<clutter::Actor> for ProgressBar {
+    fn as_ref(&self) -> &clutter::Actor {
+        let actor: &clutter::Actor = self.widget.as_ref();
+        actor
     }
 }
 
@@ -90,7 +107,7 @@ impl<O: Is<ProgressBar>> ProgressBarExt for O {
 
         if progressbar.progress != progress {
             // progressbar.progress = progress;
-            // allocate_fill(bar, NULL, 0);
+            // allocate_fill(bar, None, 0);
             // clutter_actor_queue_redraw(CLUTTER_ACTOR(bar));
             // g_object_notify(G_OBJECT(bar), "progress");
         }

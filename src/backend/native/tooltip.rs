@@ -7,7 +7,6 @@ use glib::signal::SignalHandlerId;
 use std::fmt;
 use std::{boxed::Box as Box_, cell::RefCell};
 
-// @extends FloatingWidget, Widget, clutter::Actor;
 #[derive(Clone, Debug)]
 pub struct Tooltip {
     pub label: Option<clutter::Actor>,
@@ -19,6 +18,7 @@ pub struct Tooltip {
     pub border_image: BorderImage,
     pub text_allocation: Option<clutter::ActorBox>,
     // pub border_image_texture: cogl::Handle,
+    // widget: FloatingWidget,
 }
 
 impl Tooltip {
@@ -45,6 +45,34 @@ impl Is<Tooltip> for Tooltip {}
 impl AsRef<Tooltip> for Tooltip {
     fn as_ref(&self) -> &Tooltip {
         self
+    }
+}
+
+impl Is<FloatingWidget> for Tooltip {}
+
+impl AsRef<FloatingWidget> for Tooltip {
+    fn as_ref(&self) -> &FloatingWidget {
+        // &self.widget
+        unimplemented!()
+    }
+}
+
+impl Is<Widget> for Tooltip {}
+
+impl AsRef<Widget> for Tooltip {
+    fn as_ref(&self) -> &Widget {
+        // &self.widget
+        unimplemented!()
+    }
+}
+
+impl Is<clutter::Actor> for Tooltip {}
+
+impl AsRef<clutter::Actor> for Tooltip {
+    fn as_ref(&self) -> &clutter::Actor {
+        // let actor: &clutter::Actor = self.widget.as_ref();
+        // actor
+        unimplemented!()
     }
 }
 
@@ -153,7 +181,7 @@ impl<O: Is<Tooltip>> TooltipExt for O {
         // tooltip_set_opacity(tooltip, 0x0);
 
         // g_signal_connect(tooltip, "transition-stopped::opacity",
-        //                     G_CALLBACK(tooltip_hide_complete), NULL);
+        //                     G_CALLBACK(tooltip_hide_complete), None);
 
         // // Leave browse mode after a short delay
         // if tooltip_browse_mode_timeout {
@@ -162,7 +190,7 @@ impl<O: Is<Tooltip>> TooltipExt for O {
         // tooltip_browse_mode_timeout =
         //     g_timeout_add (TOOLTIP_BROWSE_MODE_TIMEOUT,
         //                 tooltip_browse_mode_timeout_cb,
-        //                 NULL);
+        //                 None);
     }
 
     /// set_text:
