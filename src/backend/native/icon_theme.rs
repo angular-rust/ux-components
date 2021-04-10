@@ -84,7 +84,7 @@ pub trait IconThemeExt: 'static {
     ///
     /// Return value: (transfer none): a #CoglHandle of the icon, or %None.
     ///
-    //fn lookup(&self, icon_name: &str, size: i32) -> Option<cogl::Handle>;
+    fn lookup(&self, icon_name: &str, size: i32) -> Option<cogl::Handle>;
 
     ///set_search_paths:
     /// @theme: a #IconTheme
@@ -159,9 +159,10 @@ impl<O: Is<IconTheme>> IconThemeExt for O {
     ///
     /// Return value: (transfer none): a #CoglHandle of the icon, or %None.
     ///
-    // fn lookup(&self, icon_name: &str, size: i32) -> Option<cogl::Handle> {
-    //     let icontheme = self.as_ref();
-    // }
+    fn lookup(&self, icon_name: &str, size: i32) -> Option<cogl::Handle> {
+        let icontheme = self.as_ref();
+        unimplemented!()
+    }
 
     ///set_search_paths:
     /// @theme: a #IconTheme

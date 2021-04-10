@@ -21,7 +21,7 @@ pub struct StageProps {
     pub start_angle: f32,
     pub end_angle: f32,
     pub angle: f32,
-    // pub icon_texture: cogl::Handle,
+    pub icon_texture: Option<cogl::Handle>,
     pub toolbar: Option<Toolbar>,
     pub resize_grip: Option<clutter::Actor>,
     pub debug_actor: Option<clutter::Actor>,
@@ -180,6 +180,7 @@ impl Default for Stage {
             start_angle: 0.0,
             end_angle: 0.0,
             angle: 0.0,
+            icon_texture: None,
         };
 
         let stage = Self {
@@ -378,7 +379,7 @@ pub trait WindowExt: 'static {
     ///
     fn set_has_toolbar(&self, toolbar: bool);
 
-    //fn set_icon_from_cogl_texture(&self, texture: cogl::Handle);
+    fn set_icon_from_cogl_texture(&self, texture: cogl::Handle);
 
     /// set_icon_name:
     /// @window: A #Stage
@@ -773,9 +774,10 @@ impl<O: Is<Stage>> WindowExt for O {
         }
     }
 
-    //fn set_icon_from_cogl_texture(&self, texture: cogl::Handle) {
-    //    unsafe { TODO: call ffi:window_set_icon_from_cogl_texture() }
-    //}
+    fn set_icon_from_cogl_texture(&self, texture: cogl::Handle) {
+        // unsafe { TODO: call ffi:window_set_icon_from_cogl_texture() }
+        unimplemented!()
+    }
 
     /// set_icon_name:
     /// @window: A #Stage

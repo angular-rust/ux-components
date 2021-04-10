@@ -37,14 +37,14 @@ pub struct ImageProps {
     pub upscale: bool,
     pub width_threshold: u32,
     pub height_threshold: u32,
-    // pub texture: cogl::Handle,
-    // pub old_texture: cogl::Handle,
-    // pub blank_texture: cogl::Handle,
+    pub texture: cogl::Handle,
+    pub old_texture: cogl::Handle,
+    pub blank_texture: cogl::Handle,
     pub rotation: f32,
     pub old_rotation: f32,
     pub old_mode: ImageScaleMode,
-    // pub template_material: cogl::Material,
-    // pub material: cogl::Material,
+    pub template_material: cogl::Material,
+    pub material: cogl::Material,
     pub timeline: clutter::Timeline,
     pub redraw_timeline: clutter::Timeline,
     pub transition_duration: u32,
@@ -246,7 +246,7 @@ pub trait ImageExt: 'static {
     ///
     /// Returns: %true on success, %false on failure
     ///
-    //fn set_from_cogl_texture(&self, texture: cogl::Handle) -> bool;
+    fn set_from_cogl_texture(&self, texture: cogl::Handle) -> bool;
 
     /// set_from_data:
     /// @image: An #Image
@@ -667,7 +667,7 @@ impl<O: Is<Image>> ImageExt for O {
     ///
     /// Returns: %true on success, %false on failure
     ///
-    // fn set_from_cogl_texture(&self, texture: cogl::Handle) -> bool {
+    fn set_from_cogl_texture(&self, texture: cogl::Handle) -> bool {
     //     let image = self.as_ref();
 
     //     gint width, height;
@@ -752,7 +752,8 @@ impl<O: Is<Image>> ImageExt for O {
     //         return image_set_from_data(image, data, format,
     //                                        width, height, rowstride, None);
     //       }
-    // }
+        unimplemented!()
+    }
 
     /// set_from_data:
     /// @image: An #Image

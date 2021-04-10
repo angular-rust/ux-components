@@ -9,8 +9,8 @@ use std::{boxed::Box as Box_, cell::RefCell};
 
 #[derive(Clone, Debug)]
 pub struct SpinnerProps {
-    // pub texture: cogl::Handle,
-    // pub material: cogl::Handle,
+    pub texture: Option<cogl::Handle>,
+    pub material: Option<cogl::Handle>,
     pub frames: u32,
     pub anim_duration: u32,
     pub current_frame: u32,
@@ -27,13 +27,13 @@ pub struct Spinner {
 impl Spinner {
     pub fn new() -> Spinner {
         let props = SpinnerProps {
-            // texture: cogl::Handle,
-            // material: cogl::Handle,
-            frames: 0,
-            anim_duration: 0,
+            texture: None,
+            material: None,
+            frames: 1,
+            anim_duration: 500,
             current_frame: 0,
             update_id: 0,
-            animating: false,
+            animating: true,
         };
         
         println!("create spinner");

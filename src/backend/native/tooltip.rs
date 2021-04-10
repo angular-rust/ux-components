@@ -17,7 +17,7 @@ pub struct TooltipProps {
     pub stage_matrix: cogl::Matrix,
     pub border_image: BorderImage,
     pub text_allocation: Option<clutter::ActorBox>,
-    // pub border_image_texture: cogl::Handle,
+    pub border_image_texture: Option<cogl::Handle>,
 }
 
 #[derive(Clone, Debug)]

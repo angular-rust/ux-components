@@ -19,10 +19,10 @@ pub struct FadeEffectProps {
     pub width: f32,
     pub height: f32,
 
-    // pub vbo: cogl::Handle,
-    // pub indices: cogl::Handle,
+    pub vbo: cogl::Handle,
+    pub indices: cogl::Handle,
     pub n_quads: u32,
-    // pub old_material: cogl::Material,
+    pub old_material: cogl::Material,
     pub blocked_id: u64,
 
     pub x_offset: f32,

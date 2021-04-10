@@ -30,9 +30,9 @@ pub struct WidgetProps {
     ux_border_image: BorderImage,
     ux_background_image: BorderImage,
 
-    // border_image: clutter::Handle,
-    // old_border_image: clutter::Handle,
-    // background_image: clutter::Handle,
+    border_image: Option<cogl::Handle>,
+    old_border_image: Option<cogl::Handle>,
+    background_image: Option<cogl::Handle>,
     background_image_box: Option<clutter::ActorBox>,
     bg_color: Option<clutter::Color>,
     opacity: f64,
@@ -80,9 +80,9 @@ impl Widget {
             ux_border_image: Default::default(),
             ux_background_image: Default::default(),
         
-            // border_image: clutter::Handle,
-            // old_border_image: clutter::Handle,
-            // background_image: clutter::Handle,
+            border_image: None,
+            old_border_image: None,
+            background_image: None,
             background_image_box: None,
             bg_color: None,
             opacity: 0.0,
@@ -181,7 +181,7 @@ pub trait WidgetExt: 'static {
     /// Returns: (transfer none): a #ClutterColor
     fn get_background_color(&self) -> Option<clutter::Color>;
 
-    //fn get_background_texture(&self) -> Option<cogl::Handle>;
+    fn get_background_texture(&self) -> Option<cogl::Handle>;
 
     /// get_disabled:
     /// @widget: an #Widget
@@ -364,9 +364,10 @@ impl<O: Is<Widget>> WidgetExt for O {
         props.bg_color.clone()
     }
 
-    //fn get_background_texture(&self) -> Option<cogl::Handle> {
-    //    unsafe { TODO: call ffi:widget_get_background_texture() }
-    //}
+    fn get_background_texture(&self) -> Option<cogl::Handle> {
+        // unsafe { TODO: call ffi:widget_get_background_texture() }
+        unimplemented!()
+    }
 
     /// get_disabled:
     /// @widget: an #Widget
