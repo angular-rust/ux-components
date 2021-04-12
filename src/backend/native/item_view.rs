@@ -253,7 +253,6 @@ impl<O: Is<ItemView>> ItemViewExt for O {
         let itemview = self.as_ref();
         let mut props = itemview.props.borrow_mut();
 
-        
         // if itemview.factory == factory {
         //     return;
         // }

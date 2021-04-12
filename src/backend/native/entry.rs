@@ -266,7 +266,7 @@ impl<O: Is<Entry>> EntryExt for O {
     // fn get_clutter_text(&self) -> &Option<clutter::Actor> {
     //     let entry = self.as_ref();
     //     let props = entry.props.borrow();
-        
+
     //     &props.entry
     // }
 
@@ -282,7 +282,7 @@ impl<O: Is<Entry>> EntryExt for O {
     fn get_icon_highlight_suffix(&self) -> Option<String> {
         let entry = self.as_ref();
         let props = entry.props.borrow();
-        
+
         props.icon_highlight_suffix.clone()
     }
 

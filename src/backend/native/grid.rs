@@ -164,63 +164,63 @@ impl<O: Is<Grid>> GridExt for O {
     fn get_child_y_align(&self) -> Align {
         let grid = self.as_ref();
         let props = grid.props.borrow();
-        
+
         props.child_y_align
     }
 
     fn get_column_spacing(&self) -> f32 {
         let grid = self.as_ref();
         let props = grid.props.borrow();
-        
+
         props.col_spacing
     }
 
     fn get_homogenous_columns(&self) -> bool {
         let grid = self.as_ref();
         let props = grid.props.borrow();
-        
+
         props.homogenous_columns
     }
 
     fn get_homogenous_rows(&self) -> bool {
         let grid = self.as_ref();
         let props = grid.props.borrow();
-        
+
         props.homogenous_rows
     }
 
     fn get_line_alignment(&self) -> Align {
         let grid = self.as_ref();
         let props = grid.props.borrow();
-        
+
         props.line_alignment
     }
 
     fn get_max_stride(&self) -> i32 {
         let grid = self.as_ref();
         let props = grid.props.borrow();
-        
+
         props.max_stride
     }
 
     fn get_orientation(&self) -> Orientation {
         let grid = self.as_ref();
         let props = grid.props.borrow();
-        
+
         props.orientation
     }
 
     fn get_row_spacing(&self) -> f32 {
         let grid = self.as_ref();
         let props = grid.props.borrow();
-        
+
         props.row_spacing
     }
 
     fn set_child_x_align(&self, value: Align) {
         let grid = self.as_ref();
         let mut props = grid.props.borrow_mut();
-        
+
         if value != props.child_x_align {
             props.child_x_align = value;
             // clutter_actor_queue_relayout(CLUTTER_ACTOR(self));

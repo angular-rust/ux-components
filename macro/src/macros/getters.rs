@@ -4,15 +4,21 @@ use syn::{Attribute, Data, DataStruct, DeriveInput, Fields, Ident, Lit, Meta, Ne
 
 pub fn expand_getters(input: DeriveInput) -> syn::Result<TokenStream> {
     let fields = match input.data {
-        Data::Struct(DataStruct { fields: Fields::Named(fields), .. }) => fields.named,
+        Data::Struct(DataStruct {
+            fields: Fields::Named(fields),
+            ..
+        }) => fields.named,
         _ => panic!("this derive macro only works on structs with named fields"),
     };
 
     let getters = fields
         .into_iter()
         .map(|f| {
-            let attrs: Vec<_> =
-                f.attrs.iter().filter(|attr| attr.path.is_ident("getter")).collect();
+            let attrs: Vec<_> = f
+                .attrs
+                .iter()
+                .filter(|attr| attr.path.is_ident("getter"))
+                .collect();
 
             let name_from_attr = match attrs.len() {
                 0 => None,
@@ -54,7 +60,12 @@ fn get_name_attr(attr: &Attribute) -> syn::Result<Option<Ident>> {
     let meta = attr.parse_meta()?;
     let meta_list = match meta {
         Meta::List(list) => list,
-        _ => return Err(syn::Error::new_spanned(meta, "expected a list-style attribute")),
+        _ => {
+            return Err(syn::Error::new_spanned(
+                meta,
+                "expected a list-style attribute",
+            ))
+        }
     };
 
     let nested = match meta_list.nested.len() {
@@ -71,7 +82,12 @@ fn get_name_attr(attr: &Attribute) -> syn::Result<Option<Ident>> {
 
     let name_value = match nested {
         NestedMeta::Meta(Meta::NameValue(nv)) => nv,
-        _ => return Err(syn::Error::new_spanned(nested, "expected `name = \"<value>\"`")),
+        _ => {
+            return Err(syn::Error::new_spanned(
+                nested,
+                "expected `name = \"<value>\"`",
+            ))
+        }
     };
 
     if !name_value.path.is_ident("name") {

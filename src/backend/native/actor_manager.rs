@@ -345,7 +345,7 @@ impl<O: Is<ActorManager>> ActorManagerExt for O {
     fn get_stage(&self) -> Option<clutter::Stage> {
         let manager = self.as_ref();
         let props = manager.props.borrow();
-        
+
         props.stage.clone()
     }
 

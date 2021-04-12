@@ -93,7 +93,6 @@ impl<O: Is<Toggle>> ToggleExt for O {
         let mut props = toggle.props.borrow_mut();
 
         if props.active != active || (props.position > 0.0 && props.position < 1.0) {
-
             props.active = active;
             if active {
                 // stylable_set_style_pseudo_class(MX_STYLABLE(toggle), "checked");
@@ -121,7 +120,7 @@ impl<O: Is<Toggle>> ToggleExt for O {
 
             // clutter_timeline_rewind(toggle.timeline);
 
-            if props.drag_offset > -1.0  {
+            if props.drag_offset > -1.0 {
                 // clutter_timeline_set_progress_mode(toggle.timeline, CLUTTER_LINEAR);
                 // clutter_timeline_advance(toggle.timeline, toggle.position * 300);
             } else {

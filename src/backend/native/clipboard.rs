@@ -6,7 +6,7 @@ use std::{boxed::Box as Box_, cell::RefCell};
 
 #[derive(Clone, Debug)]
 pub struct ClipboardProps {
-    text: Option<String>
+    text: Option<String>,
 }
 #[derive(Clone, Debug)]
 pub struct Clipboard {

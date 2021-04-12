@@ -71,14 +71,21 @@ impl Stage {
 
     fn reallocate(&self) {
         let allocation_box = self.inner.get_allocation_box();
-        self.allocation_changed_cb(&self.inner, &allocation_box, clutter::AllocationFlags::ALLOCATION_NONE);
+        self.allocation_changed_cb(
+            &self.inner,
+            &allocation_box,
+            clutter::AllocationFlags::ALLOCATION_NONE,
+        );
     }
 
-    fn allocation_changed_cb(&self, actor: &clutter::Stage, allocation_box: &clutter::ActorBox,
-          flags: clutter::AllocationFlags) 
-    {
+    fn allocation_changed_cb(
+        &self,
+        actor: &clutter::Stage,
+        allocation_box: &clutter::ActorBox,
+        flags: clutter::AllocationFlags,
+    ) {
         // let padding: Padding;
-        
+
         // MxWindowPrivate *priv;
         let toolbar_height = 0.0;
 
@@ -716,7 +723,7 @@ impl<O: Is<Stage>> WindowExt for O {
         // }
 
         stage.inner.add_child(actor);
-        
+
         // actor.real_queue_relayout();
         // actor.queue_redraw();
 

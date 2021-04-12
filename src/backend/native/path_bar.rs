@@ -54,7 +54,6 @@ impl AsRef<Widget> for PathBar {
     }
 }
 
-
 impl Is<clutter::Actor> for PathBar {}
 
 impl AsRef<clutter::Actor> for PathBar {
@@ -261,8 +260,8 @@ impl<O: Is<PathBar>> PathBarExt for O {
         // path_bar_animate_button(bar, crumb, true);
 
         props.current_level -= 1; // FIXME: warn on usize
-        // path_bar_reset_last_crumb(bar);
-        // g_object_notify (G_OBJECT (bar), "level");
+                                  // path_bar_reset_last_crumb(bar);
+                                  // g_object_notify (G_OBJECT (bar), "level");
 
         props.current_level
     }
@@ -334,7 +333,7 @@ impl<O: Is<PathBar>> PathBarExt for O {
 
         props.editable = editable;
 
-        if !editable  {
+        if !editable {
             // clutter_actor_save_easing_state(pathbar.entry);
             // clutter_actor_set_easing_mode(pathbar.entry, CLUTTER_EASE_OUT_QUAD);
             // clutter_actor_set_easing_duration(pathbar.entry, 150);

@@ -1,4 +1,16 @@
 #![allow(unused_imports)]
+#![allow(
+    clippy::too_many_arguments,
+    clippy::let_and_return,
+    clippy::from_over_into,
+    clippy::upper_case_acronyms,
+    clippy::new_ret_no_self,
+    clippy::wrong_self_convention,
+    clippy::if_same_then_else,
+    clippy::float_cmp,
+    clippy::needless_return,
+    clippy::collapsible_if
+)]
 
 mod backend;
 pub use backend::*;
@@ -54,10 +66,10 @@ pub mod prelude {
     pub use super::WidgetExt;
     pub use super::WindowExt;
 
-    pub use ux_macro::*;
     pub use clutter;
     pub use clutter::prelude::*;
     pub use cogl;
+    pub use ux_macro::*;
     // pub use cogl::prelude::*;
 }
 

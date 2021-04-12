@@ -20,7 +20,7 @@ pub struct IconThemeProps {
 
 #[derive(Clone, Debug)]
 pub struct IconTheme {
-    props: RefCell<IconThemeProps>
+    props: RefCell<IconThemeProps>,
 }
 
 impl IconTheme {
@@ -73,7 +73,7 @@ pub trait IconThemeExt: 'static {
     ///
     fn get_theme_name(&self) -> Option<String>;
 
-    fn has_icon(&self, icon_name: &String) -> bool;
+    fn has_icon(&self, icon_name: &str) -> bool;
 
     ///lookup:
     /// @theme: an #IconTheme
@@ -141,7 +141,7 @@ impl<O: Is<IconTheme>> IconThemeExt for O {
         props.theme.clone()
     }
 
-    fn has_icon(&self, icon_name: &String) -> bool {
+    fn has_icon(&self, icon_name: &str) -> bool {
         let icontheme = self.as_ref();
         // if icon_theme_get_icons(theme, icon_name) {
         //     return true;

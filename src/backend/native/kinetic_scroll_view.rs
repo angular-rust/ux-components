@@ -631,7 +631,7 @@ impl<O: Is<KineticScrollView>> KineticScrollViewExt for O {
         let mut props = scrollview.props.borrow_mut();
 
         if props.clamp_to_center != clamp_to_center {
-            props.clamp_to_center = !!clamp_to_center;
+            props.clamp_to_center = clamp_to_center;
             // g_object_notify(G_OBJECT(scroll), "clamp-to-center");
         }
     }
@@ -721,7 +721,7 @@ impl<O: Is<KineticScrollView>> KineticScrollViewExt for O {
         let mut props = scrollview.props.borrow_mut();
 
         if props.snap_on_page != snap_on_page {
-            props.snap_on_page = !!snap_on_page;
+            props.snap_on_page = snap_on_page;
             // g_object_notify(G_OBJECT(scroll), "snap-on-page");
         }
     }
@@ -797,8 +797,8 @@ impl<O: Is<KineticScrollView>> KineticScrollViewExt for O {
         let mut props = scrollview.props.borrow_mut();
 
         if props.deceleration_timeline.is_some() {
-        //     clutter_timeline_stop(scrollview.deceleration_timeline);
-        //     g_object_unref(scrollview.deceleration_timeline);
+            //     clutter_timeline_stop(scrollview.deceleration_timeline);
+            //     g_object_unref(scrollview.deceleration_timeline);
             props.deceleration_timeline = None;
         }
     }

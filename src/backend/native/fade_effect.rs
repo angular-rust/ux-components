@@ -69,7 +69,6 @@ impl AsRef<clutter::OffscreenEffect> for FadeEffect {
     }
 }
 
-
 impl Is<clutter::Effect> for FadeEffect {}
 
 impl AsRef<clutter::Effect> for FadeEffect {
@@ -303,22 +302,22 @@ impl<O: Is<FadeEffect>> FadeEffectExt for O {
 
         if props.border[0] != top {
             props.border[0] = top;
-        //     g_object_notify(G_OBJECT(effect), "border-top");
+            //     g_object_notify(G_OBJECT(effect), "border-top");
         }
 
         if props.border[1] != right {
             props.border[1] = right;
-        //     g_object_notify(G_OBJECT(effect), "border-right");
+            //     g_object_notify(G_OBJECT(effect), "border-right");
         }
 
         if props.border[2] != bottom {
             props.border[2] = bottom;
-        //     g_object_notify(G_OBJECT(effect), "border-bottom");
+            //     g_object_notify(G_OBJECT(effect), "border-bottom");
         }
 
         if props.border[3] != left {
             props.border[3] = left;
-        //     g_object_notify(G_OBJECT(effect), "border-left");
+            //     g_object_notify(G_OBJECT(effect), "border-left");
         }
 
         props.update_vbo = true;
@@ -351,22 +350,22 @@ impl<O: Is<FadeEffect>> FadeEffectExt for O {
 
         if props.x != x {
             props.x = x;
-        //     g_object_notify(G_OBJECT(effect), "bounds-x");
+            //     g_object_notify(G_OBJECT(effect), "bounds-x");
         }
 
         if props.y != y {
             props.y = y;
-        //     g_object_notify(G_OBJECT(effect), "bounds-y");
+            //     g_object_notify(G_OBJECT(effect), "bounds-y");
         }
 
         if props.bounds_width != width {
             props.bounds_width = width;
-        //     g_object_notify(G_OBJECT(effect), "bounds-width");
+            //     g_object_notify(G_OBJECT(effect), "bounds-width");
         }
 
         if props.bounds_height != height {
             props.bounds_height = height;
-        //     g_object_notify(G_OBJECT(effect), "bounds-height");
+            //     g_object_notify(G_OBJECT(effect), "bounds-height");
         }
 
         props.update_vbo = true;

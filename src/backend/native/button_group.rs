@@ -16,7 +16,7 @@ pub struct ButtonGroupProps {
 
 #[derive(Clone, Debug)]
 pub struct ButtonGroup {
-    props: RefCell<ButtonGroupProps>
+    props: RefCell<ButtonGroupProps>,
 }
 
 impl ButtonGroup {
@@ -299,7 +299,7 @@ impl<O: Is<ButtonGroup>> ButtonGroupExt for O {
                 props.active_button = None;
             }
         }
-        
+
         // g_object_notify (G_OBJECT (group), "active-button");
     }
 

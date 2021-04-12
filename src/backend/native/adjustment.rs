@@ -110,7 +110,7 @@ impl Adjustment {
     /// Set the value of the #Adjustment:upper property.
     ///
     fn set_upper(&self, upper: f64) -> bool {
-        let adjustment = self.as_ref();
+        let adjustment = self;
         let mut props = self.props.borrow_mut();
 
         if props.upper != upper {
@@ -144,7 +144,7 @@ impl Adjustment {
     /// Set the value of the #Adjustment:step-increment property.
     ///
     fn set_step_increment(&self, increment: f64) -> bool {
-        let adjustment = self.as_ref();
+        let adjustment = self;
         let mut props = self.props.borrow_mut();
 
         if props.step_increment != increment {
@@ -173,7 +173,7 @@ impl Adjustment {
     /// Set the #Adjustment:page-size property.
     ///
     fn set_page_size(&self, page_size: f64) -> bool {
-        let adjustment = self.as_ref();
+        let adjustment = self;
         let mut props = self.props.borrow_mut();
 
         if props.page_size != page_size {
@@ -750,7 +750,7 @@ impl<O: Is<Adjustment>> AdjustmentExt for O {
     fn set_value(&self, value: f64) {
         let adjustment = self.as_ref();
         let mut props = adjustment.props.borrow_mut();
-        
+
         // Defer clamp until after construction.
         if !props.is_constructing {
             if !props.elastic && props.clamp_value {

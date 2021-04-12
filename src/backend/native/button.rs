@@ -410,7 +410,7 @@ impl<O: Is<Button>> ButtonExt for O {
     fn set_action<P: Is<Action>>(&self, action: &P) {
         let button = self.as_ref();
         let action = action.as_ref();
-        
+
         let mut display_name: String;
 
         // if button.action_label_binding {
@@ -537,7 +537,7 @@ impl<O: Is<Button>> ButtonExt for O {
         let mut props = button.props.borrow_mut();
 
         props.text = text;
-        
+
         // clutter_text_set_text(CLUTTER_TEXT(button.label), button.text);
         // button.update_contents();
         // g_object_notify(G_OBJECT(button), "label");

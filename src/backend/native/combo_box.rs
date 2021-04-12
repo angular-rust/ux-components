@@ -67,7 +67,6 @@ impl AsRef<clutter::Actor> for ComboBox {
     }
 }
 
-
 pub const NONE_COMBO_BOX: Option<&ComboBox> = None;
 
 pub trait ComboBoxExt: 'static {
@@ -398,7 +397,7 @@ impl<O: Is<ComboBox>> ComboBoxExt for O {
         //                         action_get_display_name(action));
 
         if props.icon.is_some() {
-        //     clutter_actor_destroy(combobox.icon);
+            //     clutter_actor_destroy(combobox.icon);
             props.icon = None;
         }
 

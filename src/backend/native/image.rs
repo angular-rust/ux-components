@@ -636,8 +636,8 @@ impl<O: Is<Image>> ImageExt for O {
         let props = image.props.borrow();
 
         if props.load_async {
-        //     return image.set_async(None, buffer, buffer_size,
-        //                             buffer_free_func, width, height, error);
+            //     return image.set_async(None, buffer, buffer_size,
+            //                             buffer_free_func, width, height, error);
         }
 
         // let pixbuf: GdkPixbuf = Image::pixbuf_new(None, buffer, buffer_size, width, height,
@@ -668,90 +668,90 @@ impl<O: Is<Image>> ImageExt for O {
     /// Returns: %true on success, %false on failure
     ///
     fn set_from_cogl_texture(&self, texture: cogl::Handle) -> bool {
-    //     let image = self.as_ref();
+        //     let image = self.as_ref();
 
-    //     gint width, height;
+        //     gint width, height;
 
-    //     g_return_val_if_fail(IS_IMAGE (image), FALSE);
-    //     g_return_val_if_fail(cogl_is_texture (texture), FALSE);
+        //     g_return_val_if_fail(IS_IMAGE (image), FALSE);
+        //     g_return_val_if_fail(cogl_is_texture (texture), FALSE);
 
-    //     image_cancel_in_progress(image);
+        //     image_cancel_in_progress(image);
 
-    //     width = cogl_texture_get_width(texture);
-    //     height = cogl_texture_get_height(texture);
+        //     width = cogl_texture_get_width(texture);
+        //     height = cogl_texture_get_height(texture);
 
-    //     // If we have offscreen buffers, use those to add the 1-pixel border
-    //     // around the image on the GPU - if not, fallback to copying the image
-    //     // data into memory and use set_from_data.
-    //     if clutter_feature_available(CLUTTER_FEATURE_OFFSCREEN) {
-    //         CoglColor transparent;
-    //         CoglMaterial *clear_material;
+        //     // If we have offscreen buffers, use those to add the 1-pixel border
+        //     // around the image on the GPU - if not, fallback to copying the image
+        //     // data into memory and use set_from_data.
+        //     if clutter_feature_available(CLUTTER_FEATURE_OFFSCREEN) {
+        //         CoglColor transparent;
+        //         CoglMaterial *clear_material;
 
-    //         CoglHandle new_texture =
-    //           cogl_texture_new_with_size(width + 2, height + 2,
-    //                                       COGL_TEXTURE_NO_ATLAS,
-    //                                       COGL_PIXEL_FORMAT_RGBA_8888);
-    //         CoglHandle fbo = cogl_offscreen_new_to_texture(new_texture);
-    //         CoglMaterial *tex_material = cogl_material_new();
+        //         CoglHandle new_texture =
+        //           cogl_texture_new_with_size(width + 2, height + 2,
+        //                                       COGL_TEXTURE_NO_ATLAS,
+        //                                       COGL_PIXEL_FORMAT_RGBA_8888);
+        //         CoglHandle fbo = cogl_offscreen_new_to_texture(new_texture);
+        //         CoglMaterial *tex_material = cogl_material_new();
 
-    //         /* Set the blending equation to directly copy the bits of the old
-    //          * texture without blending the destination pixels.
-    //          */
-    //         cogl_material_set_blend(tex_material, "RGBA=ADD(SRC_COLOR, 0)", None);
-    //         clear_material = cogl_material_copy(tex_material);
+        //         /* Set the blending equation to directly copy the bits of the old
+        //          * texture without blending the destination pixels.
+        //          */
+        //         cogl_material_set_blend(tex_material, "RGBA=ADD(SRC_COLOR, 0)", None);
+        //         clear_material = cogl_material_copy(tex_material);
 
-    //         cogl_color_set_from_4ub(&transparent, 0, 0, 0, 0);
-    //         cogl_material_set_layer(tex_material, 0, texture);
+        //         cogl_color_set_from_4ub(&transparent, 0, 0, 0, 0);
+        //         cogl_material_set_layer(tex_material, 0, texture);
 
-    //         /* Push the off-screen buffer and setup an orthographic projection */
-    //         cogl_push_framebuffer(fbo);
-    //         cogl_ortho(0, width + 2, height +2, 0, -1, 1);
+        //         /* Push the off-screen buffer and setup an orthographic projection */
+        //         cogl_push_framebuffer(fbo);
+        //         cogl_ortho(0, width + 2, height +2, 0, -1, 1);
 
-    //         /* Draw the texture into the middle */
-    //         cogl_push_source(tex_material);
-    //         cogl_rectangle(1, 1, width +1, height + 1);
+        //         /* Draw the texture into the middle */
+        //         cogl_push_source(tex_material);
+        //         cogl_rectangle(1, 1, width +1, height + 1);
 
-    //         /* Clear the 1-pixel border around the texture */
-    //         cogl_set_source(clear_material);
-    //         cogl_rectangle(0, 0, width + 2, 1);
-    //         cogl_rectangle(0, height + 1, width + 2, height + 2);
-    //         cogl_rectangle(0, 1, 1, height + 1);
-    //         cogl_rectangle(width + 1, 1, width + 2, height + 1);
+        //         /* Clear the 1-pixel border around the texture */
+        //         cogl_set_source(clear_material);
+        //         cogl_rectangle(0, 0, width + 2, 1);
+        //         cogl_rectangle(0, height + 1, width + 2, height + 2);
+        //         cogl_rectangle(0, 1, 1, height + 1);
+        //         cogl_rectangle(width + 1, 1, width + 2, height + 1);
 
-    //         cogl_pop_source();
-    //         cogl_pop_framebuffer();
+        //         cogl_pop_source();
+        //         cogl_pop_framebuffer();
 
-    //         /* Free unneeded data */
-    //         cogl_object_unref(clear_material);
-    //         cogl_object_unref(tex_material);
-    //         cogl_handle_unref(fbo);
+        //         /* Free unneeded data */
+        //         cogl_object_unref(clear_material);
+        //         cogl_object_unref(tex_material);
+        //         cogl_handle_unref(fbo);
 
-    //         /* Replace the old texture */
-    //         if (priv->old_texture)
-    //           cogl_object_unref(priv->old_texture);
+        //         /* Replace the old texture */
+        //         if (priv->old_texture)
+        //           cogl_object_unref(priv->old_texture);
 
-    //         priv->old_texture = priv->texture;
-    //         priv->old_rotation = priv->rotation;
-    //         priv->old_mode = priv->mode;
+        //         priv->old_texture = priv->texture;
+        //         priv->old_rotation = priv->rotation;
+        //         priv->old_mode = priv->mode;
 
-    //         priv->texture = new_texture;
+        //         priv->texture = new_texture;
 
-    //         image_prepare_texture(image);
+        //         image_prepare_texture(image);
 
-    //         return true;
-    //       } else {
-    //         guint8 *data;
-    //         gint rowstride;
-    //         CoglPixelFormat format;
+        //         return true;
+        //       } else {
+        //         guint8 *data;
+        //         gint rowstride;
+        //         CoglPixelFormat format;
 
-    //         rowstride = cogl_texture_get_rowstride(texture);
-    //         format = cogl_texture_get_format(texture);
+        //         rowstride = cogl_texture_get_rowstride(texture);
+        //         format = cogl_texture_get_format(texture);
 
-    //         data = g_malloc(height * rowstride);
-    //         cogl_texture_get_data(texture, format, rowstride, data);
-    //         return image_set_from_data(image, data, format,
-    //                                        width, height, rowstride, None);
-    //       }
+        //         data = g_malloc(height * rowstride);
+        //         cogl_texture_get_data(texture, format, rowstride, data);
+        //         return image_set_from_data(image, data, format,
+        //                                        width, height, rowstride, None);
+        //       }
         unimplemented!()
     }
 

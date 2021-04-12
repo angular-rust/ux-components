@@ -26,7 +26,7 @@ pub struct TextureCacheItem {
 pub struct TextureCacheMetaEntry {
     // pub ident: gpointer,
     pub texture: cogl::Handle,
-// pub destroy_func: GDestroyNotify,
+    // pub destroy_func: GDestroyNotify,
 }
 
 #[derive(Clone, Debug)]
@@ -219,8 +219,8 @@ impl<O: Is<TextureCache>> TextureCacheExt for O {
     ///   reference. %None if no image was found.
     ///
     // fn get_meta_cogl_texture(&self, uri: &str, ident: Option<Fundamental: Pointer>) -> Option<cogl::Handle> {
-        // unsafe { TODO: call ffi:texture_cache_get_meta_cogl_texture() }
-        // unimplemented!()
+    // unsafe { TODO: call ffi:texture_cache_get_meta_cogl_texture() }
+    // unimplemented!()
     // }
 
     /// get_size:

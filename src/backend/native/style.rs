@@ -83,13 +83,13 @@ pub struct StyleProps {
 
 #[derive(Clone, Debug)]
 pub struct Style {
-    props: RefCell<StyleProps>
+    props: RefCell<StyleProps>,
 }
 
 impl Style {
     pub fn new() -> Style {
         Self {
-            props: Default::default()
+            props: Default::default(),
         }
     }
 
@@ -151,7 +151,7 @@ impl Style {
         //     }
         // }
 
-        return true;
+        true
     }
 }
 

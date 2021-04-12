@@ -79,7 +79,7 @@ impl Widget {
             style_class: Default::default(),
             ux_border_image: Default::default(),
             ux_background_image: Default::default(),
-        
+
             border_image: None,
             old_border_image: None,
             background_image: None,
@@ -91,17 +91,17 @@ impl Widget {
             long_press_source: 0,
             in_dispose: false,
             // sequences: GHashTable,
-        
+
             // width/height set by css
             css_width: 0.0,
             css_height: 0.0,
-        
+
             // previous size state before css width/height were applied
             old_min_width: 0.0,
             old_min_height: 0.0,
             old_nat_width: 0.0,
             old_nat_height: 0.0,
-        
+
             old_min_width_set: false,
             old_min_height_set: false,
             old_nat_width_set: false,
@@ -112,7 +112,7 @@ impl Widget {
 
         println!("create widget");
 
-        let widget = Self{
+        let widget = Self {
             props: RefCell::new(props),
             inner: clutter::Actor::new(),
         };
@@ -405,7 +405,7 @@ impl<O: Is<Widget>> WidgetExt for O {
         let widget = self.as_ref();
         let props = widget.props.borrow();
 
-        props.padding.clone()
+        props.padding
     }
 
     // should be located in concrete widget
@@ -634,7 +634,6 @@ impl<O: Is<Widget>> WidgetExt for O {
     //     // widget.remove_tooltip_timeout();
 
     //     /* XXX not necceary, but first allocate transform is wrong */
-
     //     /* Work out the bounding box */
     //     // clutter_actor_get_abs_allocation_vertices ((ClutterActor*) widget,
     //     //                                             verts);

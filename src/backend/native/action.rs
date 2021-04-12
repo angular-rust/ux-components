@@ -3,8 +3,8 @@
 // use std::mem::transmute;
 use crate::prelude::*;
 use glib::signal::SignalHandlerId;
-use std::{boxed::Box as Box_, cell::RefCell};
 use std::fmt;
+use std::{boxed::Box as Box_, cell::RefCell};
 
 #[derive(Clone, Debug)]
 pub struct ActionProps {
@@ -318,7 +318,7 @@ impl<O: Is<Action>> ActionExt for O {
                     // g_object_notify (G_OBJECT (action), "name");
                 }
             }
-            None=> {
+            None => {
                 props.name = Some(name.into());
                 // g_object_notify (G_OBJECT (action), "name");
             }

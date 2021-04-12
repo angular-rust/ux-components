@@ -3,4 +3,3 @@
 use quote::quote;
 
 use syn::DeriveInput;
-

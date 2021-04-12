@@ -35,10 +35,10 @@ impl Spinner {
             update_id: 0,
             animating: true,
         };
-        
+
         println!("create spinner");
-        
-        let spinner = Self{
+
+        let spinner = Self {
             props: RefCell::new(props),
             widget: Widget::new(),
         };

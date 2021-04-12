@@ -225,7 +225,7 @@ impl<O: Is<Tooltip>> TooltipExt for O {
     fn set_tip_area(&self, area: &clutter::Geometry) {
         let tooltip = self.as_ref();
         let props = tooltip.props.borrow();
-        
+
         if props.tip_area.is_some() {
             // g_boxed_free(CLUTTER_TYPE_GEOMETRY, tooltip.tip_area);
         }

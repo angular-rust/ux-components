@@ -134,21 +134,21 @@ impl<O: Is<ScrollView>> ScrollViewExt for O {
     fn get_scroll_policy(&self) -> ScrollPolicy {
         let scrollview = self.as_ref();
         let props = scrollview.props.borrow();
-        
+
         props.scroll_policy
     }
 
     fn get_scroll_visibility(&self) -> ScrollPolicy {
         let scrollview = self.as_ref();
         let props = scrollview.props.borrow();
-        
+
         props.scroll_visibility
     }
 
     fn set_enable_mouse_scrolling(&self, enabled: bool) {
         let scrollview = self.as_ref();
         let mut props = scrollview.props.borrow_mut();
-        
+
         if props.mouse_scroll != enabled {
             props.mouse_scroll = enabled;
 
