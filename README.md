@@ -1,12 +1,14 @@
-# UX Components
-
 <div align="center">
+
+[![](https://dudochkin-victor.github.io/assets/ux-components/logo-wide.svg)](#top)
+# UX Components
 
 [![API Docs][docrs-badge]][docrs-url]
 [![Crates.io][crates-badge]][crates-url]
+[![Code coverage][codecov-badge]][codecov-url]
+[![Tests][tests-badge]][tests-url]
 [![MPL-2.0 licensed][license-badge]][license-url]
 [![Gitter chat][gitter-badge]][gitter-url]
-[![Rustc Version 1.45+][rust-badge]][rust-url]
 [![loc][loc-badge]][loc-url]
 </div>
 
@@ -16,11 +18,13 @@
 [crates-url]: https://crates.io/crates/ux-components
 [license-badge]: https://img.shields.io/badge/license-MPL--2.0-blue.svg?style=flat-square
 [license-url]: https://github.com/angular-rust/ux-components/blob/master/LICENSE
-[gitter-badge]: https://img.shields.io/gitter/room/angular_rust/angular_rust.svg?style=flat-square
+[gitter-badge]: https://img.shields.io/gitter/room/angular_rust/community.svg?style=flat-square
 [gitter-url]: https://gitter.im/angular_rust/community
-[rust-badge]: https://img.shields.io/badge/rustc-1.45-lightgrey.svg?style=flat-square
-[rust-url]: https://blog.rust-lang.org/2020/07/16/Rust-1.45.0.html
-[loc-badge]: https://tokei.rs/b1/github/angular-rust/ux-components?category=code
+[tests-badge]: https://img.shields.io/github/workflow/status/angular-rust/ux-components/tests?label=tests&logo=github&style=flat-square
+[tests-url]: https://github.com/angular-rust/clutter-rs/actions/workflows/tests.yml
+[codecov-badge]: https://img.shields.io/codecov/c/github/angular-rust/ux-components?logo=codecov&style=flat-square&token=VYN2L0A5VR
+[codecov-url]: https://codecov.io/gh/angular-rust/ux-components
+[loc-badge]: https://img.shields.io/tokei/lines/github/angular-rust/ux-components?style=flat-square
 [loc-url]: https://github.com/angular-rust/ux-components
 
 ux-components is a Centralized State Management And Design Patterns for Rust.
@@ -58,7 +62,7 @@ Install UX Components:
 
 We believe the wider community can create better code. The first tool for improving the community is to tell the developers about the project by giving it a star. More stars - more members.
 
- ![Star a repo](https://dudochkin-victor.github.io/assets/star-me-wide.svg)
+ [![](https://dudochkin-victor.github.io/assets/star-me-wide.svg)](https://github.com/angular-rust/ux-components#top)
  
 Angular Rust is a community effort and we welcome all kinds of contributions, big or small, from developers of all backgrounds. We want the Angular Rust community to be a fun and friendly place, so please review our [Code of Conduct](CODE_OF_CONDUCT.md) to learn what behavior will not be tolerated.
 
