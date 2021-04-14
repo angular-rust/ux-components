@@ -31,7 +31,11 @@ ux-components is a Centralized State Management And Design Patterns for Rust.
 
 **Angular Rust** is a high productivity, `platform-agnostic` frontend framework for the [Rust language](https://www.rust-lang.org/). It now supports desktop and web development. Angular Rust currently uses GTK for desktop development and WebAssembly for web development. We are planning to add support for mobile development.
 
+![Angular Rust structure](https://dudochkin-victor.github.io/assets/angular-rust/structure.svg)
+
 ## Features
+
+![UX Components structure](https://dudochkin-victor.github.io/assets/ux-components/structure.svg)
 
 - [x] Graphic abstraction for cairo and web canvas, implemented in [UX Animate](https://github.com/angular-rust/ux-animate)
 
