@@ -1,25 +1,24 @@
 #![allow(unused_variables)]
 
-use super::{Action, Button, Widget};
 use crate::prelude::*;
-use std::fmt;
-use std::{boxed::Box as Box_, cell::RefCell};
+use crate::{PushAction, Actor, Button, Timeline, Widget};
+use std::{cell::RefCell, fmt};
 
 #[derive(Clone, Debug)]
 pub struct DialogProps {
-    pub child: Option<clutter::Actor>,
+    pub child: Option<Actor>,
     pub visible: bool,
     pub child_has_focus: bool,
     pub transition_time: u32,
     pub angle: f32,
-    pub timeline: Option<clutter::Timeline>,
+    pub timeline: Option<Timeline>,
     pub zoom: f32,
 
     // Dialog-specific variables
-    pub background: Option<clutter::Actor>,
-    pub button_box: Option<clutter::Actor>,
+    pub background: Option<Actor>,
+    pub button_box: Option<Actor>,
     pub spacing: u32,
-    pub actions: Vec<Action>,
+    pub actions: Vec<PushAction>,
 }
 
 #[derive(Clone, Debug)]
@@ -31,7 +30,7 @@ pub struct Dialog {
 impl Dialog {
     pub fn new() -> Dialog {
         // assert_initialized_main_thread!();
-        // unsafe { clutter::Actor::from_glib_none(ffi::dialog_new()).unsafe_cast() }
+        // unsafe { Actor::from_glib_none(ffi::dialog_new()).unsafe_cast() }
         unimplemented!()
     }
 }
@@ -59,69 +58,67 @@ impl AsRef<Widget> for Dialog {
     }
 }
 
-impl Is<clutter::Actor> for Dialog {}
+impl Is<Actor> for Dialog {}
 
-impl AsRef<clutter::Actor> for Dialog {
-    fn as_ref(&self) -> &clutter::Actor {
-        let actor: &clutter::Actor = self.widget.as_ref();
+impl AsRef<Actor> for Dialog {
+    fn as_ref(&self) -> &Actor {
+        let actor: &Actor = self.widget.as_ref();
         actor
     }
 }
 
-pub const NONE_DIALOG: Option<&Dialog> = None;
-
 pub trait DialogExt: 'static {
     /// add_action:
     /// @dialog: A #Dialog
-    /// @action: A #Action
+    /// @action: A #PushAction
     ///
     /// Adds an #Button that represents @action to the button area of @dialog
     ///
-    fn add_action<P: Is<Action>>(&self, action: &P);
+    fn add_action<P: Is<PushAction>>(&self, action: &P);
 
     /// get_actions:
     /// @dialog: A #Dialog
     ///
     /// Retrieves a list of actions added to @dialog.
     ///
-    /// Returns: (transfer container) (element-type Action): A newly allocated
-    ///   #GList of #Action objects. The actions in the list are owned by the dialog.
+    /// Returns: (transfer container) (element-type PushAction): A newly allocated
+    ///   #GList of #PushAction objects. The actions in the list are owned by the dialog.
     ///
-    fn get_actions(&self) -> Vec<Action>;
+    fn get_actions(&self) -> Vec<PushAction>;
 
     /// remove_action:
     /// @dialog: A #Dialog
-    /// @action: A #Action
+    /// @action: A #PushAction
     ///
     /// Removes the button associated with @action from the button area of @dialog
     ///
-    fn remove_action<P: Is<Action>>(&self, action: &P);
+    fn remove_action<P: Is<PushAction>>(&self, action: &P);
 
     /// set_transient_parent:
     /// @dialog: A #Dialog
-    /// @actor: A #ClutterActor
+    /// @actor: A #Actor
     ///
     /// Sets the parent of the #Dialog. This is the actor over which the
-    /// modal frame will appear when clutter_actor_show() is called.
+    /// modal frame will appear when actor_show() is called.
     ///
-    fn set_transient_parent<P: Is<clutter::Actor>>(&self, actor: &P);
+    fn set_transient_parent<P: Is<Actor>>(&self, actor: &P);
 }
 
 impl<O: Is<Dialog>> DialogExt for O {
     /// add_action:
     /// @dialog: A #Dialog
-    /// @action: A #Action
+    /// @action: A #PushAction
     ///
     /// Adds an #Button that represents @action to the button area of @dialog
     ///
-    fn add_action<P: Is<Action>>(&self, action: &P) {
+    fn add_action<P: Is<PushAction>>(&self, action: &P) {
         let dialog = self.as_ref();
         let action = action.as_ref();
         // let mut props = dialog.props.borrow_mut();
 
         let button = Button::new();
         button.set_action(action);
-        // clutter_actor_add_child (props.button_box, button);
+        // actor_add_child (props.button_box, button);
 
         // /* So we can maintain the two way relationship between action and button */
         // let da: DialogAction = g_slice_new (DialogAction);
@@ -135,10 +132,10 @@ impl<O: Is<Dialog>> DialogExt for O {
     ///
     /// Retrieves a list of actions added to @dialog.
     ///
-    /// Returns: (transfer container) (element-type Action): A newly allocated
-    ///   #GList of #Action objects. The actions in the list are owned by the dialog.
+    /// Returns: (transfer container) (element-type PushAction): A newly allocated
+    ///   #GList of #PushAction objects. The actions in the list are owned by the dialog.
     ///
-    fn get_actions(&self) -> Vec<Action> {
+    fn get_actions(&self) -> Vec<PushAction> {
         let dialog = self.as_ref();
 
         // GList *a, *list;
@@ -155,11 +152,11 @@ impl<O: Is<Dialog>> DialogExt for O {
 
     /// remove_action:
     /// @dialog: A #Dialog
-    /// @action: A #Action
+    /// @action: A #PushAction
     ///
     /// Removes the button associated with @action from the button area of @dialog
     ///
-    fn remove_action<P: Is<Action>>(&self, action: &P) {
+    fn remove_action<P: Is<PushAction>>(&self, action: &P) {
         let dialog = self.as_ref();
         let action = action.as_ref();
 
@@ -183,24 +180,24 @@ impl<O: Is<Dialog>> DialogExt for O {
         //     return;
         // }
 
-        // clutter_actor_remove_child (dialog.button_box, da.button);
+        // actor_remove_child (dialog.button_box, da.button);
         // g_slice_free (DialogAction, da);
     }
 
     /// set_transient_parent:
     /// @dialog: A #Dialog
-    /// @actor: A #ClutterActor
+    /// @actor: A #Actor
     ///
     /// Sets the parent of the #Dialog. This is the actor over which the
-    /// modal frame will appear when clutter_actor_show() is called.
+    /// modal frame will appear when actor_show() is called.
     ///
-    fn set_transient_parent<P: Is<clutter::Actor>>(&self, actor: &P) {
+    fn set_transient_parent<P: Is<Actor>>(&self, actor: &P) {
         let dialog = self.as_ref();
         let actor = actor.as_ref();
 
         // actor.add_child(CLUTTER_ACTOR (dialog));
-        // clutter_actor_add_constraint(CLUTTER_ACTOR (dialog),
-        //                                 clutter_bind_constraint_new(actor,
+        // actor_add_constraint(CLUTTER_ACTOR (dialog),
+        //                                 bind_constraint_new(actor,
         //                                                             CLUTTER_BIND_SIZE,
         //                                                             0));
     }

@@ -1,22 +1,20 @@
 #![allow(unused_variables)]
 
-// use std::mem::transmute;
-use super::{BorderImage, FloatingWidget, Widget};
 use crate::prelude::*;
+use crate::{Actor, ActorBox, BorderImage, FloatingWidget, Geometry, Widget};
 use glib::signal::SignalHandlerId;
-use std::fmt;
-use std::{boxed::Box as Box_, cell::RefCell};
+use std::{cell::RefCell, fmt};
 
 #[derive(Clone, Debug)]
 pub struct TooltipProps {
-    pub label: Option<clutter::Actor>,
-    pub arrow_box: Option<clutter::ActorBox>,
+    pub label: Option<Actor>,
+    pub arrow_box: Option<ActorBox>,
     pub arrow_offset: f32,
     pub actor_below: f32,
-    pub tip_area: Option<clutter::Geometry>,
+    pub tip_area: Option<Geometry>,
     pub stage_matrix: cogl::Matrix,
     pub border_image: BorderImage,
-    pub text_allocation: Option<clutter::ActorBox>,
+    pub text_allocation: Option<ActorBox>,
     pub border_image_texture: Option<cogl::Handle>,
 }
 
@@ -34,7 +32,7 @@ impl Tooltip {
     /// make tooltips display quicker when a previous tooltip is already
     /// displayed.
     ///
-    /// Returns: %true if the app is in tooltip browse mode or %FALSE
+    /// Returns: %true if the app is in tooltip browse mode or %false
     /// otherwise.
     ///
     pub fn is_in_browse_mode() -> bool {
@@ -70,16 +68,14 @@ impl AsRef<Widget> for Tooltip {
     }
 }
 
-impl Is<clutter::Actor> for Tooltip {}
+impl Is<Actor> for Tooltip {}
 
-impl AsRef<clutter::Actor> for Tooltip {
-    fn as_ref(&self) -> &clutter::Actor {
-        let actor: &clutter::Actor = self.widget.as_ref();
+impl AsRef<Actor> for Tooltip {
+    fn as_ref(&self) -> &Actor {
+        let actor: &Actor = self.widget.as_ref();
         actor
     }
 }
-
-pub const NONE_TOOLTIP: Option<&Tooltip> = None;
 
 pub trait TooltipExt: 'static {
     /// get_text:
@@ -96,10 +92,10 @@ pub trait TooltipExt: 'static {
     ///
     /// Retrieve the area on the stage that the tooltip currently applies to
     ///
-    /// Returns: the #ClutterGeometry, owned by the tooltip which must not be freed
+    /// Returns: the #Geometry, owned by the tooltip which must not be freed
     /// by the application.
     ///
-    fn get_tip_area(&self) -> Option<clutter::Geometry>;
+    fn get_tip_area(&self) -> Option<Geometry>;
 
     /// hide:
     /// @tooltip: a #Tooltip
@@ -118,21 +114,21 @@ pub trait TooltipExt: 'static {
 
     /// set_tip_area:
     /// @tooltip: A #Tooltip
-    /// @area: A #ClutterGeometry
+    /// @area: A #Geometry
     ///
     /// Set the area on the stage that the tooltip applies to.
     ///
-    fn set_tip_area(&self, area: &clutter::Geometry);
+    fn set_tip_area(&self, area: &Geometry);
 
     /// set_tip_area_from_actor:
     /// @tooltip: A #Tooltip
-    /// @actor: A #ClutterActor
+    /// @actor: A #Actor
     ///
     /// Utility function to set the geometry of the tooltip area
     /// from an existing actor.
     /// See also set_tip_area
     ///
-    fn set_tip_area_from_actor<P: Is<clutter::Actor>>(&self, actor: &P);
+    fn set_tip_area_from_actor<P: Is<Actor>>(&self, actor: &P);
 
     /// show:
     /// @tooltip: a #Tooltip
@@ -165,10 +161,10 @@ impl<O: Is<Tooltip>> TooltipExt for O {
     ///
     /// Retrieve the area on the stage that the tooltip currently applies to
     ///
-    /// Returns: the #ClutterGeometry, owned by the tooltip which must not be freed
+    /// Returns: the #Geometry, owned by the tooltip which must not be freed
     /// by the application.
     ///
-    fn get_tip_area(&self) -> Option<clutter::Geometry> {
+    fn get_tip_area(&self) -> Option<Geometry> {
         let tooltip = self.as_ref();
         let props = tooltip.props.borrow();
 
@@ -218,11 +214,11 @@ impl<O: Is<Tooltip>> TooltipExt for O {
 
     /// set_tip_area:
     /// @tooltip: A #Tooltip
-    /// @area: A #ClutterGeometry
+    /// @area: A #Geometry
     ///
     /// Set the area on the stage that the tooltip applies to.
     ///
-    fn set_tip_area(&self, area: &clutter::Geometry) {
+    fn set_tip_area(&self, area: &Geometry) {
         let tooltip = self.as_ref();
         let props = tooltip.props.borrow();
 
@@ -234,13 +230,13 @@ impl<O: Is<Tooltip>> TooltipExt for O {
 
     /// set_tip_area_from_actor:
     /// @tooltip: A #Tooltip
-    /// @actor: A #ClutterActor
+    /// @actor: A #Actor
     ///
     /// Utility function to set the geometry of the tooltip area
     /// from an existing actor.
     /// See also set_tip_area
     ///
-    fn set_tip_area_from_actor<P: Is<clutter::Actor>>(&self, actor: &P) {
+    fn set_tip_area_from_actor<P: Is<Actor>>(&self, actor: &P) {
         let tooltip = self.as_ref();
         let actor = actor.as_ref();
 

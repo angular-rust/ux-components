@@ -1,11 +1,9 @@
 #![allow(unused_variables)]
 
-// use std::mem::transmute;
-use super::Widget;
 use crate::prelude::*;
+use crate::{Actor, Widget};
 use glib::signal::SignalHandlerId;
-use std::fmt;
-use std::{boxed::Box as Box_, cell::RefCell};
+use std::{cell::RefCell, fmt};
 
 #[derive(Clone, Debug)]
 pub struct ProgressBarFill {
@@ -15,7 +13,7 @@ pub struct ProgressBarFill {
 
 #[derive(Clone, Debug)]
 pub struct ProgressBarProps {
-    pub fill: Option<clutter::Actor>,
+    pub fill: Option<Actor>,
     pub progress: f64,
 }
 
@@ -28,7 +26,7 @@ pub struct ProgressBar {
 impl ProgressBar {
     pub fn new() -> ProgressBar {
         // assert_initialized_main_thread!();
-        // unsafe { clutter::Actor::from_glib_none(ffi::progress_bar_new()).unsafe_cast() }
+        // unsafe { Actor::from_glib_none(ffi::progress_bar_new()).unsafe_cast() }
         unimplemented!()
     }
 }
@@ -56,16 +54,14 @@ impl AsRef<Widget> for ProgressBar {
     }
 }
 
-impl Is<clutter::Actor> for ProgressBar {}
+impl Is<Actor> for ProgressBar {}
 
-impl AsRef<clutter::Actor> for ProgressBar {
-    fn as_ref(&self) -> &clutter::Actor {
-        let actor: &clutter::Actor = self.widget.as_ref();
+impl AsRef<Actor> for ProgressBar {
+    fn as_ref(&self) -> &Actor {
+        let actor: &Actor = self.widget.as_ref();
         actor
     }
 }
-
-pub const NONE_PROGRESS_BAR: Option<&ProgressBar> = None;
 
 pub trait ProgressBarExt: 'static {
     /// get_progress:
@@ -116,7 +112,7 @@ impl<O: Is<ProgressBar>> ProgressBarExt for O {
         if props.progress != progress {
             props.progress = progress;
             // allocate_fill(bar, None, 0);
-            // clutter_actor_queue_redraw(CLUTTER_ACTOR(bar));
+            // actor_queue_redraw(CLUTTER_ACTOR(bar));
             // g_object_notify(G_OBJECT(bar), "progress");
         }
     }

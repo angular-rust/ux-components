@@ -1,18 +1,16 @@
 #![allow(unused_variables)]
 
-// use std::mem::transmute;
-use super::{ButtonGroup, Stack, Widget};
 use crate::prelude::*;
+use crate::{Actor, ButtonGroup, Stack, Widget};
 use glib::signal::SignalHandlerId;
-use std::fmt;
-use std::{boxed::Box as Box_, cell::RefCell};
+use std::{cell::RefCell, fmt};
 
 #[derive(Clone, Debug)]
 pub struct PagerProps {
-    pub pages: Vec<clutter::Actor>,
-    pub current_page: Vec<clutter::Actor>,
+    pub pages: Vec<Actor>,
+    pub current_page: Vec<Actor>,
     pub edge_previews: bool,
-    pub button_box: Option<clutter::Actor>,
+    pub button_box: Option<Actor>,
     pub button_group: ButtonGroup,
     // pub pages_to_buttons: GHashTable, /* ClutterActor* -> Button* */
     pub hover_timeout: u32,
@@ -64,25 +62,23 @@ impl AsRef<Widget> for Pager {
     }
 }
 
-impl Is<clutter::Actor> for Pager {}
+impl Is<Actor> for Pager {}
 
-impl AsRef<clutter::Actor> for Pager {
-    fn as_ref(&self) -> &clutter::Actor {
-        let actor: &clutter::Actor = self.widget.as_ref();
+impl AsRef<Actor> for Pager {
+    fn as_ref(&self) -> &Actor {
+        let actor: &Actor = self.widget.as_ref();
         actor
     }
 }
-
-pub const NONE_PAGER: Option<&Pager> = None;
 
 pub trait PagerExt: 'static {
     /// pager_get_actor_for_page:
     /// @self: a #Pager
     /// @page: a page number
     ///
-    /// Returns: (transfer none): the #ClutterActor for @page
+    /// Returns: (transfer none): the #Actor for @page
     ///
-    fn get_actor_for_page(&self, page: u32) -> Option<clutter::Actor>;
+    fn get_actor_for_page(&self, page: u32) -> Option<Actor>;
 
     /// pager_get_current_page:
     /// @self: a #Pager
@@ -94,9 +90,9 @@ pub trait PagerExt: 'static {
     /// pager_get_current_page_actor:
     /// @self: a #Pager
     ///
-    /// Returns: (transfer none): the #ClutterActor on the current page
+    /// Returns: (transfer none): the #Actor on the current page
     ///
-    fn get_current_page_actor(&self) -> Option<clutter::Actor>;
+    fn get_current_page_actor(&self) -> Option<Actor>;
 
     /// pager_get_edge_previews:
     /// @self: a #Pager
@@ -120,7 +116,7 @@ pub trait PagerExt: 'static {
     ///
     /// Inserts a page into the #Pager at the position specified by @position.
     ///
-    fn insert_page<P: Is<clutter::Actor>>(&self, child: &P, position: i32);
+    fn insert_page<P: Is<Actor>>(&self, child: &P, position: i32);
 
     /// pager_next:
     /// @self: a #Pager
@@ -152,7 +148,7 @@ pub trait PagerExt: 'static {
     ///
     /// Move to the page containing @actor.
     ///
-    fn set_current_page_by_actor<P: Is<clutter::Actor>>(&self, actor: &P, animate: bool);
+    fn set_current_page_by_actor<P: Is<Actor>>(&self, actor: &P, animate: bool);
 
     /// pager_set_edge_previews:
     /// @self: a #Pager
@@ -162,9 +158,9 @@ pub trait PagerExt: 'static {
     ///
     fn set_edge_previews(&self, edge_previews: bool);
 
-    fn get_property_page_actor(&self) -> Option<clutter::Actor>;
+    fn get_property_page_actor(&self) -> Option<Actor>;
 
-    // fn set_property_page_actor<P: Is<clutter::Actor> + SetValueOptional>(
+    // fn set_property_page_actor<P: Is<Actor> + SetValueOptional>(
     //     &self,
     //     page_actor: Option<&P>,
     // );
@@ -188,9 +184,9 @@ impl<O: Is<Pager>> PagerExt for O {
     /// @self: a #Pager
     /// @page: a page number
     ///
-    /// Returns: (transfer none): the #ClutterActor for @page
+    /// Returns: (transfer none): the #Actor for @page
     ///
-    fn get_actor_for_page(&self, page: u32) -> Option<clutter::Actor> {
+    fn get_actor_for_page(&self, page: u32) -> Option<Actor> {
         let pager = self.as_ref();
         // CLUTTER_ACTOR(g_list_nth_data (pager.pages, page));
         unimplemented!()
@@ -212,9 +208,9 @@ impl<O: Is<Pager>> PagerExt for O {
     /// pager_get_current_page_actor:
     /// @self: a #Pager
     ///
-    /// Returns: (transfer none): the #ClutterActor on the current page
+    /// Returns: (transfer none): the #Actor on the current page
     ///
-    fn get_current_page_actor(&self) -> Option<clutter::Actor> {
+    fn get_current_page_actor(&self) -> Option<Actor> {
         let pager = self.as_ref();
 
         // CLUTTER_ACTOR(pager.current_page.data);
@@ -253,13 +249,13 @@ impl<O: Is<Pager>> PagerExt for O {
     ///
     /// Inserts a page into the #Pager at the position specified by @position.
     ///
-    fn insert_page<P: Is<clutter::Actor>>(&self, child: &P, position: i32) {
+    fn insert_page<P: Is<Actor>>(&self, child: &P, position: i32) {
         let pager = self.as_ref();
 
         // pager.pages = g_list_insert(pager.pages, child, position);
 
         // pager_add_internal_actor(self, child, "fit", true, None);
-        // clutter_actor_set_child_below_sibling((ClutterActor *)self, child, None);
+        // actor_set_child_below_sibling((ClutterActor *)self, child, None);
 
         // pager_add_page_button(self, child);
 
@@ -322,7 +318,7 @@ impl<O: Is<Pager>> PagerExt for O {
     ///
     /// Move to the page containing @actor.
     ///
-    fn set_current_page_by_actor<P: Is<clutter::Actor>>(&self, actor: &P, animate: bool) {
+    fn set_current_page_by_actor<P: Is<Actor>>(&self, actor: &P, animate: bool) {
         let pager = self.as_ref();
 
         // let page_l = g_list_find (pager.pages, actor);
@@ -355,9 +351,9 @@ impl<O: Is<Pager>> PagerExt for O {
         // g_object_notify(G_OBJECT(self), "edge-previews");
     }
 
-    fn get_property_page_actor(&self) -> Option<clutter::Actor> {
+    fn get_property_page_actor(&self) -> Option<Actor> {
         // unsafe {
-        //     let mut value = Value::from_type(<clutter::Actor as StaticType>::static_type());
+        //     let mut value = Value::from_type(<Actor as StaticType>::static_type());
         //     gobject_sys::g_object_get_property(
         //         self.to_glib_none().0 as *mut gobject_sys::GObject,
         //         b"page-actor\0".as_ptr() as *const _,
@@ -370,7 +366,7 @@ impl<O: Is<Pager>> PagerExt for O {
         unimplemented!()
     }
 
-    // fn set_property_page_actor<P: Is<clutter::Actor> + SetValueOptional>(
+    // fn set_property_page_actor<P: Is<Actor> + SetValueOptional>(
     //     &self,
     //     page_actor: Option<&P>,
     // ) {

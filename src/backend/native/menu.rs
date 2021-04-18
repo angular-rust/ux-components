@@ -1,15 +1,13 @@
 #![allow(unused_variables)]
 
-// use std::mem::transmute;
-use super::{Action, FloatingWidget, Widget};
 use crate::prelude::*;
+use crate::{PushAction, Actor, FloatingWidget, Widget};
 use glib::signal::SignalHandlerId;
-use std::fmt;
-use std::{boxed::Box as Box_, cell::RefCell};
+use std::{cell::RefCell, fmt};
 
 #[derive(Clone, Debug)]
 pub struct MenuChild {
-    pub action: Action,
+    pub action: PushAction,
     pub widget: Widget, // called `box` before
 }
 
@@ -17,14 +15,14 @@ pub struct MenuChild {
 pub struct MenuProps {
     pub children: Vec<MenuChild>,
     pub transition_out: bool,
-    pub stage: Option<clutter::Actor>,
+    pub stage: Option<Actor>,
     pub captured_event_handler: u64,
     pub internal_focus_push: bool,
     pub scrolling_mode: bool,
     pub id_offset: i32,
     pub last_shown_id: i32,
-    pub up_button: Option<clutter::Actor>,
-    pub down_button: Option<clutter::Actor>,
+    pub up_button: Option<Actor>,
+    pub down_button: Option<Actor>,
     pub up_source: u64,
     pub down_source: u64,
 }
@@ -38,7 +36,7 @@ pub struct Menu {
 impl Menu {
     pub fn new() -> Menu {
         // assert_initialized_main_thread!();
-        // unsafe { clutter::Actor::from_glib_none(ffi::menu_new()).unsafe_cast() }
+        // unsafe { Actor::from_glib_none(ffi::menu_new()).unsafe_cast() }
         unimplemented!()
     }
 }
@@ -75,33 +73,31 @@ impl AsRef<Widget> for Menu {
     }
 }
 
-impl Is<clutter::Actor> for Menu {}
+impl Is<Actor> for Menu {}
 
-impl AsRef<clutter::Actor> for Menu {
-    fn as_ref(&self) -> &clutter::Actor {
-        let actor: &clutter::Actor = self.widget.as_ref();
+impl AsRef<Actor> for Menu {
+    fn as_ref(&self) -> &Actor {
+        let actor: &Actor = self.widget.as_ref();
         actor
     }
 }
 
-pub const NONE_MENU: Option<&Menu> = None;
-
 pub trait MenuExt: 'static {
     /// add_action:
     /// @menu: A #Menu
-    /// @action: A #Action
+    /// @action: A #PushAction
     ///
     /// Append @action to @menu.
     ///
-    fn add_action<P: Is<Action>>(&self, action: &P);
+    fn add_action<P: Is<PushAction>>(&self, action: &P);
 
     /// remove_action:
     /// @menu: A #Menu
-    /// @action: A #Action
+    /// @action: A #PushAction
     ///
     /// Remove @action from @menu.
     ///
-    fn remove_action<P: Is<Action>>(&self, action: &P);
+    fn remove_action<P: Is<PushAction>>(&self, action: &P);
 
     /// remove_all:
     /// @menu: A #Menu
@@ -119,17 +115,17 @@ pub trait MenuExt: 'static {
     ///
     fn show_with_position(&self, x: f32, y: f32);
 
-    fn connect_action_activated<F: Fn(&Self, &Action) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_action_activated<F: Fn(&Self, &PushAction) + 'static>(&self, f: F) -> SignalHandlerId;
 }
 
 impl<O: Is<Menu>> MenuExt for O {
     /// add_action:
     /// @menu: A #Menu
-    /// @action: A #Action
+    /// @action: A #PushAction
     ///
     /// Append @action to @menu.
     ///
-    fn add_action<P: Is<Action>>(&self, action: &P) {
+    fn add_action<P: Is<PushAction>>(&self, action: &P) {
         let menu = self.as_ref();
         let action = action.as_ref();
 
@@ -142,25 +138,25 @@ impl<O: Is<Menu>> MenuExt for O {
         // button_set_action(BUTTON (child.widget), child.action);
 
         // // align to the left
-        // let button_child: clutter::Actor = clutter_actor_get_child_at_index((ClutterActor*)child.widget, 0);
-        // clutter_actor_set_x_align(button_child, CLUTTER_ACTOR_ALIGN_START);
+        // let button_child: Actor = actor_get_child_at_index((ClutterActor*)child.widget, 0);
+        // actor_set_x_align(button_child, CLUTTER_ACTOR_ALIGN_START);
 
         // g_signal_connect(child.widget, "clicked",
         //                     G_CALLBACK (menu_button_clicked_cb), action);
         // g_signal_connect(child.widget, "enter-event",
         //                     G_CALLBACK (menu_button_enter_event_cb), menu);
-        // clutter_actor_add_child(CLUTTER_ACTOR (menu), CLUTTER_ACTOR(child.widget));
+        // actor_add_child(CLUTTER_ACTOR (menu), CLUTTER_ACTOR(child.widget));
         // g_array_append_val(menu.children, child);
-        // clutter_actor_queue_relayout(CLUTTER_ACTOR(menu));
+        // actor_queue_relayout(CLUTTER_ACTOR(menu));
     }
 
     /// remove_action:
     /// @menu: A #Menu
-    /// @action: A #Action
+    /// @action: A #PushAction
     ///
     /// Remove @action from @menu.
     ///
-    fn remove_action<P: Is<Action>>(&self, action: &P) {
+    fn remove_action<P: Is<PushAction>>(&self, action: &P) {
         let menu = self.as_ref();
         let action = action.as_ref();
 
@@ -203,11 +199,11 @@ impl<O: Is<Menu>> MenuExt for O {
     fn show_with_position(&self, x: f32, y: f32) {
         let menu = self.as_ref();
 
-        // clutter_actor_set_position(CLUTTER_ACTOR(menu), x, y);
-        // clutter_actor_show(CLUTTER_ACTOR(menu));
+        // actor_set_position(CLUTTER_ACTOR(menu), x, y);
+        // actor_show(CLUTTER_ACTOR(menu));
     }
 
-    fn connect_action_activated<F: Fn(&Self, &Action) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_action_activated<F: Fn(&Self, &PushAction) + 'static>(&self, f: F) -> SignalHandlerId {
         // unsafe extern "C" fn action_activated_trampoline<P, F: Fn(&P, &Action) + 'static>(
         //     this: *mut ffi::Menu,
         //     object: *mut ffi::Action,

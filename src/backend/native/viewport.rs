@@ -1,12 +1,9 @@
 #![allow(unused_variables)]
 
-// use std::mem;
-// use std::mem::transmute;
-use super::{Adjustment, Widget};
 use crate::prelude::*;
+use crate::{Actor, Adjustment, Widget};
 use glib::signal::SignalHandlerId;
-use std::fmt;
-use std::{boxed::Box as Box_, cell::RefCell};
+use std::{cell::RefCell, fmt};
 
 #[derive(Clone, Debug)]
 pub struct ViewportProps {
@@ -16,7 +13,7 @@ pub struct ViewportProps {
     pub hadjustment: Option<Adjustment>,
     pub vadjustment: Option<Adjustment>,
     pub sync_adjustments: bool,
-    pub child: Option<clutter::Actor>,
+    pub child: Option<Actor>,
 }
 
 #[derive(Clone, Debug)]
@@ -28,7 +25,7 @@ pub struct Viewport {
 impl Viewport {
     pub fn new() -> Viewport {
         // assert_initialized_main_thread!();
-        // unsafe { clutter::Actor::from_glib_none(ffi::viewport_new()).unsafe_cast() }
+        // unsafe { Actor::from_glib_none(ffi::viewport_new()).unsafe_cast() }
         unimplemented!()
     }
 }
@@ -56,16 +53,14 @@ impl AsRef<Widget> for Viewport {
     }
 }
 
-impl Is<clutter::Actor> for Viewport {}
+impl Is<Actor> for Viewport {}
 
-impl AsRef<clutter::Actor> for Viewport {
-    fn as_ref(&self) -> &clutter::Actor {
-        let actor: &clutter::Actor = self.widget.as_ref();
+impl AsRef<Actor> for Viewport {
+    fn as_ref(&self) -> &Actor {
+        let actor: &Actor = self.widget.as_ref();
         actor
     }
 }
-
-pub const NONE_VIEWPORT: Option<&Viewport> = None;
 
 pub trait ViewportExt: 'static {
     fn get_origin(&self) -> (f32, f32, f32);

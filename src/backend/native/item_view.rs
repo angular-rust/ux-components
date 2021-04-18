@@ -1,11 +1,9 @@
 #![allow(unused_variables)]
 
-// use std::mem::transmute;
-use super::{Grid, ItemFactory, Widget};
 use crate::prelude::*;
+use crate::{Actor, Grid, ItemFactory, Model, Widget};
 use glib::signal::SignalHandlerId;
-use std::fmt;
-use std::{boxed::Box as Box_, cell::RefCell};
+use std::{cell::RefCell, fmt};
 
 #[derive(Clone, Debug)]
 pub struct AttributeData {
@@ -15,7 +13,7 @@ pub struct AttributeData {
 
 #[derive(Clone, Debug)]
 pub struct ItemViewProps {
-    pub model: Option<clutter::Model>,
+    pub model: Option<Model>,
     pub attributes: Vec<AttributeData>,
     pub item_type: glib::types::Type,
     pub factory: Option<ItemFactory>,
@@ -36,7 +34,7 @@ pub struct ItemView {
 impl ItemView {
     pub fn new() -> ItemView {
         // assert_initialized_main_thread!();
-        // unsafe { clutter::Actor::from_glib_none(ffi::item_view_new()).unsafe_cast() }
+        // unsafe { Actor::from_glib_none(ffi::item_view_new()).unsafe_cast() }
         unimplemented!()
     }
 }
@@ -73,16 +71,14 @@ impl AsRef<Widget> for ItemView {
     }
 }
 
-impl Is<clutter::Actor> for ItemView {}
+impl Is<Actor> for ItemView {}
 
-impl AsRef<clutter::Actor> for ItemView {
-    fn as_ref(&self) -> &clutter::Actor {
-        let actor: &clutter::Actor = self.widget.as_ref();
+impl AsRef<Actor> for ItemView {
+    fn as_ref(&self) -> &Actor {
+        let actor: &Actor = self.widget.as_ref();
         actor
     }
 }
-
-pub const NONE_ITEM_VIEW: Option<&ItemView> = None;
 
 pub trait ItemViewExt: 'static {
     /// add_attribute:
@@ -126,9 +122,9 @@ pub trait ItemViewExt: 'static {
     ///
     /// Get the model currently used by the #ItemView
     ///
-    /// Returns: (transfer none): the current #ClutterModel
+    /// Returns: (transfer none): the current #Model
     ///
-    fn get_model(&self) -> Option<clutter::Model>;
+    fn get_model(&self) -> Option<Model>;
 
     /// set_factory:
     /// @item_view: A #ItemView
@@ -148,11 +144,11 @@ pub trait ItemViewExt: 'static {
 
     /// set_model:
     /// @item_view: An #ItemView
-    /// @model: A #ClutterModel
+    /// @model: A #Model
     ///
     /// Set the model used by the #ItemView
     ///
-    fn set_model<P: Is<clutter::Model>>(&self, model: &P);
+    fn set_model<P: Is<Model>>(&self, model: &P);
 
     /// thaw:
     /// @item_view: An #ItemView
@@ -234,9 +230,9 @@ impl<O: Is<ItemView>> ItemViewExt for O {
     ///
     /// Get the model currently used by the #ItemView
     ///
-    /// Returns: (transfer none): the current #ClutterModel
+    /// Returns: (transfer none): the current #Model
     ///
-    fn get_model(&self) -> Option<clutter::Model> {
+    fn get_model(&self) -> Option<Model> {
         let itemview = self.as_ref();
         let props = itemview.props.borrow();
 
@@ -286,11 +282,11 @@ impl<O: Is<ItemView>> ItemViewExt for O {
 
     /// set_model:
     /// @item_view: An #ItemView
-    /// @model: A #ClutterModel
+    /// @model: A #Model
     ///
     /// Set the model used by the #ItemView
     ///
-    fn set_model<P: Is<clutter::Model>>(&self, model: &P) {
+    fn set_model<P: Is<Model>>(&self, model: &P) {
         let itemview = self.as_ref();
 
         // if itemview.model {

@@ -1,19 +1,17 @@
 #![allow(unused_variables)]
 
-// use std::mem::transmute;
-use super::{Action, Icon, IconTheme, Label, Widget};
-use crate::prelude::*;
+use crate::{PushActionExt, prelude::*};
+use crate::{PushAction, Actor, Icon, IconTheme, Label, Widget};
 use glib::signal::SignalHandlerId;
-use std::fmt;
-use std::{boxed::Box as Box_, cell::RefCell};
+use std::{cell::RefCell, fmt};
 
 #[derive(Clone, Debug)]
 pub struct ComboBoxProps {
-    pub label: Option<Label>, //clutter::Actor,
-    pub icon: Option<Icon>,   // clutter::Actor
+    pub label: Option<Label>, //Actor,
+    pub icon: Option<Icon>,   // Actor
 
     pub marker: cogl::Texture,
-    pub actions: Vec<Action>,
+    pub actions: Vec<PushAction>,
 
     pub clip_x: f64,
     pub clip_y: f64,
@@ -30,7 +28,7 @@ pub struct ComboBox {
 impl ComboBox {
     pub fn new() -> ComboBox {
         // assert_initialized_main_thread!();
-        // unsafe { clutter::Actor::from_glib_none(ffi::combo_box_new()).unsafe_cast() }
+        // unsafe { Actor::from_glib_none(ffi::combo_box_new()).unsafe_cast() }
         unimplemented!()
     }
 }
@@ -58,16 +56,14 @@ impl AsRef<Widget> for ComboBox {
     }
 }
 
-impl Is<clutter::Actor> for ComboBox {}
+impl Is<Actor> for ComboBox {}
 
-impl AsRef<clutter::Actor> for ComboBox {
-    fn as_ref(&self) -> &clutter::Actor {
-        let actor: &clutter::Actor = self.widget.as_ref();
+impl AsRef<Actor> for ComboBox {
+    fn as_ref(&self) -> &Actor {
+        let actor: &Actor = self.widget.as_ref();
         actor
     }
 }
-
-pub const NONE_COMBO_BOX: Option<&ComboBox> = None;
 
 pub trait ComboBoxExt: 'static {
     /// append_text:
@@ -251,7 +247,7 @@ impl<O: Is<ComboBox>> ComboBoxExt for O {
     fn insert_text(&self, position: i32, text: &str) {
         let combobox = self.as_ref();
 
-        let action = Action::new();
+        let action = PushAction::new();
         action.set_display_name(text);
 
         // combobox.actions.push(action);
@@ -270,7 +266,7 @@ impl<O: Is<ComboBox>> ComboBoxExt for O {
         let combobox = self.as_ref();
         let combobox = self.as_ref();
 
-        let action = Action::new();
+        let action = PushAction::new();
         action.set_display_name(text);
         action.set_icon(icon);
 
@@ -331,7 +327,7 @@ impl<O: Is<ComboBox>> ComboBoxExt for O {
                     if icon_theme.has_icon(icon_name) {
                         let icon = Icon::new();
                         icon.set_icon_name(Some(icon_name.clone()));
-                        // clutter_actor_add_child (CLUTTER_ACTOR (box), combobox.icon);
+                        // actor_add_child (CLUTTER_ACTOR (box), combobox.icon);
                         props.icon = Some(icon);
                     }
                 }
@@ -340,9 +336,9 @@ impl<O: Is<ComboBox>> ComboBoxExt for O {
                 if let Some(icon_name) = icon_name {
                     icon.set_icon_name(Some(icon_name));
                 } else {
-                    // clutter_actor_destroy (priv->icon);
+                    // actor_destroy (priv->icon);
                     props.icon = None;
-                    // clutter_actor_queue_relayout (CLUTTER_ACTOR (box));
+                    // actor_queue_relayout (CLUTTER_ACTOR (box));
                 }
             }
         }
@@ -363,7 +359,7 @@ impl<O: Is<ComboBox>> ComboBoxExt for O {
         let mut props = combobox.props.borrow_mut();
 
         props.index = -1;
-        // clutter_text_set_text((ClutterText*)combobox.label, text);
+        // text_set_text((ClutterText*)combobox.label, text);
 
         // g_object_notify(G_OBJECT (box), "index");
         // g_object_notify(G_OBJECT (box), "active-text");
@@ -380,24 +376,24 @@ impl<O: Is<ComboBox>> ComboBoxExt for O {
         let mut props = combobox.props.borrow_mut();
 
         // GSList *item;
-        // Action *action;
+        // PushAction *action;
         // const gchar *icon_name;
 
         // let item = g_slist_nth(combobox.actions, index);
 
         // if !item {
         //     combobox.index = -1;
-        //     clutter_text_set_text((ClutterText*)combobox.label, "");
+        //     text_set_text((ClutterText*)combobox.label, "");
         //     return;
         // }
 
         props.index = index;
-        // action = (Action *)item.data;
-        // clutter_text_set_text((ClutterText*) combobox.label,
+        // action = (PushAction *)item.data;
+        // text_set_text((ClutterText*) combobox.label,
         //                         action_get_display_name(action));
 
         if props.icon.is_some() {
-            //     clutter_actor_destroy(combobox.icon);
+            //     actor_destroy(combobox.icon);
             props.icon = None;
         }
 
@@ -407,7 +403,7 @@ impl<O: Is<ComboBox>> ComboBoxExt for O {
         //     if icon_theme.has_icon(icon_name) {
         //         props.icon = icon_new ();
         //         icon_set_icon_name(ICON (combobox.icon), icon_name);
-        //         clutter_actor_add_child(CLUTTER_ACTOR (box), combobox.icon);
+        //         actor_add_child(CLUTTER_ACTOR (box), combobox.icon);
         //     }
         // }
 

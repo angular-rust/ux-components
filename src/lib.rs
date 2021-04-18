@@ -1,4 +1,4 @@
-#![allow(unused_imports)]
+// #![allow(unused_imports)]
 #![allow(
     clippy::too_many_arguments,
     clippy::let_and_return,
@@ -15,17 +15,14 @@
 mod backend;
 pub use backend::*;
 
+pub use animate::*;
+
 #[doc(hidden)]
 pub mod prelude {
-
-    pub trait Object: std::fmt::Debug + Clone + 'static {}
-    pub trait Is<T: Object>: AsRef<T> + 'static {}
-
-    pub use super::ActionExt;
     pub use super::ActorManagerExt;
     pub use super::AdjustmentExt;
     pub use super::BoxLayoutChildExt;
-    pub use super::BoxLayoutExt;
+    // pub use super::BoxLayoutExt; // overlap
     pub use super::ButtonExt;
     pub use super::ButtonGroupExt;
     pub use super::ClipboardExt;
@@ -38,7 +35,7 @@ pub mod prelude {
     pub use super::GridExt;
     pub use super::IconExt;
     pub use super::IconThemeExt;
-    pub use super::ImageExt;
+    // pub use super::ImageExt; // overlap
     pub use super::ItemViewExt;
     pub use super::KineticScrollViewExt;
     pub use super::LabelExt;
@@ -48,6 +45,7 @@ pub mod prelude {
     pub use super::PagerExt;
     pub use super::PathBarExt;
     pub use super::ProgressBarExt;
+    pub use super::PushActionExt;
     pub use super::ScrollBarExt;
     pub use super::ScrollViewExt;
     pub use super::SettingsExt;
@@ -56,6 +54,7 @@ pub mod prelude {
     pub use super::StackChildExt;
     pub use super::StackExt;
     pub use super::StyleExt;
+    pub use super::SurfaceExt;
     pub use super::TableChildExt;
     pub use super::TableExt;
     pub use super::TextureCacheExt;
@@ -66,27 +65,30 @@ pub mod prelude {
     pub use super::WidgetExt;
     pub use super::WindowExt;
 
-    pub use clutter;
-    pub use clutter::prelude::*;
+    pub use animate::prelude::*;
     pub use cogl;
     pub use ux_macro::*;
     // pub use cogl::prelude::*;
+    pub use primitives::prelude::*;
+
+    pub mod application {
+        pub use animate::{run, init, quit};
+    }
+
+    pub use super::Transparency;
 }
 
-impl prelude::Object for clutter::Actor {}
-impl prelude::Is<clutter::Actor> for clutter::Actor {}
+pub trait Transparency {
+    fn transparency(&self, val :u8) -> Self;
+}
 
-impl prelude::Object for clutter::Model {}
-impl prelude::Is<clutter::Model> for clutter::Model {}
-
-impl prelude::Object for clutter::OffscreenEffect {}
-impl prelude::Is<clutter::OffscreenEffect> for clutter::OffscreenEffect {}
-
-impl prelude::Object for clutter::Effect {}
-impl prelude::Is<clutter::Effect> for clutter::Effect {}
-
-impl prelude::Object for clutter::ActorMeta {}
-impl prelude::Is<clutter::ActorMeta> for clutter::ActorMeta {}
+impl Transparency for Color {
+    fn transparency(&self, val :u8) -> Self {
+        let color = *self;
+        let RgbColor { red, green, blue} = color.into();
+        Self::RGBA(red, green, blue, val)
+    }
+}
 
 #[cfg(test)]
 mod tests {

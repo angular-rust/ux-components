@@ -1,17 +1,15 @@
 #![allow(unused_variables)]
 
-// use std::mem::transmute;
-use super::{ScrollPolicy, Widget};
 use crate::prelude::*;
+use crate::{Actor, Geometry, ScrollPolicy, Widget};
 use glib::signal::SignalHandlerId;
-use std::fmt;
-use std::{boxed::Box as Box_, cell::RefCell};
+use std::{cell::RefCell, fmt};
 
 #[derive(Clone, Debug)]
 pub struct ScrollViewProps {
-    pub child: Option<clutter::Actor>,
-    pub hscroll: Option<clutter::Actor>,
-    pub vscroll: Option<clutter::Actor>,
+    pub child: Option<Actor>,
+    pub hscroll: Option<Actor>,
+    pub vscroll: Option<Actor>,
     pub mouse_scroll: bool,
     pub scrollbar_width: u32,
     pub scrollbar_height: u32,
@@ -28,7 +26,7 @@ pub struct ScrollView {
 impl ScrollView {
     pub fn new() -> ScrollView {
         // assert_initialized_main_thread!();
-        // unsafe { clutter::Actor::from_glib_none(ffi::scroll_view_new()).unsafe_cast() }
+        // unsafe { Actor::from_glib_none(ffi::scroll_view_new()).unsafe_cast() }
         unimplemented!()
     }
 }
@@ -56,16 +54,14 @@ impl AsRef<Widget> for ScrollView {
     }
 }
 
-impl Is<clutter::Actor> for ScrollView {}
+impl Is<Actor> for ScrollView {}
 
-impl AsRef<clutter::Actor> for ScrollView {
-    fn as_ref(&self) -> &clutter::Actor {
-        let actor: &clutter::Actor = self.widget.as_ref();
+impl AsRef<Actor> for ScrollView {
+    fn as_ref(&self) -> &Actor {
+        let actor: &Actor = self.widget.as_ref();
         actor
     }
 }
-
-pub const NONE_SCROLL_VIEW: Option<&ScrollView> = None;
 
 pub trait ScrollViewExt: 'static {
     /// scroll_view_ensure_visible:
@@ -75,7 +71,7 @@ pub trait ScrollViewExt: 'static {
     /// Ensures that a given region is visible in the ScrollView, with the top-left
     /// taking precedence.
     ///
-    fn ensure_visible(&self, geometry: &clutter::Geometry);
+    fn ensure_visible(&self, geometry: &Geometry);
 
     fn get_enable_mouse_scrolling(&self) -> bool;
 
@@ -113,7 +109,7 @@ impl<O: Is<ScrollView>> ScrollViewExt for O {
     /// Ensures that a given region is visible in the ScrollView, with the top-left
     /// taking precedence.
     ///
-    fn ensure_visible(&self, geometry: &clutter::Geometry) {
+    fn ensure_visible(&self, geometry: &Geometry) {
         let scrollview = self.as_ref();
 
         // _scroll_view_ensure_visible_axis(SCROLL_BAR(scrollview.hscroll),
@@ -154,7 +150,7 @@ impl<O: Is<ScrollView>> ScrollViewExt for O {
 
             // make sure we can receive mouse wheel events */
             if enabled {
-                // clutter_actor_set_reactive((ClutterActor *)scroll, true);
+                // actor_set_reactive((ClutterActor *)scroll, true);
             }
             // g_object_notify(G_OBJECT(scroll), "enable-mouse-scrolling");
         }
@@ -167,7 +163,7 @@ impl<O: Is<ScrollView>> ScrollViewExt for O {
         if props.scroll_policy != policy {
             props.scroll_policy = policy;
             // g_object_notify(G_OBJECT(scroll), "scroll-policy");
-            // clutter_actor_queue_relayout(CLUTTER_ACTOR(scroll));
+            // actor_queue_relayout(CLUTTER_ACTOR(scroll));
         }
     }
 
@@ -178,7 +174,7 @@ impl<O: Is<ScrollView>> ScrollViewExt for O {
         if props.scroll_visibility != visibility {
             props.scroll_visibility = visibility;
             // g_object_notify(G_OBJECT(scroll), "scroll-visibility");
-            // clutter_actor_queue_relayout(CLUTTER_ACTOR(scroll));
+            // actor_queue_relayout(CLUTTER_ACTOR(scroll));
         }
     }
 

@@ -1,11 +1,9 @@
 #![allow(unused_variables)]
 
-// use std::mem::transmute;
-use super::Widget;
 use crate::prelude::*;
+use crate::{Actor, Widget};
 use glib::signal::SignalHandlerId;
-use std::fmt;
-use std::{boxed::Box as Box_, cell::RefCell};
+use std::{cell::RefCell, fmt};
 
 #[derive(Clone, Debug)]
 pub struct IconProps {
@@ -27,7 +25,7 @@ pub struct Icon {
 impl Icon {
     pub fn new() -> Icon {
         // assert_initialized_main_thread!();
-        // unsafe { clutter::Actor::from_glib_none(ffi::icon_new()).unsafe_cast() }
+        // unsafe { Actor::from_glib_none(ffi::icon_new()).unsafe_cast() }
         unimplemented!()
     }
 }
@@ -55,16 +53,14 @@ impl AsRef<Widget> for Icon {
     }
 }
 
-impl Is<clutter::Actor> for Icon {}
+impl Is<Actor> for Icon {}
 
-impl AsRef<clutter::Actor> for Icon {
-    fn as_ref(&self) -> &clutter::Actor {
-        let actor: &clutter::Actor = self.widget.as_ref();
+impl AsRef<Actor> for Icon {
+    fn as_ref(&self) -> &Actor {
+        let actor: &Actor = self.widget.as_ref();
         actor
     }
 }
-
-pub const NONE_ICON: Option<&Icon> = None;
 
 pub trait IconExt: 'static {
     fn get_icon_name(&self) -> Option<String>;

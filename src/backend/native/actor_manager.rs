@@ -1,10 +1,9 @@
 #![allow(unused_variables)]
 
-// use std::mem::transmute;
 use crate::prelude::*;
+use crate::{Actor, Stage};
 use glib::signal::SignalHandlerId;
-use std::fmt;
-use std::{boxed::Box as Box_, cell::RefCell};
+use std::{cell::RefCell, fmt};
 
 #[derive(Clone, Debug)]
 pub struct ActorManagerProps {
@@ -15,7 +14,7 @@ pub struct ActorManagerProps {
     // pub timer: GTimer,
     pub quark_set: bool,
     pub time_slice: u32,
-    pub stage: Option<clutter::Stage>,
+    pub stage: Option<Stage>,
 }
 
 #[derive(Clone, Debug)]
@@ -24,11 +23,11 @@ pub struct ActorManager {
 }
 
 impl ActorManager {
-    //pub fn new(stage: &clutter::Stage) -> ActorManager {
+    //pub fn new(stage: &Stage) -> ActorManager {
     //    unsafe { TODO: call ffi:actor_manager_new() }
     //}
 
-    //pub fn get_for_stage(stage: &clutter::Stage) -> Option<ActorManager> {
+    //pub fn get_for_stage(stage: &Stage) -> Option<ActorManager> {
     //    unsafe { TODO: call ffi:actor_manager_get_for_stage() }
     //}
 }
@@ -42,13 +41,11 @@ impl AsRef<ActorManager> for ActorManager {
     }
 }
 
-pub const NONE_ACTOR_MANAGER: Option<&ActorManager> = None;
-
 pub trait ActorManagerExt: 'static {
     /// add_actor:
     /// @manager: A #ActorManager
-    /// @container: A #ClutterActor
-    /// @actor: A #ClutterActor
+    /// @container: A #Actor
+    /// @actor: A #Actor
     ///
     /// Adds @actor to @container. The actor may not be parented immediately,
     /// or at all, if the operation is cancelled.
@@ -58,11 +55,7 @@ pub trait ActorManagerExt: 'static {
     ///
     /// Returns: The ID for this operation.
     ///
-    fn add_actor<P: Is<clutter::Actor>, Q: Is<clutter::Actor>>(
-        &self,
-        container: &P,
-        actor: &Q,
-    ) -> u64;
+    fn add_actor<P: Is<Actor>, Q: Is<Actor>>(&self, container: &P, actor: &Q) -> u64;
 
     /// cancel_operation:
     /// @manager: A #ActorManager
@@ -76,19 +69,19 @@ pub trait ActorManagerExt: 'static {
 
     /// cancel_operations:
     /// @manager: A #ActorManager
-    /// @actor: A #ClutterActor
+    /// @actor: A #Actor
     ///
     /// Cancels all operations associated with the given actor.
     ///
-    fn cancel_operations<P: Is<clutter::Actor>>(&self, actor: &P);
+    fn cancel_operations<P: Is<Actor>>(&self, actor: &P);
 
     /// create_actor:
     /// @manager: A #ActorManager
-    /// @create_func: A #ClutterActor creation function
+    /// @create_func: A #Actor creation function
     /// @userdata: data to be passed to the function, or %None
     /// @destroy_func: callback to invoke before the operation is removed
     ///
-    /// Creates a #ClutterActor. The actor may not be created immediately,
+    /// Creates a #Actor. The actor may not be created immediately,
     /// or at all, if the operation is cancelled.
     ///
     /// On successful completion, the #ActorManager::actor_created signal will
@@ -96,7 +89,7 @@ pub trait ActorManagerExt: 'static {
     ///
     /// Returns: The ID for this operation.
     ///
-    //fn create_actor(&self, create_func: Fn(&ActorManager, Option<Fundamental: Pointer>) -> clutter::Actor, userdata: Option<Fundamental: Pointer>) -> u64;
+    //fn create_actor(&self, create_func: Fn(&ActorManager, Option<Fundamental: Pointer>) -> Actor, userdata: Option<Fundamental: Pointer>) -> u64;
 
     /// get_n_operations:
     /// @manager: A #ActorManager
@@ -110,11 +103,11 @@ pub trait ActorManagerExt: 'static {
     /// get_stage:
     /// @manager: A #ActorManager
     ///
-    /// Gets the #ClutterStage the actor manager is associated with.
+    /// Gets the #Stage the actor manager is associated with.
     ///
-    /// Returns: (transfer none): The #ClutterStage the actor is associated with.
+    /// Returns: (transfer none): The #Stage the actor is associated with.
     ///
-    fn get_stage(&self) -> Option<clutter::Stage>;
+    fn get_stage(&self) -> Option<Stage>;
 
     /// get_time_slice:
     /// @manager: A #ActorManager
@@ -127,8 +120,8 @@ pub trait ActorManagerExt: 'static {
 
     /// remove_actor:
     /// @manager: A #ActorManager
-    /// @container: A #ClutterActor
-    /// @actor: A #ClutterActor
+    /// @container: A #Actor
+    /// @actor: A #Actor
     ///
     /// Removes @actor from @container.
     ///
@@ -142,15 +135,11 @@ pub trait ActorManagerExt: 'static {
     ///
     /// Returns: The ID for this operation.
     ///
-    fn remove_actor<P: Is<clutter::Actor>, Q: Is<clutter::Actor>>(
-        &self,
-        container: &P,
-        actor: &Q,
-    ) -> u64;
+    fn remove_actor<P: Is<Actor>, Q: Is<Actor>>(&self, container: &P, actor: &Q) -> u64;
 
     /// remove_container:
     /// @manager: A #ActorManager
-    /// @container: A #ClutterActor
+    /// @container: A #Actor
     ///
     /// Removes the container. This is a utility function that works by first
     /// removing all the children of the container, then the children itself. This
@@ -162,7 +151,7 @@ pub trait ActorManagerExt: 'static {
     /// the container's opacity to 0 before calling this function.
     /// </para></note>
     ///
-    fn remove_container<P: Is<clutter::Actor>>(&self, container: &P);
+    fn remove_container<P: Is<Actor>>(&self, container: &P);
 
     /// set_time_slice:
     /// @manager: A #ActorManager
@@ -177,24 +166,21 @@ pub trait ActorManagerExt: 'static {
     fn set_time_slice(&self, msecs: u32);
 
     // fn connect_actor_added<
-    //     F: Fn(&Self, u64, &clutter::Actor, &clutter::Actor) + 'static,
+    //     F: Fn(&Self, u64, &Actor, &Actor) + 'static,
     // >(
     //     &self,
     //     f: F,
     // ) -> SignalHandlerId;
 
-    // fn connect_actor_created<F: Fn(&Self, u64, &clutter::Actor) + 'static>(
+    // fn connect_actor_created<F: Fn(&Self, u64, &Actor) + 'static>(
     //     &self,
     //     f: F,
     // ) -> SignalHandlerId;
 
-    fn connect_actor_finished<F: Fn(&Self, &clutter::Actor) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId;
+    fn connect_actor_finished<F: Fn(&Self, &Actor) + 'static>(&self, f: F) -> SignalHandlerId;
 
     // fn connect_actor_removed<
-    //     F: Fn(&Self, u64, &clutter::Actor, &clutter::Actor) + 'static,
+    //     F: Fn(&Self, u64, &Actor, &Actor) + 'static,
     // >(
     //     &self,
     //     f: F,
@@ -224,8 +210,8 @@ pub trait ActorManagerExt: 'static {
 impl<O: Is<ActorManager>> ActorManagerExt for O {
     /// add_actor:
     /// @manager: A #ActorManager
-    /// @container: A #ClutterActor
-    /// @actor: A #ClutterActor
+    /// @container: A #Actor
+    /// @actor: A #Actor
     ///
     /// Adds @actor to @container. The actor may not be parented immediately,
     /// or at all, if the operation is cancelled.
@@ -235,11 +221,7 @@ impl<O: Is<ActorManager>> ActorManagerExt for O {
     ///
     /// Returns: The ID for this operation.
     ///
-    fn add_actor<P: Is<clutter::Actor>, Q: Is<clutter::Actor>>(
-        &self,
-        container: &P,
-        actor: &Q,
-    ) -> u64 {
+    fn add_actor<P: Is<Actor>, Q: Is<Actor>>(&self, container: &P, actor: &Q) -> u64 {
         let manager = self.as_ref();
         let container = container.as_ref();
         let actor = actor.as_ref();
@@ -276,17 +258,17 @@ impl<O: Is<ActorManager>> ActorManagerExt for O {
 
         // g_signal_emit(manager, signals[OP_CANCELLED], 0, id);
 
-        // manager.op_free(op_link, FALSE);
+        // manager.op_free(op_link, false);
         // g_list_free(op_link);
     }
 
     /// cancel_operations:
     /// @manager: A #ActorManager
-    /// @actor: A #ClutterActor
+    /// @actor: A #Actor
     ///
     /// Cancels all operations associated with the given actor.
     ///
-    fn cancel_operations<P: Is<clutter::Actor>>(&self, actor: &P) {
+    fn cancel_operations<P: Is<Actor>>(&self, actor: &P) {
         let manager = self.as_ref();
         let actor = actor.as_ref();
 
@@ -299,18 +281,18 @@ impl<O: Is<ActorManager>> ActorManagerExt for O {
         //     op_links = op_links.next;
         //     g_queue_unlink (manager.ops, op_link);
         //     g_signal_emit (manager, signals[OP_CANCELLED], 0, op.id);
-        //     actor_manager_op_free (manager, op_link, FALSE);
+        //     actor_manager_op_free (manager, op_link, false);
         //     g_list_free (op_link);
         // }
     }
 
     /// create_actor:
     /// @manager: A #ActorManager
-    /// @create_func: A #ClutterActor creation function
+    /// @create_func: A #Actor creation function
     /// @userdata: data to be passed to the function, or %None
     /// @destroy_func: callback to invoke before the operation is removed
     ///
-    /// Creates a #ClutterActor. The actor may not be created immediately,
+    /// Creates a #Actor. The actor may not be created immediately,
     /// or at all, if the operation is cancelled.
     ///
     /// On successful completion, the #ActorManager::actor_created signal will
@@ -318,7 +300,7 @@ impl<O: Is<ActorManager>> ActorManagerExt for O {
     ///
     /// Returns: The ID for this operation.
     ///
-    //fn create_actor(&self, create_func: Fn(&ActorManager, Option<Fundamental: Pointer>) -> clutter::Actor, userdata: Option<Fundamental: Pointer>) -> u64 {
+    //fn create_actor(&self, create_func: Fn(&ActorManager, Option<Fundamental: Pointer>) -> Actor, userdata: Option<Fundamental: Pointer>) -> u64 {
     //    unsafe { TODO: call ffi:actor_manager_create_actor() }
     //}
 
@@ -338,11 +320,11 @@ impl<O: Is<ActorManager>> ActorManagerExt for O {
     /// get_stage:
     /// @manager: A #ActorManager
     ///
-    /// Gets the #ClutterStage the actor manager is associated with.
+    /// Gets the #Stage the actor manager is associated with.
     ///
-    /// Returns: (transfer none): The #ClutterStage the actor is associated with.
+    /// Returns: (transfer none): The #Stage the actor is associated with.
     ///
-    fn get_stage(&self) -> Option<clutter::Stage> {
+    fn get_stage(&self) -> Option<Stage> {
         let manager = self.as_ref();
         let props = manager.props.borrow();
 
@@ -363,8 +345,8 @@ impl<O: Is<ActorManager>> ActorManagerExt for O {
 
     /// remove_actor:
     /// @manager: A #ActorManager
-    /// @container: A #ClutterActor
-    /// @actor: A #ClutterActor
+    /// @container: A #Actor
+    /// @actor: A #Actor
     ///
     /// Removes @actor from @container.
     ///
@@ -378,11 +360,7 @@ impl<O: Is<ActorManager>> ActorManagerExt for O {
     ///
     /// Returns: The ID for this operation.
     ///
-    fn remove_actor<P: Is<clutter::Actor>, Q: Is<clutter::Actor>>(
-        &self,
-        container: &P,
-        actor: &Q,
-    ) -> u64 {
+    fn remove_actor<P: Is<Actor>, Q: Is<Actor>>(&self, container: &P, actor: &Q) -> u64 {
         let manager = self.as_ref();
         let container = container.as_ref();
         let actor = actor.as_ref();
@@ -397,7 +375,7 @@ impl<O: Is<ActorManager>> ActorManagerExt for O {
 
     /// remove_container:
     /// @manager: A #ActorManager
-    /// @container: A #ClutterActor
+    /// @container: A #Actor
     ///
     /// Removes the container. This is a utility function that works by first
     /// removing all the children of the container, then the children itself. This
@@ -409,7 +387,7 @@ impl<O: Is<ActorManager>> ActorManagerExt for O {
     /// the container's opacity to 0 before calling this function.
     /// </para></note>
     ///
-    fn remove_container<P: Is<clutter::Actor>>(&self, container: &P) {
+    fn remove_container<P: Is<Actor>>(&self, container: &P) {
         let manager = self.as_ref();
         let container = container.as_ref();
 
@@ -419,16 +397,16 @@ impl<O: Is<ActorManager>> ActorManagerExt for O {
         // /* Remove all children */
         // let children: GList = container.get_children ();
         // while children {
-        //     let child: clutter::Actor = children.data;
+        //     let child: Actor = children.data;
         //     manager.op_new(ACTOR_MANAGER_REMOVE, None, None, child, container);
         //     children = g_list_delete_link (children, children);
         // }
 
         // /* Then remove the container */
-        // let parent: clutter::Actor = clutter_actor_get_parent (CLUTTER_ACTOR (container));
+        // let parent: Actor = actor_get_parent (CLUTTER_ACTOR (container));
         // if parent && CLUTTER_IS_CONTAINER (parent) {
         //     g_object_ref (container);
-        //     clutter_actor_remove_child (parent, container);
+        //     actor_remove_child (parent, container);
         //     manager.op_new (ACTOR_MANAGER_UNREF, None, None, (ClutterActor *)container, None);
         // }
 
@@ -455,19 +433,19 @@ impl<O: Is<ActorManager>> ActorManagerExt for O {
     }
 
     // fn connect_actor_added<
-    //     F: Fn(&Self, u64, &clutter::Actor, &clutter::Actor) + 'static,
+    //     F: Fn(&Self, u64, &Actor, &Actor) + 'static,
     // >(
     //     &self,
     //     f: F,
     // ) -> SignalHandlerId {
     //     // unsafe extern "C" fn actor_added_trampoline<
     //     //     P,
-    //     //     F: Fn(&P, u64, &clutter::Actor, &clutter::Actor) + 'static,
+    //     //     F: Fn(&P, u64, &Actor, &Actor) + 'static,
     //     // >(
     //     //     this: *mut ffi::ActorManager,
     //     //     id: u64,
-    //     //     container: *mut clutter_sys::ClutterActor,
-    //     //     actor: *mut clutter_sys::ClutterActor,
+    //     //     container: *mut ffi::ClutterActor,
+    //     //     actor: *mut ffi::ClutterActor,
     //     //     f: glib_sys::gpointer,
     //     // ) where
     //     //     P: Is<ActorManager>,
@@ -494,17 +472,17 @@ impl<O: Is<ActorManager>> ActorManagerExt for O {
     //     unimplemented!()
     // }
 
-    // fn connect_actor_created<F: Fn(&Self, u64, &clutter::Actor) + 'static>(
+    // fn connect_actor_created<F: Fn(&Self, u64, &Actor) + 'static>(
     //     &self,
     //     f: F,
     // ) -> SignalHandlerId {
     //     // unsafe extern "C" fn actor_created_trampoline<
     //     //     P,
-    //     //     F: Fn(&P, u64, &clutter::Actor) + 'static,
+    //     //     F: Fn(&P, u64, &Actor) + 'static,
     //     // >(
     //     //     this: *mut ffi::ActorManager,
     //     //     id: u64,
-    //     //     actor: *mut clutter_sys::ClutterActor,
+    //     //     actor: *mut ffi::ClutterActor,
     //     //     f: glib_sys::gpointer,
     //     // ) where
     //     //     P: Is<ActorManager>,
@@ -530,13 +508,10 @@ impl<O: Is<ActorManager>> ActorManagerExt for O {
     //     unimplemented!()
     // }
 
-    fn connect_actor_finished<F: Fn(&Self, &clutter::Actor) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
-        // unsafe extern "C" fn actor_finished_trampoline<P, F: Fn(&P, &clutter::Actor) + 'static>(
+    fn connect_actor_finished<F: Fn(&Self, &Actor) + 'static>(&self, f: F) -> SignalHandlerId {
+        // unsafe extern "C" fn actor_finished_trampoline<P, F: Fn(&P, &Actor) + 'static>(
         //     this: *mut ffi::ActorManager,
-        //     actor: *mut clutter_sys::ClutterActor,
+        //     actor: *mut ffi::ClutterActor,
         //     f: glib_sys::gpointer,
         // ) where
         //     P: Is<ActorManager>,
@@ -562,19 +537,19 @@ impl<O: Is<ActorManager>> ActorManagerExt for O {
     }
 
     // fn connect_actor_removed<
-    //     F: Fn(&Self, u64, &clutter::Actor, &clutter::Actor) + 'static,
+    //     F: Fn(&Self, u64, &Actor, &Actor) + 'static,
     // >(
     //     &self,
     //     f: F,
     // ) -> SignalHandlerId {
     //     // unsafe extern "C" fn actor_removed_trampoline<
     //     //     P,
-    //     //     F: Fn(&P, u64, &clutter::Actor, &clutter::Actor) + 'static,
+    //     //     F: Fn(&P, u64, &Actor, &Actor) + 'static,
     //     // >(
     //     //     this: *mut ffi::ActorManager,
     //     //     id: u64,
-    //     //     container: *mut clutter_sys::ClutterActor,
-    //     //     actor: *mut clutter_sys::ClutterActor,
+    //     //     container: *mut ffi::ClutterActor,
+    //     //     actor: *mut ffi::ClutterActor,
     //     //     f: glib_sys::gpointer,
     //     // ) where
     //     //     P: Is<ActorManager>,

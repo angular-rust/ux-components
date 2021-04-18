@@ -1,12 +1,9 @@
 #![allow(unused_variables)]
 
-// use std::mem::transmute;
-// use std::ptr;
-use super::{ImageScaleMode, Widget};
 use crate::prelude::*;
+use crate::{Actor, ImageScaleMode, Timeline, Widget};
 use glib::signal::SignalHandlerId;
-use std::fmt;
-use std::{boxed::Box as Box_, cell::RefCell};
+use std::{cell::RefCell, fmt};
 
 #[derive(Clone, Debug)]
 pub struct ImageAsyncData {
@@ -45,8 +42,8 @@ pub struct ImageProps {
     pub old_mode: ImageScaleMode,
     pub template_material: cogl::Material,
     pub material: cogl::Material,
-    pub timeline: clutter::Timeline,
-    pub redraw_timeline: clutter::Timeline,
+    pub timeline: Timeline,
+    pub redraw_timeline: Timeline,
     pub transition_duration: u32,
     pub async_load_data: Option<ImageAsyncData>,
 }
@@ -59,7 +56,7 @@ pub struct Image {
 impl Image {
     pub fn new() -> Image {
         // assert_initialized_main_thread!();
-        // unsafe { clutter::Actor::from_glib_none(ffi::image_new()).unsafe_cast() }
+        // unsafe { Actor::from_glib_none(ffi::image_new()).unsafe_cast() }
         unimplemented!()
     }
 }
@@ -88,21 +85,19 @@ impl AsRef<Widget> for Image {
     }
 }
 
-impl Is<clutter::Actor> for Image {}
+impl Is<Actor> for Image {}
 
-impl AsRef<clutter::Actor> for Image {
-    fn as_ref(&self) -> &clutter::Actor {
+impl AsRef<Actor> for Image {
+    fn as_ref(&self) -> &Actor {
         // &self.widget
         unimplemented!()
     }
 }
 
-pub const NONE_IMAGE: Option<&Image> = None;
-
 pub trait ImageExt: 'static {
     /// animate_scale_mode:
     /// @image: An #Image
-    /// @mode: a #ClutterAnimationMode
+    /// @mode: a #AnimationMode
     /// @duration: duration of the animation in milliseconds
     /// @scale_mode: The #ImageScaleMode to set
     ///
@@ -411,7 +406,7 @@ pub trait ImageExt: 'static {
 impl<O: Is<Image>> ImageExt for O {
     /// animate_scale_mode:
     /// @image: An #Image
-    /// @mode: a #ClutterAnimationMode
+    /// @mode: a #AnimationMode
     /// @duration: duration of the animation in milliseconds
     /// @scale_mode: The #ImageScaleMode to set
     ///
@@ -425,10 +420,10 @@ impl<O: Is<Image>> ImageExt for O {
         //     image.previous_mode = image.mode;
         //     image.mode = scale_mode;
 
-        //     clutter_timeline_stop(image.redraw_timeline);
-        //     clutter_timeline_set_duration(image.redraw_timeline, duration);
-        //     clutter_timeline_set_progress_mode(image.redraw_timeline, mode);
-        //     clutter_timeline_start(image.redraw_timeline);
+        //     timeline_stop(image.redraw_timeline);
+        //     timeline_set_duration(image.redraw_timeline, duration);
+        //     timeline_set_progress_mode(image.redraw_timeline, mode);
+        //     timeline_start(image.redraw_timeline);
 
         //     g_object_notify(G_OBJECT(image), "scale-mode");
         // }
@@ -467,7 +462,7 @@ impl<O: Is<Image>> ImageExt for O {
         // image.material = cogl_object_ref(image.template_material);
 
         // // the image has changed size, so update the preferred width/height
-        // clutter_actor_queue_relayout(CLUTTER_ACTOR(image));
+        // actor_queue_relayout(CLUTTER_ACTOR(image));
     }
 
     /// get_allow_upscale:
@@ -672,8 +667,8 @@ impl<O: Is<Image>> ImageExt for O {
 
         //     gint width, height;
 
-        //     g_return_val_if_fail(IS_IMAGE (image), FALSE);
-        //     g_return_val_if_fail(cogl_is_texture (texture), FALSE);
+        //     g_return_val_if_fail(IS_IMAGE (image), false);
+        //     g_return_val_if_fail(cogl_is_texture (texture), false);
 
         //     image_cancel_in_progress(image);
 
@@ -683,7 +678,7 @@ impl<O: Is<Image>> ImageExt for O {
         //     // If we have offscreen buffers, use those to add the 1-pixel border
         //     // around the image on the GPU - if not, fallback to copying the image
         //     // data into memory and use set_from_data.
-        //     if clutter_feature_available(CLUTTER_FEATURE_OFFSCREEN) {
+        //     if feature_available(CLUTTER_FEATURE_OFFSCREEN) {
         //         CoglColor transparent;
         //         CoglMaterial *clear_material;
 
@@ -779,7 +774,7 @@ impl<O: Is<Image>> ImageExt for O {
     ) -> Result<(), glib::Error> {
         let image = self.as_ref();
 
-        // image.set_from_data_internal(image, data, None, FALSE,
+        // image.set_from_data_internal(image, data, None, false,
         //                                       pixel_format, width, height,
         //                                       rowstride, error);
         unimplemented!()
@@ -851,7 +846,7 @@ impl<O: Is<Image>> ImageExt for O {
         //             g_set_error (error, IMAGE_ERROR, IMAGE_ERROR_INTERNAL,
         //                         "Setting image '%s' from CoglTexture failed",
         //                         filename);
-        //             return FALSE;
+        //             return false;
         //         }
         //     }
 
@@ -896,7 +891,7 @@ impl<O: Is<Image>> ImageExt for O {
         if props.rotation != rotation {
             props.rotation = rotation;
 
-            // clutter_actor_queue_redraw(CLUTTER_ACTOR(image));
+            // actor_queue_redraw(CLUTTER_ACTOR(image));
 
             // g_object_notify(G_OBJECT(image), "image-rotation");
         }
@@ -968,7 +963,7 @@ impl<O: Is<Image>> ImageExt for O {
             // g_object_notify(G_OBJECT(image), "scale-mode");
         }
 
-        // clutter_actor_queue_redraw(CLUTTER_ACTOR (image));
+        // actor_queue_redraw(CLUTTER_ACTOR (image));
     }
 
     /// set_scale_width_threshold:
@@ -1006,7 +1001,7 @@ impl<O: Is<Image>> ImageExt for O {
             props.transition_duration = duration;
 
             if duration != 0 {
-                // clutter_timeline_set_duration(image.timeline, duration);
+                // timeline_set_duration(image.timeline, duration);
             }
             // g_object_notify(G_OBJECT (image), "transition-duration");
         }

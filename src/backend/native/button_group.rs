@@ -1,11 +1,9 @@
 #![allow(unused_variables)]
 
-// use std::mem::transmute;
-use super::Button;
 use crate::prelude::*;
+use crate::{Actor, Button};
 use glib::signal::SignalHandlerId;
-use std::fmt;
-use std::{boxed::Box as Box_, cell::RefCell};
+use std::{cell::RefCell, fmt};
 
 #[derive(Clone, Debug)]
 pub struct ButtonGroupProps {
@@ -42,8 +40,6 @@ impl AsRef<ButtonGroup> for ButtonGroup {
     }
 }
 
-pub const NONE_BUTTON_GROUP: Option<&ButtonGroup> = None;
-
 pub trait ButtonGroupExt: 'static {
     /// add:
     /// @group: A #ButtonGroup
@@ -55,12 +51,12 @@ pub trait ButtonGroupExt: 'static {
 
     /// foreach:
     /// @group: A #ButtonGroup
-    /// @callback: (scope call): A #ClutterCallback
+    /// @callback: (scope call): A #Callback
     /// @userdata: (closure): A #gpointer
     ///
     /// Calls @callback for each button in the group.
     ///
-    fn foreach<P: FnMut(&clutter::Actor)>(&self, callback: P);
+    fn foreach<P: FnMut(&Actor)>(&self, callback: P);
 
     /// get_active_button:
     /// @group: A #ButtonGroup
@@ -103,7 +99,7 @@ pub trait ButtonGroupExt: 'static {
     /// @button: (allow-none): A #Button
     ///
     /// Set the current active button in the group. The previous active button will
-    /// have #Button:toggled set to #FALSE.
+    /// have #Button:toggled set to #false.
     ///
     fn set_active_button<P: Is<Button>>(&self, button: Option<&P>);
 
@@ -159,12 +155,12 @@ impl<O: Is<ButtonGroup>> ButtonGroupExt for O {
 
     /// foreach:
     /// @group: A #ButtonGroup
-    /// @callback: (scope call): A #ClutterCallback
+    /// @callback: (scope call): A #Callback
     /// @userdata: (closure): A #gpointer
     ///
     /// Calls @callback for each button in the group.
     ///
-    fn foreach<P: FnMut(&clutter::Actor)>(&self, callback: P) {
+    fn foreach<P: FnMut(&Actor)>(&self, callback: P) {
         let buttongroup = self.as_ref();
         // g_return_if_fail (IS_BUTTON_GROUP (group));
         // g_return_if_fail (callback != None);
@@ -270,7 +266,7 @@ impl<O: Is<ButtonGroup>> ButtonGroupExt for O {
     /// @button: (allow-none): A #Button
     ///
     /// Set the current active button in the group. The previous active button will
-    /// have #Button:toggled set to #FALSE.
+    /// have #Button:toggled set to #false.
     ///
     fn set_active_button<P: Is<Button>>(&self, button: Option<&P>) {
         let buttongroup = self.as_ref();

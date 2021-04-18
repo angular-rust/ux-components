@@ -1,11 +1,9 @@
 #![allow(unused_variables)]
 
-// use std::mem::transmute;
-use super::{Adjustment, Align, Focusable, Orientation, Widget};
 use crate::prelude::*;
+use crate::{Actor, Adjustment, Align, Focusable, Orientation, Widget};
 use glib::signal::SignalHandlerId;
-use std::fmt;
-use std::{boxed::Box as Box_, cell::RefCell};
+use std::{cell::RefCell, fmt};
 
 #[derive(Clone, Debug)]
 pub struct GridProps {
@@ -40,7 +38,7 @@ pub struct Grid {
 impl Grid {
     pub fn new() -> Grid {
         // assert_initialized_main_thread!();
-        // unsafe { clutter::Actor::from_glib_none(ffi::grid_new()).unsafe_cast() }
+        // unsafe { Actor::from_glib_none(ffi::grid_new()).unsafe_cast() }
         unimplemented!()
     }
 }
@@ -68,16 +66,14 @@ impl AsRef<Widget> for Grid {
     }
 }
 
-impl Is<clutter::Actor> for Grid {}
+impl Is<Actor> for Grid {}
 
-impl AsRef<clutter::Actor> for Grid {
-    fn as_ref(&self) -> &clutter::Actor {
-        let actor: &clutter::Actor = self.widget.as_ref();
+impl AsRef<Actor> for Grid {
+    fn as_ref(&self) -> &Actor {
+        let actor: &Actor = self.widget.as_ref();
         actor
     }
 }
-
-pub const NONE_GRID: Option<&Grid> = None;
 
 pub trait GridExt: 'static {
     fn get_child_x_align(&self) -> Align;
@@ -223,7 +219,7 @@ impl<O: Is<Grid>> GridExt for O {
 
         if value != props.child_x_align {
             props.child_x_align = value;
-            // clutter_actor_queue_relayout(CLUTTER_ACTOR(self));
+            // actor_queue_relayout(CLUTTER_ACTOR(self));
         }
     }
 
@@ -233,7 +229,7 @@ impl<O: Is<Grid>> GridExt for O {
 
         if value != props.child_y_align {
             props.child_y_align = value;
-            // clutter_actor_queue_relayout(CLUTTER_ACTOR(self));
+            // actor_queue_relayout(CLUTTER_ACTOR(self));
         }
     }
 
@@ -244,7 +240,7 @@ impl<O: Is<Grid>> GridExt for O {
         if props.col_spacing != value {
             props.ignore_css_col_spacing = true;
             props.col_spacing = value;
-            // clutter_actor_queue_relayout(CLUTTER_ACTOR(self));
+            // actor_queue_relayout(CLUTTER_ACTOR(self));
         }
     }
 
@@ -254,7 +250,7 @@ impl<O: Is<Grid>> GridExt for O {
 
         if value != props.homogenous_columns {
             props.homogenous_columns = value;
-            // clutter_actor_queue_relayout(CLUTTER_ACTOR(self));
+            // actor_queue_relayout(CLUTTER_ACTOR(self));
         }
     }
 
@@ -264,7 +260,7 @@ impl<O: Is<Grid>> GridExt for O {
 
         if value != props.homogenous_rows {
             props.homogenous_rows = value;
-            // clutter_actor_queue_relayout(CLUTTER_ACTOR(self));
+            // actor_queue_relayout(CLUTTER_ACTOR(self));
         }
     }
 
@@ -274,7 +270,7 @@ impl<O: Is<Grid>> GridExt for O {
 
         if value != props.line_alignment {
             props.line_alignment = value;
-            // clutter_actor_queue_relayout(CLUTTER_ACTOR(self));
+            // actor_queue_relayout(CLUTTER_ACTOR(self));
         }
     }
 
@@ -284,7 +280,7 @@ impl<O: Is<Grid>> GridExt for O {
 
         if value != props.max_stride {
             props.max_stride = value;
-            // clutter_actor_queue_relayout(CLUTTER_ACTOR(self));
+            // actor_queue_relayout(CLUTTER_ACTOR(self));
         }
     }
 
@@ -294,7 +290,7 @@ impl<O: Is<Grid>> GridExt for O {
 
         if props.orientation != orientation {
             props.orientation = orientation;
-            // clutter_actor_queue_relayout(CLUTTER_ACTOR(self));
+            // actor_queue_relayout(CLUTTER_ACTOR(self));
             // g_object_notify(G_OBJECT(self), "orientation");
         }
     }
@@ -306,7 +302,7 @@ impl<O: Is<Grid>> GridExt for O {
         if value != props.row_spacing {
             props.ignore_css_row_spacing = true;
             props.row_spacing = value;
-            // clutter_actor_queue_relayout(CLUTTER_ACTOR(self));
+            // actor_queue_relayout(CLUTTER_ACTOR(self));
         }
     }
 

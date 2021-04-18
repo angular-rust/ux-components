@@ -1,15 +1,13 @@
 #![allow(unused_variables)]
 
-// use std::mem::transmute;
-use super::{Entry, Widget};
 use crate::prelude::*;
+use crate::{Actor, Entry, Widget};
 use glib::signal::SignalHandlerId;
-use std::fmt;
-use std::{boxed::Box as Box_, cell::RefCell};
+use std::{cell::RefCell, fmt};
 
 #[derive(Clone, Debug)]
 pub struct PathBarProps {
-    pub crumbs: Vec<clutter::Actor>,
+    pub crumbs: Vec<Actor>,
     pub current_level: usize,
     pub overlap: i32,
     pub editable: bool,
@@ -26,7 +24,7 @@ pub struct PathBar {
 impl PathBar {
     pub fn new() -> PathBar {
         // assert_initialized_main_thread!();
-        // unsafe { clutter::Actor::from_glib_none(ffi::path_bar_new()).unsafe_cast() }
+        // unsafe { Actor::from_glib_none(ffi::path_bar_new()).unsafe_cast() }
         unimplemented!()
     }
 }
@@ -54,16 +52,14 @@ impl AsRef<Widget> for PathBar {
     }
 }
 
-impl Is<clutter::Actor> for PathBar {}
+impl Is<Actor> for PathBar {}
 
-impl AsRef<clutter::Actor> for PathBar {
-    fn as_ref(&self) -> &clutter::Actor {
-        let actor: &clutter::Actor = self.widget.as_ref();
+impl AsRef<Actor> for PathBar {
+    fn as_ref(&self) -> &Actor {
+        let actor: &Actor = self.widget.as_ref();
         actor
     }
 }
-
-pub const NONE_PATH_BAR: Option<&PathBar> = None;
 
 pub trait PathBarExt: 'static {
     /// clear:
@@ -275,7 +271,7 @@ impl<O: Is<PathBar>> PathBarExt for O {
         }
 
         // let crumb = path_bar_button_new(name);
-        // clutter_actor_add_child(CLUTTER_ACTOR (bar), crumb);
+        // actor_add_child(CLUTTER_ACTOR (bar), crumb);
         // pathbar.crumbs = g_list_insert(pathbar.crumbs, crumb, pathbar.current_level);
 
         // if !pathbar.entry {
@@ -295,7 +291,7 @@ impl<O: Is<PathBar>> PathBarExt for O {
         //                     G_CALLBACK(path_bar_crumb_clicked_cb), bar);
 
         // path_bar_animate_button(bar, crumb, false);
-        // clutter_actor_queue_relayout(CLUTTER_ACTOR(bar));
+        // actor_queue_relayout(CLUTTER_ACTOR(bar));
         // g_object_notify(G_OBJECT(bar), "level");
 
         props.current_level
@@ -334,11 +330,11 @@ impl<O: Is<PathBar>> PathBarExt for O {
         props.editable = editable;
 
         if !editable {
-            // clutter_actor_save_easing_state(pathbar.entry);
-            // clutter_actor_set_easing_mode(pathbar.entry, CLUTTER_EASE_OUT_QUAD);
-            // clutter_actor_set_easing_duration(pathbar.entry, 150);
-            // clutter_actor_set_opacity(pathbar.entry, 0x00);
-            // clutter_actor_restore_easing_state(pathbar.entry);
+            // actor_save_easing_state(pathbar.entry);
+            // actor_set_easing_mode(pathbar.entry, CLUTTER_EASE_OUT_QUAD);
+            // actor_set_easing_duration(pathbar.entry, 150);
+            // actor_set_opacity(pathbar.entry, 0x00);
+            // actor_restore_easing_state(pathbar.entry);
 
             // g_signal_connect_after(pathbar.entry, "transition-stopped::opacity",
             //                         G_CALLBACK(path_bar_entry_faded_cb),
@@ -350,23 +346,23 @@ impl<O: Is<PathBar>> PathBarExt for O {
             //                                             bar);
             // } else {
             //     props.entry = entry_new();
-            //     clutter_actor_add_child(CLUTTER_ACTOR (bar), pathbar.entry);
+            //     actor_add_child(CLUTTER_ACTOR (bar), pathbar.entry);
             //     if CLUTTER_ACTOR_IS_VISIBLE(pathbar.entry) {
-            //         clutter_actor_set_opacity(pathbar.entry, 0x00);
+            //         actor_set_opacity(pathbar.entry, 0x00);
             //     }
             // }
 
-            // clutter_actor_save_easing_state(pathbar.entry);
-            // clutter_actor_set_easing_mode(pathbar.entry, CLUTTER_EASE_OUT_QUAD);
-            // clutter_actor_set_easing_duration(pathbar.entry, 150);
-            // clutter_actor_set_opacity(pathbar.entry, 0xff);
-            // clutter_actor_restore_easing_state(pathbar.entry);
+            // actor_save_easing_state(pathbar.entry);
+            // actor_set_easing_mode(pathbar.entry, CLUTTER_EASE_OUT_QUAD);
+            // actor_set_easing_duration(pathbar.entry, 150);
+            // actor_set_opacity(pathbar.entry, 0xff);
+            // actor_restore_easing_state(pathbar.entry);
         }
 
         // path_bar_reset_last_crumb(bar);
 
         // g_object_notify(G_OBJECT(bar), "editable");
-        // clutter_actor_queue_relayout(CLUTTER_ACTOR(bar));
+        // actor_queue_relayout(CLUTTER_ACTOR(bar));
     }
 
     /// set_label:

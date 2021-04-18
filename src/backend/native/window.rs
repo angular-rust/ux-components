@@ -1,16 +1,14 @@
 #![allow(unused_variables)]
 
-// use std::mem;
-// use std::mem::transmute;
-use super::{Toolbar, WindowRotation};
-use crate::{prelude::*, Icon};
-use clutter::Color;
+use crate::prelude::*;
+use crate::{
+    Actor, ActorBox, AllocationFlags, AnimationMode, Stage, Timeline, Toolbar, WindowRotation,
+};
 use glib::signal::SignalHandlerId;
-use std::fmt;
-use std::{boxed::Box as Box_, cell::RefCell};
+use std::{cell::RefCell, fmt};
 
 #[derive(Clone, Debug)]
-pub struct StageProps {
+pub struct WindowProps {
     // pub native_window: NativeWindow,
     pub has_toolbar: bool,
     pub small_screen: bool,
@@ -23,44 +21,44 @@ pub struct StageProps {
     pub angle: f32,
     pub icon_texture: Option<cogl::Handle>,
     pub toolbar: Option<Toolbar>,
-    pub resize_grip: Option<clutter::Actor>,
-    pub debug_actor: Option<clutter::Actor>,
-    pub rotation_timeline: Option<clutter::Timeline>,
+    pub resize_grip: Option<Actor>,
+    pub debug_actor: Option<Actor>,
+    pub rotation_timeline: Option<Timeline>,
 }
 
 #[derive(Clone, Debug)]
-pub struct Stage {
-    props: RefCell<StageProps>,
-    pub inner: clutter::Stage, // previous called stage
+pub struct Window {
+    props: RefCell<WindowProps>,
+    pub inner: Stage, // previous called stage
 }
 
-impl Stage {
-    pub fn new() -> Stage {
+impl Window {
+    pub fn new() -> Window {
         Default::default()
     }
 
     /// new_with_clutter_stage:
-    /// @stage: A #ClutterStage
+    /// @stage: A #Stage
     ///
-    /// Creates a new #Stage, using @stage as the backing #ClutterStage. This
+    /// Creates a new #Stage, using @stage as the backing #Stage. This
     /// function is meant for use primarily for embedding a #Stage into
-    /// a foreign stage when using a Clutter toolkit integration library.
+    /// a foreign stage when using a toolkit integration library.
     ///
     /// Returns: A #Stage
     ///
-    pub fn with_clutter_stage(stage: &clutter::Stage) -> Stage {
+    pub fn with_stage(stage: &Stage) -> Window {
         //    unsafe { TODO: call ffi:window_new_with_clutter_stage() }
         unimplemented!()
     }
 
     /// get_for_stage:
-    /// @stage: A #ClutterStage
+    /// @stage: A #Stage
     ///
-    /// Gets the #Stage parent of the #ClutterStage, if it exists.
+    /// Gets the #Stage parent of the #Stage, if it exists.
     ///
     /// Returns: (transfer none): A #Stage, or %None
     ///
-    pub fn get_for_stage(stage: &clutter::Stage) -> Option<Stage> {
+    pub fn get_for_stage(stage: &Stage) -> Option<Window> {
         //    unsafe { TODO: call ffi:window_get_for_stage() }
         unimplemented!()
     }
@@ -74,15 +72,15 @@ impl Stage {
         self.allocation_changed_cb(
             &self.inner,
             &allocation_box,
-            clutter::AllocationFlags::ALLOCATION_NONE,
+            AllocationFlags::ALLOCATION_NONE,
         );
     }
 
     fn allocation_changed_cb(
         &self,
-        actor: &clutter::Stage,
-        allocation_box: &clutter::ActorBox,
-        flags: clutter::AllocationFlags,
+        actor: &Stage,
+        allocation_box: &ActorBox,
+        flags: AllocationFlags,
     ) {
         // let padding: Padding;
 
@@ -116,19 +114,19 @@ impl Stage {
         // }
 
         // if props.has_toolbar && props.toolbar {
-        //     clutter_actor_get_preferred_height(props.toolbar,
+        //     actor_get_preferred_height(props.toolbar,
         //                         width - padding.left -
         //                         padding.right,
         //                         NULL, &toolbar_height);
 
         //     if !from_toolbar {
-        //         clutter_actor_set_position (props.toolbar,
+        //         actor_set_position (props.toolbar,
         //                         padding.left + x,
         //                         padding.top + y);
-        //         clutter_actor_set_pivot_point(props.toolbar,
-        //                         (width / 2.0 - padding.left) / clutter_actor_get_width (props.toolbar),
-        //                         (height / 2.0 - padding.top) / clutter_actor_get_height (props.toolbar));
-        //         clutter_actor_set_rotation_angle(props.toolbar,
+        //         actor_set_pivot_point(props.toolbar,
+        //                         (width / 2.0 - padding.left) / actor_get_width (props.toolbar),
+        //                         (height / 2.0 - padding.top) / actor_get_height (props.toolbar));
+        //         actor_set_rotation_angle(props.toolbar,
         //                         CLUTTER_Z_AXIS,
         //                         props.angle);
         //         g_object_set(G_OBJECT(props.toolbar),
@@ -165,15 +163,15 @@ impl Stage {
     }
 }
 
-impl Default for Stage {
+impl Default for Window {
     fn default() -> Self {
-        let timeline = clutter::Timeline::new(400);
-        timeline.set_progress_mode(clutter::AnimationMode::EaseInOutQuad);
+        let timeline = Timeline::new(400);
+        timeline.set_progress_mode(AnimationMode::EaseInOutQuad);
 
-        let inner = clutter::Stage::new();
+        let inner = Stage::new();
         inner.set_user_resizable(true);
 
-        let props = StageProps {
+        let props = WindowProps {
             has_toolbar: true,
             small_screen: false,
             fullscreen: false,
@@ -190,12 +188,12 @@ impl Default for Stage {
             icon_texture: None,
         };
 
-        let stage = Self {
+        let window = Self {
             inner,
             props: RefCell::new(props),
         };
 
-        // focus_manager_get_for_stage ((ClutterStage *)stage.inner)
+        // focus_manager_get_for_stage ((Stage *)stage.inner)
         // let toolbar = Toolbar::new();
         // stage.set_toolbar(&toolbar);
         // let resize_grip = Icon::new();
@@ -214,39 +212,37 @@ impl Default for Stage {
         //     stage.native_window = _window_wayland_new (self);
         // #endif
 
-        stage
+        window
     }
 }
 
-impl Object for Stage {}
-impl Is<Stage> for Stage {}
+impl Object for Window {}
+impl Is<Window> for Window {}
 
-impl AsRef<Stage> for Stage {
-    fn as_ref(&self) -> &Stage {
+impl AsRef<Window> for Window {
+    fn as_ref(&self) -> &Window {
         self
     }
 }
 
-pub const NONE_WINDOW: Option<&Stage> = None;
-
 pub trait WindowExt: 'static {
     /// get_child:
-    /// @window: A #Stage
+    /// @window: A #Window
     ///
     /// Get the primary child of the window. See set_child().
     ///
-    /// Returns: (transfer none): A #ClutterActor, or %None
+    /// Returns: (transfer none): A #Actor, or %None
     ///
-    fn get_child(&self) -> Option<clutter::Actor>;
+    fn get_child(&self) -> Option<Actor>;
 
     /// get_clutter_stage:
     /// @window: A #Stage
     ///
-    /// Gets the #ClutterStage managed by the window.
+    /// Gets the #Stage managed by the window.
     ///
-    /// Returns: (transfer none): A #ClutterStage
+    /// Returns: (transfer none): A #Stage
     ///
-    fn get_clutter_stage(&self) -> Option<&clutter::Stage>;
+    fn get_clutter_stage(&self) -> Option<&Stage>;
 
     /// get_fullscreen:
     /// @window: A #Stage
@@ -351,17 +347,17 @@ pub trait WindowExt: 'static {
     ///
     fn present(&self);
 
-    fn set_background_color(&self, color: &clutter::Color);
+    fn set_background_color(&self, color: Option<Color>);
 
     /// set_child:
     /// @window: A #Stage
-    /// @actor: A #ClutterActor
+    /// @actor: A #Actor
     ///
     /// Adds @actor to the window and sets it as the primary child. When the
     /// stage managed in the window changes size, the child will be resized
     /// to match it.
     ///
-    fn set_child<P: Is<clutter::Actor>>(&self, actor: &P);
+    fn set_child<P: Is<Actor>>(&self, actor: &P);
 
     /// set_fullscreen:
     /// @window: A #Stage
@@ -472,7 +468,7 @@ pub trait WindowExt: 'static {
 
     fn get_property_window_rotation_angle(&self) -> f32;
 
-    fn get_property_window_rotation_timeline(&self) -> Option<clutter::Timeline>;
+    fn get_property_window_rotation_timeline(&self) -> Option<Timeline>;
 
     fn connect_destroy<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
 
@@ -512,15 +508,15 @@ pub trait WindowExt: 'static {
     ) -> SignalHandlerId;
 }
 
-impl<O: Is<Stage>> WindowExt for O {
+impl<O: Is<Window>> WindowExt for O {
     /// get_child:
     /// @window: A #Stage
     ///
     /// Get the primary child of the window. See set_child().
     ///
-    /// Returns: (transfer none): A #ClutterActor, or %None
+    /// Returns: (transfer none): A #Actor, or %None
     ///
-    fn get_child(&self) -> Option<clutter::Actor> {
+    fn get_child(&self) -> Option<Actor> {
         let stage = self.as_ref();
         let props = stage.props.borrow();
         // props.child.clone()
@@ -530,11 +526,11 @@ impl<O: Is<Stage>> WindowExt for O {
     /// get_clutter_stage:
     /// @window: A #Stage
     ///
-    /// Gets the #ClutterStage managed by the window.
+    /// Gets the #Stage managed by the window.
     ///
-    /// Returns: (transfer none): A #ClutterStage
+    /// Returns: (transfer none): A #Stage
     ///
-    fn get_clutter_stage(&self) -> Option<&clutter::Stage> {
+    fn get_clutter_stage(&self) -> Option<&Stage> {
         let stage = self.as_ref();
         Some(&stage.inner)
     }
@@ -696,22 +692,22 @@ impl<O: Is<Stage>> WindowExt for O {
         // }
     }
 
-    fn set_background_color(&self, color: &clutter::Color) {
+    fn set_background_color(&self, value: Option<Color>) {
         let stage = self.as_ref();
         let inner = &stage.inner;
 
-        inner.set_background_color(Some(color));
+        inner.set_background_color(value);
     }
 
     /// set_child:
     /// @window: A #Stage
-    /// @actor: A #ClutterActor
+    /// @actor: A #Actor
     ///
     /// Adds @actor to the window and sets it as the primary child. When the
     /// stage managed in the window changes size, the child will be resized
     /// to match it.
     ///
-    fn set_child<P: Is<clutter::Actor>>(&self, actor: &P) {
+    fn set_child<P: Is<Actor>>(&self, actor: &P) {
         let stage = self.as_ref();
         let actor = actor.as_ref();
 
@@ -1028,9 +1024,9 @@ impl<O: Is<Stage>> WindowExt for O {
         unimplemented!()
     }
 
-    fn get_property_window_rotation_timeline(&self) -> Option<clutter::Timeline> {
+    fn get_property_window_rotation_timeline(&self) -> Option<Timeline> {
         // unsafe {
-        //     let mut value = Value::from_type(<clutter::Timeline as StaticType>::static_type());
+        //     let mut value = Value::from_type(<Timeline as StaticType>::static_type());
         //     gobject_sys::g_object_get_property(
         //         self.to_glib_none().0 as *mut gobject_sys::GObject,
         //         b"window-rotation-timeline\0".as_ptr() as *const _,
@@ -1055,7 +1051,7 @@ impl<O: Is<Stage>> WindowExt for O {
     // TODO: &Self
     fn connect_destroy<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         let stage = self.as_ref();
-        let this = unsafe { &*(stage as *const Stage as *const Self) };
+        let this = unsafe { &*(stage as *const Window as *const Self) };
 
         stage.inner.connect_destroy(move |_| {
             f(this);
@@ -1353,7 +1349,7 @@ impl<O: Is<Stage>> WindowExt for O {
     }
 }
 
-impl fmt::Display for Stage {
+impl fmt::Display for Window {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(f, "Window")
     }

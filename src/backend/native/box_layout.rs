@@ -1,11 +1,9 @@
 #![allow(unused_variables)]
 
-// use std::mem::transmute;
-use super::{Adjustment, Align, Orientation, Widget};
 use crate::prelude::*;
+use crate::{Actor, Adjustment, Align, Alpha, Orientation, Timeline, Widget};
 use glib::signal::SignalHandlerId;
-use std::fmt;
-use std::{boxed::Box as Box_, cell::RefCell};
+use std::{cell::RefCell, fmt};
 
 #[derive(Clone, Debug)]
 pub struct BoxLayoutProps {
@@ -17,13 +15,13 @@ pub struct BoxLayoutProps {
     pub hadjustment: Adjustment,
     pub vadjustment: Adjustment,
     // pub start_allocations: GHashTable,
-    pub alpha: clutter::Alpha,
+    pub alpha: Alpha,
     pub is_animating: bool,
     pub enable_animations: bool,
     pub scroll_to_focused: bool,
     pub orientation: Orientation,
     // pub last_focus: Focusable,
-    pub timeline: clutter::Timeline,
+    pub timeline: Timeline,
 }
 
 #[derive(Clone, Debug)]
@@ -35,7 +33,7 @@ pub struct BoxLayout {
 impl BoxLayout {
     pub fn new() -> BoxLayout {
         // assert_initialized_main_thread!();
-        // unsafe { clutter::Actor::from_glib_none(ffi::box_layout_new()).unsafe_cast() }
+        // unsafe { Actor::from_glib_none(ffi::box_layout_new()).unsafe_cast() }
 
         // assert_initialized_main_thread!();
         // unsafe { from_glib_full(ffi::box_layout_new()) }
@@ -71,37 +69,35 @@ impl AsRef<Widget> for BoxLayout {
     }
 }
 
-impl Is<clutter::Actor> for BoxLayout {}
+impl Is<Actor> for BoxLayout {}
 
-impl AsRef<clutter::Actor> for BoxLayout {
-    fn as_ref(&self) -> &clutter::Actor {
-        let actor: &clutter::Actor = self.widget.as_ref();
+impl AsRef<Actor> for BoxLayout {
+    fn as_ref(&self) -> &Actor {
+        let actor: &Actor = self.widget.as_ref();
         actor
     }
 }
 
-pub const NONE_BOX_LAYOUT: Option<&BoxLayout> = None;
-
 pub trait BoxLayoutExt: 'static {
-    fn child_get_expand<P: Is<clutter::Actor>>(&self, child: &P) -> bool;
+    fn child_get_expand<P: Is<Actor>>(&self, child: &P) -> bool;
 
-    fn child_get_x_align<P: Is<clutter::Actor>>(&self, child: &P) -> Align;
+    fn child_get_x_align<P: Is<Actor>>(&self, child: &P) -> Align;
 
-    fn child_get_x_fill<P: Is<clutter::Actor>>(&self, child: &P) -> bool;
+    fn child_get_x_fill<P: Is<Actor>>(&self, child: &P) -> bool;
 
-    fn child_get_y_align<P: Is<clutter::Actor>>(&self, child: &P) -> Align;
+    fn child_get_y_align<P: Is<Actor>>(&self, child: &P) -> Align;
 
-    fn child_get_y_fill<P: Is<clutter::Actor>>(&self, child: &P) -> bool;
+    fn child_get_y_fill<P: Is<Actor>>(&self, child: &P) -> bool;
 
-    fn child_set_expand<P: Is<clutter::Actor>>(&self, child: &P, expand: bool);
+    fn child_set_expand<P: Is<Actor>>(&self, child: &P, expand: bool);
 
-    fn child_set_x_align<P: Is<clutter::Actor>>(&self, child: &P, x_align: Align);
+    fn child_set_x_align<P: Is<Actor>>(&self, child: &P, x_align: Align);
 
-    fn child_set_x_fill<P: Is<clutter::Actor>>(&self, child: &P, x_fill: bool);
+    fn child_set_x_fill<P: Is<Actor>>(&self, child: &P, x_fill: bool);
 
-    fn child_set_y_align<P: Is<clutter::Actor>>(&self, child: &P, y_align: Align);
+    fn child_set_y_align<P: Is<Actor>>(&self, child: &P, y_align: Align);
 
-    fn child_set_y_fill<P: Is<clutter::Actor>>(&self, child: &P, y_fill: bool);
+    fn child_set_y_fill<P: Is<Actor>>(&self, child: &P, y_fill: bool);
 
     /// get_enable_animations:
     /// @box: A #BoxLayout
@@ -139,14 +135,14 @@ pub trait BoxLayoutExt: 'static {
 
     /// insert_actor:
     /// @box: a #BoxLayout
-    /// @actor: the #ClutterActor actor to add to the box layout
+    /// @actor: the #Actor actor to add to the box layout
     /// @position: the position where to insert the actor
     ///
     /// Inserts @actor at @position in @box.
     ///
-    fn insert_actor<P: Is<clutter::Actor>>(&self, actor: &P, position: i32);
+    fn insert_actor<P: Is<Actor>>(&self, actor: &P, position: i32);
 
-    //fn insert_actor_with_properties<P: Is<clutter::Actor>>(&self, actor: &P, position: i32, first_property: &str, : /*Unknown conversion*/Fundamental: VarArgs);
+    //fn insert_actor_with_properties<P: Is<Actor>>(&self, actor: &P, position: i32, first_property: &str, : /*Unknown conversion*/Fundamental: VarArgs);
 
     /// set_enable_animations:
     /// @box: A #BoxLayout
@@ -197,7 +193,7 @@ pub trait BoxLayoutExt: 'static {
 }
 
 impl<O: Is<BoxLayout>> BoxLayoutExt for O {
-    fn child_get_expand<P: Is<clutter::Actor>>(&self, child: &P) -> bool {
+    fn child_get_expand<P: Is<Actor>>(&self, child: &P) -> bool {
         // unsafe {
         //     from_glib(ffi::box_layout_child_get_expand(
         //         self.as_ref().to_glib_none().0,
@@ -207,12 +203,12 @@ impl<O: Is<BoxLayout>> BoxLayoutExt for O {
         unimplemented!()
     }
 
-    fn child_get_x_align<P: Is<clutter::Actor>>(&self, child: &P) -> Align {
+    fn child_get_x_align<P: Is<Actor>>(&self, child: &P) -> Align {
         //    unsafe { TODO: call ffi:box_layout_child_get_x_align() }
         unimplemented!()
     }
 
-    fn child_get_x_fill<P: Is<clutter::Actor>>(&self, child: &P) -> bool {
+    fn child_get_x_fill<P: Is<Actor>>(&self, child: &P) -> bool {
         // unsafe {
         //     from_glib(ffi::box_layout_child_get_x_fill(
         //         self.as_ref().to_glib_none().0,
@@ -222,12 +218,12 @@ impl<O: Is<BoxLayout>> BoxLayoutExt for O {
         unimplemented!()
     }
 
-    fn child_get_y_align<P: Is<clutter::Actor>>(&self, child: &P) -> Align {
+    fn child_get_y_align<P: Is<Actor>>(&self, child: &P) -> Align {
         //    unsafe { TODO: call ffi:box_layout_child_get_y_align() }
         unimplemented!()
     }
 
-    fn child_get_y_fill<P: Is<clutter::Actor>>(&self, child: &P) -> bool {
+    fn child_get_y_fill<P: Is<Actor>>(&self, child: &P) -> bool {
         // unsafe {
         //     from_glib(ffi::box_layout_child_get_y_fill(
         //         self.as_ref().to_glib_none().0,
@@ -237,7 +233,7 @@ impl<O: Is<BoxLayout>> BoxLayoutExt for O {
         unimplemented!()
     }
 
-    fn child_set_expand<P: Is<clutter::Actor>>(&self, child: &P, expand: bool) {
+    fn child_set_expand<P: Is<Actor>>(&self, child: &P, expand: bool) {
         // unsafe {
         //     ffi::box_layout_child_set_expand(
         //         self.as_ref().to_glib_none().0,
@@ -248,11 +244,11 @@ impl<O: Is<BoxLayout>> BoxLayoutExt for O {
         unimplemented!()
     }
 
-    fn child_set_x_align<P: Is<clutter::Actor>>(&self, child: &P, x_align: Align) {
+    fn child_set_x_align<P: Is<Actor>>(&self, child: &P, x_align: Align) {
         //    unsafe { TODO: call ffi:box_layout_child_set_x_align() }
     }
 
-    fn child_set_x_fill<P: Is<clutter::Actor>>(&self, child: &P, x_fill: bool) {
+    fn child_set_x_fill<P: Is<Actor>>(&self, child: &P, x_fill: bool) {
         // unsafe {
         //     ffi::box_layout_child_set_x_fill(
         //         self.as_ref().to_glib_none().0,
@@ -263,11 +259,11 @@ impl<O: Is<BoxLayout>> BoxLayoutExt for O {
         unimplemented!()
     }
 
-    fn child_set_y_align<P: Is<clutter::Actor>>(&self, child: &P, y_align: Align) {
+    fn child_set_y_align<P: Is<Actor>>(&self, child: &P, y_align: Align) {
         //    unsafe { TODO: call ffi:box_layout_child_set_y_align() }
     }
 
-    fn child_set_y_fill<P: Is<clutter::Actor>>(&self, child: &P, y_fill: bool) {
+    fn child_set_y_fill<P: Is<Actor>>(&self, child: &P, y_fill: bool) {
         // unsafe {
         //     ffi::box_layout_child_set_y_fill(
         //         self.as_ref().to_glib_none().0,
@@ -326,19 +322,19 @@ impl<O: Is<BoxLayout>> BoxLayoutExt for O {
 
     /// insert_actor:
     /// @box: a #BoxLayout
-    /// @actor: the #ClutterActor actor to add to the box layout
+    /// @actor: the #Actor actor to add to the box layout
     /// @position: the position where to insert the actor
     ///
     /// Inserts @actor at @position in @box.
     ///
-    fn insert_actor<P: Is<clutter::Actor>>(&self, actor: &P, position: i32) {
+    fn insert_actor<P: Is<Actor>>(&self, actor: &P, position: i32) {
         let boxlayout = self.as_ref();
         let actor = actor.as_ref();
 
-        // clutter_actor_insert_child_at_index (CLUTTER_ACTOR (box), actor, position);
+        // actor_insert_child_at_index (CLUTTER_ACTOR (box), actor, position);
     }
 
-    //fn insert_actor_with_properties<P: Is<clutter::Actor>>(&self, actor: &P, position: i32, first_property: &str, : /*Unknown conversion*/Fundamental: VarArgs) {
+    //fn insert_actor_with_properties<P: Is<Actor>>(&self, actor: &P, position: i32, first_property: &str, : /*Unknown conversion*/Fundamental: VarArgs) {
     //    unsafe { TODO: call ffi:box_layout_insert_actor_with_properties() }
     //}
 
@@ -354,7 +350,7 @@ impl<O: Is<BoxLayout>> BoxLayoutExt for O {
 
         if props.enable_animations != enable_animations {
             props.enable_animations = enable_animations;
-            // clutter_actor_queue_relayout ((ClutterActor*) box);
+            // actor_queue_relayout ((ClutterActor*) box);
             // g_object_notify (G_OBJECT (box), "enable-animations");
         }
     }
@@ -372,7 +368,7 @@ impl<O: Is<BoxLayout>> BoxLayoutExt for O {
         if props.orientation != orientation {
             props.orientation = orientation;
             // boxlayout.start_animation();
-            // clutter_actor_queue_relayout (CLUTTER_ACTOR (box));
+            // actor_queue_relayout (CLUTTER_ACTOR (box));
 
             // g_object_notify (G_OBJECT (box), "orientation");
         }
@@ -408,7 +404,7 @@ impl<O: Is<BoxLayout>> BoxLayoutExt for O {
         if props.spacing != spacing {
             props.spacing = spacing;
             props.ignore_css_spacing = true;
-            // clutter_actor_queue_relayout (CLUTTER_ACTOR (box));
+            // actor_queue_relayout (CLUTTER_ACTOR (box));
             // g_object_notify (G_OBJECT (box), "spacing");
         }
     }

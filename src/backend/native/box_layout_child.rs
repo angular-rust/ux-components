@@ -1,11 +1,9 @@
 #![allow(unused_variables)]
 
-// use std::mem::transmute;
-use super::Align;
 use crate::prelude::*;
+use crate::{Align, ChildMeta};
 use glib::signal::SignalHandlerId;
-use std::fmt;
-use std::{boxed::Box as Box_, cell::RefCell};
+use std::{cell::RefCell, fmt};
 
 #[derive(Clone, Debug)]
 pub struct BoxLayoutChildProps {
@@ -14,7 +12,7 @@ pub struct BoxLayoutChildProps {
     pub y_fill: bool,
     pub x_align: Align,
     pub y_align: Align,
-    pub parent: clutter::ChildMeta,
+    pub parent: ChildMeta,
 }
 
 #[derive(Clone, Debug)]
@@ -31,13 +29,11 @@ impl AsRef<BoxLayoutChild> for BoxLayoutChild {
     }
 }
 
-pub const NONE_BOX_LAYOUT_CHILD: Option<&BoxLayoutChild> = None;
-
 // TODO: should implement with childs
 pub trait BoxLayoutChildExt: 'static {
     /// get_expand:
     /// @box_layout: A #BoxLayout
-    /// @child: A #ClutterActor
+    /// @child: A #Actor
     ///
     /// Get the value of the #BoxLayoutChild:expand property
     ///
@@ -47,7 +43,7 @@ pub trait BoxLayoutChildExt: 'static {
 
     /// set_expand:
     /// @box_layout: A #BoxLayout
-    /// @child: A #ClutterActor
+    /// @child: A #Actor
     /// @expand: A #gboolean
     ///
     /// Set the value of the #BoxLayoutChild:expand property.
@@ -56,7 +52,7 @@ pub trait BoxLayoutChildExt: 'static {
 
     /// get_x_align:
     /// @box_layout: An #BoxLayout
-    /// @child: A #ClutterActor
+    /// @child: A #Actor
     ///
     /// Get the value of the #BoxLayoutChild:x-align property
     ///
@@ -66,7 +62,7 @@ pub trait BoxLayoutChildExt: 'static {
 
     /// set_x_align:
     /// @box_layout: A #BoxLayout
-    /// @child: A #ClutterActor
+    /// @child: A #Actor
     /// @x_align: An #Align
     ///
     /// Set the value of the #BoxLayoutChild:x-align property.
@@ -75,7 +71,7 @@ pub trait BoxLayoutChildExt: 'static {
 
     /// get_x_fill:
     /// @box_layout: A #BoxLayout
-    /// @child: A #ClutterActor
+    /// @child: A #Actor
     ///
     /// Get the value of the #BoxLayoutChild:x-fill property.
     ///
@@ -85,7 +81,7 @@ pub trait BoxLayoutChildExt: 'static {
 
     /// set_x_fill:
     /// @box_layout: A #BoxLayout
-    /// @child: A #ClutterActor
+    /// @child: A #Actor
     /// @x_fill: A #gboolean
     ///
     /// Set the value of the #BoxLayoutChild:x-fill property.
@@ -94,7 +90,7 @@ pub trait BoxLayoutChildExt: 'static {
 
     /// get_y_align:
     /// @box_layout: An #BoxLayout
-    /// @child: A #ClutterActor
+    /// @child: A #Actor
     ///
     /// Get the value of the #BoxLayoutChild:y-align property.
     ///
@@ -104,7 +100,7 @@ pub trait BoxLayoutChildExt: 'static {
 
     /// set_y_align:
     /// @box_layout: An #BoxLayout
-    /// @child: A #ClutterActor
+    /// @child: A #Actor
     /// @y_align: An #Align
     ///
     /// Set the value of the #BoxLayoutChild:y-align property.
@@ -113,7 +109,7 @@ pub trait BoxLayoutChildExt: 'static {
 
     /// get_y_fill:
     /// @box_layout: An #BoxLayout
-    /// @child: A #ClutterActor
+    /// @child: A #Actor
     ///
     /// Get the value of the #BoxLayoutChild:y-fill property
     ///
@@ -123,7 +119,7 @@ pub trait BoxLayoutChildExt: 'static {
 
     /// set_y_fill:
     /// @box_layout: An #BoxLayout
-    /// @child: A #ClutterActor
+    /// @child: A #Actor
     /// @y_fill: A #gboolean
     ///
     /// Set the value of the #BoxLayoutChild:y-fill property.
@@ -144,7 +140,7 @@ pub trait BoxLayoutChildExt: 'static {
 impl<O: Is<BoxLayoutChild>> BoxLayoutChildExt for O {
     /// get_expand:
     /// @box_layout: A #BoxLayout
-    /// @child: A #ClutterActor
+    /// @child: A #Actor
     ///
     /// Get the value of the #BoxLayoutChild:expand property
     ///
@@ -157,7 +153,7 @@ impl<O: Is<BoxLayoutChild>> BoxLayoutChildExt for O {
 
     /// set_expand:
     /// @box_layout: A #BoxLayout
-    /// @child: A #ClutterActor
+    /// @child: A #Actor
     /// @expand: A #gboolean
     ///
     /// Set the value of the #BoxLayoutChild:expand property.
@@ -170,7 +166,7 @@ impl<O: Is<BoxLayoutChild>> BoxLayoutChildExt for O {
 
     /// get_x_align:
     /// @box_layout: An #BoxLayout
-    /// @child: A #ClutterActor
+    /// @child: A #Actor
     ///
     /// Get the value of the #BoxLayoutChild:x-align property
     ///
@@ -183,7 +179,7 @@ impl<O: Is<BoxLayoutChild>> BoxLayoutChildExt for O {
 
     /// set_x_align:
     /// @box_layout: A #BoxLayout
-    /// @child: A #ClutterActor
+    /// @child: A #Actor
     /// @x_align: An #Align
     ///
     /// Set the value of the #BoxLayoutChild:x-align property.
@@ -196,7 +192,7 @@ impl<O: Is<BoxLayoutChild>> BoxLayoutChildExt for O {
 
     /// get_x_fill:
     /// @box_layout: A #BoxLayout
-    /// @child: A #ClutterActor
+    /// @child: A #Actor
     ///
     /// Get the value of the #BoxLayoutChild:x-fill property.
     ///
@@ -209,7 +205,7 @@ impl<O: Is<BoxLayoutChild>> BoxLayoutChildExt for O {
 
     /// set_x_fill:
     /// @box_layout: A #BoxLayout
-    /// @child: A #ClutterActor
+    /// @child: A #Actor
     /// @x_fill: A #gboolean
     ///
     /// Set the value of the #BoxLayoutChild:x-fill property.
@@ -222,7 +218,7 @@ impl<O: Is<BoxLayoutChild>> BoxLayoutChildExt for O {
 
     /// get_y_align:
     /// @box_layout: An #BoxLayout
-    /// @child: A #ClutterActor
+    /// @child: A #Actor
     ///
     /// Get the value of the #BoxLayoutChild:y-align property.
     ///
@@ -235,7 +231,7 @@ impl<O: Is<BoxLayoutChild>> BoxLayoutChildExt for O {
 
     /// set_y_align:
     /// @box_layout: An #BoxLayout
-    /// @child: A #ClutterActor
+    /// @child: A #Actor
     /// @y_align: An #Align
     ///
     /// Set the value of the #BoxLayoutChild:y-align property.
@@ -248,7 +244,7 @@ impl<O: Is<BoxLayoutChild>> BoxLayoutChildExt for O {
 
     /// get_y_fill:
     /// @box_layout: An #BoxLayout
-    /// @child: A #ClutterActor
+    /// @child: A #Actor
     ///
     /// Get the value of the #BoxLayoutChild:y-fill property
     ///
@@ -261,7 +257,7 @@ impl<O: Is<BoxLayoutChild>> BoxLayoutChildExt for O {
 
     /// set_y_fill:
     /// @box_layout: An #BoxLayout
-    /// @child: A #ClutterActor
+    /// @child: A #Actor
     /// @y_fill: A #gboolean
     ///
     /// Set the value of the #BoxLayoutChild:y-fill property.

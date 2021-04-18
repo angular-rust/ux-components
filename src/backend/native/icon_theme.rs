@@ -1,10 +1,8 @@
 #![allow(unused_variables)]
 
-// use std::mem::transmute;
 use crate::prelude::*;
 use glib::signal::SignalHandlerId;
-use std::fmt;
-use std::{boxed::Box as Box_, cell::RefCell};
+use std::{cell::RefCell, fmt};
 
 #[derive(Clone, Debug)]
 pub struct IconThemeProps {
@@ -51,8 +49,6 @@ impl AsRef<IconTheme> for IconTheme {
         self
     }
 }
-
-pub const NONE_ICON_THEME: Option<&IconTheme> = None;
 
 pub trait IconThemeExt: 'static {
     ///get_search_paths:

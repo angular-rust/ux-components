@@ -1,11 +1,9 @@
 #![allow(unused_variables)]
 
-// use std::mem::transmute;
-use super::Widget;
 use crate::prelude::*;
+use crate::{Actor, Timeline, Widget};
 use glib::signal::SignalHandlerId;
-use std::fmt;
-use std::{boxed::Box as Box_, cell::RefCell};
+use std::{cell::RefCell, fmt};
 
 #[derive(Clone, Debug)]
 pub struct ToggleHandle {
@@ -15,9 +13,9 @@ pub struct ToggleHandle {
 #[derive(Clone, Debug)]
 pub struct ToggleProps {
     pub active: bool,
-    pub handle: Option<clutter::Actor>,
+    pub handle: Option<Actor>,
     pub handle_filename: String,
-    pub timeline: Option<clutter::Timeline>,
+    pub timeline: Option<Timeline>,
     pub position: f32,
     pub drag_offset: f32,
     pub slide_length: f32,
@@ -33,7 +31,7 @@ pub struct Toggle {
 impl Toggle {
     pub fn new() -> Toggle {
         // assert_initialized_main_thread!();
-        // unsafe { clutter::Actor::from_glib_none(ffi::toggle_new()).unsafe_cast() }
+        // unsafe { Actor::from_glib_none(ffi::toggle_new()).unsafe_cast() }
         unimplemented!()
     }
 }
@@ -61,16 +59,14 @@ impl AsRef<Widget> for Toggle {
     }
 }
 
-impl Is<clutter::Actor> for Toggle {}
+impl Is<Actor> for Toggle {}
 
-impl AsRef<clutter::Actor> for Toggle {
-    fn as_ref(&self) -> &clutter::Actor {
-        let actor: &clutter::Actor = self.widget.as_ref();
+impl AsRef<Actor> for Toggle {
+    fn as_ref(&self) -> &Actor {
+        let actor: &Actor = self.widget.as_ref();
         actor
     }
 }
-
-pub const NONE_TOGGLE: Option<&Toggle> = None;
 
 pub trait ToggleExt: 'static {
     fn get_active(&self) -> bool;

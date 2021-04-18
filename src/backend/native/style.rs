@@ -1,12 +1,9 @@
 #![allow(unused_variables)]
 
-// use std::mem::transmute;
-// use std::ptr;
 use crate::prelude::*;
 use glib::signal::SignalHandlerId;
 use gobject_sys::GValue;
-use std::fmt;
-use std::{boxed::Box as Box_, cell::RefCell};
+use std::{cell::RefCell, fmt};
 
 #[derive(Clone, Default, Debug)]
 pub struct StyleSheetValue {
@@ -103,7 +100,7 @@ impl Style {
         // GError *internal_error;
         // gboolean result;
 
-        // g_return_val_if_fail(filename != None, FALSE);
+        // g_return_val_if_fail(filename != None, false);
 
         // if !data && !g_file_test(filename, G_FILE_TEST_IS_REGULAR) {
         //     internal_error = g_error_new (STYLE_ERROR,
@@ -130,7 +127,7 @@ impl Style {
         //                                   STYLE_ERROR_PARSE_ERROR,
         //                                   "Could not parse '%s'", filename);
         //     g_propagate_error(error, internal_error);
-        //     return FALSE;
+        //     return false;
         // }
 
         // // Increment the age so we know if a style cache entry is valid
@@ -169,8 +166,6 @@ impl AsRef<Style> for Style {
         self
     }
 }
-
-pub const NONE_STYLE: Option<&Style> = None;
 
 pub trait StyleExt: 'static {
     //fn get(&self, stylable: &Stylable, first_property_name: &str, : /*Unknown conversion*/Fundamental: VarArgs);

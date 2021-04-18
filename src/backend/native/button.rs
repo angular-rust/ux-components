@@ -1,11 +1,9 @@
 #![allow(unused_variables)]
 
-// use std::mem::transmute;
-use super::{Action, Position, Widget};
 use crate::prelude::*;
+use crate::{PushAction, Actor, Position, Widget};
 use glib::signal::SignalHandlerId;
-use std::fmt;
-use std::{boxed::Box as Box_, cell::RefCell};
+use std::{cell::RefCell, fmt};
 
 #[derive(Clone, Debug)]
 pub struct ButtonProps {
@@ -18,16 +16,16 @@ pub struct ButtonProps {
     pub is_pressed: bool,
     pub is_toggle: bool,
     pub is_toggled: bool,
-    pub action: Option<Action>,
+    pub action: Option<PushAction>,
     pub icon_position: Position,
     pub icon_visible: bool,
     pub label_visible: bool,
     pub content_image: cogl::Texture,
-    // pub animation: clutter::Animation,
-    pub child: clutter::Actor,
-    pub hbox: clutter::Actor,
-    pub icon: clutter::Actor,
-    pub label: clutter::Actor,
+    // pub animation: Animation,
+    pub child: Actor,
+    pub hbox: Actor,
+    pub icon: Actor,
+    pub label: Actor,
     // pub action_label_binding: GBinding,
     // pub action_icon_binding: GBinding,
 }
@@ -41,14 +39,14 @@ pub struct Button {
 impl Button {
     pub fn new() -> Button {
         // assert_initialized_main_thread!();
-        // unsafe { clutter::Actor::from_glib_none(ffi::button_new()).unsafe_cast() }
+        // unsafe { Actor::from_glib_none(ffi::button_new()).unsafe_cast() }
         unimplemented!()
     }
 
     pub fn with_label(text: &str) -> Button {
         // assert_initialized_main_thread!();
         // unsafe {
-        //     clutter::Actor::from_glib_none(ffi::button_new_with_label(text.to_glib_none().0))
+        //     Actor::from_glib_none(ffi::button_new_with_label(text.to_glib_none().0))
         //         .unsafe_cast()
         // }
         unimplemented!()
@@ -78,26 +76,24 @@ impl AsRef<Widget> for Button {
     }
 }
 
-impl Is<clutter::Actor> for Button {}
+impl Is<Actor> for Button {}
 
-impl AsRef<clutter::Actor> for Button {
-    fn as_ref(&self) -> &clutter::Actor {
-        let actor: &clutter::Actor = self.widget.as_ref();
+impl AsRef<Actor> for Button {
+    fn as_ref(&self) -> &Actor {
+        let actor: &Actor = self.widget.as_ref();
         actor
     }
 }
-
-pub const NONE_BUTTON: Option<&Button> = None;
 
 pub trait ButtonExt: 'static {
     /// get_action:
     /// @button: A #Button
     ///
-    /// Retrieves the #Action associated with @button.
+    /// Retrieves the #PushAction associated with @button.
     ///
-    /// Returns: (transfer none): A #Action
+    /// Returns: (transfer none): A #PushAction
     ///
-    fn get_action(&self) -> Option<Action>;
+    fn get_action(&self) -> Option<PushAction>;
 
     /// get_icon_name:
     /// @button: a #Button
@@ -174,12 +170,12 @@ pub trait ButtonExt: 'static {
 
     /// set_action:
     /// @button: A #Button
-    /// @action: A #Action
+    /// @action: A #PushAction
     ///
     /// Sets @action as the action for @button. @Button will take its label and
     /// icon from @action.
     ///
-    fn set_action<P: Is<Action>>(&self, action: &P);
+    fn set_action<P: Is<PushAction>>(&self, action: &P);
 
     /// set_icon_name:
     /// @button: a #Button
@@ -282,11 +278,11 @@ impl<O: Is<Button>> ButtonExt for O {
     /// get_action:
     /// @button: A #Button
     ///
-    /// Retrieves the #Action associated with @button.
+    /// Retrieves the #PushAction associated with @button.
     ///
-    /// Returns: (transfer none): A #Action
+    /// Returns: (transfer none): A #PushAction
     ///
-    fn get_action(&self) -> Option<Action> {
+    fn get_action(&self) -> Option<PushAction> {
         let button = self.as_ref();
         button.props.borrow().action.clone()
     }
@@ -402,12 +398,12 @@ impl<O: Is<Button>> ButtonExt for O {
 
     /// set_action:
     /// @button: A #Button
-    /// @action: A #Action
+    /// @action: A #PushAction
     ///
     /// Sets @action as the action for @button. @Button will take its label and
     /// icon from @action.
     ///
-    fn set_action<P: Is<Action>>(&self, action: &P) {
+    fn set_action<P: Is<PushAction>>(&self, action: &P) {
         let button = self.as_ref();
         let action = action.as_ref();
 
@@ -426,7 +422,7 @@ impl<O: Is<Button>> ButtonExt for O {
         // display_name = action.get_display_name();
 
         // icon_set_icon_name(ICON (button.icon), action.get_icon());
-        // clutter_text_set_text(CLUTTER_TEXT (button.label),
+        // text_set_text(CLUTTER_TEXT (button.label),
         //                        (display_name) ? display_name : "");
 
         // // bind action properties to button properties
@@ -538,7 +534,7 @@ impl<O: Is<Button>> ButtonExt for O {
 
         props.text = text;
 
-        // clutter_text_set_text(CLUTTER_TEXT(button.label), button.text);
+        // text_set_text(CLUTTER_TEXT(button.label), button.text);
         // button.update_contents();
         // g_object_notify(G_OBJECT(button), "label");
     }

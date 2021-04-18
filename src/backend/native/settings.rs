@@ -1,10 +1,8 @@
 #![allow(unused_variables)]
 
-// use std::mem::transmute;
 use crate::prelude::*;
 use glib::signal::SignalHandlerId;
-use std::fmt;
-use std::{boxed::Box as Box_, cell::RefCell};
+use std::{cell::RefCell, fmt};
 
 #[derive(Clone, Debug)]
 pub struct SettingsProvider;
@@ -41,8 +39,6 @@ impl AsRef<Settings> for Settings {
         self
     }
 }
-
-pub const NONE_SETTINGS: Option<&Settings> = None;
 
 pub trait SettingsExt: 'static {
     fn get_property_drag_threshold(&self) -> u32;

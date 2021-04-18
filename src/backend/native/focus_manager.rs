@@ -1,15 +1,13 @@
 #![allow(unused_variables)]
 
-// use std::mem::transmute;
 use crate::prelude::*;
-use crate::{FocusDirection, FocusHint, Focusable};
+use crate::{FocusDirection, FocusHint, Focusable, Stage};
 use glib::signal::SignalHandlerId;
-use std::fmt;
-use std::{boxed::Box as Box_, cell::RefCell};
+use std::{cell::RefCell, fmt};
 
 #[derive(Clone, Debug)]
 pub struct FocusManagerProps {
-    pub stage: Option<clutter::Stage>,
+    pub stage: Option<Stage>,
 
     pub focused: Option<Focusable>,
     pub focused_toplevel: Option<Focusable>,
@@ -22,7 +20,7 @@ pub struct FocusManager {
 }
 
 impl FocusManager {
-    //pub fn get_for_stage(stage: &clutter::Stage) -> Option<FocusManager> {
+    //pub fn get_for_stage(stage: &Stage) -> Option<FocusManager> {
     //    unsafe { TODO: call ffi:focus_manager_get_for_stage() }
     //}
 }
@@ -35,8 +33,6 @@ impl AsRef<FocusManager> for FocusManager {
         self
     }
 }
-
-pub const NONE_FOCUS_MANAGER: Option<&FocusManager> = None;
 
 pub trait FocusManagerExt: 'static {
     /// focus_manager_get_focused:
@@ -53,9 +49,9 @@ pub trait FocusManagerExt: 'static {
     ///
     /// Get the stage the FocusManager is associated with
     ///
-    /// Returns: (transfer none): A #ClutterStage
+    /// Returns: (transfer none): A #Stage
     ///
-    fn get_stage(&self) -> Option<clutter::Stage>;
+    fn get_stage(&self) -> Option<Stage>;
 
     /// focus_manager_move_focus:
     /// @manager: the focus manager
@@ -114,9 +110,9 @@ impl<O: Is<FocusManager>> FocusManagerExt for O {
     ///
     /// Get the stage the FocusManager is associated with
     ///
-    /// Returns: (transfer none): A #ClutterStage
+    /// Returns: (transfer none): A #Stage
     ///
-    fn get_stage(&self) -> Option<clutter::Stage> {
+    fn get_stage(&self) -> Option<Stage> {
         let focusmanager = self.as_ref();
         let props = focusmanager.props.borrow();
 

@@ -1,19 +1,17 @@
 #![allow(unused_variables)]
 
-// use std::mem::transmute;
-use super::Widget;
 use crate::prelude::*;
+use crate::{Actor, Widget};
 use glib::signal::SignalHandlerId;
-use std::fmt;
-use std::{boxed::Box as Box_, cell::RefCell};
+use std::{cell::RefCell, fmt};
 
 #[derive(Clone, Debug)]
 pub struct SliderProps {
-    pub trough_bg: Option<clutter::Actor>,
-    pub fill: Option<clutter::Actor>,
-    pub trough: Option<clutter::Actor>,
-    pub handle: Option<clutter::Actor>,
-    pub buffer: Option<clutter::Actor>,
+    pub trough_bg: Option<Actor>,
+    pub fill: Option<Actor>,
+    pub trough: Option<Actor>,
+    pub handle: Option<Actor>,
+    pub buffer: Option<Actor>,
 
     pub capture_handler: u64,
     pub x_origin: f32,
@@ -42,7 +40,7 @@ pub struct Slider {
 impl Slider {
     pub fn new() -> Slider {
         // assert_initialized_main_thread!();
-        // unsafe { clutter::Actor::from_glib_none(ffi::slider_new()).unsafe_cast() }
+        // unsafe { Actor::from_glib_none(ffi::slider_new()).unsafe_cast() }
         unimplemented!()
     }
 }
@@ -70,16 +68,14 @@ impl AsRef<Widget> for Slider {
     }
 }
 
-impl Is<clutter::Actor> for Slider {}
+impl Is<Actor> for Slider {}
 
-impl AsRef<clutter::Actor> for Slider {
-    fn as_ref(&self) -> &clutter::Actor {
-        let actor: &clutter::Actor = self.widget.as_ref();
+impl AsRef<Actor> for Slider {
+    fn as_ref(&self) -> &Actor {
+        let actor: &Actor = self.widget.as_ref();
         actor
     }
 }
-
-pub const NONE_SLIDER: Option<&Slider> = None;
 
 pub trait SliderExt: 'static {
     /// get_buffer_value:
@@ -170,7 +166,7 @@ impl<O: Is<Slider>> SliderExt for O {
         }
 
         props.buffer_value = value;
-        // clutter_actor_queue_relayout(CLUTTER_ACTOR(slider));
+        // actor_queue_relayout(CLUTTER_ACTOR(slider));
         // g_object_notify(G_OBJECT(slider), "buffer-value");
     }
 
@@ -197,7 +193,7 @@ impl<O: Is<Slider>> SliderExt for O {
 
         // if !props.capture_handler {
         //     slider_allocate_fill_handle(slider, None, 0);
-        //     clutter_actor_queue_redraw(CLUTTER_ACTOR(slider));
+        //     actor_queue_redraw(CLUTTER_ACTOR(slider));
         // }
 
         // g_object_notify(G_OBJECT(slider), "value");

@@ -1,15 +1,13 @@
 #![allow(unused_variables)]
 
-// use std::mem::transmute;
-use super::Align;
 use crate::prelude::*;
+use crate::{Align, ChildMeta};
 use glib::signal::SignalHandlerId;
-use std::fmt;
-use std::{boxed::Box as Box_, cell::RefCell};
+use std::{cell::RefCell, fmt};
 
 #[derive(Clone, Debug)]
 pub struct StackChildProps {
-    pub parent: clutter::ChildMeta,
+    pub parent: ChildMeta,
     pub x_fill: bool,
     pub y_fill: bool,
     pub fit: bool,
@@ -32,12 +30,10 @@ impl AsRef<StackChild> for StackChild {
     }
 }
 
-pub const NONE_STACK_CHILD: Option<&StackChild> = None;
-
 pub trait StackChildExt: 'static {
     /// get_crop:
     /// @stack: An #Stack
-    /// @child: A #ClutterActor
+    /// @child: A #Actor
     ///
     /// Get the value of the #StackChild:fit property.
     ///
@@ -47,7 +43,7 @@ pub trait StackChildExt: 'static {
 
     /// set_crop:
     /// @stack: An #Stack
-    /// @child: A #ClutterActor
+    /// @child: A #Actor
     /// @crop: A #gboolean
     ///
     /// Set the value of the #StackChild:crop property.
@@ -56,7 +52,7 @@ pub trait StackChildExt: 'static {
 
     /// get_fit:
     /// @stack: An #Stack
-    /// @child: A #ClutterActor
+    /// @child: A #Actor
     ///
     ///* Get the value of the #StackChild:fit property.
     ///
@@ -66,7 +62,7 @@ pub trait StackChildExt: 'static {
 
     /// set_fit:
     /// @stack: An #Stack
-    /// @child: A #ClutterActor
+    /// @child: A #Actor
     /// @fit: A #gboolean
     ///
     /// Set the value of the #StackChild:fit property.
@@ -75,7 +71,7 @@ pub trait StackChildExt: 'static {
 
     /// get_x_align:
     /// @stack: An #Stack
-    /// @child: A #ClutterActor
+    /// @child: A #Actor
     ///
     /// Get the value of the #StackChild:x-align property
     ///
@@ -85,7 +81,7 @@ pub trait StackChildExt: 'static {
 
     /// set_x_align:
     /// @stack: A #Stack
-    /// @child: A #ClutterActor
+    /// @child: A #Actor
     /// @x_align: An #Align
     ///
     /// Set the value of the #StackChild:x-align property.
@@ -94,7 +90,7 @@ pub trait StackChildExt: 'static {
 
     /// get_x_fill:
     /// @stack: A #Stack
-    /// @child: A #ClutterActor
+    /// @child: A #Actor
     ///
     /// Get the value of the #StackChild:x-fill property.
     ///
@@ -104,7 +100,7 @@ pub trait StackChildExt: 'static {
 
     /// set_x_fill:
     /// @stack: A #Stack
-    /// @child: A #ClutterActor
+    /// @child: A #Actor
     /// @x_fill: A #gboolean
     ///
     /// Set the value of the #StackChild:x-fill property.
@@ -113,7 +109,7 @@ pub trait StackChildExt: 'static {
 
     /// get_y_align:
     /// @stack: An #Stack
-    /// @child: A #ClutterActor
+    /// @child: A #Actor
     ///
     /// Get the value of the #StackChild:y-align property.
     ///
@@ -123,7 +119,7 @@ pub trait StackChildExt: 'static {
 
     /// set_y_align:
     /// @stack: An #Stack
-    /// @child: A #ClutterActor
+    /// @child: A #Actor
     /// @y_align: An #Align
     ///
     /// Set the value of the #StackChild:y-align property.
@@ -132,7 +128,7 @@ pub trait StackChildExt: 'static {
 
     /// get_y_fill:
     /// @stack: An #Stack
-    /// @child: A #ClutterActor
+    /// @child: A #Actor
     ///
     /// Get the value of the #StackChild:y-fill property
     ///
@@ -142,7 +138,7 @@ pub trait StackChildExt: 'static {
 
     /// set_y_fill:
     /// @stack: An #Stack
-    /// @child: A #ClutterActor
+    /// @child: A #Actor
     /// @y_fill: A #gboolean
     ///
     /// Set the value of the #StackChild:y-fill property.
@@ -165,7 +161,7 @@ pub trait StackChildExt: 'static {
 impl<O: Is<StackChild>> StackChildExt for O {
     /// get_crop:
     /// @stack: An #Stack
-    /// @child: A #ClutterActor
+    /// @child: A #Actor
     ///
     /// Get the value of the #StackChild:fit property.
     ///
@@ -180,7 +176,7 @@ impl<O: Is<StackChild>> StackChildExt for O {
 
     /// set_crop:
     /// @stack: An #Stack
-    /// @child: A #ClutterActor
+    /// @child: A #Actor
     /// @crop: A #gboolean
     ///
     /// Set the value of the #StackChild:crop property.
@@ -190,12 +186,12 @@ impl<O: Is<StackChild>> StackChildExt for O {
         let mut props = stackchild.props.borrow_mut();
 
         props.crop = crop;
-        // clutter_actor_queue_relayout(child);
+        // actor_queue_relayout(child);
     }
 
     /// get_fit:
     /// @stack: An #Stack
-    /// @child: A #ClutterActor
+    /// @child: A #Actor
     ///
     ///* Get the value of the #StackChild:fit property.
     ///
@@ -210,7 +206,7 @@ impl<O: Is<StackChild>> StackChildExt for O {
 
     /// set_fit:
     /// @stack: An #Stack
-    /// @child: A #ClutterActor
+    /// @child: A #Actor
     /// @fit: A #gboolean
     ///
     /// Set the value of the #StackChild:fit property.
@@ -220,12 +216,12 @@ impl<O: Is<StackChild>> StackChildExt for O {
         let mut props = stackchild.props.borrow_mut();
 
         props.fit = fit;
-        // clutter_actor_queue_relayout(child);
+        // actor_queue_relayout(child);
     }
 
     /// get_x_align:
     /// @stack: An #Stack
-    /// @child: A #ClutterActor
+    /// @child: A #Actor
     ///
     /// Get the value of the #StackChild:x-align property
     ///
@@ -240,7 +236,7 @@ impl<O: Is<StackChild>> StackChildExt for O {
 
     /// set_x_align:
     /// @stack: A #Stack
-    /// @child: A #ClutterActor
+    /// @child: A #Actor
     /// @x_align: An #Align
     ///
     /// Set the value of the #StackChild:x-align property.
@@ -250,12 +246,12 @@ impl<O: Is<StackChild>> StackChildExt for O {
         let mut props = stackchild.props.borrow_mut();
 
         props.x_align = x_align;
-        // clutter_actor_queue_relayout(child);
+        // actor_queue_relayout(child);
     }
 
     /// get_x_fill:
     /// @stack: A #Stack
-    /// @child: A #ClutterActor
+    /// @child: A #Actor
     ///
     /// Get the value of the #StackChild:x-fill property.
     ///
@@ -270,7 +266,7 @@ impl<O: Is<StackChild>> StackChildExt for O {
 
     /// set_x_fill:
     /// @stack: A #Stack
-    /// @child: A #ClutterActor
+    /// @child: A #Actor
     /// @x_fill: A #gboolean
     ///
     /// Set the value of the #StackChild:x-fill property.
@@ -280,12 +276,12 @@ impl<O: Is<StackChild>> StackChildExt for O {
         let mut props = stackchild.props.borrow_mut();
 
         props.x_fill = x_fill;
-        // clutter_actor_queue_relayout(child);
+        // actor_queue_relayout(child);
     }
 
     /// get_y_align:
     /// @stack: An #Stack
-    /// @child: A #ClutterActor
+    /// @child: A #Actor
     ///
     /// Get the value of the #StackChild:y-align property.
     ///
@@ -300,7 +296,7 @@ impl<O: Is<StackChild>> StackChildExt for O {
 
     /// set_y_align:
     /// @stack: An #Stack
-    /// @child: A #ClutterActor
+    /// @child: A #Actor
     /// @y_align: An #Align
     ///
     /// Set the value of the #StackChild:y-align property.
@@ -310,12 +306,12 @@ impl<O: Is<StackChild>> StackChildExt for O {
         let mut props = stackchild.props.borrow_mut();
 
         props.y_align = y_align;
-        // clutter_actor_queue_relayout(child);
+        // actor_queue_relayout(child);
     }
 
     /// get_y_fill:
     /// @stack: An #Stack
-    /// @child: A #ClutterActor
+    /// @child: A #Actor
     ///
     /// Get the value of the #StackChild:y-fill property
     ///
@@ -330,7 +326,7 @@ impl<O: Is<StackChild>> StackChildExt for O {
 
     /// set_y_fill:
     /// @stack: An #Stack
-    /// @child: A #ClutterActor
+    /// @child: A #Actor
     /// @y_fill: A #gboolean
     ///
     /// Set the value of the #StackChild:y-fill property.
@@ -340,7 +336,7 @@ impl<O: Is<StackChild>> StackChildExt for O {
         let mut props = stackchild.props.borrow_mut();
 
         props.y_fill = y_fill;
-        // clutter_actor_queue_relayout(child);
+        // actor_queue_relayout(child);
     }
 
     fn connect_property_crop_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {

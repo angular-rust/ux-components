@@ -1,13 +1,12 @@
 #![allow(unused_variables)]
 
-use super::Widget;
 use crate::prelude::*;
-use std::fmt;
-use std::{boxed::Box as Box_, cell::RefCell};
+use crate::{Actor, Stage, Widget};
+use std::{cell::RefCell, fmt};
 
 #[derive(Clone, Debug)]
 pub struct FloatingWidgetProps {
-    pub stage: Option<clutter::Stage>,
+    pub stage: Option<Stage>,
     pub paint_matrix: Option<cogl::Matrix>,
     pub pick_matrix: Option<cogl::Matrix>,
     pub pick_handler: u64,
@@ -39,16 +38,14 @@ impl AsRef<Widget> for FloatingWidget {
     }
 }
 
-impl Is<clutter::Actor> for FloatingWidget {}
+impl Is<Actor> for FloatingWidget {}
 
-impl AsRef<clutter::Actor> for FloatingWidget {
-    fn as_ref(&self) -> &clutter::Actor {
-        let actor: &clutter::Actor = self.widget.as_ref();
+impl AsRef<Actor> for FloatingWidget {
+    fn as_ref(&self) -> &Actor {
+        let actor: &Actor = self.widget.as_ref();
         actor
     }
 }
-
-pub const NONE_FLOATING_WIDGET: Option<&FloatingWidget> = None;
 
 impl fmt::Display for FloatingWidget {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {

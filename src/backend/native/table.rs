@@ -1,11 +1,9 @@
 #![allow(unused_variables)]
 
-// use std::mem::transmute;
-use super::{Align, Focusable, Orientation, Widget};
 use crate::prelude::*;
+use crate::{Actor, Align, Focusable, Widget};
 use glib::signal::SignalHandlerId;
-use std::fmt;
-use std::{boxed::Box as Box_, cell::RefCell};
+use std::{cell::RefCell, fmt};
 
 #[derive(Clone, Debug)]
 pub struct DimensionData {
@@ -47,7 +45,7 @@ pub struct Table {
 impl Table {
     pub fn new() -> Table {
         // assert_initialized_main_thread!();
-        // unsafe { clutter::Actor::from_glib_none(ffi::table_new()).unsafe_cast() }
+        // unsafe { Actor::from_glib_none(ffi::table_new()).unsafe_cast() }
         unimplemented!()
     }
 }
@@ -75,57 +73,55 @@ impl AsRef<Widget> for Table {
     }
 }
 
-impl Is<clutter::Actor> for Table {}
+impl Is<Actor> for Table {}
 
-impl AsRef<clutter::Actor> for Table {
-    fn as_ref(&self) -> &clutter::Actor {
-        let actor: &clutter::Actor = self.widget.as_ref();
+impl AsRef<Actor> for Table {
+    fn as_ref(&self) -> &Actor {
+        let actor: &Actor = self.widget.as_ref();
         actor
     }
 }
 
-pub const NONE_TABLE: Option<&Table> = None;
-
 pub trait TableExt: 'static {
-    fn child_get_column<P: Is<clutter::Actor>>(&self, child: &P) -> i32;
+    fn child_get_column<P: Is<Actor>>(&self, child: &P) -> i32;
 
-    fn child_get_column_span<P: Is<clutter::Actor>>(&self, child: &P) -> i32;
+    fn child_get_column_span<P: Is<Actor>>(&self, child: &P) -> i32;
 
-    fn child_get_row<P: Is<clutter::Actor>>(&self, child: &P) -> i32;
+    fn child_get_row<P: Is<Actor>>(&self, child: &P) -> i32;
 
-    fn child_get_row_span<P: Is<clutter::Actor>>(&self, child: &P) -> i32;
+    fn child_get_row_span<P: Is<Actor>>(&self, child: &P) -> i32;
 
-    fn child_get_x_align<P: Is<clutter::Actor>>(&self, child: &P) -> Align;
+    fn child_get_x_align<P: Is<Actor>>(&self, child: &P) -> Align;
 
-    fn child_get_x_expand<P: Is<clutter::Actor>>(&self, child: &P) -> bool;
+    fn child_get_x_expand<P: Is<Actor>>(&self, child: &P) -> bool;
 
-    fn child_get_x_fill<P: Is<clutter::Actor>>(&self, child: &P) -> bool;
+    fn child_get_x_fill<P: Is<Actor>>(&self, child: &P) -> bool;
 
-    fn child_get_y_align<P: Is<clutter::Actor>>(&self, child: &P) -> Align;
+    fn child_get_y_align<P: Is<Actor>>(&self, child: &P) -> Align;
 
-    fn child_get_y_expand<P: Is<clutter::Actor>>(&self, child: &P) -> bool;
+    fn child_get_y_expand<P: Is<Actor>>(&self, child: &P) -> bool;
 
-    fn child_get_y_fill<P: Is<clutter::Actor>>(&self, child: &P) -> bool;
+    fn child_get_y_fill<P: Is<Actor>>(&self, child: &P) -> bool;
 
-    fn child_set_column<P: Is<clutter::Actor>>(&self, child: &P, col: i32);
+    fn child_set_column<P: Is<Actor>>(&self, child: &P, col: i32);
 
-    fn child_set_column_span<P: Is<clutter::Actor>>(&self, child: &P, span: i32);
+    fn child_set_column_span<P: Is<Actor>>(&self, child: &P, span: i32);
 
-    fn child_set_row<P: Is<clutter::Actor>>(&self, child: &P, row: i32);
+    fn child_set_row<P: Is<Actor>>(&self, child: &P, row: i32);
 
-    fn child_set_row_span<P: Is<clutter::Actor>>(&self, child: &P, span: i32);
+    fn child_set_row_span<P: Is<Actor>>(&self, child: &P, span: i32);
 
-    fn child_set_x_align<P: Is<clutter::Actor>>(&self, child: &P, align: Align);
+    fn child_set_x_align<P: Is<Actor>>(&self, child: &P, align: Align);
 
-    fn child_set_x_expand<P: Is<clutter::Actor>>(&self, child: &P, expand: bool);
+    fn child_set_x_expand<P: Is<Actor>>(&self, child: &P, expand: bool);
 
-    fn child_set_x_fill<P: Is<clutter::Actor>>(&self, child: &P, fill: bool);
+    fn child_set_x_fill<P: Is<Actor>>(&self, child: &P, fill: bool);
 
-    fn child_set_y_align<P: Is<clutter::Actor>>(&self, child: &P, align: Align);
+    fn child_set_y_align<P: Is<Actor>>(&self, child: &P, align: Align);
 
-    fn child_set_y_expand<P: Is<clutter::Actor>>(&self, child: &P, expand: bool);
+    fn child_set_y_expand<P: Is<Actor>>(&self, child: &P, expand: bool);
 
-    fn child_set_y_fill<P: Is<clutter::Actor>>(&self, child: &P, fill: bool);
+    fn child_set_y_fill<P: Is<Actor>>(&self, child: &P, fill: bool);
 
     /// get_actor_at:
     /// @table: a #Table
@@ -134,9 +130,9 @@ pub trait TableExt: 'static {
     ///
     /// Get an actor at a given position in @table.
     ///
-    /// Return value: (transfer none): the #ClutterActor a the given position, or None.
+    /// Return value: (transfer none): the #Actor a the given position, or None.
     ///
-    fn get_actor_at(&self, row: u32, column: u32) -> Option<clutter::Actor>;
+    fn get_actor_at(&self, row: u32, column: u32) -> Option<Actor>;
 
     /// get_column_count:
     /// @table: A #Table
@@ -184,11 +180,11 @@ pub trait TableExt: 'static {
     ///
     /// Note, column and rows numbers start from zero
     ///
-    fn insert_actor<P: Is<clutter::Actor>>(&self, actor: &P, row: u32, column: u32);
+    fn insert_actor<P: Is<Actor>>(&self, actor: &P, row: u32, column: u32);
 
     /// insert_actor_with_properties:
     /// @table: a #Table
-    /// @actor: the child #ClutterActor
+    /// @actor: the child #Actor
     /// @row: the row to place the child into
     /// @column: the column to place the child into
     /// @first_property_name: name of the first property to set
@@ -197,7 +193,7 @@ pub trait TableExt: 'static {
     /// Add an actor into at the specified row and column, with additional child
     /// properties to set.
     ///
-    //fn insert_actor_with_properties<P: Is<clutter::Actor>>(&self, actor: &P, row: i32, column: i32, first_property_name: &str, : /*Unknown conversion*/Fundamental: VarArgs);
+    //fn insert_actor_with_properties<P: Is<Actor>>(&self, actor: &P, row: i32, column: i32, first_property_name: &str, : /*Unknown conversion*/Fundamental: VarArgs);
 
     /// set_column_spacing:
     /// @table: a #Table
@@ -229,7 +225,7 @@ pub trait TableExt: 'static {
 }
 
 impl<O: Is<Table>> TableExt for O {
-    fn child_get_column<P: Is<clutter::Actor>>(&self, child: &P) -> i32 {
+    fn child_get_column<P: Is<Actor>>(&self, child: &P) -> i32 {
         let table = self.as_ref();
         let child = child.as_ref();
         // unsafe {
@@ -241,7 +237,7 @@ impl<O: Is<Table>> TableExt for O {
         unimplemented!()
     }
 
-    fn child_get_column_span<P: Is<clutter::Actor>>(&self, child: &P) -> i32 {
+    fn child_get_column_span<P: Is<Actor>>(&self, child: &P) -> i32 {
         let table = self.as_ref();
         let child = child.as_ref();
         // unsafe {
@@ -253,7 +249,7 @@ impl<O: Is<Table>> TableExt for O {
         unimplemented!()
     }
 
-    fn child_get_row<P: Is<clutter::Actor>>(&self, child: &P) -> i32 {
+    fn child_get_row<P: Is<Actor>>(&self, child: &P) -> i32 {
         let table = self.as_ref();
         let child = child.as_ref();
         // unsafe {
@@ -265,7 +261,7 @@ impl<O: Is<Table>> TableExt for O {
         unimplemented!()
     }
 
-    fn child_get_row_span<P: Is<clutter::Actor>>(&self, child: &P) -> i32 {
+    fn child_get_row_span<P: Is<Actor>>(&self, child: &P) -> i32 {
         let table = self.as_ref();
         let child = child.as_ref();
         // unsafe {
@@ -277,14 +273,14 @@ impl<O: Is<Table>> TableExt for O {
         unimplemented!()
     }
 
-    fn child_get_x_align<P: Is<clutter::Actor>>(&self, child: &P) -> Align {
+    fn child_get_x_align<P: Is<Actor>>(&self, child: &P) -> Align {
         let table = self.as_ref();
         let child = child.as_ref();
         //    unsafe { TODO: call ffi:table_child_get_x_align() }
         unimplemented!()
     }
 
-    fn child_get_x_expand<P: Is<clutter::Actor>>(&self, child: &P) -> bool {
+    fn child_get_x_expand<P: Is<Actor>>(&self, child: &P) -> bool {
         let table = self.as_ref();
         let child = child.as_ref();
         // unsafe {
@@ -296,7 +292,7 @@ impl<O: Is<Table>> TableExt for O {
         unimplemented!()
     }
 
-    fn child_get_x_fill<P: Is<clutter::Actor>>(&self, child: &P) -> bool {
+    fn child_get_x_fill<P: Is<Actor>>(&self, child: &P) -> bool {
         let table = self.as_ref();
         let child = child.as_ref();
         // unsafe {
@@ -308,14 +304,14 @@ impl<O: Is<Table>> TableExt for O {
         unimplemented!()
     }
 
-    fn child_get_y_align<P: Is<clutter::Actor>>(&self, child: &P) -> Align {
+    fn child_get_y_align<P: Is<Actor>>(&self, child: &P) -> Align {
         let table = self.as_ref();
         let child = child.as_ref();
         //    unsafe { TODO: call ffi:table_child_get_y_align() }
         unimplemented!()
     }
 
-    fn child_get_y_expand<P: Is<clutter::Actor>>(&self, child: &P) -> bool {
+    fn child_get_y_expand<P: Is<Actor>>(&self, child: &P) -> bool {
         let table = self.as_ref();
         let child = child.as_ref();
         // unsafe {
@@ -327,7 +323,7 @@ impl<O: Is<Table>> TableExt for O {
         unimplemented!()
     }
 
-    fn child_get_y_fill<P: Is<clutter::Actor>>(&self, child: &P) -> bool {
+    fn child_get_y_fill<P: Is<Actor>>(&self, child: &P) -> bool {
         let table = self.as_ref();
         let child = child.as_ref();
         // unsafe {
@@ -339,7 +335,7 @@ impl<O: Is<Table>> TableExt for O {
         unimplemented!()
     }
 
-    fn child_set_column<P: Is<clutter::Actor>>(&self, child: &P, col: i32) {
+    fn child_set_column<P: Is<Actor>>(&self, child: &P, col: i32) {
         let table = self.as_ref();
         let child = child.as_ref();
         // unsafe {
@@ -352,7 +348,7 @@ impl<O: Is<Table>> TableExt for O {
         unimplemented!()
     }
 
-    fn child_set_column_span<P: Is<clutter::Actor>>(&self, child: &P, span: i32) {
+    fn child_set_column_span<P: Is<Actor>>(&self, child: &P, span: i32) {
         let table = self.as_ref();
         let child = child.as_ref();
         // unsafe {
@@ -365,7 +361,7 @@ impl<O: Is<Table>> TableExt for O {
         unimplemented!()
     }
 
-    fn child_set_row<P: Is<clutter::Actor>>(&self, child: &P, row: i32) {
+    fn child_set_row<P: Is<Actor>>(&self, child: &P, row: i32) {
         let table = self.as_ref();
         let child = child.as_ref();
         // unsafe {
@@ -378,7 +374,7 @@ impl<O: Is<Table>> TableExt for O {
         unimplemented!()
     }
 
-    fn child_set_row_span<P: Is<clutter::Actor>>(&self, child: &P, span: i32) {
+    fn child_set_row_span<P: Is<Actor>>(&self, child: &P, span: i32) {
         let table = self.as_ref();
         let child = child.as_ref();
         // unsafe {
@@ -391,14 +387,14 @@ impl<O: Is<Table>> TableExt for O {
         unimplemented!()
     }
 
-    fn child_set_x_align<P: Is<clutter::Actor>>(&self, child: &P, align: Align) {
+    fn child_set_x_align<P: Is<Actor>>(&self, child: &P, align: Align) {
         let table = self.as_ref();
         let child = child.as_ref();
         //    unsafe { TODO: call ffi:table_child_set_x_align() }
         unimplemented!()
     }
 
-    fn child_set_x_expand<P: Is<clutter::Actor>>(&self, child: &P, expand: bool) {
+    fn child_set_x_expand<P: Is<Actor>>(&self, child: &P, expand: bool) {
         let table = self.as_ref();
         let child = child.as_ref();
         // unsafe {
@@ -411,7 +407,7 @@ impl<O: Is<Table>> TableExt for O {
         unimplemented!()
     }
 
-    fn child_set_x_fill<P: Is<clutter::Actor>>(&self, child: &P, fill: bool) {
+    fn child_set_x_fill<P: Is<Actor>>(&self, child: &P, fill: bool) {
         let table = self.as_ref();
         let child = child.as_ref();
         // unsafe {
@@ -424,14 +420,14 @@ impl<O: Is<Table>> TableExt for O {
         unimplemented!()
     }
 
-    fn child_set_y_align<P: Is<clutter::Actor>>(&self, child: &P, align: Align) {
+    fn child_set_y_align<P: Is<Actor>>(&self, child: &P, align: Align) {
         let table = self.as_ref();
         let child = child.as_ref();
         //    unsafe { TODO: call ffi:table_child_set_y_align() }
         unimplemented!()
     }
 
-    fn child_set_y_expand<P: Is<clutter::Actor>>(&self, child: &P, expand: bool) {
+    fn child_set_y_expand<P: Is<Actor>>(&self, child: &P, expand: bool) {
         let table = self.as_ref();
         let child = child.as_ref();
         // unsafe {
@@ -444,7 +440,7 @@ impl<O: Is<Table>> TableExt for O {
         unimplemented!()
     }
 
-    fn child_set_y_fill<P: Is<clutter::Actor>>(&self, child: &P, fill: bool) {
+    fn child_set_y_fill<P: Is<Actor>>(&self, child: &P, fill: bool) {
         let table = self.as_ref();
         let child = child.as_ref();
         // unsafe {
@@ -464,9 +460,9 @@ impl<O: Is<Table>> TableExt for O {
     ///
     /// Get an actor at a given position in @table.
     ///
-    /// Return value: (transfer none): the #ClutterActor a the given position, or None.
+    /// Return value: (transfer none): the #Actor a the given position, or None.
     ///
-    fn get_actor_at(&self, row: u32, column: u32) -> Option<clutter::Actor> {
+    fn get_actor_at(&self, row: u32, column: u32) -> Option<Actor> {
         let table = self.as_ref();
         // table.find_actor_at(row, column);
         unimplemented!()
@@ -538,7 +534,7 @@ impl<O: Is<Table>> TableExt for O {
     ///
     /// Note, column and rows numbers start from zero
     ///
-    fn insert_actor<P: Is<clutter::Actor>>(&self, actor: &P, row: u32, column: u32) {
+    fn insert_actor<P: Is<Actor>>(&self, actor: &P, row: u32, column: u32) {
         let table = self.as_ref();
 
         // if row < 0 {
@@ -562,7 +558,7 @@ impl<O: Is<Table>> TableExt for O {
 
     /// insert_actor_with_properties:
     /// @table: a #Table
-    /// @actor: the child #ClutterActor
+    /// @actor: the child #Actor
     /// @row: the row to place the child into
     /// @column: the column to place the child into
     /// @first_property_name: name of the first property to set
@@ -571,7 +567,7 @@ impl<O: Is<Table>> TableExt for O {
     /// Add an actor into at the specified row and column, with additional child
     /// properties to set.
     ///
-    //fn insert_actor_with_properties<P: Is<clutter::Actor>>(&self, actor: &P, row: i32, column: i32, first_property_name: &str, : /*Unknown conversion*/Fundamental: VarArgs) {
+    //fn insert_actor_with_properties<P: Is<Actor>>(&self, actor: &P, row: i32, column: i32, first_property_name: &str, : /*Unknown conversion*/Fundamental: VarArgs) {
     //    unsafe { TODO: call ffi:table_insert_actor_with_properties() }
     //}
 

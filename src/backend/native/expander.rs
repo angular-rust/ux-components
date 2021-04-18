@@ -1,21 +1,19 @@
 #![allow(unused_variables)]
 
-// use std::mem::transmute;
-use super::Widget;
 use crate::prelude::*;
+use crate::{Actor, Timeline, Widget};
 use glib::signal::SignalHandlerId;
-use std::fmt;
-use std::{boxed::Box as Box_, cell::RefCell};
+use std::{cell::RefCell, fmt};
 
 #[derive(Clone, Debug)]
 pub struct ExpanderProps {
-    pub label: Option<clutter::Actor>,
-    pub arrow: Option<clutter::Actor>,
+    pub label: Option<Actor>,
+    pub arrow: Option<Actor>,
     pub spacing: f64,
-    pub timeline: Option<clutter::Timeline>,
+    pub timeline: Option<Timeline>,
     pub progress: u64,
     pub expanded: bool,
-    pub child: Option<clutter::Actor>,
+    pub child: Option<Actor>,
 }
 
 #[derive(Clone, Debug)]
@@ -27,7 +25,7 @@ pub struct Expander {
 impl Expander {
     pub fn new() -> Expander {
         // assert_initialized_main_thread!();
-        // unsafe { clutter::Actor::from_glib_none(ffi::expander_new()).unsafe_cast() }
+        // unsafe { Actor::from_glib_none(ffi::expander_new()).unsafe_cast() }
         unimplemented!()
     }
 }
@@ -55,16 +53,14 @@ impl AsRef<Widget> for Expander {
     }
 }
 
-impl Is<clutter::Actor> for Expander {}
+impl Is<Actor> for Expander {}
 
-impl AsRef<clutter::Actor> for Expander {
-    fn as_ref(&self) -> &clutter::Actor {
-        let actor: &clutter::Actor = self.widget.as_ref();
+impl AsRef<Actor> for Expander {
+    fn as_ref(&self) -> &Actor {
+        let actor: &Actor = self.widget.as_ref();
         actor
     }
 }
-
-pub const NONE_EXPANDER: Option<&Expander> = None;
 
 pub trait ExpanderExt: 'static {
     /// get_expanded:
@@ -144,7 +140,7 @@ impl<O: Is<Expander>> ExpanderExt for O {
     ///
     fn set_label(&self, label: &str) {
         let expander = self.as_ref();
-        // clutter_text_set_text (CLUTTER_TEXT (expander.label), label);
+        // text_set_text (CLUTTER_TEXT (expander.label), label);
     }
 
     fn get_property_label(&self) -> Option<String> {

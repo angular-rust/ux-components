@@ -1,11 +1,9 @@
 #![allow(unused_variables)]
 
-// use std::mem::transmute;
-use super::{Align, Orientation};
 use crate::prelude::*;
+use crate::Align;
 use glib::signal::SignalHandlerId;
 use std::fmt;
-use std::{boxed::Box as Box_, cell::RefCell};
 
 #[derive(Clone, Debug)]
 pub struct TableChild {}
@@ -18,8 +16,6 @@ impl AsRef<TableChild> for TableChild {
         self
     }
 }
-
-pub const NONE_TABLE_CHILD: Option<&TableChild> = None;
 
 pub trait TableChildExt: 'static {
     fn get_property_column(&self) -> i32;

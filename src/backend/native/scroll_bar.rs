@@ -1,12 +1,10 @@
 #![allow(unused_variables)]
 #![allow(dead_code)]
 
-// use std::mem::transmute;
-use super::{Adjustment, Orientation, Widget};
 use crate::prelude::*;
+use crate::{Actor, Adjustment, Orientation, Widget};
 use glib::signal::SignalHandlerId;
-use std::fmt;
-use std::{boxed::Box as Box_, cell::RefCell};
+use std::{cell::RefCell, fmt};
 
 #[derive(Clone, Copy, Debug)]
 pub enum ScrollBarDirection {
@@ -21,10 +19,10 @@ pub struct ScrollBarProps {
     pub capture_handler: u64,
     pub x_origin: f32,
     pub y_origin: f32,
-    pub bw_stepper: Option<clutter::Actor>,
-    pub fw_stepper: Option<clutter::Actor>,
-    pub trough: Option<clutter::Actor>,
-    pub handle: Option<clutter::Actor>,
+    pub bw_stepper: Option<Actor>,
+    pub fw_stepper: Option<Actor>,
+    pub trough: Option<Actor>,
+    pub handle: Option<Actor>,
     pub move_x: f32,
     pub move_y: f32,
     pub handle_min_size: u32,
@@ -47,14 +45,14 @@ pub struct ScrollBar {
 impl ScrollBar {
     pub fn new() -> ScrollBar {
         // assert_initialized_main_thread!();
-        // unsafe { clutter::Actor::from_glib_none(ffi::scroll_bar_new()).unsafe_cast() }
+        // unsafe { Actor::from_glib_none(ffi::scroll_bar_new()).unsafe_cast() }
         unimplemented!()
     }
 
     // pub fn with_adjustment<P: Is<Adjustment>>(adjustment: &P) -> ScrollBar {
     //     // skip_assert_initialized!();
     //     // unsafe {
-    //     //     clutter::Actor::from_glib_none(ffi::scroll_bar_new_with_adjustment(
+    //     //     Actor::from_glib_none(ffi::scroll_bar_new_with_adjustment(
     //     //         adjustment.as_ref().to_glib_none().0,
     //     //     ))
     //     //     .unsafe_cast()
@@ -86,16 +84,14 @@ impl AsRef<Widget> for ScrollBar {
     }
 }
 
-impl Is<clutter::Actor> for ScrollBar {}
+impl Is<Actor> for ScrollBar {}
 
-impl AsRef<clutter::Actor> for ScrollBar {
-    fn as_ref(&self) -> &clutter::Actor {
-        let actor: &clutter::Actor = self.widget.as_ref();
+impl AsRef<Actor> for ScrollBar {
+    fn as_ref(&self) -> &Actor {
+        let actor: &Actor = self.widget.as_ref();
         actor
     }
 }
-
-pub const NONE_SCROLL_BAR: Option<&ScrollBar> = None;
 
 pub trait ScrollBarExt: 'static {
     /// get_adjustment:
@@ -149,12 +145,12 @@ impl<O: Is<ScrollBar>> ScrollBarExt for O {
         if props.adjustment.is_some() {
             // g_signal_handlers_disconnect_by_func(
             //     scrollbar.adjustment,
-            //     clutter_actor_queue_relayout,
+            //     actor_queue_relayout,
             //     bar,
             // );
             // g_signal_handlers_disconnect_by_func(
             //     scrollbar.adjustment,
-            //     clutter_actor_queue_relayout,
+            //     actor_queue_relayout,
             //     bar,
             // );
             // g_object_unref(scrollbar.adjustment);
@@ -167,17 +163,17 @@ impl<O: Is<ScrollBar>> ScrollBarExt for O {
         //     g_signal_connect_swapped(
         //         scrollbar.adjustment,
         //         "notify::value",
-        //         G_CALLBACK(clutter_actor_queue_relayout),
+        //         G_CALLBACK(actor_queue_relayout),
         //         bar,
         //     );
         //     g_signal_connect_swapped(
         //         scrollbar.adjustment,
         //         "changed",
-        //         G_CALLBACK(clutter_actor_queue_relayout),
+        //         G_CALLBACK(actor_queue_relayout),
         //         bar,
         //     );
 
-        //     clutter_actor_queue_relayout(CLUTTER_ACTOR(bar));
+        //     actor_queue_relayout(CLUTTER_ACTOR(bar));
         // }
     }
 
@@ -200,7 +196,7 @@ impl<O: Is<ScrollBar>> ScrollBarExt for O {
                 // stylable_set_style_class(STYLABLE(scrollbar.trough), "htrough");
             }
 
-            // clutter_actor_queue_relayout(CLUTTER_ACTOR(bar));
+            // actor_queue_relayout(CLUTTER_ACTOR(bar));
             // g_object_notify(G_OBJECT(bar), "orientation");
         }
     }

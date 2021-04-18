@@ -1,21 +1,19 @@
 #![allow(unused_variables)]
 
-// use std::mem::transmute;
-use super::{Tooltip, Widget};
 use crate::prelude::*;
+use crate::{Actor, Tooltip, Widget};
 use glib::signal::SignalHandlerId;
-use std::fmt;
-use std::{boxed::Box as Box_, cell::RefCell};
+use std::{cell::RefCell, fmt};
 
 #[derive(Clone, Debug)]
 pub struct EntryProps {
-    pub entry: Option<clutter::Actor>,
+    pub entry: Option<Actor>,
     pub placeholder: Option<String>,
-    pub primary_icon: Option<clutter::Actor>,
-    pub primary_icon_highlight: Option<clutter::Actor>,
+    pub primary_icon: Option<Actor>,
+    pub primary_icon_highlight: Option<Actor>,
     pub primary_icon_tooltip: Tooltip,
-    pub secondary_icon: Option<clutter::Actor>,
-    pub secondary_icon_highlight: Option<clutter::Actor>,
+    pub secondary_icon: Option<Actor>,
+    pub secondary_icon_highlight: Option<Actor>,
     pub secondary_icon_tooltip: Tooltip,
     pub primary_icon_filename: String,
     pub secondary_icon_filename: String,
@@ -41,14 +39,14 @@ pub struct Entry {
 impl Entry {
     pub fn new() -> Entry {
         // assert_initialized_main_thread!();
-        // unsafe { clutter::Actor::from_glib_none(ffi::entry_new()).unsafe_cast() }
+        // unsafe { Actor::from_glib_none(ffi::entry_new()).unsafe_cast() }
         unimplemented!()
     }
 
     pub fn with_text(text: &str) -> Entry {
         // assert_initialized_main_thread!();
         // unsafe {
-        //     clutter::Actor::from_glib_none(ffi::entry_new_with_text(text.to_glib_none().0))
+        //     Actor::from_glib_none(ffi::entry_new_with_text(text.to_glib_none().0))
         //         .unsafe_cast()
         // }
         unimplemented!()
@@ -78,27 +76,25 @@ impl AsRef<Widget> for Entry {
     }
 }
 
-impl Is<clutter::Actor> for Entry {}
+impl Is<Actor> for Entry {}
 
-impl AsRef<clutter::Actor> for Entry {
-    fn as_ref(&self) -> &clutter::Actor {
-        let actor: &clutter::Actor = self.widget.as_ref();
+impl AsRef<Actor> for Entry {
+    fn as_ref(&self) -> &Actor {
+        let actor: &Actor = self.widget.as_ref();
         actor
     }
 }
-
-pub const NONE_ENTRY: Option<&Entry> = None;
 
 pub trait EntryExt: 'static {
     // /// get_clutter_text:
     // /// @entry: a #Entry
     // ///
-    // /// Retrieve the internal #ClutterText so that extra parameters can be set
+    // /// Retrieve the internal #Text so that extra parameters can be set
     // ///
-    // /// Returns: (transfer none): the #ClutterText used by #Entry. The entry is
+    // /// Returns: (transfer none): the #Text used by #Entry. The entry is
     // /// owned by the #Entry and should not be unref'ed by the application.
     // ///
-    // fn get_clutter_text(&self) -> &Option<clutter::Actor>;
+    // fn get_clutter_text(&self) -> &Option<Actor>;
 
     /// get_icon_highlight_suffix:
     /// @entry: a #Entry
@@ -258,12 +254,12 @@ impl<O: Is<Entry>> EntryExt for O {
     // /// get_clutter_text:
     // /// @entry: a #Entry
     // ///
-    // /// Retrieve the internal #ClutterText so that extra parameters can be set
+    // /// Retrieve the internal #Text so that extra parameters can be set
     // ///
-    // /// Returns: (transfer none): the #ClutterText used by #Entry. The entry is
+    // /// Returns: (transfer none): the #Text used by #Entry. The entry is
     // /// owned by the #Entry and should not be unref'ed by the application.
     // ///
-    // fn get_clutter_text(&self) -> &Option<clutter::Actor> {
+    // fn get_clutter_text(&self) -> &Option<Actor> {
     //     let entry = self.as_ref();
     //     let props = entry.props.borrow();
 
@@ -322,7 +318,7 @@ impl<O: Is<Entry>> EntryExt for O {
     ///
     fn get_text(&self) -> Option<String> {
         let entry = self.as_ref();
-        // clutter_text_get_text (CLUTTER_TEXT (entry.entry));
+        // text_get_text (CLUTTER_TEXT (entry.entry));
         unimplemented!()
     }
 
@@ -382,14 +378,14 @@ impl<O: Is<Entry>> EntryExt for O {
         // entry.placeholder = g_strdup(text);
 
         // if entry.placeholder {
-        //     if !strcmp(clutter_text_get_text(CLUTTER_TEXT(entry.entry)), "") {
+        //     if !strcmp(text_get_text(CLUTTER_TEXT(entry.entry)), "") {
         //         stylable_style_pseudo_class_add(STYLABLE(entry), "indeterminate");
         //     } else {
         //         stylable_style_pseudo_class_remove(STYLABLE(entry), "indeterminate");
         //     }
         // }
 
-        // clutter_actor_queue_redraw(CLUTTER_ACTOR(entry));
+        // actor_queue_redraw(CLUTTER_ACTOR(entry));
     }
 
     /// set_primary_icon_from_file:
@@ -420,9 +416,9 @@ impl<O: Is<Entry>> EntryExt for O {
         //     entry.primary_icon_tooltip = g_object_new(TYPE_TOOLTIP, "text", text, None);
 
         //     tooltip_set_text(entry.primary_icon_tooltip, text);
-        //     clutter_actor_add_child(
-        //         CLUTTER_ACTOR(entry),
-        //         CLUTTER_ACTOR(entry.primary_icon_tooltip),
+        //     actor_add_child(
+        //         ACTOR(entry),
+        //         ACTOR(entry.primary_icon_tooltip),
         //     );
         // } else {
         //     tooltip_set_text(entry.primary_icon_tooltip, text);
@@ -457,9 +453,9 @@ impl<O: Is<Entry>> EntryExt for O {
         //     entry.secondary_icon_tooltip = g_object_new(TYPE_TOOLTIP, "text", text, None);
 
         //     tooltip_set_text(entry.secondary_icon_tooltip, text);
-        //     clutter_actor_add_child(
-        //         CLUTTER_ACTOR(entry),
-        //         CLUTTER_ACTOR(entry.secondary_icon_tooltip),
+        //     actor_add_child(
+        //         ACTOR(entry),
+        //         ACTOR(entry.secondary_icon_tooltip),
         //     );
         // } else {
         //     tooltip_set_text(entry.secondary_icon_tooltip, text);
@@ -481,7 +477,7 @@ impl<O: Is<Entry>> EntryExt for O {
         //     text = "";
         // };
 
-        // clutter_text_set_text (CLUTTER_TEXT (entry.entry), text);
+        // text_set_text (CLUTTER_TEXT (entry.entry), text);
     }
 
     /// get_primary_icon_tooltip_text:

@@ -32,14 +32,14 @@ pub fn writable_template_derive(input: TokenStream) -> TokenStream {
     let expanded = quote! {
       impl #name {
         fn run() -> #name {
-            clutter::init();
+            application::init();
             let app = Self::new();
-            clutter::run();
+            application::run();
             app
         }
 
         fn quit() {
-            clutter::quit()
+            application::quit()
         }
       }
     };

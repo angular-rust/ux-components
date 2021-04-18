@@ -1,12 +1,10 @@
 #![allow(unused_variables)]
 
-// use std::mem::transmute;
-use super::{BorderImage, Menu, Padding, Settings, Style, Tooltip};
+// Settings overlap
 use crate::prelude::*;
+use crate::{Actor, ActorBox, BorderImage, Event, Padding, Style};
 use glib::signal::SignalHandlerId;
-use glib_sys::GHashTable;
-use std::fmt;
-use std::{boxed::Box as Box_, cell::RefCell};
+use std::{cell::RefCell, fmt};
 
 // should be located in concrete widget
 // tooltip: Option<Tooltip>,
@@ -33,8 +31,8 @@ pub struct WidgetProps {
     border_image: Option<cogl::Handle>,
     old_border_image: Option<cogl::Handle>,
     background_image: Option<cogl::Handle>,
-    background_image_box: Option<clutter::ActorBox>,
-    bg_color: Option<clutter::Color>,
+    background_image_box: Option<ActorBox>,
+    bg_color: Option<Color>,
     opacity: f64,
     is_disabled: bool,
     parent_disabled: bool,
@@ -66,7 +64,7 @@ pub struct WidgetProps {
 #[derive(Clone, Debug)]
 pub struct Widget {
     props: RefCell<WidgetProps>,
-    inner: clutter::Actor,
+    inner: Actor,
 }
 
 impl Widget {
@@ -114,7 +112,7 @@ impl Widget {
 
         let widget = Self {
             props: RefCell::new(props),
-            inner: clutter::Actor::new(),
+            inner: Actor::new(),
         };
 
         widget
@@ -140,15 +138,13 @@ impl AsRef<Widget> for Widget {
     }
 }
 
-impl Is<clutter::Actor> for Widget {}
+impl Is<Actor> for Widget {}
 
-impl AsRef<clutter::Actor> for Widget {
-    fn as_ref(&self) -> &clutter::Actor {
+impl AsRef<Actor> for Widget {
+    fn as_ref(&self) -> &Actor {
         &self.inner
     }
 }
-
-pub const NONE_WIDGET: Option<&Widget> = None;
 
 pub trait WidgetExt: 'static {
     /// widget_apply_style:
@@ -162,14 +158,14 @@ pub trait WidgetExt: 'static {
 
     /// get_available_area:
     /// @widget: A #Widget
-    /// @allocation: A #ClutterActorBox
-    /// @area: A #ClutterActorBox
+    /// @allocation: A #ActorBox
+    /// @area: A #ActorBox
     ///
     /// Copies @allocation into @area and accounts for the padding values. This
     /// gives the area that is available in which to allocate children with respect
     /// to padding.
     ///
-    fn get_available_area(&self, allocation: &clutter::ActorBox, area: &mut clutter::ActorBox);
+    fn get_available_area(&self, allocation: &ActorBox, area: &mut ActorBox);
 
     /// get_background_color:
     /// @actor: A #Widget
@@ -178,8 +174,8 @@ pub trait WidgetExt: 'static {
     /// "background-color" CSS property. This function should normally only
     /// be used by subclasses.
     ///
-    /// Returns: (transfer none): a #ClutterColor
-    fn get_background_color(&self) -> Option<clutter::Color>;
+    /// Returns: (transfer none): a #Color
+    fn get_background_color(&self) -> Option<Color>;
 
     fn get_background_texture(&self) -> Option<cogl::Handle>;
 
@@ -251,7 +247,7 @@ pub trait WidgetExt: 'static {
     ///
     /// Emit the long-press query signal and start a long-press timeout if required.
     ///
-    fn long_press_query(&self, event: &mut clutter::Event);
+    fn long_press_query(&self, event: &mut Event);
 
     /// widget_set_disabled:
     /// @widget: an #Widget
@@ -329,14 +325,14 @@ impl<O: Is<Widget>> WidgetExt for O {
 
     /// get_available_area:
     /// @widget: A #Widget
-    /// @allocation: A #ClutterActorBox
-    /// @area: A #ClutterActorBox
+    /// @allocation: A #ActorBox
+    /// @area: A #ActorBox
     ///
     /// Copies @allocation into @area and accounts for the padding values. This
     /// gives the area that is available in which to allocate children with respect
     /// to padding.
     ///
-    fn get_available_area(&self, allocation: &clutter::ActorBox, area: &mut clutter::ActorBox) {
+    fn get_available_area(&self, allocation: &ActorBox, area: &mut ActorBox) {
         let widget = self.as_ref();
         let props = widget.props.borrow();
 
@@ -356,8 +352,8 @@ impl<O: Is<Widget>> WidgetExt for O {
     /// "background-color" CSS property. This function should normally only
     /// be used by subclasses.
     ///
-    /// Returns: (transfer none): a #ClutterColor
-    fn get_background_color(&self) -> Option<clutter::Color> {
+    /// Returns: (transfer none): a #Color
+    fn get_background_color(&self) -> Option<Color> {
         let widget = self.as_ref();
         let props = widget.props.borrow();
 
@@ -474,7 +470,7 @@ impl<O: Is<Widget>> WidgetExt for O {
     ///
     /// Emit the long-press query signal and start a long-press timeout if required.
     ///
-    fn long_press_query(&self, event: &mut clutter::Event) {
+    fn long_press_query(&self, event: &mut Event) {
         let widget = self.as_ref();
         // let query_result = false;
         // let settings = Settings::get_default();
@@ -483,13 +479,13 @@ impl<O: Is<Widget>> WidgetExt for O {
         // // g_object_get (settings, "long-press-timeout", &timeout, None);
         // let event_type = event.get_event_type();
         // match event_type {
-        //     clutter::ButtonPress => {
+        //     ButtonPress => {
         //             // g_signal_emit (widget, widget_signals[LONG_PRESS], 0,
         //             //             event->button.x, event->button.y,
         //             //             LONG_PRESS_QUERY, &query_result);
         //     }
 
-        //     clutter::TouchBegin => {
+        //     TouchBegin => {
         //         // g_signal_emit (widget, widget_signals[LONG_PRESS], 0,
         //         //                 event->touch.x, event->touch.y,
         //         //                 LONG_PRESS_QUERY, &query_result);
@@ -627,8 +623,8 @@ impl<O: Is<Widget>> WidgetExt for O {
     // fn show_tooltip(&self) {
     //     let widget = self.as_ref();
 
-    //     // clutter::Geometry area;
-    //     // clutter::Vertex verts[4];
+    //     // Geometry area;
+    //     // Vertex verts[4];
 
     //     /* Remove any timeout so we don't show the tooltip again */
     //     // widget.remove_tooltip_timeout();

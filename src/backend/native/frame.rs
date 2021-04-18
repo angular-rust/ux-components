@@ -1,20 +1,19 @@
 #![allow(unused_variables)]
 
-use super::Widget;
 use crate::prelude::*;
+use crate::{Actor, Widget};
 use std::fmt;
-use std::{boxed::Box as Box_, cell::RefCell};
 
 #[derive(Clone, Debug)]
 pub struct Frame {
-    pub child: Option<clutter::Actor>,
+    pub child: Option<Actor>,
     widget: Widget,
 }
 
 impl Frame {
     pub fn new() -> Frame {
         // assert_initialized_main_thread!();
-        // unsafe { clutter::Actor::from_glib_none(ffi::frame_new()).unsafe_cast() }
+        // unsafe { Actor::from_glib_none(ffi::frame_new()).unsafe_cast() }
         unimplemented!()
     }
 }
@@ -42,16 +41,14 @@ impl AsRef<Widget> for Frame {
     }
 }
 
-impl Is<clutter::Actor> for Frame {}
+impl Is<Actor> for Frame {}
 
-impl AsRef<clutter::Actor> for Frame {
-    fn as_ref(&self) -> &clutter::Actor {
-        let actor: &clutter::Actor = self.widget.as_ref();
+impl AsRef<Actor> for Frame {
+    fn as_ref(&self) -> &Actor {
+        let actor: &Actor = self.widget.as_ref();
         actor
     }
 }
-
-pub const NONE_FRAME: Option<&Frame> = None;
 
 impl fmt::Display for Frame {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {

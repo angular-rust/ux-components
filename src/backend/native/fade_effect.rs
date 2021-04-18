@@ -1,11 +1,9 @@
 #![allow(unused_variables)]
 
-// use std::mem;
-// use std::mem::transmute;
 use crate::prelude::*;
+use crate::{ActorMeta, Effect, OffscreenEffect};
 use glib::signal::SignalHandlerId;
-use std::fmt;
-use std::{boxed::Box as Box_, cell::RefCell};
+use std::{cell::RefCell, fmt};
 
 #[derive(Clone, Debug)]
 pub struct FadeEffectProps {
@@ -15,7 +13,7 @@ pub struct FadeEffectProps {
     pub bounds_height: u32,
 
     pub border: [u32; 4],
-    pub color: clutter::Color,
+    pub color: Color,
     pub width: f32,
     pub height: f32,
 
@@ -40,7 +38,7 @@ pub struct FadeEffect {
 impl FadeEffect {
     pub fn new() -> FadeEffect {
         // assert_initialized_main_thread!();
-        // unsafe { clutter::Effect::from_glib_none(ffi::fade_effect_new()).unsafe_cast() }
+        // unsafe { Effect::from_glib_none(ffi::fade_effect_new()).unsafe_cast() }
         unimplemented!()
     }
 }
@@ -60,34 +58,32 @@ impl AsRef<FadeEffect> for FadeEffect {
     }
 }
 
-impl Is<clutter::OffscreenEffect> for FadeEffect {}
+impl Is<OffscreenEffect> for FadeEffect {}
 
-impl AsRef<clutter::OffscreenEffect> for FadeEffect {
-    fn as_ref(&self) -> &clutter::OffscreenEffect {
+impl AsRef<OffscreenEffect> for FadeEffect {
+    fn as_ref(&self) -> &OffscreenEffect {
         // &self.widget
         unimplemented!()
     }
 }
 
-impl Is<clutter::Effect> for FadeEffect {}
+impl Is<Effect> for FadeEffect {}
 
-impl AsRef<clutter::Effect> for FadeEffect {
-    fn as_ref(&self) -> &clutter::Effect {
+impl AsRef<Effect> for FadeEffect {
+    fn as_ref(&self) -> &Effect {
         // &self.widget
         unimplemented!()
     }
 }
 
-impl Is<clutter::ActorMeta> for FadeEffect {}
+impl Is<ActorMeta> for FadeEffect {}
 
-impl AsRef<clutter::ActorMeta> for FadeEffect {
-    fn as_ref(&self) -> &clutter::ActorMeta {
+impl AsRef<ActorMeta> for FadeEffect {
+    fn as_ref(&self) -> &ActorMeta {
         // &self.widget
         unimplemented!()
     }
 }
-
-pub const NONE_FADE_EFFECT: Option<&FadeEffect> = None;
 
 pub trait FadeEffectExt: 'static {
     /// get_border:
@@ -114,11 +110,11 @@ pub trait FadeEffectExt: 'static {
 
     /// get_color:
     /// @effect: A #FadeEffect
-    /// @color: (out): A #ClutterColor to store the color in
+    /// @color: (out): A #Color to store the color in
     ///
     /// Retrieves the color used for the fade effect.
     ///
-    fn get_color(&self) -> clutter::Color;
+    fn get_color(&self) -> Color;
 
     /// set_border:
     /// @effect: A #FadeEffect
@@ -141,7 +137,7 @@ pub trait FadeEffectExt: 'static {
     ///
     /// Sets the bounding box of the effect. The effect will essentially treat
     /// this box as a clipping rectangle. Setting width or height to %0 will
-    /// use the width or height of the #ClutterActor the effect is attached to.
+    /// use the width or height of the #Actor the effect is attached to.
     ///
     /// <note><para>
     /// The effect border will apply to the bounds, and not to the un-altered
@@ -153,12 +149,12 @@ pub trait FadeEffectExt: 'static {
 
     /// set_color:
     /// @effect: A #FadeEffect
-    /// @color: A #ClutterColor
+    /// @color: A #Color
     ///
     /// Sets the color of the fade effect. The effect will fade out towards
     /// the set border to this color.
     ///
-    fn set_color(&self, color: &clutter::Color);
+    fn set_color(&self, color: &Color);
 
     fn get_property_border_bottom(&self) -> u32;
 
@@ -273,11 +269,11 @@ impl<O: Is<FadeEffect>> FadeEffectExt for O {
 
     /// get_color:
     /// @effect: A #FadeEffect
-    /// @color: (out): A #ClutterColor to store the color in
+    /// @color: (out): A #Color to store the color in
     ///
     /// Retrieves the color used for the fade effect.
     ///
-    fn get_color(&self) -> clutter::Color {
+    fn get_color(&self) -> Color {
         let fadeeffect = self.as_ref();
         let props = fadeeffect.props.borrow();
 
@@ -334,7 +330,7 @@ impl<O: Is<FadeEffect>> FadeEffectExt for O {
     ///
     /// Sets the bounding box of the effect. The effect will essentially treat
     /// this box as a clipping rectangle. Setting width or height to %0 will
-    /// use the width or height of the #ClutterActor the effect is attached to.
+    /// use the width or height of the #Actor the effect is attached to.
     ///
     /// <note><para>
     /// The effect border will apply to the bounds, and not to the un-altered
@@ -375,16 +371,16 @@ impl<O: Is<FadeEffect>> FadeEffectExt for O {
 
     /// set_color:
     /// @effect: A #FadeEffect
-    /// @color: A #ClutterColor
+    /// @color: A #Color
     ///
     /// Sets the color of the fade effect. The effect will fade out towards
     /// the set border to this color.
     ///
-    fn set_color(&self, color: &clutter::Color) {
+    fn set_color(&self, color: &Color) {
         let fadeeffect = self.as_ref();
         // let mut props = fadeeffect.props.borrow_mut();
 
-        // if !clutter_color_equal(&fadeeffect.color, color) {
+        // if !color_equal(&fadeeffect.color, color) {
         //     props.color = color;
         //     props.update_vbo = true;
         //     g_object_notify(G_OBJECT(effect), "color");

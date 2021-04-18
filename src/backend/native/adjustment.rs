@@ -1,11 +1,9 @@
 #![allow(unused_variables)]
 
-// use std::mem;
-// use std::mem::transmute;
 use crate::prelude::*;
+use crate::Timeline;
 use glib::signal::SignalHandlerId;
-use std::{borrow::BorrowMut, fmt};
-use std::{boxed::Box as Box_, cell::RefCell};
+use std::{cell::RefCell, fmt};
 
 #[derive(Clone, Debug)]
 pub struct AdjustmentProps {
@@ -33,7 +31,7 @@ pub struct AdjustmentProps {
     // For interpolation
     pub old_position: f64,
     pub new_position: f64,
-    pub interpolation: Option<clutter::Timeline>,
+    pub interpolation: Option<Timeline>,
 }
 
 #[derive(Clone, Debug)]
@@ -244,8 +242,6 @@ impl AsRef<Adjustment> for Adjustment {
     }
 }
 
-pub const NONE_ADJUSTMENT: Option<&Adjustment> = None;
-
 pub trait AdjustmentExt: 'static {
     /// get_clamp_value:
     /// @adjustment: A #Adjustment
@@ -336,7 +332,7 @@ pub trait AdjustmentExt: 'static {
     /// @adjustment: A #Adjustment
     /// @value: A #gdouble
     /// @duration: duration in milliseconds
-    /// @mode: A #ClutterAnimationMode
+    /// @mode: A #AnimationMode
     ///
     /// Interpolate #Adjustment:value to the new value specified by @value, using
     /// the mode and duration given.
@@ -347,7 +343,7 @@ pub trait AdjustmentExt: 'static {
     /// @adjustment: A #Adjustment
     /// @offset: A #gdouble
     /// @duration: duration in milliseconds
-    /// @mode: A #ClutterAnimationMode
+    /// @mode: A #AnimationMode
     ///
     /// Interpolate the value of #Adjustment:value to a new value calculated from
     /// @offset.
@@ -593,7 +589,7 @@ impl<O: Is<Adjustment>> AdjustmentExt for O {
     /// @adjustment: A #Adjustment
     /// @value: A #gdouble
     /// @duration: duration in milliseconds
-    /// @mode: A #ClutterAnimationMode
+    /// @mode: A #AnimationMode
     ///
     /// Interpolate #Adjustment:value to the new value specified by @value, using
     /// the mode and duration given.
@@ -614,7 +610,7 @@ impl<O: Is<Adjustment>> AdjustmentExt for O {
         props.new_position = value;
 
         // if !props.interpolation {
-        //     adjustment.interpolation = clutter_timeline_new(duration);
+        //     adjustment.interpolation = timeline_new(duration);
 
         //     g_signal_connect(
         //         adjustment.interpolation,
@@ -632,19 +628,19 @@ impl<O: Is<Adjustment>> AdjustmentExt for O {
         //     // Extend the animation if it gets interrupted, otherwise frequent calls
         //     // to this function will end up with no advancements until the calls
         //     // finish (as the animation never gets a chance to start).
-        //     clutter_timeline_set_direction(adjustment.interpolation, CLUTTER_TIMELINE_FORWARD);
-        //     clutter_timeline_rewind(adjustment.interpolation);
-        //     clutter_timeline_set_duration(adjustment.interpolation, duration);
+        //     timeline_set_direction(adjustment.interpolation, CLUTTER_TIMELINE_FORWARD);
+        //     timeline_rewind(adjustment.interpolation);
+        //     timeline_set_duration(adjustment.interpolation, duration);
         // }
-        // clutter_timeline_set_progress_mode(adjustment.interpolation, mode);
-        // clutter_timeline_start(adjustment.interpolation);
+        // timeline_set_progress_mode(adjustment.interpolation, mode);
+        // timeline_start(adjustment.interpolation);
     }
 
     /// interpolate_relative:
     /// @adjustment: A #Adjustment
     /// @offset: A #gdouble
     /// @duration: duration in milliseconds
-    /// @mode: A #ClutterAnimationMode
+    /// @mode: A #AnimationMode
     ///
     /// Interpolate the value of #Adjustment:value to a new value calculated from
     /// @offset.

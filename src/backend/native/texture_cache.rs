@@ -1,8 +1,7 @@
 #![allow(unused_variables)]
 
 use crate::prelude::*;
-use std::fmt;
-use std::{boxed::Box as Box_, cell::RefCell};
+use std::{cell::RefCell, fmt};
 
 #[derive(Clone, Debug)]
 pub struct FinalizedClosure {
@@ -63,8 +62,6 @@ impl AsRef<TextureCache> for TextureCache {
         self
     }
 }
-
-pub const NONE_TEXTURE_CACHE: Option<&TextureCache> = None;
 
 pub trait TextureCacheExt: 'static {
     /// contains:

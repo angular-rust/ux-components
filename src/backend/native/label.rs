@@ -1,19 +1,17 @@
 #![allow(unused_variables)]
 
-// use std::mem::transmute;
-use super::{Align, Widget};
 use crate::prelude::*;
+use crate::{Actor, Align, Effect, Timeline, Widget};
 use glib::signal::SignalHandlerId;
-use std::fmt;
-use std::{boxed::Box as Box_, cell::RefCell};
+use std::{cell::RefCell, fmt};
 
 #[derive(Clone, Debug)]
 pub struct LabelProps {
-    pub label: Option<clutter::Actor>,
-    pub fade_effect: Option<clutter::Effect>,
+    pub label: Option<Actor>,
+    pub fade_effect: Option<Effect>,
     pub x_align: Align,
     pub y_align: Align,
-    pub fade_timeline: Option<clutter::Timeline>,
+    pub fade_timeline: Option<Timeline>,
     pub em_width: i32,
     pub fade_out: bool,
     pub label_should_fade: bool,
@@ -29,14 +27,14 @@ pub struct Label {
 impl Label {
     pub fn new() -> Label {
         // assert_initialized_main_thread!();
-        // unsafe { clutter::Actor::from_glib_none(ffi::label_new()).unsafe_cast() }
+        // unsafe { Actor::from_glib_none(ffi::label_new()).unsafe_cast() }
         unimplemented!()
     }
 
     pub fn with_text(text: &str) -> Label {
         // assert_initialized_main_thread!();
         // unsafe {
-        //     clutter::Actor::from_glib_none(ffi::label_new_with_text(text.to_glib_none().0))
+        //     Actor::from_glib_none(ffi::label_new_with_text(text.to_glib_none().0))
         //         .unsafe_cast()
         // }
         unimplemented!()
@@ -66,16 +64,14 @@ impl AsRef<Widget> for Label {
     }
 }
 
-impl Is<clutter::Actor> for Label {}
+impl Is<Actor> for Label {}
 
-impl AsRef<clutter::Actor> for Label {
-    fn as_ref(&self) -> &clutter::Actor {
-        let actor: &clutter::Actor = self.widget.as_ref();
+impl AsRef<Actor> for Label {
+    fn as_ref(&self) -> &Actor {
+        let actor: &Actor = self.widget.as_ref();
         actor
     }
 }
-
-pub const NONE_LABEL: Option<&Label> = None;
 
 pub trait LabelExt: 'static {
     /// get_alignment:
@@ -90,12 +86,12 @@ pub trait LabelExt: 'static {
     /// get_clutter_text:
     /// @label: a #Label
     ///
-    /// Retrieve the internal #ClutterText so that extra parameters can be set
+    /// Retrieve the internal #Text so that extra parameters can be set
     ///
-    /// Returns: (transfer none): the #ClutterText used by #Label. The label
+    /// Returns: (transfer none): the #Text used by #Label. The label
     /// is owned by the #Label and should not be unref'ed by the application.
     ///
-    fn get_clutter_text(&self) -> Option<clutter::Actor>;
+    fn get_clutter_text(&self) -> Option<Actor>;
 
     /// get_fade_out:
     /// @label: A #Label
@@ -162,8 +158,8 @@ pub trait LabelExt: 'static {
     /// @fade: %true to fade out, %false otherwise
     ///
     /// Set whether to fade out the end of the label, instead of ellipsizing.
-    /// Enabling this mode will also set the #ClutterText:single-line-mode and
-    /// #ClutterText:ellipsize properties.
+    /// Enabling this mode will also set the #Text:single-line-mode and
+    /// #Text:ellipsize properties.
     ///
     fn set_fade_out(&self, fade: bool);
 
@@ -240,12 +236,12 @@ impl<O: Is<Label>> LabelExt for O {
     /// get_clutter_text:
     /// @label: a #Label
     ///
-    /// Retrieve the internal #ClutterText so that extra parameters can be set
+    /// Retrieve the internal #Text so that extra parameters can be set
     ///
-    /// Returns: (transfer none): the #ClutterText used by #Label. The label
+    /// Returns: (transfer none): the #Text used by #Label. The label
     /// is owned by the #Label and should not be unref'ed by the application.
     ///
-    fn get_clutter_text(&self) -> Option<clutter::Actor> {
+    fn get_clutter_text(&self) -> Option<Actor> {
         let label = self.as_ref();
         let props = label.props.borrow();
 
@@ -277,7 +273,7 @@ impl<O: Is<Label>> LabelExt for O {
     fn get_line_wrap(&self) -> bool {
         let label = self.as_ref();
 
-        // clutter_text_get_line_wrap(CLUTTER_TEXT (label.label));
+        // text_get_line_wrap(CLUTTER_TEXT (label.label));
         unimplemented!()
     }
 
@@ -305,7 +301,7 @@ impl<O: Is<Label>> LabelExt for O {
     fn get_text(&self) -> Option<String> {
         let label = self.as_ref();
 
-        // clutter_text_get_text(CLUTTER_TEXT(label.label));
+        // text_get_text(CLUTTER_TEXT(label.label));
         unimplemented!()
     }
 
@@ -319,7 +315,7 @@ impl<O: Is<Label>> LabelExt for O {
     ///
     fn get_use_markup(&self) -> bool {
         let label = self.as_ref();
-        // clutter_text_get_use_markup(CLUTTER_TEXT(label.label));
+        // text_get_use_markup(CLUTTER_TEXT(label.label));
         unimplemented!()
     }
 
@@ -350,13 +346,13 @@ impl<O: Is<Label>> LabelExt for O {
 
         if x_align != props.x_align {
             props.x_align = x_align;
-            // clutter_actor_queue_relayout(CLUTTER_ACTOR(label));
+            // actor_queue_relayout(CLUTTER_ACTOR(label));
             // g_object_notify(G_OBJECT(label), "x-align");
         }
 
         if y_align != props.y_align {
             props.y_align = y_align;
-            // clutter_actor_queue_relayout(CLUTTER_ACTOR(label));
+            // actor_queue_relayout(CLUTTER_ACTOR(label));
             // g_object_notify(G_OBJECT(label), "y-align");
         }
     }
@@ -366,8 +362,8 @@ impl<O: Is<Label>> LabelExt for O {
     /// @fade: %true to fade out, %false otherwise
     ///
     /// Set whether to fade out the end of the label, instead of ellipsizing.
-    /// Enabling this mode will also set the #ClutterText:single-line-mode and
-    /// #ClutterText:ellipsize properties.
+    /// Enabling this mode will also set the #Text:single-line-mode and
+    /// #Text:ellipsize properties.
     ///
     fn set_fade_out(&self, fade: bool) {
         let label = self.as_ref();
@@ -380,8 +376,8 @@ impl<O: Is<Label>> LabelExt for O {
             // // Enable the fade-effect
             if fade {
                 props.label_should_fade = false;
-                // clutter_text_set_single_line_mode(CLUTTER_TEXT(label.label), true);
-                // clutter_text_set_ellipsize(CLUTTER_TEXT(label.label),
+                // text_set_single_line_mode(CLUTTER_TEXT(label.label), true);
+                // text_set_ellipsize(CLUTTER_TEXT(label.label),
                 //                             PANGO_ELLIPSIZE_NONE);
             }
 
@@ -409,7 +405,7 @@ impl<O: Is<Label>> LabelExt for O {
     fn set_line_wrap(&self, line_wrap: bool) {
         let label = self.as_ref();
 
-        // clutter_text_set_line_wrap(CLUTTER_TEXT(label.label), line_wrap);
+        // text_set_line_wrap(CLUTTER_TEXT(label.label), line_wrap);
         // g_object_notify(G_OBJECT(label), "line-wrap");
     }
 
@@ -425,7 +421,7 @@ impl<O: Is<Label>> LabelExt for O {
 
         if props.show_tooltip != show_tooltip {
             props.show_tooltip = show_tooltip;
-            // clutter_actor_queue_relayout(CLUTTER_ACTOR(label));
+            // actor_queue_relayout(CLUTTER_ACTOR(label));
             // g_object_notify(G_OBJECT(label), "show-tooltip");
         }
     }
@@ -439,10 +435,10 @@ impl<O: Is<Label>> LabelExt for O {
     fn set_text(&self, text: &str) {
         let label = self.as_ref();
 
-        // if clutter_text_get_use_markup(CLUTTER_TEXT(label.label)) {
-        //     clutter_text_set_markup(CLUTTER_TEXT(label.label), (text) ? text : "");
+        // if text_get_use_markup(CLUTTER_TEXT(label.label)) {
+        //     text_set_markup(CLUTTER_TEXT(label.label), (text) ? text : "");
         // } else {
-        //     clutter_text_set_text(CLUTTER_TEXT(label.label), (text) ? text : "");
+        //     text_set_text(CLUTTER_TEXT(label.label), (text) ? text : "");
         // }
 
         // g_object_notify(G_OBJECT(label), "text");
@@ -457,7 +453,7 @@ impl<O: Is<Label>> LabelExt for O {
     fn set_use_markup(&self, use_markup: bool) {
         let label = self.as_ref();
 
-        // clutter_text_set_use_markup(CLUTTER_TEXT(label.label), use_markup);
+        // text_set_use_markup(CLUTTER_TEXT(label.label), use_markup);
         // g_object_notify(G_OBJECT(label), "use-markup");
     }
 
@@ -467,7 +463,7 @@ impl<O: Is<Label>> LabelExt for O {
 
         if align != props.x_align {
             props.x_align = align;
-            // clutter_actor_queue_relayout(CLUTTER_ACTOR(label));
+            // actor_queue_relayout(CLUTTER_ACTOR(label));
             // g_object_notify(G_OBJECT(label), "x-align");
         }
     }
@@ -478,7 +474,7 @@ impl<O: Is<Label>> LabelExt for O {
 
         if align != props.y_align {
             props.y_align = align;
-            // clutter_actor_queue_relayout(CLUTTER_ACTOR(label));
+            // actor_queue_relayout(CLUTTER_ACTOR(label));
             // g_object_notify(G_OBJECT(label), "y-align");
         }
     }

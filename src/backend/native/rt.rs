@@ -12,14 +12,14 @@ thread_local! {
 
 static INITIALIZED: AtomicBool = AtomicBool::new(false);
 
-/// Asserts that this is the main thread and either `clutter::init` has been called.
+/// Asserts that this is the main thread and either `init` has been called.
 macro_rules! assert_initialized_main_thread {
     () => {
         if !super::rt::is_initialized_main_thread() {
             if super::rt::is_initialized() {
                 panic!("Clutter may only be used from the main thread.");
             } else {
-                panic!("Clutter has not been initialized. Call `clutter::init` first.");
+                panic!("Clutter has not been initialized. Call `init` first.");
             }
         }
     };
@@ -30,11 +30,11 @@ macro_rules! skip_assert_initialized {
     () => {};
 }
 
-/// Asserts that neither `clutter::init` has been called.
+/// Asserts that neither `init` has been called.
 macro_rules! assert_not_initialized {
     () => {
         if super::rt::is_initialized() {
-            panic!("This function has to be called before `clutter::init`.");
+            panic!("This function has to be called before `init`.");
         }
     };
 }

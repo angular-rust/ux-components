@@ -1,11 +1,9 @@
 #![allow(unused_variables)]
 
-// use std::mem::transmute;
-use super::{BoxLayout, ItemFactory, Widget};
 use crate::prelude::*;
+use crate::{Actor, BoxLayout, ItemFactory, Model, Widget};
 use glib::signal::SignalHandlerId;
-use std::fmt;
-use std::{boxed::Box as Box_, cell::RefCell};
+use std::{cell::RefCell, fmt};
 
 #[derive(Clone, Debug)]
 pub struct AttributeData {
@@ -15,7 +13,7 @@ pub struct AttributeData {
 
 #[derive(Clone, Debug)]
 pub struct ListViewProps {
-    pub model: Option<clutter::Model>,
+    pub model: Option<Model>,
     pub attributes: Vec<AttributeData>,
     pub item_type: glib::types::Type,
     pub factory: Option<ItemFactory>,
@@ -36,7 +34,7 @@ pub struct ListView {
 impl ListView {
     pub fn new() -> ListView {
         // assert_initialized_main_thread!();
-        // unsafe { clutter::Actor::from_glib_none(ffi::listview_new()).unsafe_cast() }
+        // unsafe { Actor::from_glib_none(ffi::listview_new()).unsafe_cast() }
         unimplemented!()
     }
 }
@@ -73,16 +71,14 @@ impl AsRef<Widget> for ListView {
     }
 }
 
-impl Is<clutter::Actor> for ListView {}
+impl Is<Actor> for ListView {}
 
-impl AsRef<clutter::Actor> for ListView {
-    fn as_ref(&self) -> &clutter::Actor {
-        let actor: &clutter::Actor = self.widget.as_ref();
+impl AsRef<Actor> for ListView {
+    fn as_ref(&self) -> &Actor {
+        let actor: &Actor = self.widget.as_ref();
         actor
     }
 }
-
-pub const NONE_LIST_VIEW: Option<&ListView> = None;
 
 pub trait ListViewExt: 'static {
     /// add_attribute:
@@ -126,9 +122,9 @@ pub trait ListViewExt: 'static {
     ///
     /// Get the model currently used by the #ListView
     ///
-    /// Returns: (transfer none): the current #ClutterModel
+    /// Returns: (transfer none): the current #Model
     ///
-    fn get_model(&self) -> Option<clutter::Model>;
+    fn get_model(&self) -> Option<Model>;
 
     /// set_factory:
     /// @listview: A #ListView
@@ -149,11 +145,11 @@ pub trait ListViewExt: 'static {
 
     /// set_model:
     /// @listview: An #ListView
-    /// @model: A #ClutterModel
+    /// @model: A #Model
     ///
     /// Set the model used by the #ListView
     ///
-    fn set_model<P: Is<clutter::Model>>(&self, model: &P);
+    fn set_model<P: Is<Model>>(&self, model: &P);
 
     /// thaw:
     /// @listview: An #ListView
@@ -234,9 +230,9 @@ impl<O: Is<ListView>> ListViewExt for O {
     ///
     /// Get the model currently used by the #ListView
     ///
-    /// Returns: (transfer none): the current #ClutterModel
+    /// Returns: (transfer none): the current #Model
     ///
-    fn get_model(&self) -> Option<clutter::Model> {
+    fn get_model(&self) -> Option<Model> {
         let listview = self.as_ref();
         let props = listview.props.borrow();
 
@@ -288,11 +284,11 @@ impl<O: Is<ListView>> ListViewExt for O {
 
     /// set_model:
     /// @listview: An #ListView
-    /// @model: A #ClutterModel
+    /// @model: A #Model
     ///
     /// Set the model used by the #ListView
     ///
-    fn set_model<P: Is<clutter::Model>>(&self, model: &P) {
+    fn set_model<P: Is<Model>>(&self, model: &P) {
         let listview = self.as_ref();
         let mut props = listview.props.borrow_mut();
 

@@ -1,18 +1,16 @@
 #![allow(unused_variables)]
 
-// use std::mem::transmute;
-use super::Widget;
 use crate::prelude::*;
+use crate::{Actor, Widget};
 use glib::signal::SignalHandlerId;
-use std::fmt;
-use std::{boxed::Box as Box_, cell::RefCell};
+use std::{cell::RefCell, fmt};
 
 #[derive(Clone, Debug)]
 pub struct ToolbarProps {
     pub has_close_button: bool,
     pub child_has_focus: bool,
-    pub close_button: Option<clutter::Actor>,
-    pub child: Option<clutter::Actor>,
+    pub close_button: Option<Actor>,
+    pub child: Option<Actor>,
 }
 
 #[derive(Clone, Debug)]
@@ -24,7 +22,7 @@ pub struct Toolbar {
 impl Toolbar {
     pub fn new() -> Toolbar {
         // assert_initialized_main_thread!();
-        // unsafe { clutter::Actor::from_glib_none(ffi::toolbar_new()).unsafe_cast() }
+        // unsafe { Actor::from_glib_none(ffi::toolbar_new()).unsafe_cast() }
         unimplemented!()
     }
 }
@@ -52,16 +50,14 @@ impl AsRef<Widget> for Toolbar {
     }
 }
 
-impl Is<clutter::Actor> for Toolbar {}
+impl Is<Actor> for Toolbar {}
 
-impl AsRef<clutter::Actor> for Toolbar {
-    fn as_ref(&self) -> &clutter::Actor {
-        let actor: &clutter::Actor = self.widget.as_ref();
+impl AsRef<Actor> for Toolbar {
+    fn as_ref(&self) -> &Actor {
+        let actor: &Actor = self.widget.as_ref();
         actor
     }
 }
-
-pub const NONE_TOOLBAR: Option<&Toolbar> = None;
 
 pub trait ToolbarExt: 'static {
     /// set_has_close_button:

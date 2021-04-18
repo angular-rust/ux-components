@@ -1,8 +1,7 @@
 #![allow(unused_variables)]
 
 use crate::prelude::*;
-use std::fmt;
-use std::{boxed::Box as Box_, cell::RefCell};
+use std::{cell::RefCell, fmt};
 
 #[derive(Clone, Debug)]
 pub struct ClipboardProps {
@@ -29,8 +28,6 @@ impl AsRef<Clipboard> for Clipboard {
         self
     }
 }
-
-pub const NONE_CLIPBOARD: Option<&Clipboard> = None;
 
 pub trait ClipboardExt: 'static {
     /// get_text:

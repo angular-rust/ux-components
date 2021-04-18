@@ -1,13 +1,11 @@
 #![allow(unused_variables)]
 
-// use std::mem::transmute;
 use crate::prelude::*;
 use glib::signal::SignalHandlerId;
-use std::fmt;
-use std::{boxed::Box as Box_, cell::RefCell};
+use std::{cell::RefCell, fmt, boxed::Box as Box_};
 
 #[derive(Clone, Debug)]
-pub struct ActionProps {
+pub struct PushActionProps {
     pub name: Option<String>,
     // pub parameter_type: GVariantType,
     pub enabled: bool,
@@ -17,12 +15,12 @@ pub struct ActionProps {
     pub icon: Option<String>,
 }
 #[derive(Clone, Debug)]
-pub struct Action {
-    props: RefCell<ActionProps>,
+pub struct PushAction {
+    props: RefCell<PushActionProps>,
 }
 
-impl Action {
-    pub fn new() -> Action {
+impl PushAction {
+    pub fn new() -> PushAction {
         // assert_initialized_main_thread!();
         // unsafe { from_glib_full(ffi::action_new()) }
         unimplemented!()
@@ -31,8 +29,8 @@ impl Action {
     pub fn new_full(
         name: &str,
         display_name: &str,
-        activated_cb: Option<Box_<dyn FnOnce(&Action) + 'static>>,
-    ) -> Action {
+        activated_cb: Option<Box_<dyn FnOnce(&PushAction) + 'static>>,
+    ) -> PushAction {
         // assert_initialized_main_thread!();
         // let activated_cb_data: Box_<Option<Box_<dyn FnOnce(&Action) + 'static>>> =
         //     Box_::new(activated_cb);
@@ -67,7 +65,7 @@ impl Action {
         name: &str,
         parameter_type: Option<&glib::VariantTy>,
         state: &glib::Variant,
-    ) -> Action {
+    ) -> PushAction {
         // assert_initialized_main_thread!();
         // unsafe {
         //     from_glib_none(ffi::action_new_stateful(
@@ -79,7 +77,7 @@ impl Action {
         unimplemented!()
     }
 
-    pub fn with_parameter(name: &str, parameter_type: Option<&glib::VariantTy>) -> Action {
+    pub fn with_parameter(name: &str, parameter_type: Option<&glib::VariantTy>) -> PushAction {
         // assert_initialized_main_thread!();
         // unsafe {
         //     from_glib_none(ffi::action_new_with_parameter(
@@ -91,24 +89,22 @@ impl Action {
     }
 }
 
-impl Default for Action {
+impl Default for PushAction {
     fn default() -> Self {
         Self::new()
     }
 }
 
-impl Object for Action {}
-impl Is<Action> for Action {}
+impl Object for PushAction {}
+impl Is<PushAction> for PushAction {}
 
-impl AsRef<Action> for Action {
-    fn as_ref(&self) -> &Action {
+impl AsRef<PushAction> for PushAction {
+    fn as_ref(&self) -> &PushAction {
         self
     }
 }
 
-pub const NONE_ACTION: Option<&Action> = None;
-
-pub trait ActionExt: 'static {
+pub trait PushActionExt: 'static {
     /// get_active:
     /// @action: A #Action
     ///
@@ -188,9 +184,9 @@ pub trait ActionExt: 'static {
     fn connect_property_icon_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
 }
 
-impl<O: Is<Action>> ActionExt for O {
+impl<O: Is<PushAction>> PushActionExt for O {
     /// get_active:
-    /// @action: A #Action
+    /// @action: A #PushAction
     ///
     /// Get the value of the active property
     ///
@@ -202,11 +198,11 @@ impl<O: Is<Action>> ActionExt for O {
     }
 
     /// get_display_name:
-    /// @action: A #Action
+    /// @action: A #PushAction
     ///
     /// Get the display name of the action
     ///
-    /// Returns: display-name of the action, owned by Action
+    /// Returns: display-name of the action, owned by PushAction
     ///
     fn get_display_name(&self) -> Option<String> {
         let action = self.as_ref();
@@ -214,11 +210,11 @@ impl<O: Is<Action>> ActionExt for O {
     }
 
     /// get_icon:
-    /// @action: A #Action
+    /// @action: A #PushAction
     ///
     /// Get the icon of the action
     ///
-    /// Returns: icon of the action, owned by Action
+    /// Returns: icon of the action, owned by PushAction
     ///
     fn get_icon(&self) -> Option<String> {
         let action = self.as_ref();
@@ -226,11 +222,11 @@ impl<O: Is<Action>> ActionExt for O {
     }
 
     /// get_name:
-    /// @action: A #Action
+    /// @action: A #PushAction
     ///
     /// Get the name of the action
     ///
-    /// Returns: name of the action, owned by Action
+    /// Returns: name of the action, owned by PushAction
     ///
     fn get_name(&self) -> Option<String> {
         let action = self.as_ref();
@@ -238,7 +234,7 @@ impl<O: Is<Action>> ActionExt for O {
     }
 
     /// set_active:
-    /// @action: A #Action
+    /// @action: A #PushAction
     /// @active: the value to set
     ///
     /// Set the value of the active property
@@ -254,7 +250,7 @@ impl<O: Is<Action>> ActionExt for O {
     }
 
     /// set_display_name:
-    /// @action: A #Action
+    /// @action: A #PushAction
     /// @name: new display name to set
     ///
     /// Set the name of the action to display to the user
@@ -278,7 +274,7 @@ impl<O: Is<Action>> ActionExt for O {
     }
 
     /// set_icon:
-    /// @action: A #Action
+    /// @action: A #PushAction
     /// @name: new icon to set
     ///
     /// The icon to be used in a visual representation of an action.
@@ -302,7 +298,7 @@ impl<O: Is<Action>> ActionExt for O {
     }
 
     /// set_name:
-    /// @action: A #Action
+    /// @action: A #PushAction
     /// @name: new name to set
     ///
     /// Set the name of the action
@@ -412,8 +408,8 @@ impl<O: Is<Action>> ActionExt for O {
     }
 }
 
-impl fmt::Display for Action {
+impl fmt::Display for PushAction {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "Action")
+        write!(f, "PushAction")
     }
 }

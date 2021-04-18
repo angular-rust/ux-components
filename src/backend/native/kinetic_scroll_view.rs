@@ -1,12 +1,12 @@
 #![allow(unused_variables)]
 
-// use std::mem::transmute;
-// use std::ptr;
-use super::{AutomaticScroll, KineticScrollViewState, ScrollPolicy, Widget};
 use crate::prelude::*;
+use crate::{
+    Actor, AutomaticScroll, Event, EventSequence, Geometry, InputDevice, KineticScrollViewState,
+    ScrollPolicy, Timeline, Widget,
+};
 use glib::signal::SignalHandlerId;
-use std::fmt;
-use std::{boxed::Box as Box_, cell::RefCell};
+use std::{cell::RefCell, fmt};
 
 #[derive(Clone, Debug)]
 pub struct KineticScrollViewMotion {
@@ -18,7 +18,7 @@ pub struct KineticScrollViewMotion {
 
 #[derive(Clone, Debug)]
 pub struct KineticScrollViewProps {
-    pub child: Option<clutter::Actor>,
+    pub child: Option<Actor>,
     pub use_captured: bool,
     pub use_grab: bool,
     pub in_drag: bool,
@@ -30,10 +30,10 @@ pub struct KineticScrollViewProps {
     pub clamp_to_center: bool,
     pub snap_on_page: bool,
     pub button: u32,
-    pub device: Option<clutter::InputDevice>,
-    pub sequence: Option<clutter::EventSequence>,
-    pub source_press_actor: Option<clutter::Actor>,
-    pub cancel_event: Option<clutter::Event>,
+    pub device: Option<InputDevice>,
+    pub sequence: Option<EventSequence>,
+    pub source_press_actor: Option<Actor>,
+    pub cancel_event: Option<Event>,
     pub in_automatic_scroll: AutomaticScroll,
 
     // Mouse motion event information
@@ -41,7 +41,7 @@ pub struct KineticScrollViewProps {
     pub last_motion: u32,
 
     // Variables for storing acceleration information
-    pub deceleration_timeline: Option<clutter::Timeline>,
+    pub deceleration_timeline: Option<Timeline>,
     pub dx: f32,
     pub dy: f32,
     pub decel_rate: f64,
@@ -64,7 +64,7 @@ impl KineticScrollView {
     pub fn new() -> KineticScrollView {
         // assert_initialized_main_thread!();
         // unsafe {
-        //     clutter::Actor::from_glib_none(ffi::kinetic_scroll_view_new()).unsafe_cast()
+        //     Actor::from_glib_none(ffi::kinetic_scroll_view_new()).unsafe_cast()
         // }
         unimplemented!()
     }
@@ -93,16 +93,14 @@ impl AsRef<Widget> for KineticScrollView {
     }
 }
 
-impl Is<clutter::Actor> for KineticScrollView {}
+impl Is<Actor> for KineticScrollView {}
 
-impl AsRef<clutter::Actor> for KineticScrollView {
-    fn as_ref(&self) -> &clutter::Actor {
-        let actor: &clutter::Actor = self.widget.as_ref();
+impl AsRef<Actor> for KineticScrollView {
+    fn as_ref(&self) -> &Actor {
+        let actor: &Actor = self.widget.as_ref();
         actor
     }
 }
-
-pub const NONE_KINETIC_SCROLL_VIEW: Option<&KineticScrollView> = None;
 
 pub trait KineticScrollViewExt: 'static {
     /// ensure_visible:
@@ -112,7 +110,7 @@ pub trait KineticScrollViewExt: 'static {
     /// Ensures that a given region is visible in the ScrollView, with the top-left
     /// taking precedence.
     ///
-    fn ensure_visible(&self, geometry: &clutter::Geometry);
+    fn ensure_visible(&self, geometry: &Geometry);
 
     /// get_acceleration_factor:
     /// @scroll: A #KineticScrollView
@@ -161,13 +159,13 @@ pub trait KineticScrollViewExt: 'static {
 
     /// get_input:
     /// @scroll: A #KineticScrollView
-    /// @device: (allow-none) (out) (transfer none): a pointer to a #ClutterInputDevice pointer
-    /// @sequence: (allow-none) (out) (transfer none): a pointer to a #ClutterEventSequence pointer
+    /// @device: (allow-none) (out) (transfer none): a pointer to a #InputDevice pointer
+    /// @sequence: (allow-none) (out) (transfer none): a pointer to a #EventSequence pointer
     ///
     /// Retrieves informations about the current input device driving the
     /// scrolling.
     ///
-    fn get_input(&self) -> (Option<clutter::InputDevice>, Option<clutter::EventSequence>);
+    fn get_input(&self) -> (Option<InputDevice>, Option<EventSequence>);
 
     /// get_mouse_button:
     /// @scroll: A #KineticScrollView
@@ -389,7 +387,7 @@ impl<O: Is<KineticScrollView>> KineticScrollViewExt for O {
     /// Ensures that a given region is visible in the ScrollView, with the top-left
     /// taking precedence.
     ///
-    fn ensure_visible(&self, geometry: &clutter::Geometry) {
+    fn ensure_visible(&self, geometry: &Geometry) {
         let scrollview = self.as_ref();
         // Adjustment *hadjustment, *vadjustment;
 
@@ -477,13 +475,13 @@ impl<O: Is<KineticScrollView>> KineticScrollViewExt for O {
 
     /// get_input:
     /// @scroll: A #KineticScrollView
-    /// @device: (allow-none) (out) (transfer none): a pointer to a #ClutterInputDevice pointer
-    /// @sequence: (allow-none) (out) (transfer none): a pointer to a #ClutterEventSequence pointer
+    /// @device: (allow-none) (out) (transfer none): a pointer to a #InputDevice pointer
+    /// @sequence: (allow-none) (out) (transfer none): a pointer to a #EventSequence pointer
     ///
     /// Retrieves informations about the current input device driving the
     /// scrolling.
     ///
-    fn get_input(&self) -> (Option<clutter::InputDevice>, Option<clutter::EventSequence>) {
+    fn get_input(&self) -> (Option<InputDevice>, Option<EventSequence>) {
         let scrollview = self.as_ref();
         let props = scrollview.props.borrow();
 
@@ -797,7 +795,7 @@ impl<O: Is<KineticScrollView>> KineticScrollViewExt for O {
         let mut props = scrollview.props.borrow_mut();
 
         if props.deceleration_timeline.is_some() {
-            //     clutter_timeline_stop(scrollview.deceleration_timeline);
+            //     timeline_stop(scrollview.deceleration_timeline);
             //     g_object_unref(scrollview.deceleration_timeline);
             props.deceleration_timeline = None;
         }
