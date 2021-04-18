@@ -19,7 +19,7 @@ pub struct WindowProps {
     pub start_angle: f32,
     pub end_angle: f32,
     pub angle: f32,
-    pub icon_texture: Option<cogl::Handle>,
+    pub icon_texture: Option<dx::Handle>,
     pub toolbar: Option<Toolbar>,
     pub resize_grip: Option<Actor>,
     pub debug_actor: Option<Actor>,
@@ -382,7 +382,7 @@ pub trait WindowExt: 'static {
     ///
     fn set_has_toolbar(&self, toolbar: bool);
 
-    fn set_icon_from_cogl_texture(&self, texture: cogl::Handle);
+    fn set_icon_from_cogl_texture(&self, texture: dx::Handle);
 
     /// set_icon_name:
     /// @window: A #Stage
@@ -777,7 +777,7 @@ impl<O: Is<Window>> WindowExt for O {
         }
     }
 
-    fn set_icon_from_cogl_texture(&self, texture: cogl::Handle) {
+    fn set_icon_from_cogl_texture(&self, texture: dx::Handle) {
         // unsafe { TODO: call ffi:window_set_icon_from_cogl_texture() }
         unimplemented!()
     }

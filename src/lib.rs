@@ -65,10 +65,10 @@ pub mod prelude {
     pub use super::WidgetExt;
     pub use super::WindowExt;
 
+    pub use dx;
+    
     pub use animate::prelude::*;
-    pub use cogl;
     pub use ux_macro::*;
-    // pub use cogl::prelude::*;
     pub use primitives::prelude::*;
 
     pub mod application {

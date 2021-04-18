@@ -34,14 +34,14 @@ pub struct ImageProps {
     pub upscale: bool,
     pub width_threshold: u32,
     pub height_threshold: u32,
-    pub texture: cogl::Handle,
-    pub old_texture: cogl::Handle,
-    pub blank_texture: cogl::Handle,
+    pub texture: dx::Handle,
+    pub old_texture: dx::Handle,
+    pub blank_texture: dx::Handle,
     pub rotation: f32,
     pub old_rotation: f32,
     pub old_mode: ImageScaleMode,
-    pub template_material: cogl::Material,
-    pub material: cogl::Material,
+    pub template_material: dx::Material,
+    pub material: dx::Material,
     pub timeline: Timeline,
     pub redraw_timeline: Timeline,
     pub transition_duration: u32,
@@ -241,7 +241,7 @@ pub trait ImageExt: 'static {
     ///
     /// Returns: %true on success, %false on failure
     ///
-    fn set_from_cogl_texture(&self, texture: cogl::Handle) -> bool;
+    fn set_from_cogl_texture(&self, texture: dx::Handle) -> bool;
 
     /// set_from_data:
     /// @image: An #Image
@@ -260,7 +260,7 @@ pub trait ImageExt: 'static {
     fn set_from_data(
         &self,
         data: &[u8],
-        pixel_format: cogl::PixelFormat,
+        pixel_format: dx::PixelFormat,
         width: i32,
         height: i32,
         rowstride: i32,
@@ -662,7 +662,7 @@ impl<O: Is<Image>> ImageExt for O {
     ///
     /// Returns: %true on success, %false on failure
     ///
-    fn set_from_cogl_texture(&self, texture: cogl::Handle) -> bool {
+    fn set_from_cogl_texture(&self, texture: dx::Handle) -> bool {
         //     let image = self.as_ref();
 
         //     gint width, height;
@@ -767,7 +767,7 @@ impl<O: Is<Image>> ImageExt for O {
     fn set_from_data(
         &self,
         data: &[u8],
-        pixel_format: cogl::PixelFormat,
+        pixel_format: dx::PixelFormat,
         width: i32,
         height: i32,
         rowstride: i32,

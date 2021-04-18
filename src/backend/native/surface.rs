@@ -8,8 +8,8 @@ use std::{cell::RefCell, fmt, mem};
 
 #[derive(Clone, Debug)]
 pub struct SurfaceProps {
-    pub texture: Option<cogl::Handle>,
-    pub material: Option<cogl::Handle>,
+    pub texture: Option<dx::Handle>,
+    pub material: Option<dx::Handle>,
     pub frames: u32,
     pub anim_duration: u32,
     pub current_frame: u32,

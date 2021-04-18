@@ -10,7 +10,7 @@ pub struct ComboBoxProps {
     pub label: Option<Label>, //Actor,
     pub icon: Option<Icon>,   // Actor
 
-    pub marker: cogl::Texture,
+    pub marker: dx::Texture,
     pub actions: Vec<PushAction>,
 
     pub clip_x: f64,

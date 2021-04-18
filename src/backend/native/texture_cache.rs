@@ -17,14 +17,14 @@ pub struct TextureCacheItem {
     pub height: i32,
     pub pos_x: i32,
     pub pos_y: i32,
-    pub ptr: cogl::Handle,
+    pub ptr: dx::Handle,
     // pub meta: GHashTable,
 }
 
 #[derive(Clone, Debug)]
 pub struct TextureCacheMetaEntry {
     // pub ident: gpointer,
-    pub texture: cogl::Handle,
+    pub texture: dx::Handle,
     // pub destroy_func: GDestroyNotify,
 }
 
@@ -98,7 +98,7 @@ pub trait TextureCacheExt: 'static {
     ///
     /// Returns: (transfer none): a #CoglHandle to the cached texture
     ///
-    fn get_cogl_texture(&self, uri: &str) -> Option<cogl::Handle>;
+    fn get_cogl_texture(&self, uri: &str) -> Option<dx::Handle>;
 
     /// get_meta_cogl_texture:
     /// @self: A #TextureCache
@@ -113,7 +113,7 @@ pub trait TextureCacheExt: 'static {
     /// Returns: (transfer full): A #CoglHandle to a texture, with an added
     ///   reference. %None if no image was found.
     ///
-    // fn get_meta_cogl_texture(&self, uri: &str, ident: Option<Fundamental: Pointer>) -> Option<cogl::Handle>;
+    // fn get_meta_cogl_texture(&self, uri: &str, ident: Option<Fundamental: Pointer>) -> Option<dx::Handle>;
 
     /// get_size:
     /// @self: A #TextureCache
@@ -136,7 +136,7 @@ pub trait TextureCacheExt: 'static {
     /// If the image is already in the cache, this texture will replace it. A
     /// reference will be taken on the given texture.
     ///
-    fn insert(&self, uri: &str, texture: cogl::Handle);
+    fn insert(&self, uri: &str, texture: dx::Handle);
 
     /// insert_meta:
     /// @self: A #TextureCache
@@ -151,7 +151,7 @@ pub trait TextureCacheExt: 'static {
     /// This is useful if you have a widely used modification of an image,
     /// for example, an image with a border composited around it.
     ///
-    // fn insert_meta(&self, uri: &str, ident: Option<Fundamental: Pointer>, texture: cogl::Handle);
+    // fn insert_meta(&self, uri: &str, ident: Option<Fundamental: Pointer>, texture: dx::Handle);
 
     fn load_cache(&self, filename: &str);
 }
@@ -197,7 +197,7 @@ impl<O: Is<TextureCache>> TextureCacheExt for O {
     ///
     /// Returns: (transfer none): a #CoglHandle to the cached texture
     ///
-    fn get_cogl_texture(&self, uri: &str) -> Option<cogl::Handle> {
+    fn get_cogl_texture(&self, uri: &str) -> Option<dx::Handle> {
         // unsafe { TODO: call ffi:texture_cache_get_cogl_texture() }
         unimplemented!()
     }
@@ -215,7 +215,7 @@ impl<O: Is<TextureCache>> TextureCacheExt for O {
     /// Returns: (transfer full): A #CoglHandle to a texture, with an added
     ///   reference. %None if no image was found.
     ///
-    // fn get_meta_cogl_texture(&self, uri: &str, ident: Option<Fundamental: Pointer>) -> Option<cogl::Handle> {
+    // fn get_meta_cogl_texture(&self, uri: &str, ident: Option<Fundamental: Pointer>) -> Option<dx::Handle> {
     // unsafe { TODO: call ffi:texture_cache_get_meta_cogl_texture() }
     // unimplemented!()
     // }
@@ -245,7 +245,7 @@ impl<O: Is<TextureCache>> TextureCacheExt for O {
     /// If the image is already in the cache, this texture will replace it. A
     /// reference will be taken on the given texture.
     ///
-    fn insert(&self, uri: &str, texture: cogl::Handle) {
+    fn insert(&self, uri: &str, texture: dx::Handle) {
         // unsafe { TODO: call ffi:texture_cache_insert() }
     }
 
@@ -262,7 +262,7 @@ impl<O: Is<TextureCache>> TextureCacheExt for O {
     /// This is useful if you have a widely used modification of an image,
     /// for example, an image with a border composited around it.
     ///
-    //fn insert_meta(&self, uri: &str, ident: Option<Fundamental: Pointer>, texture: cogl::Handle) {
+    //fn insert_meta(&self, uri: &str, ident: Option<Fundamental: Pointer>, texture: dx::Handle) {
     //    unsafe { TODO: call ffi:texture_cache_insert_meta() }
     //}
 

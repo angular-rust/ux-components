@@ -20,7 +20,7 @@ pub struct ButtonProps {
     pub icon_position: Position,
     pub icon_visible: bool,
     pub label_visible: bool,
-    pub content_image: cogl::Texture,
+    pub content_image: dx::Texture,
     // pub animation: Animation,
     pub child: Actor,
     pub hbox: Actor,
