@@ -2,7 +2,18 @@
 name = "ux-macro"
 version = "0.1.0"
 authors = ["Victor Dudochkin <dudochkin.victor@gmail.com>"]
+readme = "README.md"
+homepage = "https://angular-rust.github.io/ux-components"
+repository = "https://github.com/angular-rust/ux-components"
+documentation = "https://docs.rs/ux-components"
+description = "Backend agnostic GUI framework"
+keywords = ["wasm", "web", "material-design", "material-components", "gtk"]
+categories = ["development-tools::procedural-macro-helpers"]
 edition = "2018"
+license = "MPL-2.0"
+
+[badges]
+maintenance = { status = "actively-developed" }
 
 [lib]
 proc-macro = true
@@ -11,3 +22,6 @@ proc-macro = true
 proc-macro2 = "1.0"
 syn = "1.0"
 quote = "1.0"
+
+
+[dev-dependencies]
