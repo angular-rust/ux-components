@@ -1,10 +1,16 @@
-// use std::boxed::Box as Box_;
+#![allow(unused_variables)]
 
 use crate::prelude::*;
-use std::fmt;
+use std::{cell::RefCell, fmt};
 
 #[derive(Clone, Debug)]
-pub struct Clipboard {}
+pub struct ClipboardProps {
+    text: Option<String>,
+}
+#[derive(Clone, Debug)]
+pub struct Clipboard {
+    props: RefCell<ClipboardProps>,
+}
 
 impl Clipboard {
     pub fn get_default() -> Option<Clipboard> {
@@ -14,46 +20,94 @@ impl Clipboard {
     }
 }
 
-pub const NONE_CLIPBOARD: Option<&Clipboard> = None;
+impl Object for Clipboard {}
+impl Is<Clipboard> for Clipboard {}
 
-pub trait ClipboardExt: 'static {
-    fn get_text<P: FnOnce(&Clipboard, &str) + 'static>(&self, callback: P);
-
-    fn set_text(&self, text: &str);
+impl AsRef<Clipboard> for Clipboard {
+    fn as_ref(&self) -> &Clipboard {
+        self
+    }
 }
 
-// impl<O: Is<Clipboard>> ClipboardExt for O {
-//     fn get_text<P: FnOnce(&Clipboard, &str) + 'static>(&self, callback: P) {
-//         // let callback_data: Box_<P> = Box_::new(callback);
-//         // unsafe extern "C" fn callback_func<P: FnOnce(&Clipboard, &str) + 'static>(
-//         //     clipboard: *mut ffi::Clipboard,
-//         //     text: *const libc::c_char,
-//         //     user_data: glib_sys::gpointer,
-//         // ) {
-//         //     let clipboard = from_glib_borrow(clipboard);
-//         //     let text: Borrowed<String> = from_glib_borrow(text);
-//         //     let callback: Box_<P> = Box_::from_raw(user_data as *mut _);
-//         //     (*callback)(&clipboard, text.as_str());
-//         // }
-//         // let callback = Some(callback_func::<P> as _);
-//         // let super_callback0: Box_<P> = callback_data;
-//         // unsafe {
-//         //     ffi::clipboard_get_text(
-//         //         self.as_ref().to_glib_none().0,
-//         //         callback,
-//         //         Box_::into_raw(super_callback0) as *mut _,
-//         //     );
-//         // }
-//         unimplemented!()
-//     }
+pub trait ClipboardExt: 'static {
+    /// get_text:
+    /// @clipboard: A #Clipboard
+    /// @callback: (scope async): function to be called when the text is retreived
+    /// @user_data: data to be passed to the callback
+    ///
+    /// Request the data from the clipboard in text form. @callback is executed
+    /// when the data is retreived.
+    ///
+    fn get_text<P: FnOnce(&Clipboard, &str) + 'static>(&self, callback: P);
 
-//     fn set_text(&self, text: &str) {
-//         // unsafe {
-//         //     ffi::clipboard_set_text(self.as_ref().to_glib_none().0, text.to_glib_none().0);
-//         // }
-//         unimplemented!()
-//     }
-// }
+    /// set_text:
+    /// @clipboard: A #Clipboard
+    /// @text: text to copy to the clipboard
+    ///
+    /// Sets text as the current contents of the clipboard.
+    ///
+    fn set_text(&self, text: Option<String>);
+}
+
+impl<O: Is<Clipboard>> ClipboardExt for O {
+    /// get_text:
+    /// @clipboard: A #Clipboard
+    /// @callback: (scope async): function to be called when the text is retreived
+    /// @user_data: data to be passed to the callback
+    ///
+    /// Request the data from the clipboard in text form. @callback is executed
+    /// when the data is retreived.
+    ///
+    fn get_text<P: FnOnce(&Clipboard, &str) + 'static>(&self, callback: P) {
+        let clipboard = self.as_ref();
+        // let callback_data: Box_<P> = Box_::new(callback);
+        // unsafe extern "C" fn callback_func<P: FnOnce(&Clipboard, &str) + 'static>(
+        //     clipboard: *mut ffi::Clipboard,
+        //     text: *const libc::c_char,
+        //     user_data: glib_sys::gpointer,
+        // ) {
+        //     let clipboard = from_glib_borrow(clipboard);
+        //     let text: Borrowed<String> = from_glib_borrow(text);
+        //     let callback: Box_<P> = Box_::from_raw(user_data as *mut _);
+        //     (*callback)(&clipboard, text.as_str());
+        // }
+        // let callback = Some(callback_func::<P> as _);
+        // let super_callback0: Box_<P> = callback_data;
+        // unsafe {
+        //     ffi::clipboard_get_text(
+        //         self.as_ref().to_glib_none().0,
+        //         callback,
+        //         Box_::into_raw(super_callback0) as *mut _,
+        //     );
+        // }
+
+        // ClipboardClosure *closure;
+
+        // g_return_if_fail (IS_CLIPBOARD (clipboard));
+        // g_return_if_fail (callback != None);
+
+        // closure = g_slice_new (ClipboardClosure);
+        // closure->clipboard = clipboard;
+        // closure->callback = callback;
+        // closure->user_data = user_data;
+
+        // g_object_add_weak_pointer (G_OBJECT (clipboard),
+        //                            (gpointer *)&closure->clipboard);
+        // g_idle_add ((GSourceFunc)clipboard_get_text_cb, closure);
+    }
+
+    /// set_text:
+    /// @clipboard: A #Clipboard
+    /// @text: text to copy to the clipboard
+    ///
+    /// Sets text as the current contents of the clipboard.
+    ///
+    fn set_text(&self, text: Option<String>) {
+        let clipboard = self.as_ref();
+        let mut props = clipboard.props.borrow_mut();
+        props.text = text;
+    }
+}
 
 impl fmt::Display for Clipboard {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {

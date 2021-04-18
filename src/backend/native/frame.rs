@@ -1,23 +1,21 @@
-use super::Widget;
+#![allow(unused_variables)]
+
+use crate::prelude::*;
+use crate::{Actor, Widget};
 use std::fmt;
 
-// @extends Widget, clutter::Actor;
 #[derive(Clone, Debug)]
-pub struct Frame {}
+pub struct Frame {
+    pub child: Option<Actor>,
+    widget: Widget,
+}
 
 impl Frame {
     pub fn new() -> Frame {
         // assert_initialized_main_thread!();
-        // unsafe { clutter::Actor::from_glib_none(ffi::frame_new()).unsafe_cast() }
+        // unsafe { Actor::from_glib_none(ffi::frame_new()).unsafe_cast() }
         unimplemented!()
     }
-
-    // pub fn new() -> Frame {
-    //     unimplemented!() // TODO: complete it
-
-    //     // assert_initialized_main_thread!();
-    //     // unsafe { from_glib_full(ffi::frame_new()) }
-    // }
 }
 
 impl Default for Frame {
@@ -26,7 +24,31 @@ impl Default for Frame {
     }
 }
 
-pub const NONE_FRAME: Option<&Frame> = None;
+impl Object for Frame {}
+impl Is<Frame> for Frame {}
+
+impl AsRef<Frame> for Frame {
+    fn as_ref(&self) -> &Frame {
+        self
+    }
+}
+
+impl Is<Widget> for Frame {}
+
+impl AsRef<Widget> for Frame {
+    fn as_ref(&self) -> &Widget {
+        &self.widget
+    }
+}
+
+impl Is<Actor> for Frame {}
+
+impl AsRef<Actor> for Frame {
+    fn as_ref(&self) -> &Actor {
+        let actor: &Actor = self.widget.as_ref();
+        actor
+    }
+}
 
 impl fmt::Display for Frame {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
