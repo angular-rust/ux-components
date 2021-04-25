@@ -1,9 +1,8 @@
 #![allow(unused_variables)]
 
 use crate::prelude::*;
-use crate::{Actor, ActorCanvas, Pattern, ScalingFilter, Widget};
+use crate::{Actor, ActorCanvas, Canvas, ScalingFilter, Widget};
 use glib::signal::SignalHandlerId;
-use primitives::CanvasContext;
 use std::{cell::RefCell, fmt, mem};
 
 #[derive(Clone, Debug)]
@@ -36,20 +35,18 @@ impl Surface {
             animating: true,
         };
 
-        println!("create surface");
-
         let widget = Widget::new();
         let content = ActorCanvas::new().unwrap();
         let canvas: ActorCanvas = unsafe { mem::transmute(content) };
-        canvas.set_size(400, 400);
+
+        // set the default surface size similar HTML5 Canvas
+        canvas.set_size(300, 150);
 
         {
             let actor: &Actor = widget.as_ref();
 
-            actor.set_background_color(Some(color::RED_9));
-            actor.set_size(100_f32, 100_f32);
-            actor.set_position(50_f32, 50_f32);
-
+            // set the default surface Actor size similar HTML5 Canvas
+            actor.set_size(300_f32, 150_f32);
             actor.set_content(Some(&canvas));
             actor.set_content_scaling_filters(ScalingFilter::Trilinear, ScalingFilter::Linear);
         }
@@ -105,23 +102,55 @@ impl AsRef<Actor> for Surface {
 }
 
 pub trait SurfaceExt: 'static {
-    /// get_animating:
-    /// @spinner: A #Surface widget
-    ///
-    /// Determines whether the spinner is animating.
-    ///
-    /// Returns: %true if the spinner is animating, %false otherwise
-    ///
-    fn get_animating(&self) -> bool;
+    // /// get_animating:
+    // /// @spinner: A #Surface widget
+    // ///
+    // /// Determines whether the spinner is animating.
+    // ///
+    // /// Returns: %true if the spinner is animating, %false otherwise
+    // ///
+    // fn get_animating(&self) -> bool;
 
-    /// set_animating:
-    /// @spinner: A #Surface widget
-    /// @animating: %true to enable animation, %false to disable
+    // /// set_animating:
+    // /// @spinner: A #Surface widget
+    // /// @animating: %true to enable animation, %false to disable
+    // ///
+    // /// Sets whether the spinner is animating. A spinner can be stopped if
+    // /// the task it represents has finished, or to save energy.
+    // ///
+    // fn set_animating(&self, animating: bool);
+
+    /// Invalidates a `Content`.
     ///
-    /// Sets whether the spinner is animating. A spinner can be stopped if
-    /// the task it represents has finished, or to save energy.
+    /// This function should be called by `Content` implementations when
+    /// they change the way a the content should be painted regardless of the
+    /// actor state.
+    fn invalidate(&self);
+
+    /// Sets the size of the surface context, and invalidates the content.
     ///
-    fn set_animating(&self, animating: bool);
+    /// This function will cause the `self` to be invalidated only
+    /// if the size of the canvas surface has changed.
+    ///
+    /// If you want to invalidate the contents of the `self` when setting
+    /// the size, you can use the return value of the function to conditionally
+    /// call `Content::invalidate`:
+    ///
+    ///
+    /// ```text
+    ///   if (!canvas_set_size (canvas, width, height))
+    ///     content_invalidate (CONTENT (canvas));
+    /// ```
+    /// ## `width`
+    /// the width of the canvas, in pixels
+    /// ## `height`
+    /// the height of the canvas, in pixels
+    ///
+    /// # Returns
+    ///
+    /// this function returns `true` if the size change
+    ///  caused a content invalidation, and `false` otherwise
+    fn set_content_size(&self, width: f64, height: f64) -> bool;
 
     /// The `Canvas::draw` signal is emitted each time a canvas is
     /// invalidated.
@@ -140,7 +169,7 @@ pub trait SurfaceExt: 'static {
     ///
     /// `true` if the signal emission should stop, and
     ///  `false` otherwise
-    fn connect_draw<F: Fn(&Self, &dyn CanvasContext<Pattern>, i32, i32) -> bool + 'static>(
+    fn connect_draw<F: Fn(&Self, &Canvas, i32, i32) -> bool + 'static>(
         &self,
         f: F,
     ) -> SignalHandlerId;
@@ -151,35 +180,72 @@ pub trait SurfaceExt: 'static {
 }
 
 impl<O: Is<Surface>> SurfaceExt for O {
-    /// get_animating:
-    /// @spinner: A #Surface widget
+    // /// get_animating:
+    // /// @spinner: A #Surface widget
+    // ///
+    // /// Determines whether the spinner is animating.
+    // ///
+    // /// Returns: %true if the spinner is animating, %false otherwise
+    // ///
+    // fn get_animating(&self) -> bool {
+    //     let spinner = self.as_ref();
+    //     let props = spinner.props.borrow();
+    //     props.animating
+    // }
+
+    // /// set_animating:
+    // /// @spinner: A #Surface widget
+    // /// @animating: %true to enable animation, %false to disable
+    // ///
+    // /// Sets whether the spinner is animating. A spinner can be stopped if
+    // /// the task it represents has finished, or to save energy.
+    // ///
+    // fn set_animating(&self, animating: bool) {
+    //     let spinner = self.as_ref();
+    //     let mut props = spinner.props.borrow_mut();
+
+    //     if props.animating != animating {
+    //         props.animating = animating;
+    //         // update_timeout(spinner);
+    //         // g_object_notify(G_OBJECT(spinner), "animating");
+    //     }
+    // }
+
+    /// Invalidates a `Content`.
     ///
-    /// Determines whether the spinner is animating.
-    ///
-    /// Returns: %true if the spinner is animating, %false otherwise
-    ///
-    fn get_animating(&self) -> bool {
-        let spinner = self.as_ref();
-        let props = spinner.props.borrow();
-        props.animating
+    /// This function should be called by `Content` implementations when
+    /// they change the way a the content should be painted regardless of the
+    /// actor state.
+    fn invalidate(&self) {
+        let surface = self.as_ref();
+        surface.canvas.invalidate()
     }
-
-    /// set_animating:
-    /// @spinner: A #Surface widget
-    /// @animating: %true to enable animation, %false to disable
+    /// Sets the size of the surface context, and invalidates the content.
     ///
-    /// Sets whether the spinner is animating. A spinner can be stopped if
-    /// the task it represents has finished, or to save energy.
+    /// This function will cause the `self` to be invalidated only
+    /// if the size of the canvas surface has changed.
     ///
-    fn set_animating(&self, animating: bool) {
-        let spinner = self.as_ref();
-        let mut props = spinner.props.borrow_mut();
-
-        if props.animating != animating {
-            props.animating = animating;
-            // update_timeout(spinner);
-            // g_object_notify(G_OBJECT(spinner), "animating");
-        }
+    /// If you want to invalidate the contents of the `self` when setting
+    /// the size, you can use the return value of the function to conditionally
+    /// call `Content::invalidate`:
+    ///
+    ///
+    /// ```text
+    ///   if (!canvas_set_size (canvas, width, height))
+    ///     content_invalidate (CONTENT (canvas));
+    /// ```
+    /// ## `width`
+    /// the width of the canvas, in pixels
+    /// ## `height`
+    /// the height of the canvas, in pixels
+    ///
+    /// # Returns
+    ///
+    /// this function returns `true` if the size change
+    ///  caused a content invalidation, and `false` otherwise
+    fn set_content_size(&self, width: f64, height: f64) -> bool {
+        let surface = self.as_ref();
+        surface.canvas.set_size(width as i32, height as i32)
     }
 
     /// The `Canvas::draw` signal is emitted each time a canvas is
@@ -199,7 +265,7 @@ impl<O: Is<Surface>> SurfaceExt for O {
     ///
     /// `true` if the signal emission should stop, and
     ///  `false` otherwise
-    fn connect_draw<F: Fn(&Self, &dyn CanvasContext<Pattern>, i32, i32) -> bool + 'static>(
+    fn connect_draw<F: Fn(&Self, &Canvas, i32, i32) -> bool + 'static>(
         &self,
         f: F,
     ) -> SignalHandlerId {
@@ -211,8 +277,7 @@ impl<O: Is<Surface>> SurfaceExt for O {
             .canvas
             .connect_draw(move |widget, cr, width, height| {
                 let ctx = animate::Canvas::new(cr);
-                f(this, &ctx, width, height);
-                false
+                f(this, &ctx, width, height)
             });
 
         // First redraw

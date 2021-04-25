@@ -75,15 +75,15 @@ pub mod prelude {
         pub use animate::{run, init, quit};
     }
 
-    pub use super::Transparency;
+    pub use super::Opacity;
 }
 
-pub trait Transparency {
-    fn transparency(&self, val :u8) -> Self;
+pub trait Opacity {
+    fn opacity(&self, val :u8) -> Self;
 }
 
-impl Transparency for Color {
-    fn transparency(&self, val :u8) -> Self {
+impl Opacity for Color {
+    fn opacity(&self, val :u8) -> Self {
         let color = *self;
         let RgbColor { red, green, blue} = color.into();
         Self::RGBA(red, green, blue, val)
