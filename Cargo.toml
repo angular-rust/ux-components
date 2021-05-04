@@ -28,7 +28,7 @@ dox = ["ux-animate/dox", "ux-charts/dox", "ux-dx/dox", "gobject-sys/dox", "pango
 [dependencies]
 log = "0.4"
 bitflags = "1.0"
-ruex = "0.1.0"
+ruex = "0.1.1"
 ux-macro = "0.1.0"
 ux-dx = "0.1.1"
 ux-dataflow = "0.1.2"
