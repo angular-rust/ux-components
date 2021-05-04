@@ -1,7 +1,7 @@
 #![allow(unused_variables)]
 
 use crate::prelude::*;
-use crate::{PushAction, Actor, Position, Widget};
+use crate::{Actor, Position, PushAction, Widget};
 use glib::signal::SignalHandlerId;
 use std::{cell::RefCell, fmt};
 

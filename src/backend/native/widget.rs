@@ -3492,7 +3492,7 @@ impl<O: Is<Widget>> WidgetExt for O {
         let widget = self.as_ref();
         let props = widget.props.borrow();
 
-        props.bg_color.clone()
+        props.bg_color
     }
 
     fn get_background_texture(&self) -> Option<dx::Handle> {
@@ -5224,9 +5224,7 @@ impl<O: Is<Widget>> WidgetExt for O {
         let this = unsafe { &*(widget as *const Widget as *const Self) };
         widget
             .inner
-            .connect_button_press_event(move |actor, event| {
-                f(this, event)
-            })
+            .connect_button_press_event(move |actor, event| f(this, event))
     }
 
     fn connect_button_release_event<F: Fn(&Self, &ButtonEvent) -> bool + 'static>(
@@ -5237,9 +5235,7 @@ impl<O: Is<Widget>> WidgetExt for O {
         let this = unsafe { &*(widget as *const Widget as *const Self) };
         widget
             .inner
-            .connect_button_release_event(move |actor, event| {
-                f(this, event)
-            })
+            .connect_button_release_event(move |actor, event| f(this, event))
     }
 
     fn connect_captured_event<F: Fn(&Self, &Event) -> bool + 'static>(
@@ -5250,19 +5246,13 @@ impl<O: Is<Widget>> WidgetExt for O {
         let this = unsafe { &*(widget as *const Widget as *const Self) };
         widget
             .inner
-            .connect_captured_event(move |actor, event| {
-                f(this, event)
-            })
+            .connect_captured_event(move |actor, event| f(this, event))
     }
 
     fn connect_destroy<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         let widget = self.as_ref();
         let this = unsafe { &*(widget as *const Widget as *const Self) };
-        widget
-            .inner
-            .connect_destroy(move |actor| {
-                f(this)
-            })
+        widget.inner.connect_destroy(move |actor| f(this))
     }
 
     fn connect_enter_event<F: Fn(&Self, &CrossingEvent) -> bool + 'static>(
@@ -5273,9 +5263,7 @@ impl<O: Is<Widget>> WidgetExt for O {
         let this = unsafe { &*(widget as *const Widget as *const Self) };
         widget
             .inner
-            .connect_enter_event(move |actor, event| {
-                f(this, event)
-            })
+            .connect_enter_event(move |actor, event| f(this, event))
     }
 
     fn connect_event<F: Fn(&Self, &Event) -> bool + 'static>(&self, f: F) -> SignalHandlerId {
@@ -5283,39 +5271,25 @@ impl<O: Is<Widget>> WidgetExt for O {
         let this = unsafe { &*(widget as *const Widget as *const Self) };
         widget
             .inner
-            .connect_event(move |actor, event| {
-                f(this, event)
-            })
+            .connect_event(move |actor, event| f(this, event))
     }
 
     fn connect_hide<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         let widget = self.as_ref();
         let this = unsafe { &*(widget as *const Widget as *const Self) };
-        widget
-            .inner
-            .connect_hide(move |actor| {
-                f(this)
-            })
+        widget.inner.connect_hide(move |actor| f(this))
     }
 
     fn connect_key_focus_in<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         let widget = self.as_ref();
         let this = unsafe { &*(widget as *const Widget as *const Self) };
-        widget
-            .inner
-            .connect_key_focus_in(move |actor| {
-                f(this)
-            })
+        widget.inner.connect_key_focus_in(move |actor| f(this))
     }
 
     fn connect_key_focus_out<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         let widget = self.as_ref();
         let this = unsafe { &*(widget as *const Widget as *const Self) };
-        widget
-            .inner
-            .connect_key_focus_out(move |actor| {
-                f(this)
-            })
+        widget.inner.connect_key_focus_out(move |actor| f(this))
     }
 
     fn connect_key_press_event<F: Fn(&Self, &KeyEvent) -> bool + 'static>(
@@ -5326,9 +5300,7 @@ impl<O: Is<Widget>> WidgetExt for O {
         let this = unsafe { &*(widget as *const Widget as *const Self) };
         widget
             .inner
-            .connect_key_press_event(move |actor, event| {
-                f(this, event)
-            })
+            .connect_key_press_event(move |actor, event| f(this, event))
     }
 
     fn connect_key_release_event<F: Fn(&Self, &KeyEvent) -> bool + 'static>(
@@ -5339,9 +5311,7 @@ impl<O: Is<Widget>> WidgetExt for O {
         let this = unsafe { &*(widget as *const Widget as *const Self) };
         widget
             .inner
-            .connect_key_release_event(move |actor, event| {
-                f(this, event)
-            })
+            .connect_key_release_event(move |actor, event| f(this, event))
     }
 
     fn connect_leave_event<F: Fn(&Self, &CrossingEvent) -> bool + 'static>(
@@ -5352,9 +5322,7 @@ impl<O: Is<Widget>> WidgetExt for O {
         let this = unsafe { &*(widget as *const Widget as *const Self) };
         widget
             .inner
-            .connect_leave_event(move |actor, event| {
-                f(this, event)
-            })
+            .connect_leave_event(move |actor, event| f(this, event))
     }
 
     fn connect_motion_event<F: Fn(&Self, &MotionEvent) -> bool + 'static>(
@@ -5365,9 +5333,7 @@ impl<O: Is<Widget>> WidgetExt for O {
         let this = unsafe { &*(widget as *const Widget as *const Self) };
         widget
             .inner
-            .connect_motion_event(move |actor, event| {
-                f(this, event)
-            })
+            .connect_motion_event(move |actor, event| f(this, event))
     }
 
     fn connect_parent_set<F: Fn(&Self, Option<&Actor>) + 'static>(&self, f: F) -> SignalHandlerId {
@@ -5375,9 +5341,7 @@ impl<O: Is<Widget>> WidgetExt for O {
         let this = unsafe { &*(widget as *const Widget as *const Self) };
         widget
             .inner
-            .connect_parent_set(move |actor, parent| {
-                f(this, parent)
-            })
+            .connect_parent_set(move |actor, parent| f(this, parent))
     }
 
     fn connect_queue_redraw<F: Fn(&Self, &Actor) + 'static>(&self, f: F) -> SignalHandlerId {
@@ -5385,19 +5349,13 @@ impl<O: Is<Widget>> WidgetExt for O {
         let this = unsafe { &*(widget as *const Widget as *const Self) };
         widget
             .inner
-            .connect_queue_redraw(move |actor, other| {
-                f(this, other)
-            })
+            .connect_queue_redraw(move |actor, other| f(this, other))
     }
 
     fn connect_queue_relayout<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         let widget = self.as_ref();
         let this = unsafe { &*(widget as *const Widget as *const Self) };
-        widget
-            .inner
-            .connect_queue_relayout(move |actor| {
-                f(this)
-            })
+        widget.inner.connect_queue_relayout(move |actor| f(this))
     }
 
     fn connect_scroll_event<F: Fn(&Self, &ScrollEvent) -> bool + 'static>(
@@ -5408,19 +5366,13 @@ impl<O: Is<Widget>> WidgetExt for O {
         let this = unsafe { &*(widget as *const Widget as *const Self) };
         widget
             .inner
-            .connect_scroll_event(move |actor, event| {
-                f(this, event)
-            })
+            .connect_scroll_event(move |actor, event| f(this, event))
     }
 
     fn connect_show<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         let widget = self.as_ref();
         let this = unsafe { &*(widget as *const Widget as *const Self) };
-        widget
-            .inner
-            .connect_show(move |actor| {
-                f(this)
-            })
+        widget.inner.connect_show(move |actor| f(this))
     }
 
     fn connect_touch_event<F: Fn(&Self, &Event) -> bool + 'static>(&self, f: F) -> SignalHandlerId {
@@ -5428,9 +5380,7 @@ impl<O: Is<Widget>> WidgetExt for O {
         let this = unsafe { &*(widget as *const Widget as *const Self) };
         widget
             .inner
-            .connect_touch_event(move |actor, event| {
-                f(this, event)
-            })
+            .connect_touch_event(move |actor, event| f(this, event))
     }
 
     fn connect_transition_stopped<F: Fn(&Self, &str, bool) + 'static>(
@@ -5441,9 +5391,7 @@ impl<O: Is<Widget>> WidgetExt for O {
         let this = unsafe { &*(widget as *const Widget as *const Self) };
         widget
             .inner
-            .connect_transition_stopped(move |actor, name, stopped| {
-                f(this, name, stopped)
-            })
+            .connect_transition_stopped(move |actor, name, stopped| f(this, name, stopped))
     }
 
     fn connect_transitions_completed<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
@@ -5451,9 +5399,7 @@ impl<O: Is<Widget>> WidgetExt for O {
         let this = unsafe { &*(widget as *const Widget as *const Self) };
         widget
             .inner
-            .connect_transitions_completed(move |actor| {
-                f(this)
-            })
+            .connect_transitions_completed(move |actor| f(this))
     }
 
     fn connect_property_actions_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
@@ -5461,9 +5407,7 @@ impl<O: Is<Widget>> WidgetExt for O {
         let this = unsafe { &*(widget as *const Widget as *const Self) };
         widget
             .inner
-            .connect_property_actions_notify(move |actor| {
-                f(this)
-            })
+            .connect_property_actions_notify(move |actor| f(this))
     }
 
     fn connect_property_allocation_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
@@ -5471,9 +5415,7 @@ impl<O: Is<Widget>> WidgetExt for O {
         let this = unsafe { &*(widget as *const Widget as *const Self) };
         widget
             .inner
-            .connect_property_allocation_notify(move |actor| {
-                f(this)
-            })
+            .connect_property_allocation_notify(move |actor| f(this))
     }
 
     fn connect_property_background_color_notify<F: Fn(&Self) + 'static>(
@@ -5484,9 +5426,7 @@ impl<O: Is<Widget>> WidgetExt for O {
         let this = unsafe { &*(widget as *const Widget as *const Self) };
         widget
             .inner
-            .connect_property_background_color_notify(move |actor| {
-                f(this)
-            })
+            .connect_property_background_color_notify(move |actor| f(this))
     }
 
     fn connect_property_background_color_set_notify<F: Fn(&Self) + 'static>(
@@ -5497,9 +5437,7 @@ impl<O: Is<Widget>> WidgetExt for O {
         let this = unsafe { &*(widget as *const Widget as *const Self) };
         widget
             .inner
-            .connect_property_background_color_set_notify(move |actor| {
-                f(this)
-            })
+            .connect_property_background_color_set_notify(move |actor| f(this))
     }
 
     fn connect_property_child_transform_notify<F: Fn(&Self) + 'static>(
@@ -5510,9 +5448,7 @@ impl<O: Is<Widget>> WidgetExt for O {
         let this = unsafe { &*(widget as *const Widget as *const Self) };
         widget
             .inner
-            .connect_property_child_transform_notify(move |actor| {
-                f(this)
-            })
+            .connect_property_child_transform_notify(move |actor| f(this))
     }
 
     fn connect_property_child_transform_set_notify<F: Fn(&Self) + 'static>(
@@ -5523,9 +5459,7 @@ impl<O: Is<Widget>> WidgetExt for O {
         let this = unsafe { &*(widget as *const Widget as *const Self) };
         widget
             .inner
-            .connect_property_child_transform_set_notify(move |actor| {
-                f(this)
-            })
+            .connect_property_child_transform_set_notify(move |actor| f(this))
     }
 
     fn connect_property_clip_rect_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
@@ -5533,9 +5467,7 @@ impl<O: Is<Widget>> WidgetExt for O {
         let this = unsafe { &*(widget as *const Widget as *const Self) };
         widget
             .inner
-            .connect_property_clip_rect_notify(move |actor| {
-                f(this)
-            })
+            .connect_property_clip_rect_notify(move |actor| f(this))
     }
 
     fn connect_property_clip_to_allocation_notify<F: Fn(&Self) + 'static>(
@@ -5546,9 +5478,7 @@ impl<O: Is<Widget>> WidgetExt for O {
         let this = unsafe { &*(widget as *const Widget as *const Self) };
         widget
             .inner
-            .connect_property_clip_to_allocation_notify(move |actor| {
-                f(this)
-            })
+            .connect_property_clip_to_allocation_notify(move |actor| f(this))
     }
 
     fn connect_property_constraints_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
@@ -5556,9 +5486,7 @@ impl<O: Is<Widget>> WidgetExt for O {
         let this = unsafe { &*(widget as *const Widget as *const Self) };
         widget
             .inner
-            .connect_property_constraints_notify(move |actor| {
-                f(this)
-            })
+            .connect_property_constraints_notify(move |actor| f(this))
     }
 
     fn connect_property_content_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
@@ -5566,9 +5494,7 @@ impl<O: Is<Widget>> WidgetExt for O {
         let this = unsafe { &*(widget as *const Widget as *const Self) };
         widget
             .inner
-            .connect_property_content_notify(move |actor| {
-                f(this)
-            })
+            .connect_property_content_notify(move |actor| f(this))
     }
 
     fn connect_property_content_box_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
@@ -5576,9 +5502,7 @@ impl<O: Is<Widget>> WidgetExt for O {
         let this = unsafe { &*(widget as *const Widget as *const Self) };
         widget
             .inner
-            .connect_property_content_box_notify(move |actor| {
-                f(this)
-            })
+            .connect_property_content_box_notify(move |actor| f(this))
     }
 
     fn connect_property_content_gravity_notify<F: Fn(&Self) + 'static>(
@@ -5589,9 +5513,7 @@ impl<O: Is<Widget>> WidgetExt for O {
         let this = unsafe { &*(widget as *const Widget as *const Self) };
         widget
             .inner
-            .connect_property_content_gravity_notify(move |actor| {
-                f(this)
-            })
+            .connect_property_content_gravity_notify(move |actor| f(this))
     }
 
     fn connect_property_content_repeat_notify<F: Fn(&Self) + 'static>(
@@ -5602,9 +5524,7 @@ impl<O: Is<Widget>> WidgetExt for O {
         let this = unsafe { &*(widget as *const Widget as *const Self) };
         widget
             .inner
-            .connect_property_content_repeat_notify(move |actor| {
-                f(this)
-            })
+            .connect_property_content_repeat_notify(move |actor| f(this))
     }
 
     fn connect_property_effect_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
@@ -5612,9 +5532,7 @@ impl<O: Is<Widget>> WidgetExt for O {
         let this = unsafe { &*(widget as *const Widget as *const Self) };
         widget
             .inner
-            .connect_property_effect_notify(move |actor| {
-                f(this)
-            })
+            .connect_property_effect_notify(move |actor| f(this))
     }
 
     fn connect_property_first_child_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
@@ -5622,9 +5540,7 @@ impl<O: Is<Widget>> WidgetExt for O {
         let this = unsafe { &*(widget as *const Widget as *const Self) };
         widget
             .inner
-            .connect_property_first_child_notify(move |actor| {
-                f(this)
-            })
+            .connect_property_first_child_notify(move |actor| f(this))
     }
 
     fn connect_property_fixed_position_set_notify<F: Fn(&Self) + 'static>(
@@ -5635,9 +5551,7 @@ impl<O: Is<Widget>> WidgetExt for O {
         let this = unsafe { &*(widget as *const Widget as *const Self) };
         widget
             .inner
-            .connect_property_fixed_position_set_notify(move |actor| {
-                f(this)
-            })
+            .connect_property_fixed_position_set_notify(move |actor| f(this))
     }
 
     fn connect_property_fixed_x_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
@@ -5645,9 +5559,7 @@ impl<O: Is<Widget>> WidgetExt for O {
         let this = unsafe { &*(widget as *const Widget as *const Self) };
         widget
             .inner
-            .connect_property_fixed_x_notify(move |actor| {
-                f(this)
-            })
+            .connect_property_fixed_x_notify(move |actor| f(this))
     }
 
     fn connect_property_fixed_y_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
@@ -5655,9 +5567,7 @@ impl<O: Is<Widget>> WidgetExt for O {
         let this = unsafe { &*(widget as *const Widget as *const Self) };
         widget
             .inner
-            .connect_property_fixed_y_notify(move |actor| {
-                f(this)
-            })
+            .connect_property_fixed_y_notify(move |actor| f(this))
     }
 
     fn connect_property_has_clip_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
@@ -5665,9 +5575,7 @@ impl<O: Is<Widget>> WidgetExt for O {
         let this = unsafe { &*(widget as *const Widget as *const Self) };
         widget
             .inner
-            .connect_property_has_clip_notify(move |actor| {
-                f(this)
-            })
+            .connect_property_has_clip_notify(move |actor| f(this))
     }
 
     fn connect_property_has_pointer_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
@@ -5675,9 +5583,7 @@ impl<O: Is<Widget>> WidgetExt for O {
         let this = unsafe { &*(widget as *const Widget as *const Self) };
         widget
             .inner
-            .connect_property_has_pointer_notify(move |actor| {
-                f(this)
-            })
+            .connect_property_has_pointer_notify(move |actor| f(this))
     }
 
     fn connect_property_height_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
@@ -5685,9 +5591,7 @@ impl<O: Is<Widget>> WidgetExt for O {
         let this = unsafe { &*(widget as *const Widget as *const Self) };
         widget
             .inner
-            .connect_property_height_notify(move |actor| {
-                f(this)
-            })
+            .connect_property_height_notify(move |actor| f(this))
     }
 
     fn connect_property_last_child_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
@@ -5695,9 +5599,7 @@ impl<O: Is<Widget>> WidgetExt for O {
         let this = unsafe { &*(widget as *const Widget as *const Self) };
         widget
             .inner
-            .connect_property_last_child_notify(move |actor| {
-                f(this)
-            })
+            .connect_property_last_child_notify(move |actor| f(this))
     }
 
     fn connect_property_layout_manager_notify<F: Fn(&Self) + 'static>(
@@ -5708,9 +5610,7 @@ impl<O: Is<Widget>> WidgetExt for O {
         let this = unsafe { &*(widget as *const Widget as *const Self) };
         widget
             .inner
-            .connect_property_layout_manager_notify(move |actor| {
-                f(this)
-            })
+            .connect_property_layout_manager_notify(move |actor| f(this))
     }
 
     fn connect_property_magnification_filter_notify<F: Fn(&Self) + 'static>(
@@ -5721,9 +5621,7 @@ impl<O: Is<Widget>> WidgetExt for O {
         let this = unsafe { &*(widget as *const Widget as *const Self) };
         widget
             .inner
-            .connect_property_magnification_filter_notify(move |actor| {
-                f(this)
-            })
+            .connect_property_magnification_filter_notify(move |actor| f(this))
     }
 
     fn connect_property_mapped_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
@@ -5731,9 +5629,7 @@ impl<O: Is<Widget>> WidgetExt for O {
         let this = unsafe { &*(widget as *const Widget as *const Self) };
         widget
             .inner
-            .connect_property_mapped_notify(move |actor| {
-                f(this)
-            })
+            .connect_property_mapped_notify(move |actor| f(this))
     }
 
     fn connect_property_margin_bottom_notify<F: Fn(&Self) + 'static>(
@@ -5744,9 +5640,7 @@ impl<O: Is<Widget>> WidgetExt for O {
         let this = unsafe { &*(widget as *const Widget as *const Self) };
         widget
             .inner
-            .connect_property_margin_bottom_notify(move |actor| {
-                f(this)
-            })
+            .connect_property_margin_bottom_notify(move |actor| f(this))
     }
 
     fn connect_property_margin_left_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
@@ -5754,9 +5648,7 @@ impl<O: Is<Widget>> WidgetExt for O {
         let this = unsafe { &*(widget as *const Widget as *const Self) };
         widget
             .inner
-            .connect_property_margin_left_notify(move |actor| {
-                f(this)
-            })
+            .connect_property_margin_left_notify(move |actor| f(this))
     }
 
     fn connect_property_margin_right_notify<F: Fn(&Self) + 'static>(
@@ -5767,9 +5659,7 @@ impl<O: Is<Widget>> WidgetExt for O {
         let this = unsafe { &*(widget as *const Widget as *const Self) };
         widget
             .inner
-            .connect_property_margin_right_notify(move |actor| {
-                f(this)
-            })
+            .connect_property_margin_right_notify(move |actor| f(this))
     }
 
     fn connect_property_margin_top_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
@@ -5777,9 +5667,7 @@ impl<O: Is<Widget>> WidgetExt for O {
         let this = unsafe { &*(widget as *const Widget as *const Self) };
         widget
             .inner
-            .connect_property_margin_top_notify(move |actor| {
-                f(this)
-            })
+            .connect_property_margin_top_notify(move |actor| f(this))
     }
 
     fn connect_property_min_height_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
@@ -5787,9 +5675,7 @@ impl<O: Is<Widget>> WidgetExt for O {
         let this = unsafe { &*(widget as *const Widget as *const Self) };
         widget
             .inner
-            .connect_property_min_height_notify(move |actor| {
-                f(this)
-            })
+            .connect_property_min_height_notify(move |actor| f(this))
     }
 
     fn connect_property_min_height_set_notify<F: Fn(&Self) + 'static>(
@@ -5800,9 +5686,7 @@ impl<O: Is<Widget>> WidgetExt for O {
         let this = unsafe { &*(widget as *const Widget as *const Self) };
         widget
             .inner
-            .connect_property_min_height_set_notify(move |actor| {
-                f(this)
-            })
+            .connect_property_min_height_set_notify(move |actor| f(this))
     }
 
     fn connect_property_min_width_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
@@ -5810,9 +5694,7 @@ impl<O: Is<Widget>> WidgetExt for O {
         let this = unsafe { &*(widget as *const Widget as *const Self) };
         widget
             .inner
-            .connect_property_min_width_notify(move |actor| {
-                f(this)
-            })
+            .connect_property_min_width_notify(move |actor| f(this))
     }
 
     fn connect_property_min_width_set_notify<F: Fn(&Self) + 'static>(
@@ -5823,9 +5705,7 @@ impl<O: Is<Widget>> WidgetExt for O {
         let this = unsafe { &*(widget as *const Widget as *const Self) };
         widget
             .inner
-            .connect_property_min_width_set_notify(move |actor| {
-                f(this)
-            })
+            .connect_property_min_width_set_notify(move |actor| f(this))
     }
 
     fn connect_property_minification_filter_notify<F: Fn(&Self) + 'static>(
@@ -5836,9 +5716,7 @@ impl<O: Is<Widget>> WidgetExt for O {
         let this = unsafe { &*(widget as *const Widget as *const Self) };
         widget
             .inner
-            .connect_property_minification_filter_notify(move |actor| {
-                f(this)
-            })
+            .connect_property_minification_filter_notify(move |actor| f(this))
     }
 
     fn connect_property_name_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
@@ -5846,9 +5724,7 @@ impl<O: Is<Widget>> WidgetExt for O {
         let this = unsafe { &*(widget as *const Widget as *const Self) };
         widget
             .inner
-            .connect_property_name_notify(move |actor| {
-                f(this)
-            })
+            .connect_property_name_notify(move |actor| f(this))
     }
 
     fn connect_property_natural_height_notify<F: Fn(&Self) + 'static>(
@@ -5859,9 +5735,7 @@ impl<O: Is<Widget>> WidgetExt for O {
         let this = unsafe { &*(widget as *const Widget as *const Self) };
         widget
             .inner
-            .connect_property_natural_height_notify(move |actor| {
-                f(this)
-            })
+            .connect_property_natural_height_notify(move |actor| f(this))
     }
 
     fn connect_property_natural_height_set_notify<F: Fn(&Self) + 'static>(
@@ -5872,9 +5746,7 @@ impl<O: Is<Widget>> WidgetExt for O {
         let this = unsafe { &*(widget as *const Widget as *const Self) };
         widget
             .inner
-            .connect_property_natural_height_set_notify(move |actor| {
-                f(this)
-            })
+            .connect_property_natural_height_set_notify(move |actor| f(this))
     }
 
     fn connect_property_natural_width_notify<F: Fn(&Self) + 'static>(
@@ -5885,9 +5757,7 @@ impl<O: Is<Widget>> WidgetExt for O {
         let this = unsafe { &*(widget as *const Widget as *const Self) };
         widget
             .inner
-            .connect_property_natural_width_notify(move |actor| {
-                f(this)
-            })
+            .connect_property_natural_width_notify(move |actor| f(this))
     }
 
     fn connect_property_natural_width_set_notify<F: Fn(&Self) + 'static>(
@@ -5898,9 +5768,7 @@ impl<O: Is<Widget>> WidgetExt for O {
         let this = unsafe { &*(widget as *const Widget as *const Self) };
         widget
             .inner
-            .connect_property_natural_width_set_notify(move |actor| {
-                f(this)
-            })
+            .connect_property_natural_width_set_notify(move |actor| f(this))
     }
 
     fn connect_property_offscreen_redirect_notify<F: Fn(&Self) + 'static>(
@@ -5911,9 +5779,7 @@ impl<O: Is<Widget>> WidgetExt for O {
         let this = unsafe { &*(widget as *const Widget as *const Self) };
         widget
             .inner
-            .connect_property_offscreen_redirect_notify(move |actor| {
-                f(this)
-            })
+            .connect_property_offscreen_redirect_notify(move |actor| f(this))
     }
 
     fn connect_property_opacity_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
@@ -5921,9 +5787,7 @@ impl<O: Is<Widget>> WidgetExt for O {
         let this = unsafe { &*(widget as *const Widget as *const Self) };
         widget
             .inner
-            .connect_property_opacity_notify(move |actor| {
-                f(this)
-            })
+            .connect_property_opacity_notify(move |actor| f(this))
     }
 
     fn connect_property_pivot_point_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
@@ -5931,9 +5795,7 @@ impl<O: Is<Widget>> WidgetExt for O {
         let this = unsafe { &*(widget as *const Widget as *const Self) };
         widget
             .inner
-            .connect_property_pivot_point_notify(move |actor| {
-                f(this)
-            })
+            .connect_property_pivot_point_notify(move |actor| f(this))
     }
 
     fn connect_property_pivot_point_z_notify<F: Fn(&Self) + 'static>(
@@ -5944,9 +5806,7 @@ impl<O: Is<Widget>> WidgetExt for O {
         let this = unsafe { &*(widget as *const Widget as *const Self) };
         widget
             .inner
-            .connect_property_pivot_point_z_notify(move |actor| {
-                f(this)
-            })
+            .connect_property_pivot_point_z_notify(move |actor| f(this))
     }
 
     fn connect_property_position_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
@@ -5954,9 +5814,7 @@ impl<O: Is<Widget>> WidgetExt for O {
         let this = unsafe { &*(widget as *const Widget as *const Self) };
         widget
             .inner
-            .connect_property_position_notify(move |actor| {
-                f(this)
-            })
+            .connect_property_position_notify(move |actor| f(this))
     }
 
     fn connect_property_reactive_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
@@ -5964,9 +5822,7 @@ impl<O: Is<Widget>> WidgetExt for O {
         let this = unsafe { &*(widget as *const Widget as *const Self) };
         widget
             .inner
-            .connect_property_reactive_notify(move |actor| {
-                f(this)
-            })
+            .connect_property_reactive_notify(move |actor| f(this))
     }
 
     fn connect_property_realized_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
@@ -5974,9 +5830,7 @@ impl<O: Is<Widget>> WidgetExt for O {
         let this = unsafe { &*(widget as *const Widget as *const Self) };
         widget
             .inner
-            .connect_property_realized_notify(move |actor| {
-                f(this)
-            })
+            .connect_property_realized_notify(move |actor| f(this))
     }
 
     fn connect_property_request_mode_notify<F: Fn(&Self) + 'static>(
@@ -5987,9 +5841,7 @@ impl<O: Is<Widget>> WidgetExt for O {
         let this = unsafe { &*(widget as *const Widget as *const Self) };
         widget
             .inner
-            .connect_property_request_mode_notify(move |actor| {
-                f(this)
-            })
+            .connect_property_request_mode_notify(move |actor| f(this))
     }
 
     fn connect_property_rotation_angle_x_notify<F: Fn(&Self) + 'static>(
@@ -6000,9 +5852,7 @@ impl<O: Is<Widget>> WidgetExt for O {
         let this = unsafe { &*(widget as *const Widget as *const Self) };
         widget
             .inner
-            .connect_property_rotation_angle_x_notify(move |actor| {
-                f(this)
-            })
+            .connect_property_rotation_angle_x_notify(move |actor| f(this))
     }
 
     fn connect_property_rotation_angle_y_notify<F: Fn(&Self) + 'static>(
@@ -6013,9 +5863,7 @@ impl<O: Is<Widget>> WidgetExt for O {
         let this = unsafe { &*(widget as *const Widget as *const Self) };
         widget
             .inner
-            .connect_property_rotation_angle_y_notify(move |actor| {
-                f(this)
-            })
+            .connect_property_rotation_angle_y_notify(move |actor| f(this))
     }
 
     fn connect_property_rotation_angle_z_notify<F: Fn(&Self) + 'static>(
@@ -6026,9 +5874,7 @@ impl<O: Is<Widget>> WidgetExt for O {
         let this = unsafe { &*(widget as *const Widget as *const Self) };
         widget
             .inner
-            .connect_property_rotation_angle_z_notify(move |actor| {
-                f(this)
-            })
+            .connect_property_rotation_angle_z_notify(move |actor| f(this))
     }
 
     fn connect_property_scale_x_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
@@ -6036,9 +5882,7 @@ impl<O: Is<Widget>> WidgetExt for O {
         let this = unsafe { &*(widget as *const Widget as *const Self) };
         widget
             .inner
-            .connect_property_scale_x_notify(move |actor| {
-                f(this)
-            })
+            .connect_property_scale_x_notify(move |actor| f(this))
     }
 
     fn connect_property_scale_y_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
@@ -6046,9 +5890,7 @@ impl<O: Is<Widget>> WidgetExt for O {
         let this = unsafe { &*(widget as *const Widget as *const Self) };
         widget
             .inner
-            .connect_property_scale_y_notify(move |actor| {
-                f(this)
-            })
+            .connect_property_scale_y_notify(move |actor| f(this))
     }
 
     fn connect_property_scale_z_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
@@ -6056,9 +5898,7 @@ impl<O: Is<Widget>> WidgetExt for O {
         let this = unsafe { &*(widget as *const Widget as *const Self) };
         widget
             .inner
-            .connect_property_scale_z_notify(move |actor| {
-                f(this)
-            })
+            .connect_property_scale_z_notify(move |actor| f(this))
     }
 
     fn connect_property_show_on_set_parent_notify<F: Fn(&Self) + 'static>(
@@ -6069,9 +5909,7 @@ impl<O: Is<Widget>> WidgetExt for O {
         let this = unsafe { &*(widget as *const Widget as *const Self) };
         widget
             .inner
-            .connect_property_show_on_set_parent_notify(move |actor| {
-                f(this)
-            })
+            .connect_property_show_on_set_parent_notify(move |actor| f(this))
     }
 
     fn connect_property_size_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
@@ -6079,9 +5917,7 @@ impl<O: Is<Widget>> WidgetExt for O {
         let this = unsafe { &*(widget as *const Widget as *const Self) };
         widget
             .inner
-            .connect_property_size_notify(move |actor| {
-                f(this)
-            })
+            .connect_property_size_notify(move |actor| f(this))
     }
 
     fn connect_property_text_direction_notify<F: Fn(&Self) + 'static>(
@@ -6092,9 +5928,7 @@ impl<O: Is<Widget>> WidgetExt for O {
         let this = unsafe { &*(widget as *const Widget as *const Self) };
         widget
             .inner
-            .connect_property_text_direction_notify(move |actor| {
-                f(this)
-            })
+            .connect_property_text_direction_notify(move |actor| f(this))
     }
 
     fn connect_property_transform_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
@@ -6102,9 +5936,7 @@ impl<O: Is<Widget>> WidgetExt for O {
         let this = unsafe { &*(widget as *const Widget as *const Self) };
         widget
             .inner
-            .connect_property_transform_notify(move |actor| {
-                f(this)
-            })
+            .connect_property_transform_notify(move |actor| f(this))
     }
 
     fn connect_property_transform_set_notify<F: Fn(&Self) + 'static>(
@@ -6115,9 +5947,7 @@ impl<O: Is<Widget>> WidgetExt for O {
         let this = unsafe { &*(widget as *const Widget as *const Self) };
         widget
             .inner
-            .connect_property_transform_set_notify(move |actor| {
-                f(this)
-            })
+            .connect_property_transform_set_notify(move |actor| f(this))
     }
 
     fn connect_property_translation_x_notify<F: Fn(&Self) + 'static>(
@@ -6128,9 +5958,7 @@ impl<O: Is<Widget>> WidgetExt for O {
         let this = unsafe { &*(widget as *const Widget as *const Self) };
         widget
             .inner
-            .connect_property_translation_x_notify(move |actor| {
-                f(this)
-            })
+            .connect_property_translation_x_notify(move |actor| f(this))
     }
 
     fn connect_property_translation_y_notify<F: Fn(&Self) + 'static>(
@@ -6141,9 +5969,7 @@ impl<O: Is<Widget>> WidgetExt for O {
         let this = unsafe { &*(widget as *const Widget as *const Self) };
         widget
             .inner
-            .connect_property_translation_y_notify(move |actor| {
-                f(this)
-            })
+            .connect_property_translation_y_notify(move |actor| f(this))
     }
 
     fn connect_property_translation_z_notify<F: Fn(&Self) + 'static>(
@@ -6154,9 +5980,7 @@ impl<O: Is<Widget>> WidgetExt for O {
         let this = unsafe { &*(widget as *const Widget as *const Self) };
         widget
             .inner
-            .connect_property_translation_z_notify(move |actor| {
-                f(this)
-            })
+            .connect_property_translation_z_notify(move |actor| f(this))
     }
 
     fn connect_property_visible_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
@@ -6164,9 +5988,7 @@ impl<O: Is<Widget>> WidgetExt for O {
         let this = unsafe { &*(widget as *const Widget as *const Self) };
         widget
             .inner
-            .connect_property_visible_notify(move |actor| {
-                f(this)
-            })
+            .connect_property_visible_notify(move |actor| f(this))
     }
 
     fn connect_property_width_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
@@ -6174,19 +5996,13 @@ impl<O: Is<Widget>> WidgetExt for O {
         let this = unsafe { &*(widget as *const Widget as *const Self) };
         widget
             .inner
-            .connect_property_width_notify(move |actor| {
-                f(this)
-            })
+            .connect_property_width_notify(move |actor| f(this))
     }
 
     fn connect_property_x_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         let widget = self.as_ref();
         let this = unsafe { &*(widget as *const Widget as *const Self) };
-        widget
-            .inner
-            .connect_property_x_notify(move |actor| {
-                f(this)
-            })
+        widget.inner.connect_property_x_notify(move |actor| f(this))
     }
 
     fn connect_property_x_align_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
@@ -6194,9 +6010,7 @@ impl<O: Is<Widget>> WidgetExt for O {
         let this = unsafe { &*(widget as *const Widget as *const Self) };
         widget
             .inner
-            .connect_property_x_align_notify(move |actor| {
-                f(this)
-            })
+            .connect_property_x_align_notify(move |actor| f(this))
     }
 
     fn connect_property_x_expand_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
@@ -6204,19 +6018,13 @@ impl<O: Is<Widget>> WidgetExt for O {
         let this = unsafe { &*(widget as *const Widget as *const Self) };
         widget
             .inner
-            .connect_property_x_expand_notify(move |actor| {
-                f(this)
-            })
+            .connect_property_x_expand_notify(move |actor| f(this))
     }
 
     fn connect_property_y_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         let widget = self.as_ref();
         let this = unsafe { &*(widget as *const Widget as *const Self) };
-        widget
-            .inner
-            .connect_property_y_notify(move |actor| {
-                f(this)
-            })
+        widget.inner.connect_property_y_notify(move |actor| f(this))
     }
 
     fn connect_property_y_align_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
@@ -6224,9 +6032,7 @@ impl<O: Is<Widget>> WidgetExt for O {
         let this = unsafe { &*(widget as *const Widget as *const Self) };
         widget
             .inner
-            .connect_property_y_align_notify(move |actor| {
-                f(this)
-            })
+            .connect_property_y_align_notify(move |actor| f(this))
     }
 
     fn connect_property_y_expand_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
@@ -6234,9 +6040,7 @@ impl<O: Is<Widget>> WidgetExt for O {
         let this = unsafe { &*(widget as *const Widget as *const Self) };
         widget
             .inner
-            .connect_property_y_expand_notify(move |actor| {
-                f(this)
-            })
+            .connect_property_y_expand_notify(move |actor| f(this))
     }
 
     fn connect_property_z_position_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
@@ -6244,9 +6048,7 @@ impl<O: Is<Widget>> WidgetExt for O {
         let this = unsafe { &*(widget as *const Widget as *const Self) };
         widget
             .inner
-            .connect_property_z_position_notify(move |actor| {
-                f(this)
-            })
+            .connect_property_z_position_notify(move |actor| f(this))
     }
 }
 

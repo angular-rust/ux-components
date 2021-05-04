@@ -607,11 +607,8 @@ impl<O: Is<Window>> WindowExt for O {
     /// Returns: The title used for the window
     ///
     fn get_title(&self) -> Option<String> {
-        let stage = self.as_ref();
-        match stage.stage.get_title() {
-            Some(title) => Some(title.as_str().into()),
-            None => None,
-        }
+        let window = self.as_ref();
+        window.stage.get_title().map(|title| title.as_str().into())
     }
 
     /// get_toolbar:
@@ -1057,15 +1054,11 @@ impl<O: Is<Window>> WindowExt for O {
 
         let this = unsafe { &*(window as *const Window as *const Self) };
 
-        let result = window
-            .stage
-            .connect_activate(move |widget| {
-                f(this)
-            });
+        let result = window.stage.connect_activate(move |widget| f(this));
 
         result
     }
-    
+
     // TODO: &Self
     fn connect_destroy<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         let stage = self.as_ref();

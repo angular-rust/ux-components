@@ -1,7 +1,7 @@
 #![allow(unused_variables)]
 
 use crate::prelude::*;
-use crate::{PushAction, Actor, FloatingWidget, Widget};
+use crate::{Actor, FloatingWidget, PushAction, Widget};
 use glib::signal::SignalHandlerId;
 use std::{cell::RefCell, fmt};
 
@@ -115,7 +115,10 @@ pub trait MenuExt: 'static {
     ///
     fn show_with_position(&self, x: f32, y: f32);
 
-    fn connect_action_activated<F: Fn(&Self, &PushAction) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_action_activated<F: Fn(&Self, &PushAction) + 'static>(
+        &self,
+        f: F,
+    ) -> SignalHandlerId;
 }
 
 impl<O: Is<Menu>> MenuExt for O {
@@ -203,7 +206,10 @@ impl<O: Is<Menu>> MenuExt for O {
         // actor_show(CLUTTER_ACTOR(menu));
     }
 
-    fn connect_action_activated<F: Fn(&Self, &PushAction) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_action_activated<F: Fn(&Self, &PushAction) + 'static>(
+        &self,
+        f: F,
+    ) -> SignalHandlerId {
         // unsafe extern "C" fn action_activated_trampoline<P, F: Fn(&P, &Action) + 'static>(
         //     this: *mut ffi::Menu,
         //     object: *mut ffi::Action,

@@ -2,7 +2,7 @@
 
 use crate::prelude::*;
 use glib::signal::SignalHandlerId;
-use std::{cell::RefCell, fmt, boxed::Box as Box_};
+use std::{boxed::Box as Box_, cell::RefCell, fmt};
 
 #[derive(Clone, Debug)]
 pub struct PushActionProps {

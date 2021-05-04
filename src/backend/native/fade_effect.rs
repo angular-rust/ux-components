@@ -277,7 +277,7 @@ impl<O: Is<FadeEffect>> FadeEffectExt for O {
         let fadeeffect = self.as_ref();
         let props = fadeeffect.props.borrow();
 
-        props.color.clone()
+        props.color
     }
 
     /// set_border:

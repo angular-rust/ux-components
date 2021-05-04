@@ -66,27 +66,26 @@ pub mod prelude {
     pub use super::WindowExt;
 
     pub use dx;
-    
+
     pub use animate::prelude::*;
     pub use ux_macro::*;
-    pub use primitives::prelude::*;
 
     pub mod application {
-        pub use animate::{run, init, quit};
+        pub use animate::{init, quit, run};
     }
 
     pub use super::Opacity;
 }
 
 pub trait Opacity {
-    fn opacity(&self, val :u8) -> Self;
+    fn opacity(&self, val: u8) -> Self;
 }
 
 impl Opacity for Color {
-    fn opacity(&self, val :u8) -> Self {
+    fn opacity(&self, val: u8) -> Self {
         let color = *self;
-        let RgbColor { red, green, blue} = color.into();
-        Self::RGBA(red, green, blue, val)
+        let RgbColor { red, green, blue } = color.into();
+        Self::rgba(red, green, blue, val)
     }
 }
 

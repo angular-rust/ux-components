@@ -1,6 +1,6 @@
 [package]
 name = "ux-components"
-version = "0.1.1"
+version = "0.1.2"
 authors = ["Victor Dudochkin <dudochkin.victor@gmail.com>"]
 readme = "README.md"
 homepage = "https://angular-rust.github.io/ux-components"
@@ -30,11 +30,10 @@ log = "0.4"
 bitflags = "1.0"
 ruex = "0.1.0"
 ux-macro = "0.1.0"
-ux-primitives = "0.1.3"
 ux-dx = "0.1.1"
-ux-dataflow = "0.1.1"
-ux-animate = "0.1.2"
-ux-charts = "0.1.2"
+ux-dataflow = "0.1.2"
+ux-animate = "0.1.5"
+ux-charts = "0.1.3"
 
 simplecss = "0.2"
 
