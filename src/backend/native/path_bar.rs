@@ -392,11 +392,9 @@ impl<O: Is<PathBar>> PathBarExt for O {
         let pathbar = self.as_ref();
         let props = pathbar.props.borrow();
 
-        if !props.editable {
-            return;
+        if props.editable {
+            // entry_set_text(ENTRY(pathbar.entry), text);
         }
-
-        // entry_set_text(ENTRY(pathbar.entry), text);
     }
 
     fn connect_property_clear_on_change_notify<F: Fn(&Self) + 'static>(

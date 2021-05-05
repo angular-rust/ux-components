@@ -118,12 +118,10 @@ impl Widget {
             old_visible: false,
         };
 
-        let widget = Self {
+        Self {
             props: RefCell::new(props),
             inner: Actor::new(),
-        };
-
-        widget
+        }
     }
 
     // fn remove_tooltip_timeout(&self) {

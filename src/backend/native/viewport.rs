@@ -5,6 +5,8 @@ use crate::{Actor, Adjustment, Widget};
 use glib::signal::SignalHandlerId;
 use std::{cell::RefCell, fmt};
 
+const ERROR_MARGIN: f32 = f32::EPSILON;
+
 #[derive(Clone, Debug)]
 pub struct ViewportProps {
     pub x: f32,
@@ -116,7 +118,7 @@ impl<O: Is<Viewport>> ViewportExt for O {
 
         // g_object_freeze_notify(G_OBJECT(viewport));
 
-        if x != props.x {
+        if (x - props.x).abs() > ERROR_MARGIN {
             props.x = x;
             // g_object_notify(G_OBJECT(viewport), "x-origin");
 
@@ -125,7 +127,7 @@ impl<O: Is<Viewport>> ViewportExt for O {
             }
         }
 
-        if y != props.y {
+        if (y - props.y).abs() > ERROR_MARGIN {
             props.y = y;
             // g_object_notify(G_OBJECT(viewport), "y-origin");
 
@@ -134,7 +136,7 @@ impl<O: Is<Viewport>> ViewportExt for O {
             }
         }
 
-        if z != props.z {
+        if (z - props.z).abs() > ERROR_MARGIN {
             props.z = z;
             // g_object_notify(G_OBJECT(viewport), "z-origin");
         }

@@ -1054,9 +1054,7 @@ impl<O: Is<Window>> WindowExt for O {
 
         let this = unsafe { &*(window as *const Window as *const Self) };
 
-        let result = window.stage.connect_activate(move |widget| f(this));
-
-        result
+        window.stage.connect_activate(move |widget| f(this))
     }
 
     // TODO: &Self

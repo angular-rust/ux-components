@@ -28,14 +28,13 @@ dox = ["ux-animate/dox", "ux-charts/dox", "ux-dx/dox", "gobject-sys/dox", "pango
 [dependencies]
 log = "0.4"
 bitflags = "1.0"
-ruex = "0.1.1"
-ux-macro = "0.1.0"
-ux-dx = "0.1.1"
-ux-dataflow = "0.1.2"
-ux-animate = "0.1.5"
-ux-charts = "0.1.3"
-
-simplecss = "0.2"
+ruex = "0.1"
+ux-macro = "0.1"
+ux-dx = "0.1"
+ux-dataflow = "0.1"
+ux-animate = "0.1"
+ux-charts = "0.1"
+# ux-css = "0"
 
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies]
 png = "0.16"
