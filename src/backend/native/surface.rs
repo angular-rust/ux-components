@@ -20,7 +20,7 @@ pub struct SurfaceProps {
 pub struct Surface {
     props: RefCell<SurfaceProps>,
     canvas: ActorCanvas,
-    widget: Widget,
+    inner: Widget,
 }
 
 impl Surface {
@@ -35,7 +35,7 @@ impl Surface {
             animating: true,
         };
 
-        let widget = Widget::new();
+        let inner = Widget::new();
         let content = ActorCanvas::new().unwrap();
         let canvas: ActorCanvas = unsafe { mem::transmute(content) };
 
@@ -43,7 +43,7 @@ impl Surface {
         canvas.set_size(300, 150);
 
         {
-            let actor: &Actor = widget.as_ref();
+            let actor: &Actor = inner.as_ref();
 
             // set the default surface Actor size similar HTML5 Canvas
             actor.set_size(300_f32, 150_f32);
@@ -51,13 +51,13 @@ impl Surface {
             actor.set_content_scaling_filters(ScalingFilter::Trilinear, ScalingFilter::Linear);
         }
 
-        let surface = Self {
+        let component = Self {
             props: RefCell::new(props),
             canvas,
-            widget,
+            inner,
         };
 
-        surface
+        component
     }
 }
 
@@ -80,7 +80,7 @@ impl Is<Widget> for Surface {}
 
 impl AsRef<Widget> for Surface {
     fn as_ref(&self) -> &Widget {
-        &self.widget
+        &self.inner
     }
 }
 
@@ -96,7 +96,7 @@ impl Is<Actor> for Surface {}
 
 impl AsRef<Actor> for Surface {
     fn as_ref(&self) -> &Actor {
-        let actor: &Actor = self.widget.as_ref();
+        let actor: &Actor = self.inner.as_ref();
         actor
     }
 }

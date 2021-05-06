@@ -34,6 +34,8 @@ ux-dx = "0.1"
 ux-dataflow = "0.1"
 ux-animate = "0.1"
 ux-charts = "0.1"
+once_cell = "1.7.2"
+intmap = "0.7.0"
 # ux-css = "0"
 
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies]

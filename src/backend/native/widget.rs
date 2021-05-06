@@ -357,7 +357,7 @@ pub trait WidgetExt: 'static {
     /// on `self`.
     /// ## `child`
     /// a `Actor`
-    fn add_child<P: IsA<Actor>>(&self, child: &P);
+    fn add_child<P: Is<Actor>>(&self, child: &P);
 
     /// Adds `constraint` to the list of `Constraint`<!-- -->s applied
     /// to `self`
@@ -3925,9 +3925,9 @@ impl<O: Is<Widget>> WidgetExt for O {
         Actor::add_action_with_name(widget.as_ref(), name, action)
     }
 
-    fn add_child<P: IsA<Actor>>(&self, child: &P) {
+    fn add_child<P: Is<Actor>>(&self, child: &P) {
         let widget = self.as_ref();
-        Actor::add_child(widget.as_ref(), child)
+        Actor::add_child(widget.as_ref(), child.as_ref())
     }
 
     fn add_constraint<P: IsA<Constraint>>(&self, constraint: &P) {

@@ -11,13 +11,16 @@
 mod backend;
 pub use backend::*;
 
+mod theme;
+pub use theme::*;
+
 pub use animate::*;
 
 #[doc(hidden)]
 pub mod prelude {
     pub use super::ActorManagerExt;
     pub use super::AdjustmentExt;
-    pub use super::BoxLayoutChildExt;
+    // pub use super::BoxLayoutChildExt; // overlap
     // pub use super::BoxLayoutExt; // overlap
     pub use super::ButtonExt;
     pub use super::ButtonGroupExt;

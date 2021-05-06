@@ -3,53 +3,29 @@ use crate::Color;
 #[macro_use]
 mod rt;
 
-mod actor_manager;
-pub use self::actor_manager::{ActorManager, ActorManagerExt};
+mod effects;
+pub use effects::*;
 
-mod adjustment;
-pub use self::adjustment::{Adjustment, AdjustmentExt};
+mod layout;
+pub use layout::*;
 
-// mod box_layout;
-// pub use self::box_layout::{BoxLayout, BoxLayoutExt};
-
-mod box_layout_child;
-pub use self::box_layout_child::{BoxLayoutChild, BoxLayoutChildExt};
+mod utils;
+pub use utils::*;
 
 mod button;
 pub use self::button::{Button, ButtonExt};
 
-mod button_group;
-pub use self::button_group::{ButtonGroup, ButtonGroupExt};
-
-mod clipboard;
-pub use self::clipboard::{Clipboard, ClipboardExt};
-
-mod combo_box;
-pub use self::combo_box::{ComboBox, ComboBoxExt};
-
 mod dialog;
 pub use self::dialog::{Dialog, DialogExt};
 
-mod entry;
-pub use self::entry::{Entry, EntryExt};
+mod textfield;
+pub use self::textfield::{Entry, EntryExt};
 
-mod expander;
-pub use self::expander::{Expander, ExpanderExt};
+mod expansion_panel;
+pub use self::expansion_panel::{Expander, ExpanderExt};
 
-mod fade_effect;
-pub use self::fade_effect::{FadeEffect, FadeEffectExt};
-
-mod floating_widget;
-pub use self::floating_widget::FloatingWidget;
-
-mod focus_manager;
-pub use self::focus_manager::{FocusManager, FocusManagerExt};
-
-mod focusable;
-pub use self::focusable::Focusable;
-
-mod frame;
-pub use self::frame::Frame;
+mod frame_old;
+pub use self::frame_old::Frame;
 
 mod grid;
 pub use self::grid::{Grid, GridExt};
@@ -57,50 +33,14 @@ pub use self::grid::{Grid, GridExt};
 mod icon;
 pub use self::icon::{Icon, IconExt};
 
-mod icon_theme;
-pub use self::icon_theme::{IconTheme, IconThemeExt};
-
-mod image;
-pub use self::image::{Image, ImageExt};
-
-mod item_view;
-pub use self::item_view::{ItemView, ItemViewExt};
-
-mod kinetic_scroll_view;
-pub use self::kinetic_scroll_view::{KineticScrollView, KineticScrollViewExt};
-
-mod label;
-pub use self::label::{Label, LabelExt};
-
-mod list_view;
-pub use self::list_view::{ListView, ListViewExt};
+mod list;
+pub use self::list::{ListView, ListViewExt};
 
 mod menu;
 pub use self::menu::{Menu, MenuExt};
 
-mod notebook;
-pub use self::notebook::{Notebook, NotebookExt};
-
-mod pager;
-pub use self::pager::{Pager, PagerExt};
-
-mod path_bar;
-pub use self::path_bar::{PathBar, PathBarExt};
-
-mod progress_bar;
-pub use self::progress_bar::{ProgressBar, ProgressBarExt};
-
-mod push_action;
-pub use self::push_action::{PushAction, PushActionExt};
-
-mod scroll_bar;
-pub use self::scroll_bar::{ScrollBar, ScrollBarExt};
-
-mod scroll_view;
-pub use self::scroll_view::{ScrollView, ScrollViewExt};
-
-mod settings;
-pub use self::settings::{Settings, SettingsExt};
+mod linear_progress;
+pub use self::linear_progress::{ProgressBar, ProgressBarExt};
 
 mod slider;
 pub use self::slider::{Slider, SliderExt};
@@ -108,38 +48,14 @@ pub use self::slider::{Slider, SliderExt};
 mod spinner;
 pub use self::spinner::{Spinner, SpinnerExt};
 
-mod stack;
-pub use self::stack::{Stack, StackExt};
-
-mod stack_child;
-pub use self::stack_child::{StackChild, StackChildExt};
-
-mod style;
-pub use self::style::{Style, StyleExt};
-
 mod surface;
 pub use self::surface::{Surface, SurfaceExt};
 
-mod table;
-pub use self::table::{Table, TableExt};
-
-mod table_child;
-pub use self::table_child::{TableChild, TableChildExt};
-
-mod texture_cache;
-pub use self::texture_cache::{TextureCache, TextureCacheExt};
-
-mod toggle;
-pub use self::toggle::{Toggle, ToggleExt};
-
-mod toolbar;
-pub use self::toolbar::{Toolbar, ToolbarExt};
+mod data_table;
+pub use self::data_table::{Table, TableExt};
 
 mod tooltip;
 pub use self::tooltip::{Tooltip, TooltipExt};
-
-mod viewport;
-pub use self::viewport::{Viewport, ViewportExt};
 
 mod widget;
 pub use self::widget::{Widget, WidgetExt};
@@ -333,6 +249,11 @@ pub enum Position {
     Left,
 }
 
+impl Default for Position {
+    fn default() -> Self {
+        Position::Top
+    }
+}
 /// ImageScaleMode:
 /// None: Do not apply any scaling and center the image within
 /// the allocation
