@@ -3,56 +3,113 @@ use crate::Color;
 #[macro_use]
 mod rt;
 
-mod effects;
-pub use effects::*;
+mod advanced_widgets;
+pub use advanced_widgets::*;
 
-mod layout;
-pub use layout::*;
+mod app_bar;
+pub use self::app_bar::{AppBar, AppBarExt};
 
-mod utils;
-pub use utils::*;
+mod audio_widgets;
+pub use audio_widgets::*;
+
+mod backdrop;
+pub use self::backdrop::{Backdrop, BackdropExt};
+
+mod banner;
+pub use self::banner::{Banner, BannerExt};
 
 mod button;
 pub use self::button::{Button, ButtonExt};
 
+mod card;
+pub use self::card::{Card, CardExt};
+
+mod chart_widgets;
+pub use chart_widgets::*;
+
+mod checkbox;
+pub use self::checkbox::{Checkbox, CheckboxExt};
+
+mod chip;
+pub use self::chip::{Chip, ChipExt};
+
+mod circular_progress;
+pub use self::circular_progress::{CircularProgress, CircularProgressExt};
+
+mod data_table;
+pub use self::data_table::{DataTable, DataTableExt};
+
+mod date_picker;
+pub use self::date_picker::{DatePicker, DatePickerExt};
+
 mod dialog;
 pub use self::dialog::{Dialog, DialogExt};
 
-mod textfield;
-pub use self::textfield::{Entry, EntryExt};
+mod divider;
+pub use self::divider::{Divider, DividerExt};
 
-mod expansion_panel;
-pub use self::expansion_panel::{Expander, ExpanderExt};
+mod drawer;
+pub use self::drawer::{Drawer, DrawerExt};
 
-mod frame_old;
-pub use self::frame_old::Frame;
+mod effects;
+pub use effects::*;
 
-mod grid;
-pub use self::grid::{Grid, GridExt};
+mod fab;
+pub use self::fab::{Fab, FabExt};
+
+mod formfield;
+pub use self::formfield::{Formfield, FormfieldExt};
+
+mod icon_button;
+pub use self::icon_button::{IconButton, IconButtonExt};
 
 mod icon;
 pub use self::icon::{Icon, IconExt};
 
+mod image_list;
+pub use self::image_list::{ImageList, ImageListExt};
+
+mod layout;
+pub use layout::*;
+
+mod linear_progress;
+pub use self::linear_progress::{LinearProgress, LinearProgressExt};
+
 mod list;
-pub use self::list::{ListView, ListViewExt};
+pub use self::list::{List, ListExt};
 
 mod menu;
 pub use self::menu::{Menu, MenuExt};
 
-mod linear_progress;
-pub use self::linear_progress::{ProgressBar, ProgressBarExt};
+mod radio;
+pub use self::radio::{Radio, RadioExt};
+
+mod sheet;
+pub use self::sheet::{Sheet, SheetExt};
 
 mod slider;
 pub use self::slider::{Slider, SliderExt};
 
-mod spinner;
-pub use self::spinner::{Spinner, SpinnerExt};
+mod snackbar;
+pub use self::snackbar::{Snackbar, SnackbarExt};
 
 mod surface;
 pub use self::surface::{Surface, SurfaceExt};
 
-mod data_table;
-pub use self::data_table::{Table, TableExt};
+mod switch;
+pub use self::switch::{Switch, SwitchExt};
+
+mod tab;
+pub use self::tab::{Tab, TabExt};
+
+mod textarea;
+pub use self::textarea::{Textarea, TextareaExt};
+
+mod textfield;
+pub use self::textfield::{Textfield, TextfieldExt};
+
+mod time_picker;
+pub use self::time_picker::{TimePicker, TimePickerExt};
 
 mod tooltip;
 pub use self::tooltip::{Tooltip, TooltipExt};
@@ -62,6 +119,10 @@ pub use self::widget::{Widget, WidgetExt};
 
 mod window;
 pub use self::window::{Window, WindowExt};
+
+mod utils;
+pub use utils::*;
+
 
 #[derive(Debug, Clone)]
 pub struct ItemFactory;
@@ -168,6 +229,12 @@ pub enum Align {
     Start,
     Middle,
     End,
+}
+
+impl Default for Align {
+    fn default() -> Self {
+        Align::Start
+    }
 }
 
 /// FontWeight:
@@ -294,131 +361,3 @@ pub enum DisplayStyle {
     None,
     Inline,
 }
-
-/// TextAlign:
-/// Left: align text to the left
-/// Right: align text to the right
-/// Center: center the text
-/// Justify: justify the text
-///
-/// The horizontal alignment and layout of multiple lines of text.
-///
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
-pub enum TextAlign {
-    Left,
-    Right,
-    Center,
-    Justify,
-}
-
-// #[cfg_attr(feature = "cargo-clippy", allow(type_complexity))]
-// #[cfg_attr(feature = "cargo-clippy", allow(unreadable_literal))]
-// mod auto;
-
-// pub mod prelude;
-// pub use self::auto::functions::*;
-// pub use auto::*;
-
-// mod application;
-
-// mod box_layout;
-// mod button;
-// mod combo_box;
-// mod dialog;
-// mod entry;
-// mod expander;
-// mod fade_effect;
-// mod frame;
-// mod grid;
-// mod icon;
-// mod image;
-// mod item_view;
-// mod kinetic_scroll_view;
-// mod label;
-// mod list_view;
-// mod menu;
-// mod notebook;
-// mod path_bar;
-// mod progress_bar;
-// mod scroll_bar;
-// mod scroll_view;
-// mod slider;
-// mod spinner;
-// mod stack;
-// mod table;
-// mod toggle;
-// mod toolbar;
-// mod viewport;
-
-// pub use gdk_sys::GdkColor as Color;
-
-// pub use self::rt::{init, set_initialized};
-
-// pub use atom::Atom;
-// pub use atom::NONE as ATOM_NONE;
-// pub use atom::SELECTION_CLIPBOARD;
-// pub use atom::SELECTION_PRIMARY;
-// pub use atom::SELECTION_SECONDARY;
-// pub use atom::SELECTION_TYPE_ATOM;
-// pub use atom::SELECTION_TYPE_BITMAP;
-// pub use atom::SELECTION_TYPE_COLORMAP;
-// pub use atom::SELECTION_TYPE_DRAWABLE;
-// pub use atom::SELECTION_TYPE_INTEGER;
-// pub use atom::SELECTION_TYPE_PIXMAP;
-// pub use atom::SELECTION_TYPE_STRING;
-// pub use atom::SELECTION_TYPE_WINDOW;
-// pub use atom::TARGET_BITMAP;
-// pub use atom::TARGET_COLORMAP;
-// pub use atom::TARGET_DRAWABLE;
-// pub use atom::TARGET_PIXMAP;
-// pub use atom::TARGET_STRING;
-// pub use change_data::ChangeData;
-// pub use event::Event;
-// pub use event_button::EventButton;
-// pub use event_configure::EventConfigure;
-// pub use event_crossing::EventCrossing;
-// pub use event_dnd::EventDND;
-// pub use event_expose::EventExpose;
-// pub use event_focus::EventFocus;
-// pub use event_grab_broken::EventGrabBroken;
-// pub use event_key::EventKey;
-// pub use event_motion::EventMotion;
-// pub use event_owner_change::EventOwnerChange;
-// pub use event_pad_axis::EventPadAxis;
-// pub use event_pad_button::EventPadButton;
-// pub use event_pad_group_mode::EventPadGroupMode;
-// pub use event_property::EventProperty;
-// pub use event_proximity::EventProximity;
-// pub use event_scroll::EventScroll;
-// pub use event_selection::EventSelection;
-// pub use event_setting::EventSetting;
-// pub use event_touch::EventTouch;
-// pub use event_touchpad_pinch::EventTouchpadPinch;
-// pub use event_touchpad_swipe::EventTouchpadSwipe;
-// pub use event_visibility::EventVisibility;
-// pub use event_window_state::EventWindowState;
-// pub use functions::*;
-// pub use geometry::Geometry;
-// pub use keymap_key::KeymapKey;
-// pub use rectangle::Rectangle;
-// pub use rgba::{RgbaParseError, RGBA};
-// pub use time_coord::TimeCoord;
-// pub use window::WindowAttr;
-
-// #[allow(non_camel_case_types)]
-// pub type key = i32;
-
-// /// The primary button. This is typically the left mouse button, or the right button in a left-handed setup.
-// pub const BUTTON_PRIMARY: u32 = gdk_sys::GDK_BUTTON_PRIMARY as u32;
-
-// /// The middle button.
-// pub const BUTTON_MIDDLE: u32 = gdk_sys::GDK_BUTTON_MIDDLE as u32;
-
-// /// The secondary button. This is typically the right mouse button, or the left button in a left-handed setup.
-// pub const BUTTON_SECONDARY: u32 = gdk_sys::GDK_BUTTON_SECONDARY as u32;
-
-// // Used as the return value for stopping the propagation of an event handler.
-// pub const EVENT_STOP: u32 = gdk_sys::GDK_EVENT_STOP as u32;
-
-// // Used as the return value for continuing the propagation of an event handler.
-// pub const EVENT_PROPAGATE: u32 = gdk_sys::GDK_EVENT_PROPAGATE as u32;

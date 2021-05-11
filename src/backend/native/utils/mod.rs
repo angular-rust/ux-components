@@ -4,9 +4,6 @@ pub use self::actor_manager::{ActorManager, ActorManagerExt};
 mod adjustment;
 pub use self::adjustment::{Adjustment, AdjustmentExt};
 
-mod button_group;
-pub use self::button_group::{ButtonGroup, ButtonGroupExt};
-
 mod clipboard;
 pub use self::clipboard::{Clipboard, ClipboardExt};
 
@@ -52,11 +49,14 @@ pub use self::scroll_bar::{ScrollBar, ScrollBarExt};
 mod settings;
 pub use self::settings::{Settings, SettingsExt};
 
-mod stack;
-pub use self::stack::{Stack, StackExt};
+mod spinner;
+pub use self::spinner::{Spinner, SpinnerExt};
 
 mod stack_child;
 pub use self::stack_child::{StackChild, StackChildExt};
+
+mod stack;
+pub use self::stack::{Stack, StackExt};
 
 mod style;
 pub use self::style::{Style, StyleExt};

@@ -6,51 +6,51 @@ use glib::signal::SignalHandlerId;
 use std::{cell::RefCell, fmt};
 
 #[derive(Clone, Debug)]
-pub struct ButtonGroupProps {
+pub struct SideGroupProps {
     pub active_button: Option<Button>,
     pub children: Vec<Button>,
     pub allow_no_active: bool,
 }
 
 #[derive(Clone, Debug)]
-pub struct ButtonGroup {
-    props: RefCell<ButtonGroupProps>,
+pub struct SideGroup {
+    props: RefCell<SideGroupProps>,
 }
 
-impl ButtonGroup {
-    pub fn new() -> ButtonGroup {
+impl SideGroup {
+    pub fn new() -> SideGroup {
         // assert_initialized_main_thread!();
         // unsafe { from_glib_none(ffi::button_group_new()) }
         unimplemented!()
     }
 }
 
-impl Default for ButtonGroup {
+impl Default for SideGroup {
     fn default() -> Self {
         Self::new()
     }
 }
 
-impl Object for ButtonGroup {}
-impl Is<ButtonGroup> for ButtonGroup {}
+impl Object for SideGroup {}
+impl Is<SideGroup> for SideGroup {}
 
-impl AsRef<ButtonGroup> for ButtonGroup {
-    fn as_ref(&self) -> &ButtonGroup {
+impl AsRef<SideGroup> for SideGroup {
+    fn as_ref(&self) -> &SideGroup {
         self
     }
 }
 
-pub trait ButtonGroupExt: 'static {
+pub trait SideGroupExt: 'static {
     /// add:
-    /// @group: A #ButtonGroup
+    /// @group: A #SideGroup
     /// @button: A #Button
     ///
-    /// Add @button to the #ButtonGroup.
+    /// Add @button to the #SideGroup.
     ///
     fn add<P: Is<Button>>(&self, button: &P);
 
     /// foreach:
-    /// @group: A #ButtonGroup
+    /// @group: A #SideGroup
     /// @callback: (scope call): A #Callback
     /// @userdata: (closure): A #gpointer
     ///
@@ -59,7 +59,7 @@ pub trait ButtonGroupExt: 'static {
     fn foreach<P: FnMut(&Actor)>(&self, callback: P);
 
     /// get_active_button:
-    /// @group: A #ButtonGroup
+    /// @group: A #SideGroup
     ///
     /// Get the current active button
     ///
@@ -68,34 +68,34 @@ pub trait ButtonGroupExt: 'static {
     fn get_active_button(&self) -> &Option<Button>;
 
     /// get_allow_no_active:
-    /// @group: A #ButtonGroup
+    /// @group: A #SideGroup
     ///
-    /// Get the value of the #ButtonGroup:allow-no-active property.
+    /// Get the value of the #SideGroup:allow-no-active property.
     ///
     /// Returns: the value of the "allow-no-active" property.
     ///
     fn get_allow_no_active(&self) -> bool;
 
     /// get_buttons:
-    /// @group: A #ButtonGroup
+    /// @group: A #SideGroup
     ///
     /// Get a list of the buttons in the button group.
     ///
     /// Returns: (element-type .Button): a list of buttons. The list is
-    /// owned by the #ButtonGroup and should not be modified by the application.
+    /// owned by the #SideGroup and should not be modified by the application.
     ///
     fn get_buttons(&self) -> &Vec<Button>;
 
     /// remove:
-    /// @group: A #ButtonGroup
+    /// @group: A #SideGroup
     /// @button: A #Button
     ///
-    /// Remove @button from the #ButtonGroup
+    /// Remove @button from the #SideGroup
     ///
     fn remove<P: Is<Button>>(&self, button: &P);
 
     /// set_active_button:
-    /// @group: A #ButtonGroup
+    /// @group: A #SideGroup
     /// @button: (allow-none): A #Button
     ///
     /// Set the current active button in the group. The previous active button will
@@ -104,10 +104,10 @@ pub trait ButtonGroupExt: 'static {
     fn set_active_button<P: Is<Button>>(&self, button: Option<&P>);
 
     /// set_allow_no_active:
-    /// @group: A #ButtonGroup
+    /// @group: A #SideGroup
     /// @allow_no_active: A #gboolean
     ///
-    /// Set the value of the #ButtonGroup:allow-no-active property.
+    /// Set the value of the #SideGroup:allow-no-active property.
     ///
     fn set_allow_no_active(&self, allow_no_active: bool);
 
@@ -122,12 +122,12 @@ pub trait ButtonGroupExt: 'static {
     ) -> SignalHandlerId;
 }
 
-impl<O: Is<ButtonGroup>> ButtonGroupExt for O {
+impl<O: Is<SideGroup>> SideGroupExt for O {
     /// add:
-    /// @group: A #ButtonGroup
+    /// @group: A #SideGroup
     /// @button: A #Button
     ///
-    /// Add @button to the #ButtonGroup.
+    /// Add @button to the #SideGroup.
     ///
     fn add<P: Is<Button>>(&self, button: &P) {
         let buttongroup = self.as_ref();
@@ -154,7 +154,7 @@ impl<O: Is<ButtonGroup>> ButtonGroupExt for O {
     }
 
     /// foreach:
-    /// @group: A #ButtonGroup
+    /// @group: A #SideGroup
     /// @callback: (scope call): A #Callback
     /// @userdata: (closure): A #gpointer
     ///
@@ -169,7 +169,7 @@ impl<O: Is<ButtonGroup>> ButtonGroupExt for O {
     }
 
     /// get_active_button:
-    /// @group: A #ButtonGroup
+    /// @group: A #SideGroup
     ///
     /// Get the current active button
     ///
@@ -182,9 +182,9 @@ impl<O: Is<ButtonGroup>> ButtonGroupExt for O {
     }
 
     /// get_allow_no_active:
-    /// @group: A #ButtonGroup
+    /// @group: A #SideGroup
     ///
-    /// Get the value of the #ButtonGroup:allow-no-active property.
+    /// Get the value of the #SideGroup:allow-no-active property.
     ///
     /// Returns: the value of the "allow-no-active" property.
     ///
@@ -194,12 +194,12 @@ impl<O: Is<ButtonGroup>> ButtonGroupExt for O {
     }
 
     /// get_buttons:
-    /// @group: A #ButtonGroup
+    /// @group: A #SideGroup
     ///
     /// Get a list of the buttons in the button group.
     ///
     /// Returns: (element-type .Button): a list of buttons. The list is
-    /// owned by the #ButtonGroup and should not be modified by the application.
+    /// owned by the #SideGroup and should not be modified by the application.
     ///
     fn get_buttons(&self) -> &Vec<Button> {
         let buttongroup = self.as_ref();
@@ -208,10 +208,10 @@ impl<O: Is<ButtonGroup>> ButtonGroupExt for O {
     }
 
     /// remove:
-    /// @group: A #ButtonGroup
+    /// @group: A #SideGroup
     /// @button: A #Button
     ///
-    /// Remove @button from the #ButtonGroup
+    /// Remove @button from the #SideGroup
     ///
     fn remove<P: Is<Button>>(&self, button: &P) {
         let buttongroup = self.as_ref();
@@ -262,7 +262,7 @@ impl<O: Is<ButtonGroup>> ButtonGroupExt for O {
     }
 
     /// set_active_button:
-    /// @group: A #ButtonGroup
+    /// @group: A #SideGroup
     /// @button: (allow-none): A #Button
     ///
     /// Set the current active button in the group. The previous active button will
@@ -300,10 +300,10 @@ impl<O: Is<ButtonGroup>> ButtonGroupExt for O {
     }
 
     /// set_allow_no_active:
-    /// @group: A #ButtonGroup
+    /// @group: A #SideGroup
     /// @allow_no_active: A #gboolean
     ///
-    /// Set the value of the #ButtonGroup:allow-no-active property.
+    /// Set the value of the #SideGroup:allow-no-active property.
     ///
     fn set_allow_no_active(&self, allow_no_active: bool) {
         let buttongroup = self.as_ref();
@@ -320,14 +320,14 @@ impl<O: Is<ButtonGroup>> ButtonGroupExt for O {
         f: F,
     ) -> SignalHandlerId {
         // unsafe extern "C" fn notify_active_button_trampoline<P, F: Fn(&P) + 'static>(
-        //     this: *mut ffi::ButtonGroup,
+        //     this: *mut ffi::SideGroup,
         //     _param_spec: glib_sys::gpointer,
         //     f: glib_sys::gpointer,
         // ) where
-        //     P: Is<ButtonGroup>,
+        //     P: Is<SideGroup>,
         // {
         //     let f: &F = &*(f as *const F);
-        //     f(&ButtonGroup::from_glib_borrow(this).unsafe_cast_ref())
+        //     f(&SideGroup::from_glib_borrow(this).unsafe_cast_ref())
         // }
         // unsafe {
         //     let f: Box_<F> = Box_::new(f);
@@ -348,14 +348,14 @@ impl<O: Is<ButtonGroup>> ButtonGroupExt for O {
         f: F,
     ) -> SignalHandlerId {
         // unsafe extern "C" fn notify_allow_no_active_trampoline<P, F: Fn(&P) + 'static>(
-        //     this: *mut ffi::ButtonGroup,
+        //     this: *mut ffi::SideGroup,
         //     _param_spec: glib_sys::gpointer,
         //     f: glib_sys::gpointer,
         // ) where
-        //     P: Is<ButtonGroup>,
+        //     P: Is<SideGroup>,
         // {
         //     let f: &F = &*(f as *const F);
-        //     f(&ButtonGroup::from_glib_borrow(this).unsafe_cast_ref())
+        //     f(&SideGroup::from_glib_borrow(this).unsafe_cast_ref())
         // }
         // unsafe {
         //     let f: Box_<F> = Box_::new(f);
@@ -372,8 +372,8 @@ impl<O: Is<ButtonGroup>> ButtonGroupExt for O {
     }
 }
 
-impl fmt::Display for ButtonGroup {
+impl fmt::Display for SideGroup {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "ButtonGroup")
+        write!(f, "SideGroup")
     }
 }

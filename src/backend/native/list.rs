@@ -12,7 +12,7 @@ pub struct AttributeData {
 }
 
 #[derive(Clone, Debug)]
-pub struct ListViewProps {
+pub struct ListProps {
     pub model: Option<Model>,
     pub attributes: Vec<AttributeData>,
     pub item_type: glib::types::Type,
@@ -26,63 +26,63 @@ pub struct ListViewProps {
 }
 
 #[derive(Clone, Debug)]
-pub struct ListView {
-    props: RefCell<ListViewProps>,
+pub struct List {
+    props: RefCell<ListProps>,
     widget: Widget,
 }
 
-impl ListView {
-    pub fn new() -> ListView {
+impl List {
+    pub fn new() -> List {
         // assert_initialized_main_thread!();
         // unsafe { Actor::from_glib_none(ffi::listview_new()).unsafe_cast() }
         unimplemented!()
     }
 }
 
-impl Default for ListView {
+impl Default for List {
     fn default() -> Self {
         Self::new()
     }
 }
 
-impl Object for ListView {}
-impl Is<ListView> for ListView {}
+impl Object for List {}
+impl Is<List> for List {}
 
-impl AsRef<ListView> for ListView {
-    fn as_ref(&self) -> &ListView {
+impl AsRef<List> for List {
+    fn as_ref(&self) -> &List {
         self
     }
 }
 
-impl Is<BoxLayout> for ListView {}
+impl Is<BoxLayout> for List {}
 
-impl AsRef<BoxLayout> for ListView {
+impl AsRef<BoxLayout> for List {
     fn as_ref(&self) -> &BoxLayout {
         // &self.widget
         unimplemented!()
     }
 }
 
-impl Is<Widget> for ListView {}
+impl Is<Widget> for List {}
 
-impl AsRef<Widget> for ListView {
+impl AsRef<Widget> for List {
     fn as_ref(&self) -> &Widget {
         &self.widget
     }
 }
 
-impl Is<Actor> for ListView {}
+impl Is<Actor> for List {}
 
-impl AsRef<Actor> for ListView {
+impl AsRef<Actor> for List {
     fn as_ref(&self) -> &Actor {
         let actor: &Actor = self.widget.as_ref();
         actor
     }
 }
 
-pub trait ListViewExt: 'static {
+pub trait ListExt: 'static {
     /// add_attribute:
-    /// @listview: An #ListView
+    /// @listview: An #List
     /// @attribute: Name of the attribute
     /// @column: Column number
     ///
@@ -92,7 +92,7 @@ pub trait ListViewExt: 'static {
     fn add_attribute(&self, attribute: &str, column: u32);
 
     /// freeze:
-    /// @listview: An #ListView
+    /// @listview: An #List
     ///
     /// Freeze the view. This means that the view will not act on changes to the
     /// model until it is thawed. Call #thaw to thaw the view.
@@ -100,7 +100,7 @@ pub trait ListViewExt: 'static {
     fn freeze(&self);
 
     /// get_factory:
-    /// @listview: A #ListView
+    /// @listview: A #List
     ///
     /// Gets the #ItemFactory used for creating new list items.
     ///
@@ -109,7 +109,7 @@ pub trait ListViewExt: 'static {
     fn get_factory(&self) -> Option<ItemFactory>;
 
     /// get_item_type:
-    /// @listview: An #ListView
+    /// @listview: An #List
     ///
     /// Get the item type currently being used to create items
     ///
@@ -118,16 +118,16 @@ pub trait ListViewExt: 'static {
     fn get_item_type(&self) -> glib::types::Type;
 
     /// get_model:
-    /// @listview: An #ListView
+    /// @listview: An #List
     ///
-    /// Get the model currently used by the #ListView
+    /// Get the model currently used by the #List
     ///
     /// Returns: (transfer none): the current #Model
     ///
     fn get_model(&self) -> Option<Model>;
 
     /// set_factory:
-    /// @listview: A #ListView
+    /// @listview: A #List
     /// @factory: (allow-none): A #ItemFactory
     ///
     /// Sets @factory to be the factory used for creating new list items
@@ -135,7 +135,7 @@ pub trait ListViewExt: 'static {
     fn set_factory(&self, factory: Option<&ItemFactory>);
 
     /// set_item_type:
-    /// @listview: An #ListView
+    /// @listview: An #List
     /// @item_type: A #GType
     ///
     /// Set the item type used to create items representing each row in the
@@ -144,15 +144,15 @@ pub trait ListViewExt: 'static {
     fn set_item_type(&self, item_type: glib::types::Type);
 
     /// set_model:
-    /// @listview: An #ListView
+    /// @listview: An #List
     /// @model: A #Model
     ///
-    /// Set the model used by the #ListView
+    /// Set the model used by the #List
     ///
     fn set_model<P: Is<Model>>(&self, model: &P);
 
     /// thaw:
-    /// @listview: An #ListView
+    /// @listview: An #List
     ///
     /// Thaw the view. This means that the view will now act on changes to the
     /// model.
@@ -166,9 +166,9 @@ pub trait ListViewExt: 'static {
     fn connect_property_model_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
 }
 
-impl<O: Is<ListView>> ListViewExt for O {
+impl<O: Is<List>> ListExt for O {
     /// add_attribute:
-    /// @listview: An #ListView
+    /// @listview: An #List
     /// @attribute: Name of the attribute
     /// @column: Column number
     ///
@@ -187,7 +187,7 @@ impl<O: Is<ListView>> ListViewExt for O {
     }
 
     /// freeze:
-    /// @listview: An #ListView
+    /// @listview: An #List
     ///
     /// Freeze the view. This means that the view will not act on changes to the
     /// model until it is thawed. Call #thaw to thaw the view.
@@ -198,7 +198,7 @@ impl<O: Is<ListView>> ListViewExt for O {
     }
 
     /// get_factory:
-    /// @listview: A #ListView
+    /// @listview: A #List
     ///
     /// Gets the #ItemFactory used for creating new list items.
     ///
@@ -212,7 +212,7 @@ impl<O: Is<ListView>> ListViewExt for O {
     }
 
     /// get_item_type:
-    /// @listview: An #ListView
+    /// @listview: An #List
     ///
     /// Get the item type currently being used to create items
     ///
@@ -226,9 +226,9 @@ impl<O: Is<ListView>> ListViewExt for O {
     }
 
     /// get_model:
-    /// @listview: An #ListView
+    /// @listview: An #List
     ///
-    /// Get the model currently used by the #ListView
+    /// Get the model currently used by the #List
     ///
     /// Returns: (transfer none): the current #Model
     ///
@@ -240,7 +240,7 @@ impl<O: Is<ListView>> ListViewExt for O {
     }
 
     /// set_factory:
-    /// @listview: A #ListView
+    /// @listview: A #List
     /// @factory: (allow-none): A #ItemFactory
     ///
     /// Sets @factory to be the factory used for creating new list items
@@ -266,7 +266,7 @@ impl<O: Is<ListView>> ListViewExt for O {
     }
 
     /// set_item_type:
-    /// @listview: An #ListView
+    /// @listview: An #List
     /// @item_type: A #GType
     ///
     /// Set the item type used to create items representing each row in the
@@ -283,10 +283,10 @@ impl<O: Is<ListView>> ListViewExt for O {
     }
 
     /// set_model:
-    /// @listview: An #ListView
+    /// @listview: An #List
     /// @model: A #Model
     ///
-    /// Set the model used by the #ListView
+    /// Set the model used by the #List
     ///
     fn set_model<P: Is<Model>>(&self, model: &P) {
         let listview = self.as_ref();
@@ -346,7 +346,7 @@ impl<O: Is<ListView>> ListViewExt for O {
     }
 
     /// thaw:
-    /// @listview: An #ListView
+    /// @listview: An #List
     ///
     /// Thaw the view. This means that the view will now act on changes to the
     /// model.
@@ -363,14 +363,14 @@ impl<O: Is<ListView>> ListViewExt for O {
 
     fn connect_property_factory_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         // unsafe extern "C" fn notify_factory_trampoline<P, F: Fn(&P) + 'static>(
-        //     this: *mut ffi::ListView,
+        //     this: *mut ffi::List,
         //     _param_spec: glib_sys::gpointer,
         //     f: glib_sys::gpointer,
         // ) where
-        //     P: Is<ListView>,
+        //     P: Is<List>,
         // {
         //     let f: &F = &*(f as *const F);
-        //     f(&ListView::from_glib_borrow(this).unsafe_cast_ref())
+        //     f(&List::from_glib_borrow(this).unsafe_cast_ref())
         // }
         // unsafe {
         //     let f: Box_<F> = Box_::new(f);
@@ -388,14 +388,14 @@ impl<O: Is<ListView>> ListViewExt for O {
 
     fn connect_property_item_type_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         // unsafe extern "C" fn notify_item_type_trampoline<P, F: Fn(&P) + 'static>(
-        //     this: *mut ffi::ListView,
+        //     this: *mut ffi::List,
         //     _param_spec: glib_sys::gpointer,
         //     f: glib_sys::gpointer,
         // ) where
-        //     P: Is<ListView>,
+        //     P: Is<List>,
         // {
         //     let f: &F = &*(f as *const F);
-        //     f(&ListView::from_glib_borrow(this).unsafe_cast_ref())
+        //     f(&List::from_glib_borrow(this).unsafe_cast_ref())
         // }
         // unsafe {
         //     let f: Box_<F> = Box_::new(f);
@@ -413,14 +413,14 @@ impl<O: Is<ListView>> ListViewExt for O {
 
     fn connect_property_model_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         // unsafe extern "C" fn notify_model_trampoline<P, F: Fn(&P) + 'static>(
-        //     this: *mut ffi::ListView,
+        //     this: *mut ffi::List,
         //     _param_spec: glib_sys::gpointer,
         //     f: glib_sys::gpointer,
         // ) where
-        //     P: Is<ListView>,
+        //     P: Is<List>,
         // {
         //     let f: &F = &*(f as *const F);
-        //     f(&ListView::from_glib_borrow(this).unsafe_cast_ref())
+        //     f(&List::from_glib_borrow(this).unsafe_cast_ref())
         // }
         // unsafe {
         //     let f: Box_<F> = Box_::new(f);
@@ -437,8 +437,8 @@ impl<O: Is<ListView>> ListViewExt for O {
     }
 }
 
-impl fmt::Display for ListView {
+impl fmt::Display for List {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "ListView")
+        write!(f, "List")
     }
 }

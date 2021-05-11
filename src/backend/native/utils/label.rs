@@ -1,13 +1,13 @@
 #![allow(unused_variables)]
 
 use crate::prelude::*;
-use crate::{Actor, Align, Effect, Timeline, Widget};
+use crate::{Actor, Align, Effect, StyleClass, Text, Theme, Timeline, Widget};
 use glib::signal::SignalHandlerId;
 use std::{cell::RefCell, fmt};
 
-#[derive(Clone, Debug)]
+#[derive(Default, Debug, Clone)]
 pub struct LabelProps {
-    pub label: Option<Actor>,
+    pub text: Option<String>,
     pub fade_effect: Option<Effect>,
     pub x_align: Align,
     pub y_align: Align,
@@ -16,28 +16,111 @@ pub struct LabelProps {
     pub fade_out: bool,
     pub label_should_fade: bool,
     pub show_tooltip: bool,
+    pub label: Option<Text>,
 }
 
 #[derive(Clone, Debug)]
 pub struct Label {
     props: RefCell<LabelProps>,
-    widget: Widget,
+    inner: Widget,
 }
 
 impl Label {
     pub fn new() -> Label {
-        // assert_initialized_main_thread!();
-        // unsafe { Actor::from_glib_none(ffi::label_new()).unsafe_cast() }
-        unimplemented!()
+        let props = LabelProps::default();
+
+        let component = Self {
+            props: RefCell::new(props),
+            inner: Widget::new(),
+        };
+
+        component.init();
+        component
     }
 
     pub fn with_text(text: &str) -> Label {
-        // assert_initialized_main_thread!();
-        // unsafe {
-        //     Actor::from_glib_none(ffi::label_new_with_text(text.to_glib_none().0))
-        //         .unsafe_cast()
-        // }
-        unimplemented!()
+        let mut props = LabelProps::default();
+
+        if !text.is_empty() {
+            props.text = Some(text.into())
+        }
+
+        let component = Self {
+            props: RefCell::new(props),
+            inner: Widget::new(),
+        };
+
+        component.init();
+        component
+    }
+
+    fn init(&self) {
+        let mut props = self.props.borrow_mut();
+        if let Some(text) = &props.text {
+            let style = Theme::global().get(StyleClass::MdcButton).unwrap();
+            let mut fontfamily = if let Some(fontfamily) = style.fontfamily {
+                fontfamily
+            } else {
+                "Roboto".into()
+            };
+
+            // Sets the font used by a ClutterText. 
+            //The font_name string must either be NULL, 
+            // which means that the font name from the default ClutterBackend will be used; 
+            // or be something that can be parsed by the 
+            // pango_font_description_from_string() function, like:
+            // "Sans 10"
+            // "Serif 16px"
+            // "Helvetica 10"
+            // "sans bold 12"
+            // "serif,monospace bold italic condensed 16"
+            // "normal 10"
+            
+            // The format of the string representation is:
+            // "[FAMILY-LIST] [STYLE-OPTIONS] [SIZE]"
+
+            // The commonly available font families are: Normal, Sans, Serif and Monospace. The available styles are:
+
+            // Normal | the font is upright.
+            // Oblique | the font is slanted, but in a roman style.
+            // Italic | the font is slanted in an italic style.
+
+            // The available weights are:
+
+            // Ultra-Light | the ultralight weight (= 200)
+            // Light |	the light weight (=300)
+            // Normal | the default weight (= 400)
+            // Bold | the bold weight (= 700)
+            // Ultra-Bold | the ultra-bold weight (= 800)
+            // Heavy | the heavy weight (= 900)
+
+            // The available variants are:
+
+            // - Normal
+            // - Small-Caps
+                
+
+            // The available stretch styles are:
+
+            // Ultra-Condensed | the smallest width 
+            // Extra-Condensed |
+            // Condensed |
+            // Semi-Condensed |
+            // Normal | the normal width
+            // Semi-Expanded |
+            // Expanded |
+            // Extra-Expanded |
+            // Ultra-Expanded | the widest width
+
+            fontfamily.push_str(" Normal 14px");
+            println!("ADD TEXT TO LABEL [{}] [{}]", text, fontfamily);
+            
+            let label = Text::with_text(Some(fontfamily.as_str()), text.as_str());
+            label.set_color(color::WHITE);
+            self.inner.add_child(&label);
+          
+            props.label = Some(label);
+        }
     }
 }
 
@@ -60,7 +143,7 @@ impl Is<Widget> for Label {}
 
 impl AsRef<Widget> for Label {
     fn as_ref(&self) -> &Widget {
-        &self.widget
+        &self.inner
     }
 }
 
@@ -68,7 +151,7 @@ impl Is<Actor> for Label {}
 
 impl AsRef<Actor> for Label {
     fn as_ref(&self) -> &Actor {
-        let actor: &Actor = self.widget.as_ref();
+        let actor: &Actor = self.inner.as_ref();
         actor
     }
 }
@@ -83,15 +166,15 @@ pub trait LabelExt: 'static {
     ///
     fn get_alignment(&self) -> (Align, Align);
 
-    /// get_clutter_text:
-    /// @label: a #Label
-    ///
-    /// Retrieve the internal #Text so that extra parameters can be set
-    ///
-    /// Returns: (transfer none): the #Text used by #Label. The label
-    /// is owned by the #Label and should not be unref'ed by the application.
-    ///
-    fn get_clutter_text(&self) -> Option<Actor>;
+    // /// get_clutter_text:
+    // /// @label: a #Label
+    // ///
+    // /// Retrieve the internal #Text so that extra parameters can be set
+    // ///
+    // /// Returns: (transfer none): the #Text used by #Label. The label
+    // /// is owned by the #Label and should not be unref'ed by the application.
+    // ///
+    // fn get_clutter_text(&self) -> Option<Actor>;
 
     /// get_fade_out:
     /// @label: A #Label
@@ -233,20 +316,20 @@ impl<O: Is<Label>> LabelExt for O {
         (props.x_align, props.y_align)
     }
 
-    /// get_clutter_text:
-    /// @label: a #Label
-    ///
-    /// Retrieve the internal #Text so that extra parameters can be set
-    ///
-    /// Returns: (transfer none): the #Text used by #Label. The label
-    /// is owned by the #Label and should not be unref'ed by the application.
-    ///
-    fn get_clutter_text(&self) -> Option<Actor> {
-        let label = self.as_ref();
-        let props = label.props.borrow();
+    // /// get_clutter_text:
+    // /// @label: a #Label
+    // ///
+    // /// Retrieve the internal #Text so that extra parameters can be set
+    // ///
+    // /// Returns: (transfer none): the #Text used by #Label. The label
+    // /// is owned by the #Label and should not be unref'ed by the application.
+    // ///
+    // fn get_clutter_text(&self) -> Option<Actor> {
+    //     let label = self.as_ref();
+    //     let props = label.props.borrow();
 
-        props.label.clone()
-    }
+    //     props.label.clone()
+    // }
 
     /// get_fade_out:
     /// @label: A #Label

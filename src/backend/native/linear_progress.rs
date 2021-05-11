@@ -6,66 +6,66 @@ use glib::signal::SignalHandlerId;
 use std::{cell::RefCell, fmt};
 
 #[derive(Clone, Debug)]
-pub struct ProgressBarFill {
+pub struct LinearProgressFill {
     pub parent: Widget,
     pub height: u32,
 }
 
 #[derive(Clone, Debug)]
-pub struct ProgressBarProps {
+pub struct LinearProgressProps {
     pub fill: Option<Actor>,
     pub progress: f64,
 }
 
 #[derive(Clone, Debug)]
-pub struct ProgressBar {
-    props: RefCell<ProgressBarProps>,
+pub struct LinearProgress {
+    props: RefCell<LinearProgressProps>,
     widget: Widget,
 }
 
-impl ProgressBar {
-    pub fn new() -> ProgressBar {
+impl LinearProgress {
+    pub fn new() -> LinearProgress {
         // assert_initialized_main_thread!();
         // unsafe { Actor::from_glib_none(ffi::progress_bar_new()).unsafe_cast() }
         unimplemented!()
     }
 }
 
-impl Default for ProgressBar {
+impl Default for LinearProgress {
     fn default() -> Self {
         Self::new()
     }
 }
 
-impl Object for ProgressBar {}
-impl Is<ProgressBar> for ProgressBar {}
+impl Object for LinearProgress {}
+impl Is<LinearProgress> for LinearProgress {}
 
-impl AsRef<ProgressBar> for ProgressBar {
-    fn as_ref(&self) -> &ProgressBar {
+impl AsRef<LinearProgress> for LinearProgress {
+    fn as_ref(&self) -> &LinearProgress {
         self
     }
 }
 
-impl Is<Widget> for ProgressBar {}
+impl Is<Widget> for LinearProgress {}
 
-impl AsRef<Widget> for ProgressBar {
+impl AsRef<Widget> for LinearProgress {
     fn as_ref(&self) -> &Widget {
         &self.widget
     }
 }
 
-impl Is<Actor> for ProgressBar {}
+impl Is<Actor> for LinearProgress {}
 
-impl AsRef<Actor> for ProgressBar {
+impl AsRef<Actor> for LinearProgress {
     fn as_ref(&self) -> &Actor {
         let actor: &Actor = self.widget.as_ref();
         actor
     }
 }
 
-pub trait ProgressBarExt: 'static {
+pub trait LinearProgressExt: 'static {
     /// get_progress:
-    /// @bar: A #ProgressBar
+    /// @bar: A #LinearProgress
     ///
     /// Get the progress of the progress bar
     ///
@@ -74,7 +74,7 @@ pub trait ProgressBarExt: 'static {
     fn get_progress(&self) -> f64;
 
     /// set_progress:
-    /// @bar: A #ProgressBar
+    /// @bar: A #LinearProgress
     /// @progress: A value between 0.0 and 1.0
     ///
     /// Set the progress of the progress bar
@@ -84,9 +84,9 @@ pub trait ProgressBarExt: 'static {
     fn connect_property_progress_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
 }
 
-impl<O: Is<ProgressBar>> ProgressBarExt for O {
+impl<O: Is<LinearProgress>> LinearProgressExt for O {
     /// get_progress:
-    /// @bar: A #ProgressBar
+    /// @bar: A #LinearProgress
     ///
     /// Get the progress of the progress bar
     ///
@@ -100,7 +100,7 @@ impl<O: Is<ProgressBar>> ProgressBarExt for O {
     }
 
     /// set_progress:
-    /// @bar: A #ProgressBar
+    /// @bar: A #LinearProgress
     /// @progress: A value between 0.0 and 1.0
     ///
     /// Set the progress of the progress bar
@@ -119,14 +119,14 @@ impl<O: Is<ProgressBar>> ProgressBarExt for O {
 
     fn connect_property_progress_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         // unsafe extern "C" fn notify_progress_trampoline<P, F: Fn(&P) + 'static>(
-        //     this: *mut ffi::ProgressBar,
+        //     this: *mut ffi::LinearProgress,
         //     _param_spec: glib_sys::gpointer,
         //     f: glib_sys::gpointer,
         // ) where
-        //     P: Is<ProgressBar>,
+        //     P: Is<LinearProgress>,
         // {
         //     let f: &F = &*(f as *const F);
-        //     f(&ProgressBar::from_glib_borrow(this).unsafe_cast_ref())
+        //     f(&LinearProgress::from_glib_borrow(this).unsafe_cast_ref())
         // }
         // unsafe {
         //     let f: Box_<F> = Box_::new(f);
@@ -143,8 +143,8 @@ impl<O: Is<ProgressBar>> ProgressBarExt for O {
     }
 }
 
-impl fmt::Display for ProgressBar {
+impl fmt::Display for LinearProgress {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "ProgressBar")
+        write!(f, "LinearProgress")
     }
 }

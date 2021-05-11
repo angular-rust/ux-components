@@ -11,6 +11,18 @@ use std::{
 
 mod style;
 
+mod properties;
+pub use properties::*;
+
+mod rule;
+pub use rule::*;
+
+mod values;
+pub use values::*;
+
+mod units;
+pub use units::*;
+
 #[derive(Debug, Clone)]
 pub enum Fill {
     Solid(Color),
@@ -35,7 +47,8 @@ pub struct StyleDefinition {
     pub border_radius: Option<f64>,
 }
 
-#[derive(Debug)]
+#[derive(Debug, Copy, Clone)]
+#[repr(u64)]
 pub enum StyleClass {
     MdcButton = 1,
 }
@@ -54,7 +67,7 @@ pub struct Theme {
 impl Theme {
     fn new() -> Self {
         println!("CREATE THEME INSTANCE");
-
+        
         let mut definitions = IntMap::new();
         definitions.insert(StyleClass::MdcButton.into(), style::mdc_button());
 

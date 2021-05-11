@@ -6,7 +6,7 @@ use glib::signal::SignalHandlerId;
 use std::{cell::RefCell, fmt};
 
 #[derive(Clone, Debug)]
-pub struct EntryProps {
+pub struct TextfieldProps {
     pub entry: Option<Actor>,
     pub placeholder: Option<String>,
     pub primary_icon: Option<Actor>,
@@ -31,19 +31,19 @@ pub struct EntryProps {
 }
 
 #[derive(Clone, Debug)]
-pub struct Entry {
-    props: RefCell<EntryProps>,
+pub struct Textfield {
+    props: RefCell<TextfieldProps>,
     widget: Widget,
 }
 
-impl Entry {
-    pub fn new() -> Entry {
+impl Textfield {
+    pub fn new() -> Textfield {
         // assert_initialized_main_thread!();
         // unsafe { Actor::from_glib_none(ffi::entry_new()).unsafe_cast() }
         unimplemented!()
     }
 
-    pub fn with_text(text: &str) -> Entry {
+    pub fn with_text(text: &str) -> Textfield {
         // assert_initialized_main_thread!();
         // unsafe {
         //     Actor::from_glib_none(ffi::entry_new_with_text(text.to_glib_none().0))
@@ -53,62 +53,62 @@ impl Entry {
     }
 }
 
-impl Default for Entry {
+impl Default for Textfield {
     fn default() -> Self {
         Self::new()
     }
 }
 
-impl Object for Entry {}
-impl Is<Entry> for Entry {}
+impl Object for Textfield {}
+impl Is<Textfield> for Textfield {}
 
-impl AsRef<Entry> for Entry {
-    fn as_ref(&self) -> &Entry {
+impl AsRef<Textfield> for Textfield {
+    fn as_ref(&self) -> &Textfield {
         self
     }
 }
 
-impl Is<Widget> for Entry {}
+impl Is<Widget> for Textfield {}
 
-impl AsRef<Widget> for Entry {
+impl AsRef<Widget> for Textfield {
     fn as_ref(&self) -> &Widget {
         &self.widget
     }
 }
 
-impl Is<Actor> for Entry {}
+impl Is<Actor> for Textfield {}
 
-impl AsRef<Actor> for Entry {
+impl AsRef<Actor> for Textfield {
     fn as_ref(&self) -> &Actor {
         let actor: &Actor = self.widget.as_ref();
         actor
     }
 }
 
-pub trait EntryExt: 'static {
+pub trait TextfieldExt: 'static {
     // /// get_clutter_text:
-    // /// @entry: a #Entry
+    // /// @entry: a #Textfield
     // ///
     // /// Retrieve the internal #Text so that extra parameters can be set
     // ///
-    // /// Returns: (transfer none): the #Text used by #Entry. The entry is
-    // /// owned by the #Entry and should not be unref'ed by the application.
+    // /// Returns: (transfer none): the #Text used by #Textfield. The entry is
+    // /// owned by the #Textfield and should not be unref'ed by the application.
     // ///
     // fn get_clutter_text(&self) -> &Option<Actor>;
 
     /// get_icon_highlight_suffix:
-    /// @entry: a #Entry
+    /// @entry: a #Textfield
     ///
     /// Get the suffix appended to the filename to use for the highlighted version
     /// of the icon.
     ///
     /// Returns: the highlight filename suffix. This string is owned by the
-    /// #Entry and should not be freed or modified.
+    /// #Textfield and should not be freed or modified.
     ///
     fn get_icon_highlight_suffix(&self) -> Option<String>;
 
     /// get_password_char:
-    /// @entry: a #Entry
+    /// @entry: a #Textfield
     ///
     /// Gets the character to display instead of the text.
     ///
@@ -117,17 +117,17 @@ pub trait EntryExt: 'static {
     fn get_password_char(&self) -> char;
 
     /// get_placeholder:
-    /// @entry: a #Entry
+    /// @entry: a #Textfield
     ///
     /// Gets the text that is displayed when the entry is empty and unfocused
     ///
     /// Returns: (transfer none): the current value of the placeholder property.
-    /// This string is owned by the #Entry and should not be freed or modified.
+    /// This string is owned by the #Textfield and should not be freed or modified.
     ///
     fn get_placeholder(&self) -> Option<String>;
 
     /// get_text:
-    /// @entry: a #Entry
+    /// @entry: a #Textfield
     ///
     /// Get the text displayed on the entry
     ///
@@ -136,17 +136,17 @@ pub trait EntryExt: 'static {
     fn get_text(&self) -> Option<String>;
 
     /// set_icon_highlight_suffix:
-    /// @entry: a #Entry
+    /// @entry: a #Textfield
     /// @suffix: the suffix to append to the filename for the highlight version
     ///
     /// Sets the suffix appended to the filename to use for the highlighted version
     /// of the icon. e.g. if you have set your primay icon to "primary-icon.png"
-    /// and the suffix to "-highlight" #Entry will look for "primary-icon-highlight.png"
+    /// and the suffix to "-highlight" #Textfield will look for "primary-icon-highlight.png"
     ///
     fn set_icon_highlight_suffix(&self, suffix: &str);
 
     /// set_password_char:
-    /// @entry: a #Entry
+    /// @entry: a #Textfield
     /// @password_char: character to display instead of text
     ///
     /// Sets the character to display instead of the text. Use 0 to display
@@ -155,7 +155,7 @@ pub trait EntryExt: 'static {
     fn set_password_char(&self, password_char: char);
 
     /// set_placeholder:
-    /// @entry: a #Entry
+    /// @entry: a #Textfield
     /// @text: text to set as the entry hint
     ///
     /// Sets the text to display when the entry is empty and unfocused. When the
@@ -165,7 +165,7 @@ pub trait EntryExt: 'static {
     fn set_placeholder(&self, text: &str);
 
     /// set_primary_icon_from_file:
-    /// @entry: a #Entry
+    /// @entry: a #Textfield
     /// @filename: filename of an icon
     ///
     /// Set the primary icon of the entry to the given filename
@@ -173,7 +173,7 @@ pub trait EntryExt: 'static {
     fn set_primary_icon_from_file(&self, filename: &str);
 
     /// set_primary_icon_tooltip:
-    /// @entry: a #Entry
+    /// @entry: a #Textfield
     /// @text: the primary icon tooltip
     ///
     /// Set the primary icon tooltip text
@@ -181,7 +181,7 @@ pub trait EntryExt: 'static {
     fn set_primary_icon_tooltip_text(&self, text: &str);
 
     /// set_secondary_icon_from_file:
-    /// @entry: a #Entry
+    /// @entry: a #Textfield
     /// @filename: filename of an icon
     ///
     /// Set the secondary icon of the entry to the given filename
@@ -189,7 +189,7 @@ pub trait EntryExt: 'static {
     fn set_secondary_icon_from_file(&self, filename: &str);
 
     /// set_secondary_icon_tooltip:
-    /// @entry: a #Entry
+    /// @entry: a #Textfield
     /// @text: the secondary icon tooltip
     ///
     /// Set the secondary icon tooltip text
@@ -197,7 +197,7 @@ pub trait EntryExt: 'static {
     fn set_secondary_icon_tooltip_text(&self, text: &str);
 
     /// set_text:
-    /// @entry: a #Entry
+    /// @entry: a #Textfield
     /// @text: text to set the entry to
     ///
     /// Sets the text displayed on the entry
@@ -205,14 +205,14 @@ pub trait EntryExt: 'static {
     fn set_text(&self, text: &str);
 
     /// get_primary_icon_tooltip_text:
-    /// @entry: a #Entry
+    /// @entry: a #Textfield
     ///
     /// Returns: the primary icon tooltip
     ///
     fn get_property_primary_icon_tooltip_text(&self) -> Option<String>;
 
     /// get_secondary_icon_tooltip_text:
-    /// @entry: a #Entry
+    /// @entry: a #Textfield
     ///
     /// Returns: the primary icon tooltip
     ///
@@ -250,14 +250,14 @@ pub trait EntryExt: 'static {
     fn connect_property_text_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
 }
 
-impl<O: Is<Entry>> EntryExt for O {
+impl<O: Is<Textfield>> TextfieldExt for O {
     // /// get_clutter_text:
-    // /// @entry: a #Entry
+    // /// @entry: a #Textfield
     // ///
     // /// Retrieve the internal #Text so that extra parameters can be set
     // ///
-    // /// Returns: (transfer none): the #Text used by #Entry. The entry is
-    // /// owned by the #Entry and should not be unref'ed by the application.
+    // /// Returns: (transfer none): the #Text used by #Textfield. The entry is
+    // /// owned by the #Textfield and should not be unref'ed by the application.
     // ///
     // fn get_clutter_text(&self) -> &Option<Actor> {
     //     let entry = self.as_ref();
@@ -267,13 +267,13 @@ impl<O: Is<Entry>> EntryExt for O {
     // }
 
     /// get_icon_highlight_suffix:
-    /// @entry: a #Entry
+    /// @entry: a #Textfield
     ///
     /// Get the suffix appended to the filename to use for the highlighted version
     /// of the icon.
     ///
     /// Returns: the highlight filename suffix. This string is owned by the
-    /// #Entry and should not be freed or modified.
+    /// #Textfield and should not be freed or modified.
     ///
     fn get_icon_highlight_suffix(&self) -> Option<String> {
         let entry = self.as_ref();
@@ -283,7 +283,7 @@ impl<O: Is<Entry>> EntryExt for O {
     }
 
     /// get_password_char:
-    /// @entry: a #Entry
+    /// @entry: a #Textfield
     ///
     /// Gets the character to display instead of the text.
     ///
@@ -297,12 +297,12 @@ impl<O: Is<Entry>> EntryExt for O {
     }
 
     /// get_placeholder:
-    /// @entry: a #Entry
+    /// @entry: a #Textfield
     ///
     /// Gets the text that is displayed when the entry is empty and unfocused
     ///
     /// Returns: (transfer none): the current value of the placeholder property.
-    /// This string is owned by the #Entry and should not be freed or modified.
+    /// This string is owned by the #Textfield and should not be freed or modified.
     ///
     fn get_placeholder(&self) -> Option<String> {
         let entry = self.as_ref();
@@ -310,7 +310,7 @@ impl<O: Is<Entry>> EntryExt for O {
     }
 
     /// get_text:
-    /// @entry: a #Entry
+    /// @entry: a #Textfield
     ///
     /// Get the text displayed on the entry
     ///
@@ -323,12 +323,12 @@ impl<O: Is<Entry>> EntryExt for O {
     }
 
     /// set_icon_highlight_suffix:
-    /// @entry: a #Entry
+    /// @entry: a #Textfield
     /// @suffix: the suffix to append to the filename for the highlight version
     ///
     /// Sets the suffix appended to the filename to use for the highlighted version
     /// of the icon. e.g. if you have set your primay icon to "primary-icon.png"
-    /// and the suffix to "-highlight" #Entry will look for "primary-icon-highlight.png"
+    /// and the suffix to "-highlight" #Textfield will look for "primary-icon-highlight.png"
     ///
     fn set_icon_highlight_suffix(&self, suffix: &str) {
         let entry = self.as_ref();
@@ -343,7 +343,7 @@ impl<O: Is<Entry>> EntryExt for O {
     }
 
     /// set_password_char:
-    /// @entry: a #Entry
+    /// @entry: a #Textfield
     /// @password_char: character to display instead of text
     ///
     /// Sets the character to display instead of the text. Use 0 to display
@@ -361,7 +361,7 @@ impl<O: Is<Entry>> EntryExt for O {
     }
 
     /// set_placeholder:
-    /// @entry: a #Entry
+    /// @entry: a #Textfield
     /// @text: text to set as the entry hint
     ///
     /// Sets the text to display when the entry is empty and unfocused. When the
@@ -389,7 +389,7 @@ impl<O: Is<Entry>> EntryExt for O {
     }
 
     /// set_primary_icon_from_file:
-    /// @entry: a #Entry
+    /// @entry: a #Textfield
     /// @filename: filename of an icon
     ///
     /// Set the primary icon of the entry to the given filename
@@ -404,7 +404,7 @@ impl<O: Is<Entry>> EntryExt for O {
     }
 
     /// set_primary_icon_tooltip:
-    /// @entry: a #Entry
+    /// @entry: a #Textfield
     /// @text: the primary icon tooltip
     ///
     /// Set the primary icon tooltip text
@@ -426,7 +426,7 @@ impl<O: Is<Entry>> EntryExt for O {
     }
 
     /// set_secondary_icon_from_file:
-    /// @entry: a #Entry
+    /// @entry: a #Textfield
     /// @filename: filename of an icon
     ///
     /// Set the secondary icon of the entry to the given filename
@@ -441,7 +441,7 @@ impl<O: Is<Entry>> EntryExt for O {
     }
 
     /// set_secondary_icon_tooltip:
-    /// @entry: a #Entry
+    /// @entry: a #Textfield
     /// @text: the secondary icon tooltip
     ///
     /// Set the secondary icon tooltip text
@@ -463,7 +463,7 @@ impl<O: Is<Entry>> EntryExt for O {
     }
 
     /// set_text:
-    /// @entry: a #Entry
+    /// @entry: a #Textfield
     /// @text: text to set the entry to
     ///
     /// Sets the text displayed on the entry
@@ -481,7 +481,7 @@ impl<O: Is<Entry>> EntryExt for O {
     }
 
     /// get_primary_icon_tooltip_text:
-    /// @entry: a #Entry
+    /// @entry: a #Textfield
     ///
     /// Returns: the primary icon tooltip
     ///
@@ -502,7 +502,7 @@ impl<O: Is<Entry>> EntryExt for O {
     }
 
     /// get_secondary_icon_tooltip_text:
-    /// @entry: a #Entry
+    /// @entry: a #Textfield
     ///
     /// Returns: the primary icon tooltip
     ///
@@ -524,13 +524,13 @@ impl<O: Is<Entry>> EntryExt for O {
 
     fn connect_primary_icon_clicked<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         // unsafe extern "C" fn primary_icon_clicked_trampoline<P, F: Fn(&P) + 'static>(
-        //     this: *mut ffi::Entry,
+        //     this: *mut ffi::Textfield,
         //     f: glib_sys::gpointer,
         // ) where
-        //     P: Is<Entry>,
+        //     P: Is<Textfield>,
         // {
         //     let f: &F = &*(f as *const F);
-        //     f(&Entry::from_glib_borrow(this).unsafe_cast_ref())
+        //     f(&Textfield::from_glib_borrow(this).unsafe_cast_ref())
         // }
         // unsafe {
         //     let f: Box_<F> = Box_::new(f);
@@ -548,13 +548,13 @@ impl<O: Is<Entry>> EntryExt for O {
 
     fn connect_secondary_icon_clicked<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         // unsafe extern "C" fn secondary_icon_clicked_trampoline<P, F: Fn(&P) + 'static>(
-        //     this: *mut ffi::Entry,
+        //     this: *mut ffi::Textfield,
         //     f: glib_sys::gpointer,
         // ) where
-        //     P: Is<Entry>,
+        //     P: Is<Textfield>,
         // {
         //     let f: &F = &*(f as *const F);
-        //     f(&Entry::from_glib_borrow(this).unsafe_cast_ref())
+        //     f(&Textfield::from_glib_borrow(this).unsafe_cast_ref())
         // }
         // unsafe {
         //     let f: Box_<F> = Box_::new(f);
@@ -575,14 +575,14 @@ impl<O: Is<Entry>> EntryExt for O {
         f: F,
     ) -> SignalHandlerId {
         // unsafe extern "C" fn notify_clutter_text_trampoline<P, F: Fn(&P) + 'static>(
-        //     this: *mut ffi::Entry,
+        //     this: *mut ffi::Textfield,
         //     _param_spec: glib_sys::gpointer,
         //     f: glib_sys::gpointer,
         // ) where
-        //     P: Is<Entry>,
+        //     P: Is<Textfield>,
         // {
         //     let f: &F = &*(f as *const F);
-        //     f(&Entry::from_glib_borrow(this).unsafe_cast_ref())
+        //     f(&Textfield::from_glib_borrow(this).unsafe_cast_ref())
         // }
         // unsafe {
         //     let f: Box_<F> = Box_::new(f);
@@ -603,14 +603,14 @@ impl<O: Is<Entry>> EntryExt for O {
         f: F,
     ) -> SignalHandlerId {
         // unsafe extern "C" fn notify_icon_highlight_suffix_trampoline<P, F: Fn(&P) + 'static>(
-        //     this: *mut ffi::Entry,
+        //     this: *mut ffi::Textfield,
         //     _param_spec: glib_sys::gpointer,
         //     f: glib_sys::gpointer,
         // ) where
-        //     P: Is<Entry>,
+        //     P: Is<Textfield>,
         // {
         //     let f: &F = &*(f as *const F);
-        //     f(&Entry::from_glib_borrow(this).unsafe_cast_ref())
+        //     f(&Textfield::from_glib_borrow(this).unsafe_cast_ref())
         // }
         // unsafe {
         //     let f: Box_<F> = Box_::new(f);
@@ -631,14 +631,14 @@ impl<O: Is<Entry>> EntryExt for O {
         f: F,
     ) -> SignalHandlerId {
         // unsafe extern "C" fn notify_password_char_trampoline<P, F: Fn(&P) + 'static>(
-        //     this: *mut ffi::Entry,
+        //     this: *mut ffi::Textfield,
         //     _param_spec: glib_sys::gpointer,
         //     f: glib_sys::gpointer,
         // ) where
-        //     P: Is<Entry>,
+        //     P: Is<Textfield>,
         // {
         //     let f: &F = &*(f as *const F);
-        //     f(&Entry::from_glib_borrow(this).unsafe_cast_ref())
+        //     f(&Textfield::from_glib_borrow(this).unsafe_cast_ref())
         // }
         // unsafe {
         //     let f: Box_<F> = Box_::new(f);
@@ -656,14 +656,14 @@ impl<O: Is<Entry>> EntryExt for O {
 
     fn connect_property_placeholder_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         // unsafe extern "C" fn notify_placeholder_trampoline<P, F: Fn(&P) + 'static>(
-        //     this: *mut ffi::Entry,
+        //     this: *mut ffi::Textfield,
         //     _param_spec: glib_sys::gpointer,
         //     f: glib_sys::gpointer,
         // ) where
-        //     P: Is<Entry>,
+        //     P: Is<Textfield>,
         // {
         //     let f: &F = &*(f as *const F);
-        //     f(&Entry::from_glib_borrow(this).unsafe_cast_ref())
+        //     f(&Textfield::from_glib_borrow(this).unsafe_cast_ref())
         // }
         // unsafe {
         //     let f: Box_<F> = Box_::new(f);
@@ -684,14 +684,14 @@ impl<O: Is<Entry>> EntryExt for O {
         f: F,
     ) -> SignalHandlerId {
         // unsafe extern "C" fn notify_primary_icon_tooltip_text_trampoline<P, F: Fn(&P) + 'static>(
-        //     this: *mut ffi::Entry,
+        //     this: *mut ffi::Textfield,
         //     _param_spec: glib_sys::gpointer,
         //     f: glib_sys::gpointer,
         // ) where
-        //     P: Is<Entry>,
+        //     P: Is<Textfield>,
         // {
         //     let f: &F = &*(f as *const F);
-        //     f(&Entry::from_glib_borrow(this).unsafe_cast_ref())
+        //     f(&Textfield::from_glib_borrow(this).unsafe_cast_ref())
         // }
         // unsafe {
         //     let f: Box_<F> = Box_::new(f);
@@ -712,14 +712,14 @@ impl<O: Is<Entry>> EntryExt for O {
         f: F,
     ) -> SignalHandlerId {
         // unsafe extern "C" fn notify_secondary_icon_tooltip_text_trampoline<P, F: Fn(&P) + 'static>(
-        //     this: *mut ffi::Entry,
+        //     this: *mut ffi::Textfield,
         //     _param_spec: glib_sys::gpointer,
         //     f: glib_sys::gpointer,
         // ) where
-        //     P: Is<Entry>,
+        //     P: Is<Textfield>,
         // {
         //     let f: &F = &*(f as *const F);
-        //     f(&Entry::from_glib_borrow(this).unsafe_cast_ref())
+        //     f(&Textfield::from_glib_borrow(this).unsafe_cast_ref())
         // }
         // unsafe {
         //     let f: Box_<F> = Box_::new(f);
@@ -737,14 +737,14 @@ impl<O: Is<Entry>> EntryExt for O {
 
     fn connect_property_text_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         // unsafe extern "C" fn notify_text_trampoline<P, F: Fn(&P) + 'static>(
-        //     this: *mut ffi::Entry,
+        //     this: *mut ffi::Textfield,
         //     _param_spec: glib_sys::gpointer,
         //     f: glib_sys::gpointer,
         // ) where
-        //     P: Is<Entry>,
+        //     P: Is<Textfield>,
         // {
         //     let f: &F = &*(f as *const F);
-        //     f(&Entry::from_glib_borrow(this).unsafe_cast_ref())
+        //     f(&Textfield::from_glib_borrow(this).unsafe_cast_ref())
         // }
         // unsafe {
         //     let f: Box_<F> = Box_::new(f);
@@ -761,8 +761,8 @@ impl<O: Is<Entry>> EntryExt for O {
     }
 }
 
-impl fmt::Display for Entry {
+impl fmt::Display for Textfield {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "Entry")
+        write!(f, "Textfield")
     }
 }

@@ -6,7 +6,7 @@ use glib::signal::SignalHandlerId;
 use std::{cell::RefCell, fmt};
 
 #[derive(Default, Clone, Debug)]
-pub struct DrawerProps {
+pub struct TreeviewProps {
     pub text: Option<String>,
     pub icon_name: Option<String>,
     pub style_icon_name: Option<String>,
@@ -30,14 +30,14 @@ pub struct DrawerProps {
 }
 
 #[derive(Clone, Debug)]
-pub struct Drawer {
-    props: RefCell<DrawerProps>,
+pub struct Treeview {
+    props: RefCell<TreeviewProps>,
     inner: Widget,
 }
 
-impl Drawer {
+impl Treeview {
     pub fn new() -> Self {
-        let props = DrawerProps::default();
+        let props = TreeviewProps::default();
 
         let component = Self {
             props: RefCell::new(props),
@@ -49,7 +49,7 @@ impl Drawer {
     }
 
     pub fn with_label(text: &str) -> Self {
-        let mut props = DrawerProps::default();
+        let mut props = TreeviewProps::default();
         if !text.is_empty() {
             props.text = Some(text.into())
         }
@@ -64,7 +64,7 @@ impl Drawer {
     }
 
     pub fn with_icon(name: &str) -> Self {
-        let mut props = DrawerProps::default();
+        let mut props = TreeviewProps::default();
         if !name.is_empty() {
             props.icon_name = Some(name.into())
         }
@@ -79,7 +79,7 @@ impl Drawer {
     }
 
     fn init(&self) {
-        println!("INIT DRAWER");
+        println!("INIT TREEVIEW");
 
         self.inner.set_reactive(true);
 
@@ -100,7 +100,7 @@ impl Drawer {
         // clutter_actor_add_child (CLUTTER_ACTOR (button), priv->hbox);
 
         if let Some(name) = &props.icon_name {
-            println!("ADD ICON TO DRAWER [{}]", name);
+            println!("ADD ICON TO TREEVIEW [{}]", name);
             let icon = Icon::new();
             // priv->icon = icon_new ();
             // clutter_actor_add_child (priv->hbox, priv->icon);
@@ -109,7 +109,7 @@ impl Drawer {
         }
 
         if let Some(text) = &props.text {
-            println!("ADD TEXT TO DRAWER [{}]", text);
+            println!("ADD TEXT TO TREEVIEW [{}]", text);
             let style = Theme::global().get(StyleClass::MdcButton).unwrap();
             let fontfamily = if let Some(fontfamily) = style.fontfamily {
                 fontfamily
@@ -145,41 +145,41 @@ impl Drawer {
     }
 }
 
-impl Default for Drawer {
+impl Default for Treeview {
     fn default() -> Self {
         Self::new()
     }
 }
 
-impl Object for Drawer {}
-impl Is<Drawer> for Drawer {}
+impl Object for Treeview {}
+impl Is<Treeview> for Treeview {}
 
-impl AsRef<Drawer> for Drawer {
-    fn as_ref(&self) -> &Drawer {
+impl AsRef<Treeview> for Treeview {
+    fn as_ref(&self) -> &Treeview {
         self
     }
 }
 
-impl Is<Widget> for Drawer {}
+impl Is<Widget> for Treeview {}
 
-impl AsRef<Widget> for Drawer {
+impl AsRef<Widget> for Treeview {
     fn as_ref(&self) -> &Widget {
         &self.inner
     }
 }
 
-impl Is<Actor> for Drawer {}
+impl Is<Actor> for Treeview {}
 
-impl AsRef<Actor> for Drawer {
+impl AsRef<Actor> for Treeview {
     fn as_ref(&self) -> &Actor {
         let actor: &Actor = self.inner.as_ref();
         actor
     }
 }
 
-pub trait DrawerExt: 'static {
+pub trait TreeviewExt: 'static {
     /// get_action:
-    /// @button: A #Drawer
+    /// @button: A #Treeview
     ///
     /// Retrieves the #PushAction associated with @button.
     ///
@@ -188,7 +188,7 @@ pub trait DrawerExt: 'static {
     fn get_action(&self) -> Option<PushAction>;
 
     /// get_icon_name:
-    /// @button: a #Drawer
+    /// @button: a #Treeview
     ///
     /// Get the icon-name being used on the button.
     ///
@@ -198,7 +198,7 @@ pub trait DrawerExt: 'static {
     fn get_icon_name(&self) -> Option<String>;
 
     /// get_icon_position:
-    /// @button: A #Drawer
+    /// @button: A #Treeview
     ///
     /// Retrieves the icon's relative position to the text.
     ///
@@ -207,7 +207,7 @@ pub trait DrawerExt: 'static {
     fn get_icon_position(&self) -> Position;
 
     /// get_icon_size:
-    /// @button: a #Drawer
+    /// @button: a #Treeview
     ///
     /// Retrieves the icon-size being used for the displayed icon inside the button.
     ///
@@ -216,7 +216,7 @@ pub trait DrawerExt: 'static {
     fn get_icon_size(&self) -> u32;
 
     /// get_icon_visible:
-    /// @button: A #Drawer
+    /// @button: A #Treeview
     ///
     /// Retrieves the visibility of the icon associated with the button's action.
     ///
@@ -225,7 +225,7 @@ pub trait DrawerExt: 'static {
     fn get_icon_visible(&self) -> bool;
 
     /// get_is_toggle:
-    /// @button: a #Drawer
+    /// @button: a #Treeview
     ///
     /// Get the toggle mode status of the button.
     ///
@@ -234,7 +234,7 @@ pub trait DrawerExt: 'static {
     fn get_is_toggle(&self) -> bool;
 
     /// get_label:
-    /// @button: a #Drawer
+    /// @button: a #Treeview
     ///
     /// Get the text displayed on the button
     ///
@@ -243,7 +243,7 @@ pub trait DrawerExt: 'static {
     fn get_label(&self) -> Option<String>;
 
     /// get_label_visible:
-    /// @button: A #Drawer
+    /// @button: A #Treeview
     ///
     /// Retrieves the visibility of the text associated with the button's action.
     ///
@@ -252,7 +252,7 @@ pub trait DrawerExt: 'static {
     fn get_label_visible(&self) -> bool;
 
     /// get_toggled:
-    /// @button: a #Drawer
+    /// @button: a #Treeview
     ///
     /// Get the state of the button that is in toggle mode.
     ///
@@ -261,16 +261,16 @@ pub trait DrawerExt: 'static {
     fn get_toggled(&self) -> bool;
 
     /// set_action:
-    /// @button: A #Drawer
+    /// @button: A #Treeview
     /// @action: A #PushAction
     ///
-    /// Sets @action as the action for @button. @Drawer will take its label and
+    /// Sets @action as the action for @button. @Treeview will take its label and
     /// icon from @action.
     ///
     fn set_action<P: Is<PushAction>>(&self, action: &P);
 
     /// set_icon_name:
-    /// @button: a #Drawer
+    /// @button: a #Treeview
     /// @icon_name: (allow-none): icon-name to use on the button
     ///
     /// Sets the icon-name used to display an icon on the button. Setting %None
@@ -280,7 +280,7 @@ pub trait DrawerExt: 'static {
     fn set_icon_name(&self, icon_name: Option<String>);
 
     /// set_icon_position:
-    /// @button: A #Drawer
+    /// @button: A #Treeview
     /// @position: A #Position
     ///
     /// Sets the icon position, relative to the text on the button.
@@ -288,7 +288,7 @@ pub trait DrawerExt: 'static {
     fn set_icon_position(&self, position: Position);
 
     /// set_icon_size:
-    /// @button: a #Drawer
+    /// @button: a #Treeview
     ///
     /// Sets the icon-size to use for the icon displayed inside the button. This will
     /// override the icon-size set in the style. Setting a value of %0 resets to the
@@ -297,7 +297,7 @@ pub trait DrawerExt: 'static {
     fn set_icon_size(&self, icon_size: u32);
 
     /// set_icon_visible:
-    /// @button: A #Drawer
+    /// @button: A #Treeview
     /// @visible: %true if the icon should be visible
     ///
     /// Sets the visibility of the icon associated with the button's action.
@@ -305,7 +305,7 @@ pub trait DrawerExt: 'static {
     fn set_icon_visible(&self, visible: bool);
 
     /// set_is_toggle:
-    /// @button: a #Drawer
+    /// @button: a #Treeview
     /// @toggle: #true or #false
     ///
     /// Enables or disables toggle mode for the button. In toggle mode, the active
@@ -314,7 +314,7 @@ pub trait DrawerExt: 'static {
     fn set_is_toggle(&self, toggle: bool);
 
     /// set_label:
-    /// @button: a #Drawer
+    /// @button: a #Treeview
     /// @text: text to set the label to
     ///
     /// Sets the text displayed on the button
@@ -322,7 +322,7 @@ pub trait DrawerExt: 'static {
     fn set_label(&self, text: Option<String>);
 
     /// set_label_visible:
-    /// @button: A #Drawer
+    /// @button: A #Treeview
     /// @visible: %true if the text should be visible
     ///
     /// Sets the visibility of the text associated with the button's action.
@@ -330,7 +330,7 @@ pub trait DrawerExt: 'static {
     fn set_label_visible(&self, visible: bool);
 
     /// set_toggled:
-    /// @button: a #Drawer
+    /// @button: a #Treeview
     /// @toggled: #true or #false
     ///
     /// Sets the toggled state of the button. This is only really useful if the
@@ -366,9 +366,9 @@ pub trait DrawerExt: 'static {
     fn connect_property_toggled_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
 }
 
-impl<O: Is<Drawer>> DrawerExt for O {
+impl<O: Is<Treeview>> TreeviewExt for O {
     /// get_action:
-    /// @button: A #Drawer
+    /// @button: A #Treeview
     ///
     /// Retrieves the #PushAction associated with @button.
     ///
@@ -380,7 +380,7 @@ impl<O: Is<Drawer>> DrawerExt for O {
     }
 
     /// get_icon_name:
-    /// @button: a #Drawer
+    /// @button: a #Treeview
     ///
     /// Get the icon-name being used on the button.
     ///
@@ -399,7 +399,7 @@ impl<O: Is<Drawer>> DrawerExt for O {
     }
 
     /// get_icon_position:
-    /// @button: A #Drawer
+    /// @button: A #Treeview
     ///
     /// Retrieves the icon's relative position to the text.
     ///
@@ -411,7 +411,7 @@ impl<O: Is<Drawer>> DrawerExt for O {
     }
 
     /// get_icon_size:
-    /// @button: a #Drawer
+    /// @button: a #Treeview
     ///
     /// Retrieves the icon-size being used for the displayed icon inside the button.
     ///
@@ -429,7 +429,7 @@ impl<O: Is<Drawer>> DrawerExt for O {
     }
 
     /// get_icon_visible:
-    /// @button: A #Drawer
+    /// @button: A #Treeview
     ///
     /// Retrieves the visibility of the icon associated with the button's action.
     ///
@@ -441,7 +441,7 @@ impl<O: Is<Drawer>> DrawerExt for O {
     }
 
     /// get_is_toggle:
-    /// @button: a #Drawer
+    /// @button: a #Treeview
     ///
     /// Get the toggle mode status of the button.
     ///
@@ -453,7 +453,7 @@ impl<O: Is<Drawer>> DrawerExt for O {
     }
 
     /// get_label:
-    /// @button: a #Drawer
+    /// @button: a #Treeview
     ///
     /// Get the text displayed on the button
     ///
@@ -465,7 +465,7 @@ impl<O: Is<Drawer>> DrawerExt for O {
     }
 
     /// get_label_visible:
-    /// @button: A #Drawer
+    /// @button: A #Treeview
     ///
     /// Retrieves the visibility of the text associated with the button's action.
     ///
@@ -477,7 +477,7 @@ impl<O: Is<Drawer>> DrawerExt for O {
     }
 
     /// get_toggled:
-    /// @button: a #Drawer
+    /// @button: a #Treeview
     ///
     /// Get the state of the button that is in toggle mode.
     ///
@@ -489,10 +489,10 @@ impl<O: Is<Drawer>> DrawerExt for O {
     }
 
     /// set_action:
-    /// @button: A #Drawer
+    /// @button: A #Treeview
     /// @action: A #PushAction
     ///
-    /// Sets @action as the action for @button. @Drawer will take its label and
+    /// Sets @action as the action for @button. @Treeview will take its label and
     /// icon from @action.
     ///
     fn set_action<P: Is<PushAction>>(&self, action: &P) {
@@ -529,7 +529,7 @@ impl<O: Is<Drawer>> DrawerExt for O {
     }
 
     /// set_icon_name:
-    /// @button: a #Drawer
+    /// @button: a #Treeview
     /// @icon_name: (allow-none): icon-name to use on the button
     ///
     /// Sets the icon-name used to display an icon on the button. Setting %None
@@ -548,7 +548,7 @@ impl<O: Is<Drawer>> DrawerExt for O {
     }
 
     /// set_icon_position:
-    /// @button: A #Drawer
+    /// @button: A #Treeview
     /// @position: A #Position
     ///
     /// Sets the icon position, relative to the text on the button.
@@ -565,7 +565,7 @@ impl<O: Is<Drawer>> DrawerExt for O {
     }
 
     /// set_icon_size:
-    /// @button: a #Drawer
+    /// @button: a #Treeview
     ///
     /// Sets the icon-size to use for the icon displayed inside the button. This will
     /// override the icon-size set in the style. Setting a value of %0 resets to the
@@ -584,7 +584,7 @@ impl<O: Is<Drawer>> DrawerExt for O {
     }
 
     /// set_icon_visible:
-    /// @button: A #Drawer
+    /// @button: A #Treeview
     /// @visible: %true if the icon should be visible
     ///
     /// Sets the visibility of the icon associated with the button's action.
@@ -601,7 +601,7 @@ impl<O: Is<Drawer>> DrawerExt for O {
     }
 
     /// set_is_toggle:
-    /// @button: a #Drawer
+    /// @button: a #Treeview
     /// @toggle: #true or #false
     ///
     /// Enables or disables toggle mode for the button. In toggle mode, the active
@@ -615,7 +615,7 @@ impl<O: Is<Drawer>> DrawerExt for O {
     }
 
     /// set_label:
-    /// @button: a #Drawer
+    /// @button: a #Treeview
     /// @text: text to set the label to
     ///
     /// Sets the text displayed on the button
@@ -632,7 +632,7 @@ impl<O: Is<Drawer>> DrawerExt for O {
     }
 
     /// set_label_visible:
-    /// @button: A #Drawer
+    /// @button: A #Treeview
     /// @visible: %true if the text should be visible
     ///
     /// Sets the visibility of the text associated with the button's action.
@@ -649,7 +649,7 @@ impl<O: Is<Drawer>> DrawerExt for O {
     }
 
     /// set_toggled:
-    /// @button: a #Drawer
+    /// @button: a #Treeview
     /// @toggled: #true or #false
     ///
     /// Sets the toggled state of the button. This is only really useful if the
@@ -673,13 +673,13 @@ impl<O: Is<Drawer>> DrawerExt for O {
 
     fn connect_clicked<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         // unsafe extern "C" fn clicked_trampoline<P, F: Fn(&P) + 'static>(
-        //     this: *mut ffi::Drawer,
+        //     this: *mut ffi::Treeview,
         //     f: glib_sys::gpointer,
         // ) where
-        //     P: Is<Drawer>,
+        //     P: Is<Treeview>,
         // {
         //     let f: &F = &*(f as *const F);
-        //     f(&Drawer::from_glib_borrow(this).unsafe_cast_ref())
+        //     f(&Treeview::from_glib_borrow(this).unsafe_cast_ref())
         // }
         // unsafe {
         //     let f: Box_<F> = Box_::new(f);
@@ -697,14 +697,14 @@ impl<O: Is<Drawer>> DrawerExt for O {
 
     fn connect_property_action_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         // unsafe extern "C" fn notify_action_trampoline<P, F: Fn(&P) + 'static>(
-        //     this: *mut ffi::Drawer,
+        //     this: *mut ffi::Treeview,
         //     _param_spec: glib_sys::gpointer,
         //     f: glib_sys::gpointer,
         // ) where
-        //     P: Is<Drawer>,
+        //     P: Is<Treeview>,
         // {
         //     let f: &F = &*(f as *const F);
-        //     f(&Drawer::from_glib_borrow(this).unsafe_cast_ref())
+        //     f(&Treeview::from_glib_borrow(this).unsafe_cast_ref())
         // }
         // unsafe {
         //     let f: Box_<F> = Box_::new(f);
@@ -722,14 +722,14 @@ impl<O: Is<Drawer>> DrawerExt for O {
 
     fn connect_property_icon_name_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         // unsafe extern "C" fn notify_icon_name_trampoline<P, F: Fn(&P) + 'static>(
-        //     this: *mut ffi::Drawer,
+        //     this: *mut ffi::Treeview,
         //     _param_spec: glib_sys::gpointer,
         //     f: glib_sys::gpointer,
         // ) where
-        //     P: Is<Drawer>,
+        //     P: Is<Treeview>,
         // {
         //     let f: &F = &*(f as *const F);
-        //     f(&Drawer::from_glib_borrow(this).unsafe_cast_ref())
+        //     f(&Treeview::from_glib_borrow(this).unsafe_cast_ref())
         // }
         // unsafe {
         //     let f: Box_<F> = Box_::new(f);
@@ -750,14 +750,14 @@ impl<O: Is<Drawer>> DrawerExt for O {
         f: F,
     ) -> SignalHandlerId {
         // unsafe extern "C" fn notify_icon_position_trampoline<P, F: Fn(&P) + 'static>(
-        //     this: *mut ffi::Drawer,
+        //     this: *mut ffi::Treeview,
         //     _param_spec: glib_sys::gpointer,
         //     f: glib_sys::gpointer,
         // ) where
-        //     P: Is<Drawer>,
+        //     P: Is<Treeview>,
         // {
         //     let f: &F = &*(f as *const F);
-        //     f(&Drawer::from_glib_borrow(this).unsafe_cast_ref())
+        //     f(&Treeview::from_glib_borrow(this).unsafe_cast_ref())
         // }
         // unsafe {
         //     let f: Box_<F> = Box_::new(f);
@@ -775,14 +775,14 @@ impl<O: Is<Drawer>> DrawerExt for O {
 
     fn connect_property_icon_size_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         // unsafe extern "C" fn notify_icon_size_trampoline<P, F: Fn(&P) + 'static>(
-        //     this: *mut ffi::Drawer,
+        //     this: *mut ffi::Treeview,
         //     _param_spec: glib_sys::gpointer,
         //     f: glib_sys::gpointer,
         // ) where
-        //     P: Is<Drawer>,
+        //     P: Is<Treeview>,
         // {
         //     let f: &F = &*(f as *const F);
-        //     f(&Drawer::from_glib_borrow(this).unsafe_cast_ref())
+        //     f(&Treeview::from_glib_borrow(this).unsafe_cast_ref())
         // }
         // unsafe {
         //     let f: Box_<F> = Box_::new(f);
@@ -803,14 +803,14 @@ impl<O: Is<Drawer>> DrawerExt for O {
         f: F,
     ) -> SignalHandlerId {
         // unsafe extern "C" fn notify_icon_visible_trampoline<P, F: Fn(&P) + 'static>(
-        //     this: *mut ffi::Drawer,
+        //     this: *mut ffi::Treeview,
         //     _param_spec: glib_sys::gpointer,
         //     f: glib_sys::gpointer,
         // ) where
-        //     P: Is<Drawer>,
+        //     P: Is<Treeview>,
         // {
         //     let f: &F = &*(f as *const F);
-        //     f(&Drawer::from_glib_borrow(this).unsafe_cast_ref())
+        //     f(&Treeview::from_glib_borrow(this).unsafe_cast_ref())
         // }
         // unsafe {
         //     let f: Box_<F> = Box_::new(f);
@@ -828,14 +828,14 @@ impl<O: Is<Drawer>> DrawerExt for O {
 
     fn connect_property_is_toggle_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         // unsafe extern "C" fn notify_is_toggle_trampoline<P, F: Fn(&P) + 'static>(
-        //     this: *mut ffi::Drawer,
+        //     this: *mut ffi::Treeview,
         //     _param_spec: glib_sys::gpointer,
         //     f: glib_sys::gpointer,
         // ) where
-        //     P: Is<Drawer>,
+        //     P: Is<Treeview>,
         // {
         //     let f: &F = &*(f as *const F);
-        //     f(&Drawer::from_glib_borrow(this).unsafe_cast_ref())
+        //     f(&Treeview::from_glib_borrow(this).unsafe_cast_ref())
         // }
         // unsafe {
         //     let f: Box_<F> = Box_::new(f);
@@ -853,14 +853,14 @@ impl<O: Is<Drawer>> DrawerExt for O {
 
     fn connect_property_label_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         // unsafe extern "C" fn notify_label_trampoline<P, F: Fn(&P) + 'static>(
-        //     this: *mut ffi::Drawer,
+        //     this: *mut ffi::Treeview,
         //     _param_spec: glib_sys::gpointer,
         //     f: glib_sys::gpointer,
         // ) where
-        //     P: Is<Drawer>,
+        //     P: Is<Treeview>,
         // {
         //     let f: &F = &*(f as *const F);
-        //     f(&Drawer::from_glib_borrow(this).unsafe_cast_ref())
+        //     f(&Treeview::from_glib_borrow(this).unsafe_cast_ref())
         // }
         // unsafe {
         //     let f: Box_<F> = Box_::new(f);
@@ -881,14 +881,14 @@ impl<O: Is<Drawer>> DrawerExt for O {
         f: F,
     ) -> SignalHandlerId {
         // unsafe extern "C" fn notify_label_visible_trampoline<P, F: Fn(&P) + 'static>(
-        //     this: *mut ffi::Drawer,
+        //     this: *mut ffi::Treeview,
         //     _param_spec: glib_sys::gpointer,
         //     f: glib_sys::gpointer,
         // ) where
-        //     P: Is<Drawer>,
+        //     P: Is<Treeview>,
         // {
         //     let f: &F = &*(f as *const F);
-        //     f(&Drawer::from_glib_borrow(this).unsafe_cast_ref())
+        //     f(&Treeview::from_glib_borrow(this).unsafe_cast_ref())
         // }
         // unsafe {
         //     let f: Box_<F> = Box_::new(f);
@@ -906,14 +906,14 @@ impl<O: Is<Drawer>> DrawerExt for O {
 
     fn connect_property_toggled_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         // unsafe extern "C" fn notify_toggled_trampoline<P, F: Fn(&P) + 'static>(
-        //     this: *mut ffi::Drawer,
+        //     this: *mut ffi::Treeview,
         //     _param_spec: glib_sys::gpointer,
         //     f: glib_sys::gpointer,
         // ) where
-        //     P: Is<Drawer>,
+        //     P: Is<Treeview>,
         // {
         //     let f: &F = &*(f as *const F);
-        //     f(&Drawer::from_glib_borrow(this).unsafe_cast_ref())
+        //     f(&Treeview::from_glib_borrow(this).unsafe_cast_ref())
         // }
         // unsafe {
         //     let f: Box_<F> = Box_::new(f);
@@ -930,8 +930,8 @@ impl<O: Is<Drawer>> DrawerExt for O {
     }
 }
 
-impl fmt::Display for Drawer {
+impl fmt::Display for Treeview {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "Drawer")
+        write!(f, "Treeview")
     }
 }

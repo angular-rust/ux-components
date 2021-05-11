@@ -1,4 +1,5 @@
 #![allow(unused_variables)]
+#![allow(unused_imports)]
 
 use crate::{prelude::*, PushActionExt};
 use crate::{Actor, Icon, IconTheme, Label, PushAction, Widget};
@@ -10,7 +11,7 @@ pub struct ComboBoxProps {
     pub label: Option<Label>, //Actor,
     pub icon: Option<Icon>,   // Actor
 
-    pub marker: dx::Texture,
+    pub marker: Option<dx::Texture>,
     pub actions: Vec<PushAction>,
 
     pub clip_x: f64,
@@ -201,10 +202,11 @@ impl<O: Is<ComboBox>> ComboBoxExt for O {
         let combobox = self.as_ref();
         let props = combobox.props.borrow();
 
-        match &props.icon {
-            Some(icon) => icon.get_icon_name(),
-            None => None,
-        }
+        // match &props.icon {
+        //     Some(icon) => icon.get_icon_name(),
+        //     None => None,
+        // }
+        unimplemented!()
     }
 
     /// get_active_text:
@@ -218,10 +220,11 @@ impl<O: Is<ComboBox>> ComboBoxExt for O {
         let combobox = self.as_ref();
         let props = combobox.props.borrow();
 
-        match &props.label {
-            Some(label) => label.get_text(),
-            None => None,
-        }
+        // match &props.label {
+        //     Some(label) => label.get_text(),
+        //     None => None,
+        // }
+        unimplemented!()
     }
 
     /// get_index:
@@ -320,28 +323,28 @@ impl<O: Is<ComboBox>> ComboBoxExt for O {
         let combobox = self.as_ref();
         let mut props = combobox.props.borrow_mut();
 
-        match &props.icon {
-            None => {
-                if let Some(icon_name) = &icon_name {
-                    let icon_theme = IconTheme::get_default().unwrap();
-                    if icon_theme.has_icon(icon_name) {
-                        let icon = Icon::new();
-                        icon.set_icon_name(Some(icon_name.clone()));
-                        // actor_add_child (CLUTTER_ACTOR (box), combobox.icon);
-                        props.icon = Some(icon);
-                    }
-                }
-            }
-            Some(icon) => {
-                if let Some(icon_name) = icon_name {
-                    icon.set_icon_name(Some(icon_name));
-                } else {
-                    // actor_destroy (priv->icon);
-                    props.icon = None;
-                    // actor_queue_relayout (CLUTTER_ACTOR (box));
-                }
-            }
-        }
+        // match &props.icon {
+        //     None => {
+        //         if let Some(icon_name) = &icon_name {
+        //             let icon_theme = IconTheme::get_default().unwrap();
+        //             if icon_theme.has_icon(icon_name) {
+        //                 let icon = Icon::new();
+        //                 icon.set_icon_name(Some(icon_name.clone()));
+        //                 // actor_add_child (CLUTTER_ACTOR (box), combobox.icon);
+        //                 props.icon = Some(icon);
+        //             }
+        //         }
+        //     }
+        //     Some(icon) => {
+        //         if let Some(icon_name) = icon_name {
+        //             icon.set_icon_name(Some(icon_name));
+        //         } else {
+        //             // actor_destroy (priv->icon);
+        //             props.icon = None;
+        //             // actor_queue_relayout (CLUTTER_ACTOR (box));
+        //         }
+        //     }
+        // }
 
         props.index = -1;
         // g_object_notify (G_OBJECT (box), "index");

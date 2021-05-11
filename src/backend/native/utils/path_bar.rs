@@ -1,7 +1,7 @@
 #![allow(unused_variables)]
 
 use crate::prelude::*;
-use crate::{Actor, Entry, Widget};
+use crate::{Actor, Textfield, Widget};
 use glib::signal::SignalHandlerId;
 use std::{cell::RefCell, fmt};
 
@@ -12,7 +12,7 @@ pub struct PathBarProps {
     pub overlap: i32,
     pub editable: bool,
     pub clear_on_change: bool,
-    pub entry: Option<Entry>,
+    pub entry: Option<Textfield>,
 }
 
 #[derive(Clone, Debug)]
@@ -90,11 +90,11 @@ pub trait PathBarExt: 'static {
     /// get_entry:
     /// @bar: A #PathBar
     ///
-    /// Get the Entry used as the editable area in the PathBar.
+    /// Get the Textfield used as the editable area in the PathBar.
     ///
-    /// Returns: (transfer none): Entry *
+    /// Returns: (transfer none): Textfield *
     ///
-    fn get_entry(&self) -> Option<Entry>;
+    fn get_entry(&self) -> Option<Textfield>;
 
     fn get_label(&self, level: usize) -> Option<String>;
 
@@ -196,11 +196,11 @@ impl<O: Is<PathBar>> PathBarExt for O {
     /// get_entry:
     /// @bar: A #PathBar
     ///
-    /// Get the Entry used as the editable area in the PathBar.
+    /// Get the Textfield used as the editable area in the PathBar.
     ///
-    /// Returns: (transfer none): Entry *
+    /// Returns: (transfer none): Textfield *
     ///
-    fn get_entry(&self) -> Option<Entry> {
+    fn get_entry(&self) -> Option<Textfield> {
         let pathbar = self.as_ref();
         let props = pathbar.props.borrow();
 

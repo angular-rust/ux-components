@@ -6,7 +6,7 @@ use glib::signal::SignalHandlerId;
 use std::{cell::RefCell, fmt};
 
 #[derive(Clone, Debug)]
-pub struct ExpanderProps {
+pub struct ExpansionPanelProps {
     pub label: Option<Actor>,
     pub arrow: Option<Actor>,
     pub spacing: f64,
@@ -17,72 +17,72 @@ pub struct ExpanderProps {
 }
 
 #[derive(Clone, Debug)]
-pub struct Expander {
-    props: RefCell<ExpanderProps>,
+pub struct ExpansionPanel {
+    props: RefCell<ExpansionPanelProps>,
     widget: Widget,
 }
 
-impl Expander {
-    pub fn new() -> Expander {
+impl ExpansionPanel {
+    pub fn new() -> ExpansionPanel {
         // assert_initialized_main_thread!();
         // unsafe { Actor::from_glib_none(ffi::expander_new()).unsafe_cast() }
         unimplemented!()
     }
 }
 
-impl Default for Expander {
+impl Default for ExpansionPanel {
     fn default() -> Self {
         Self::new()
     }
 }
 
-impl Object for Expander {}
-impl Is<Expander> for Expander {}
+impl Object for ExpansionPanel {}
+impl Is<ExpansionPanel> for ExpansionPanel {}
 
-impl AsRef<Expander> for Expander {
-    fn as_ref(&self) -> &Expander {
+impl AsRef<ExpansionPanel> for ExpansionPanel {
+    fn as_ref(&self) -> &ExpansionPanel {
         self
     }
 }
 
-impl Is<Widget> for Expander {}
+impl Is<Widget> for ExpansionPanel {}
 
-impl AsRef<Widget> for Expander {
+impl AsRef<Widget> for ExpansionPanel {
     fn as_ref(&self) -> &Widget {
         &self.widget
     }
 }
 
-impl Is<Actor> for Expander {}
+impl Is<Actor> for ExpansionPanel {}
 
-impl AsRef<Actor> for Expander {
+impl AsRef<Actor> for ExpansionPanel {
     fn as_ref(&self) -> &Actor {
         let actor: &Actor = self.widget.as_ref();
         actor
     }
 }
 
-pub trait ExpanderExt: 'static {
+pub trait ExpansionPanelExt: 'static {
     /// get_expanded:
-    /// @expander: a #Expander
+    /// @expander: a #ExpansionPanel
     ///
-    /// Get the current state of the expander (the value of #Expander:expanded)
+    /// Get the current state of the expander (the value of #ExpansionPanel:expanded)
     ///
     /// Returns: #true if the expander is open, #false if it is closed
     ///
     fn get_expanded(&self) -> bool;
 
     /// set_expanded:
-    /// @expander: A #Expander
+    /// @expander: A #ExpansionPanel
     /// @expanded: the state of the expander to set
     ///
-    /// Set the state (the #Expander:expanded property) of the expander.
+    /// Set the state (the #ExpansionPanel:expanded property) of the expander.
     /// This will cause the expander to open or close.
     ///
     fn set_expanded(&self, expanded: bool);
 
     /// set_label:
-    /// @expander: A #Expander
+    /// @expander: A #ExpansionPanel
     /// @label: string to set as the expander label
     ///
     /// Sets the text displayed as the title of the expander
@@ -98,11 +98,11 @@ pub trait ExpanderExt: 'static {
     fn connect_property_label_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
 }
 
-impl<O: Is<Expander>> ExpanderExt for O {
+impl<O: Is<ExpansionPanel>> ExpansionPanelExt for O {
     /// get_expanded:
-    /// @expander: a #Expander
+    /// @expander: a #ExpansionPanel
     ///
-    /// Get the current state of the expander (the value of #Expander:expanded)
+    /// Get the current state of the expander (the value of #ExpansionPanel:expanded)
     ///
     /// Returns: #true if the expander is open, #false if it is closed
     ///
@@ -114,10 +114,10 @@ impl<O: Is<Expander>> ExpanderExt for O {
     }
 
     /// set_expanded:
-    /// @expander: A #Expander
+    /// @expander: A #ExpansionPanel
     /// @expanded: the state of the expander to set
     ///
-    /// Set the state (the #Expander:expanded property) of the expander.
+    /// Set the state (the #ExpansionPanel:expanded property) of the expander.
     /// This will cause the expander to open or close.
     ///
     fn set_expanded(&self, expanded: bool) {
@@ -133,7 +133,7 @@ impl<O: Is<Expander>> ExpanderExt for O {
     }
 
     /// set_label:
-    /// @expander: A #Expander
+    /// @expander: A #ExpansionPanel
     /// @label: string to set as the expander label
     ///
     /// Sets the text displayed as the title of the expander
@@ -160,13 +160,13 @@ impl<O: Is<Expander>> ExpanderExt for O {
 
     fn connect_expand_complete<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         // unsafe extern "C" fn expand_complete_trampoline<P, F: Fn(&P) + 'static>(
-        //     this: *mut ffi::Expander,
+        //     this: *mut ffi::ExpansionPanel,
         //     f: glib_sys::gpointer,
         // ) where
-        //     P: Is<Expander>,
+        //     P: Is<ExpansionPanel>,
         // {
         //     let f: &F = &*(f as *const F);
-        //     f(&Expander::from_glib_borrow(this).unsafe_cast_ref())
+        //     f(&ExpansionPanel::from_glib_borrow(this).unsafe_cast_ref())
         // }
         // unsafe {
         //     let f: Box_<F> = Box_::new(f);
@@ -184,14 +184,14 @@ impl<O: Is<Expander>> ExpanderExt for O {
 
     fn connect_property_expanded_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         // unsafe extern "C" fn notify_expanded_trampoline<P, F: Fn(&P) + 'static>(
-        //     this: *mut ffi::Expander,
+        //     this: *mut ffi::ExpansionPanel,
         //     _param_spec: glib_sys::gpointer,
         //     f: glib_sys::gpointer,
         // ) where
-        //     P: Is<Expander>,
+        //     P: Is<ExpansionPanel>,
         // {
         //     let f: &F = &*(f as *const F);
-        //     f(&Expander::from_glib_borrow(this).unsafe_cast_ref())
+        //     f(&ExpansionPanel::from_glib_borrow(this).unsafe_cast_ref())
         // }
         // unsafe {
         //     let f: Box_<F> = Box_::new(f);
@@ -209,14 +209,14 @@ impl<O: Is<Expander>> ExpanderExt for O {
 
     fn connect_property_label_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         // unsafe extern "C" fn notify_label_trampoline<P, F: Fn(&P) + 'static>(
-        //     this: *mut ffi::Expander,
+        //     this: *mut ffi::ExpansionPanel,
         //     _param_spec: glib_sys::gpointer,
         //     f: glib_sys::gpointer,
         // ) where
-        //     P: Is<Expander>,
+        //     P: Is<ExpansionPanel>,
         // {
         //     let f: &F = &*(f as *const F);
-        //     f(&Expander::from_glib_borrow(this).unsafe_cast_ref())
+        //     f(&ExpansionPanel::from_glib_borrow(this).unsafe_cast_ref())
         // }
         // unsafe {
         //     let f: Box_<F> = Box_::new(f);
@@ -233,8 +233,8 @@ impl<O: Is<Expander>> ExpanderExt for O {
     }
 }
 
-impl fmt::Display for Expander {
+impl fmt::Display for ExpansionPanel {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "Expander")
+        write!(f, "ExpansionPanel")
     }
 }

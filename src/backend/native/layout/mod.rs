@@ -4,6 +4,9 @@
 // mod box_layout_child;
 // pub use self::box_layout_child::{BoxLayoutChild, BoxLayoutChildExt};
 
+mod frame;
+pub use self::frame::Frame;
+
 mod kinetic_scroll_view;
 pub use self::kinetic_scroll_view::{KineticScrollView, KineticScrollViewExt};
 

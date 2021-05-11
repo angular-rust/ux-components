@@ -5,7 +5,7 @@ use crate::{Actor, Position, PushAction, Text, Widget};
 use glib::signal::SignalHandlerId;
 use std::{cell::RefCell, fmt};
 
-#[derive(Default, Clone, Debug)]
+#[derive(Default, Debug, Clone)]
 pub struct ButtonProps {
     pub text: Option<String>,
     pub icon_name: Option<String>,
@@ -83,6 +83,8 @@ impl Button {
 
         self.inner.set_reactive(true);
 
+        self.inner.set_background_color(Some(color::PINK_9));
+
         // g_signal_connect (button, "style-changed",
         //             G_CALLBACK (button_style_changed), NULL);
         // g_signal_connect (button, "actor-added",
@@ -109,14 +111,16 @@ impl Button {
         }
 
         if let Some(text) = &props.text {
-            println!("ADD TEXT TO BUTTON [{}]", text);
             let style = Theme::global().get(StyleClass::MdcButton).unwrap();
-            let fontfamily = if let Some(fontfamily) = style.fontfamily {
+            let mut fontfamily = if let Some(fontfamily) = style.fontfamily {
                 fontfamily
             } else {
                 "Roboto".into()
             };
 
+            fontfamily.push_str(" Normal 14px");
+
+            println!("ADD TEXT TO BUTTON [{}] [{}]", text, fontfamily);
             let label = Text::with_text(Some(fontfamily.as_str()), text.as_str());
             // priv->label = g_object_new (CLUTTER_TYPE_TEXT,
             //                             "line-alignment", PANGO_ALIGN_CENTER,
@@ -142,6 +146,8 @@ impl Button {
         //                                 priv->icon, FALSE);
 
         // button_update_contents (button);
+        // let tx = dx::Texture2D::from_file(ctx, filename);
+
     }
 }
 

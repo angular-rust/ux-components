@@ -15,7 +15,7 @@ pub struct DimensionData {
 }
 
 #[derive(Clone, Debug)]
-pub struct TableProps {
+pub struct DataTableProps {
     pub ignore_css_col_spacing: bool,
     pub ignore_css_row_spacing: bool,
     pub col_spacing: u32,
@@ -37,52 +37,52 @@ pub struct TableProps {
 }
 
 #[derive(Clone, Debug)]
-pub struct Table {
-    props: RefCell<TableProps>,
+pub struct DataTable {
+    props: RefCell<DataTableProps>,
     widget: Widget,
 }
 
-impl Table {
-    pub fn new() -> Table {
+impl DataTable {
+    pub fn new() -> DataTable {
         // assert_initialized_main_thread!();
         // unsafe { Actor::from_glib_none(ffi::table_new()).unsafe_cast() }
         unimplemented!()
     }
 }
 
-impl Default for Table {
+impl Default for DataTable {
     fn default() -> Self {
         Self::new()
     }
 }
 
-impl Object for Table {}
-impl Is<Table> for Table {}
+impl Object for DataTable {}
+impl Is<DataTable> for DataTable {}
 
-impl AsRef<Table> for Table {
-    fn as_ref(&self) -> &Table {
+impl AsRef<DataTable> for DataTable {
+    fn as_ref(&self) -> &DataTable {
         self
     }
 }
 
-impl Is<Widget> for Table {}
+impl Is<Widget> for DataTable {}
 
-impl AsRef<Widget> for Table {
+impl AsRef<Widget> for DataTable {
     fn as_ref(&self) -> &Widget {
         &self.widget
     }
 }
 
-impl Is<Actor> for Table {}
+impl Is<Actor> for DataTable {}
 
-impl AsRef<Actor> for Table {
+impl AsRef<Actor> for DataTable {
     fn as_ref(&self) -> &Actor {
         let actor: &Actor = self.widget.as_ref();
         actor
     }
 }
 
-pub trait TableExt: 'static {
+pub trait DataTableExt: 'static {
     fn child_get_column<P: Is<Actor>>(&self, child: &P) -> i32;
 
     fn child_get_column_span<P: Is<Actor>>(&self, child: &P) -> i32;
@@ -124,7 +124,7 @@ pub trait TableExt: 'static {
     fn child_set_y_fill<P: Is<Actor>>(&self, child: &P, fill: bool);
 
     /// get_actor_at:
-    /// @table: a #Table
+    /// @table: a #DataTable
     /// @row: the row to look into
     /// @column: the column to look into
     ///
@@ -135,7 +135,7 @@ pub trait TableExt: 'static {
     fn get_actor_at(&self, row: u32, column: u32) -> Option<Actor>;
 
     /// get_column_count:
-    /// @table: A #Table
+    /// @table: A #DataTable
     ///
     /// Retrieve the current number of columns in @table
     ///
@@ -144,7 +144,7 @@ pub trait TableExt: 'static {
     fn get_column_count(&self) -> u32;
 
     /// get_column_spacing:
-    /// @table: a #Table
+    /// @table: a #DataTable
     ///
     /// Gets the amount of spacing between columns.
     ///
@@ -153,7 +153,7 @@ pub trait TableExt: 'static {
     fn get_column_spacing(&self) -> u32;
 
     /// get_row_count:
-    /// @table: A #Table
+    /// @table: A #DataTable
     ///
     /// Retrieve the current number rows in the @table
     ///
@@ -162,7 +162,7 @@ pub trait TableExt: 'static {
     fn get_row_count(&self) -> u32;
 
     /// get_row_spacing:
-    /// @table: a #Table
+    /// @table: a #DataTable
     ///
     /// Gets the amount of spacing between rows.
     ///
@@ -171,7 +171,7 @@ pub trait TableExt: 'static {
     fn get_row_spacing(&self) -> u32;
 
     /// insert_actor:
-    /// @table: a #Table
+    /// @table: a #DataTable
     /// @actor: the child to insert
     /// @row: the row to place the child into
     /// @column: the column to place the child into
@@ -183,7 +183,7 @@ pub trait TableExt: 'static {
     fn insert_actor<P: Is<Actor>>(&self, actor: &P, row: u32, column: u32);
 
     /// insert_actor_with_properties:
-    /// @table: a #Table
+    /// @table: a #DataTable
     /// @actor: the child #Actor
     /// @row: the row to place the child into
     /// @column: the column to place the child into
@@ -196,7 +196,7 @@ pub trait TableExt: 'static {
     //fn insert_actor_with_properties<P: Is<Actor>>(&self, actor: &P, row: i32, column: i32, first_property_name: &str, : /*Unknown conversion*/Fundamental: VarArgs);
 
     /// set_column_spacing:
-    /// @table: a #Table
+    /// @table: a #DataTable
     /// @spacing: spacing in pixels
     ///
     /// Sets the amount of spacing between columns.
@@ -204,7 +204,7 @@ pub trait TableExt: 'static {
     fn set_column_spacing(&self, spacing: u32);
 
     /// set_row_spacing:
-    /// @table: a #Table
+    /// @table: a #DataTable
     /// @spacing: spacing in pixels
     ///
     /// Sets the amount of spacing between rows.
@@ -224,7 +224,7 @@ pub trait TableExt: 'static {
     fn connect_property_row_spacing_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
 }
 
-impl<O: Is<Table>> TableExt for O {
+impl<O: Is<DataTable>> DataTableExt for O {
     fn child_get_column<P: Is<Actor>>(&self, child: &P) -> i32 {
         let table = self.as_ref();
         let child = child.as_ref();
@@ -454,7 +454,7 @@ impl<O: Is<Table>> TableExt for O {
     }
 
     /// get_actor_at:
-    /// @table: a #Table
+    /// @table: a #DataTable
     /// @row: the row to look into
     /// @column: the column to look into
     ///
@@ -469,7 +469,7 @@ impl<O: Is<Table>> TableExt for O {
     }
 
     /// get_column_count:
-    /// @table: A #Table
+    /// @table: A #DataTable
     ///
     /// Retrieve the current number of columns in @table
     ///
@@ -483,7 +483,7 @@ impl<O: Is<Table>> TableExt for O {
     }
 
     /// get_column_spacing:
-    /// @table: a #Table
+    /// @table: a #DataTable
     ///
     /// Gets the amount of spacing between columns.
     ///
@@ -497,7 +497,7 @@ impl<O: Is<Table>> TableExt for O {
     }
 
     /// get_row_count:
-    /// @table: A #Table
+    /// @table: A #DataTable
     ///
     /// Retrieve the current number rows in the @table
     ///
@@ -511,7 +511,7 @@ impl<O: Is<Table>> TableExt for O {
     }
 
     /// get_row_spacing:
-    /// @table: a #Table
+    /// @table: a #DataTable
     ///
     /// Gets the amount of spacing between rows.
     ///
@@ -525,7 +525,7 @@ impl<O: Is<Table>> TableExt for O {
     }
 
     /// insert_actor:
-    /// @table: a #Table
+    /// @table: a #DataTable
     /// @actor: the child to insert
     /// @row: the row to place the child into
     /// @column: the column to place the child into
@@ -547,7 +547,7 @@ impl<O: Is<Table>> TableExt for O {
 
         // clutter_actor_add_child(CLUTTER_ACTOR(table), actor);
 
-        // let meta = (TableChild *)clutter_container_get_child_meta(CLUTTER_CONTAINER(table), actor);
+        // let meta = (DataTableChild *)clutter_container_get_child_meta(CLUTTER_CONTAINER(table), actor);
         // meta.row = row;
         // meta.col = column;
         // _table_update_row_col(table, meta);
@@ -557,7 +557,7 @@ impl<O: Is<Table>> TableExt for O {
     }
 
     /// insert_actor_with_properties:
-    /// @table: a #Table
+    /// @table: a #DataTable
     /// @actor: the child #Actor
     /// @row: the row to place the child into
     /// @column: the column to place the child into
@@ -572,7 +572,7 @@ impl<O: Is<Table>> TableExt for O {
     //}
 
     /// set_column_spacing:
-    /// @table: a #Table
+    /// @table: a #DataTable
     /// @spacing: spacing in pixels
     ///
     /// Sets the amount of spacing between columns.
@@ -590,7 +590,7 @@ impl<O: Is<Table>> TableExt for O {
     }
 
     /// set_row_spacing:
-    /// @table: a #Table
+    /// @table: a #DataTable
     /// @spacing: spacing in pixels
     ///
     /// Sets the amount of spacing between rows.
@@ -612,14 +612,14 @@ impl<O: Is<Table>> TableExt for O {
         f: F,
     ) -> SignalHandlerId {
         // unsafe extern "C" fn notify_column_count_trampoline<P, F: Fn(&P) + 'static>(
-        //     this: *mut ffi::Table,
+        //     this: *mut ffi::DataTable,
         //     _param_spec: glib_sys::gpointer,
         //     f: glib_sys::gpointer,
         // ) where
-        //     P: Is<Table>,
+        //     P: Is<DataTable>,
         // {
         //     let f: &F = &*(f as *const F);
-        //     f(&Table::from_glib_borrow(this).unsafe_cast_ref())
+        //     f(&DataTable::from_glib_borrow(this).unsafe_cast_ref())
         // }
         // unsafe {
         //     let f: Box_<F> = Box_::new(f);
@@ -640,14 +640,14 @@ impl<O: Is<Table>> TableExt for O {
         f: F,
     ) -> SignalHandlerId {
         // unsafe extern "C" fn notify_column_spacing_trampoline<P, F: Fn(&P) + 'static>(
-        //     this: *mut ffi::Table,
+        //     this: *mut ffi::DataTable,
         //     _param_spec: glib_sys::gpointer,
         //     f: glib_sys::gpointer,
         // ) where
-        //     P: Is<Table>,
+        //     P: Is<DataTable>,
         // {
         //     let f: &F = &*(f as *const F);
-        //     f(&Table::from_glib_borrow(this).unsafe_cast_ref())
+        //     f(&DataTable::from_glib_borrow(this).unsafe_cast_ref())
         // }
         // unsafe {
         //     let f: Box_<F> = Box_::new(f);
@@ -665,14 +665,14 @@ impl<O: Is<Table>> TableExt for O {
 
     fn connect_property_row_count_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         // unsafe extern "C" fn notify_row_count_trampoline<P, F: Fn(&P) + 'static>(
-        //     this: *mut ffi::Table,
+        //     this: *mut ffi::DataTable,
         //     _param_spec: glib_sys::gpointer,
         //     f: glib_sys::gpointer,
         // ) where
-        //     P: Is<Table>,
+        //     P: Is<DataTable>,
         // {
         //     let f: &F = &*(f as *const F);
-        //     f(&Table::from_glib_borrow(this).unsafe_cast_ref())
+        //     f(&DataTable::from_glib_borrow(this).unsafe_cast_ref())
         // }
         // unsafe {
         //     let f: Box_<F> = Box_::new(f);
@@ -690,14 +690,14 @@ impl<O: Is<Table>> TableExt for O {
 
     fn connect_property_row_spacing_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         // unsafe extern "C" fn notify_row_spacing_trampoline<P, F: Fn(&P) + 'static>(
-        //     this: *mut ffi::Table,
+        //     this: *mut ffi::DataTable,
         //     _param_spec: glib_sys::gpointer,
         //     f: glib_sys::gpointer,
         // ) where
-        //     P: Is<Table>,
+        //     P: Is<DataTable>,
         // {
         //     let f: &F = &*(f as *const F);
-        //     f(&Table::from_glib_borrow(this).unsafe_cast_ref())
+        //     f(&DataTable::from_glib_borrow(this).unsafe_cast_ref())
         // }
         // unsafe {
         //     let f: Box_<F> = Box_::new(f);
@@ -714,8 +714,8 @@ impl<O: Is<Table>> TableExt for O {
     }
 }
 
-impl fmt::Display for Table {
+impl fmt::Display for DataTable {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "Table")
+        write!(f, "DataTable")
     }
 }
