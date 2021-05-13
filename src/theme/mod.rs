@@ -77,8 +77,8 @@ impl Theme {
     }
 
     pub fn global() -> &'static Self {
-        static INSTANCE: OnceCell<Theme> = OnceCell::new();
-        INSTANCE.get_or_init(Self::new)
+        static THEME_INSTANCE: OnceCell<Theme> = OnceCell::new();
+        THEME_INSTANCE.get_or_init(Self::new)
     }
 
     pub fn get(&self, class: impl Into<u64>) -> Result<StyleDefinition, StyleError> {
