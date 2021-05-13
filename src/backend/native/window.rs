@@ -29,7 +29,7 @@ pub struct WindowProps {
 #[derive(Clone, Debug)]
 pub struct Window {
     props: RefCell<WindowProps>,
-    pub inner: Stage, // previous called stage
+    pub stage: Stage, // previous called stage
 }
 
 impl Window {
@@ -68,9 +68,9 @@ impl Window {
     }
 
     fn reallocate(&self) {
-        let allocation_box = self.inner.get_allocation_box();
+        let allocation_box = self.stage.get_allocation_box();
         self.allocation_changed_cb(
-            &self.inner,
+            &self.stage,
             &allocation_box,
             AllocationFlags::ALLOCATION_NONE,
         );
@@ -189,7 +189,7 @@ impl Default for Window {
         };
 
         let window = Self {
-            inner,
+            stage: inner,
             props: RefCell::new(props),
         };
 
@@ -470,6 +470,10 @@ pub trait WindowExt: 'static {
 
     fn get_property_window_rotation_timeline(&self) -> Option<Timeline>;
 
+    /// The ::activate signal is emitted when the stage receives key focus
+    /// from the underlying window system.
+    fn connect_activate<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+
     fn connect_destroy<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
 
     fn connect_property_child_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
@@ -532,7 +536,7 @@ impl<O: Is<Window>> WindowExt for O {
     ///
     fn get_clutter_stage(&self) -> Option<&Stage> {
         let stage = self.as_ref();
-        Some(&stage.inner)
+        Some(&stage.stage)
     }
 
     /// get_fullscreen:
@@ -545,7 +549,7 @@ impl<O: Is<Window>> WindowExt for O {
     ///
     fn get_fullscreen(&self) -> bool {
         let stage = self.as_ref();
-        stage.inner.get_fullscreen()
+        stage.stage.get_fullscreen()
     }
 
     /// get_has_toolbar:
@@ -578,7 +582,7 @@ impl<O: Is<Window>> WindowExt for O {
 
     fn get_resisable(&self) -> bool {
         let stage = self.as_ref();
-        stage.inner.get_user_resizable()
+        stage.stage.get_user_resizable()
     }
 
     /// get_small_screen:
@@ -603,11 +607,8 @@ impl<O: Is<Window>> WindowExt for O {
     /// Returns: The title used for the window
     ///
     fn get_title(&self) -> Option<String> {
-        let stage = self.as_ref();
-        match stage.inner.get_title() {
-            Some(title) => Some(title.as_str().into()),
-            None => None,
-        }
+        let window = self.as_ref();
+        window.stage.get_title().map(|title| title.as_str().into())
     }
 
     /// get_toolbar:
@@ -664,7 +665,7 @@ impl<O: Is<Window>> WindowExt for O {
     ///
     fn get_window_size(&self) -> (i32, i32) {
         let stage = self.as_ref();
-        let (width, height) = stage.inner.get_size();
+        let (width, height) = stage.stage.get_size();
         (width as i32, height as i32)
     }
 
@@ -675,7 +676,7 @@ impl<O: Is<Window>> WindowExt for O {
     ///
     fn hide(&self) -> &Self {
         let stage = self.as_ref();
-        stage.inner.hide();
+        stage.stage.hide();
         self
     }
 
@@ -694,7 +695,7 @@ impl<O: Is<Window>> WindowExt for O {
 
     fn set_background_color(&self, value: Option<Color>) {
         let stage = self.as_ref();
-        let inner = &stage.inner;
+        let inner = &stage.stage;
 
         inner.set_background_color(value);
     }
@@ -708,25 +709,25 @@ impl<O: Is<Window>> WindowExt for O {
     /// to match it.
     ///
     fn set_child<P: Is<Actor>>(&self, actor: &P) {
-        let stage = self.as_ref();
+        let window = self.as_ref();
         let actor = actor.as_ref();
 
         // TODO: we should to find other way to control primary child, so atm disable it
         // // if there are other childs we remove them all,
         // // coz by original design we should have only primaty child Actor
-        // if stage.inner.get_n_children() > 0 {
-        //     stage.inner.remove_all_children();
+        // if window.stage.get_n_children() > 0 {
+        //     window.stage.remove_all_children();
         // }
 
-        stage.inner.add_child(actor);
+        window.stage.add_child(actor);
 
         // actor.real_queue_relayout();
         // actor.queue_redraw();
 
-        stage.reallocate();
-        stage.inner.queue_relayout();
-        // stage.inner.queue_redraw();
-        // stage.inner.ensure_redraw();
+        window.reallocate();
+        window.stage.queue_relayout();
+        // window.stage.queue_redraw();
+        // window.stage.ensure_redraw();
         // g_object_notify(G_OBJECT(window), "child");
     }
 
@@ -744,7 +745,7 @@ impl<O: Is<Window>> WindowExt for O {
     ///
     fn set_fullscreen(&self, fullscreen: bool) -> &Self {
         let stage = self.as_ref();
-        stage.inner.set_fullscreen(fullscreen);
+        stage.stage.set_fullscreen(fullscreen);
         self
     }
 
@@ -807,7 +808,7 @@ impl<O: Is<Window>> WindowExt for O {
 
     fn set_resizable(&self, resizable: bool) -> &Self {
         let stage = self.as_ref();
-        stage.inner.set_user_resizable(resizable);
+        stage.stage.set_user_resizable(resizable);
         self
     }
 
@@ -838,7 +839,7 @@ impl<O: Is<Window>> WindowExt for O {
     ///
     fn set_title(&self, title: &str) -> &Self {
         let stage = self.as_ref();
-        stage.inner.set_title(title);
+        stage.stage.set_title(title);
         self
     }
 
@@ -966,7 +967,7 @@ impl<O: Is<Window>> WindowExt for O {
     ///
     fn set_window_size(&self, width: i32, height: i32) -> &Self {
         let stage = self.as_ref();
-        stage.inner.set_size(width as f32, height as f32);
+        stage.stage.set_size(width as f32, height as f32);
         self
     }
 
@@ -978,7 +979,7 @@ impl<O: Is<Window>> WindowExt for O {
     ///
     fn show(&self) -> &Self {
         let stage = self.as_ref();
-        stage.inner.show();
+        stage.stage.show();
         self
     }
 
@@ -1048,12 +1049,20 @@ impl<O: Is<Window>> WindowExt for O {
     //     &*(self as *const Self as *const T)
     // }
 
+    fn connect_activate<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+        let window = self.as_ref();
+
+        let this = unsafe { &*(window as *const Window as *const Self) };
+
+        window.stage.connect_activate(move |widget| f(this))
+    }
+
     // TODO: &Self
     fn connect_destroy<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
         let stage = self.as_ref();
         let this = unsafe { &*(stage as *const Window as *const Self) };
 
-        stage.inner.connect_destroy(move |_| {
+        stage.stage.connect_destroy(move |_| {
             f(this);
         })
     }

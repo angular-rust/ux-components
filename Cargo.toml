@@ -1,6 +1,6 @@
 [package]
 name = "ux-components"
-version = "0.1.1"
+version = "0.1.2"
 authors = ["Victor Dudochkin <dudochkin.victor@gmail.com>"]
 readme = "README.md"
 homepage = "https://angular-rust.github.io/ux-components"
@@ -28,21 +28,26 @@ dox = ["ux-animate/dox", "ux-charts/dox", "ux-dx/dox", "gobject-sys/dox", "pango
 [dependencies]
 log = "0.4"
 bitflags = "1.0"
-ruex = "0.1.0"
-ux-macro = "0.1.0"
-ux-primitives = "0.1.3"
-ux-dx = "0.1.1"
-ux-dataflow = "0.1.1"
-ux-animate = "0.1.2"
-ux-charts = "0.1.2"
-
-simplecss = "0.2"
+ruex = "0.1"
+ux-macro = "0.1"
+ux-dx = "0.1"
+ux-dataflow = "0.1"
+ux-animate = "0.1"
+ux-charts = "0.1"
+once_cell = "1.7.2"
+intmap = "0.7.0"
+url = "2.2.1"
+fontdue = "0.5.0"
+# ux-css = "0"
 
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies]
+png = "0.16"
 gobject-sys = "0.10"
 glib = "0.10"
 pango = "0.9"
 # x11 = "2.18"
+cairo-rs = { version = "0.9", features = ["png"] }
+gio = { version = "0.9", features = ["v2_58"] }
 
 # starup notifications
 notify-rust = "4"

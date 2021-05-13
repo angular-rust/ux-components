@@ -3,90 +3,76 @@
     clippy::too_many_arguments,
     clippy::let_and_return,
     clippy::from_over_into,
-    clippy::upper_case_acronyms,
-    clippy::new_ret_no_self,
-    clippy::wrong_self_convention,
     clippy::if_same_then_else,
     clippy::float_cmp,
-    clippy::needless_return,
     clippy::collapsible_if
 )]
 
 mod backend;
 pub use backend::*;
 
+mod theme;
+pub use theme::*;
+
 pub use animate::*;
 
 #[doc(hidden)]
 pub mod prelude {
-    pub use super::ActorManagerExt;
-    pub use super::AdjustmentExt;
-    pub use super::BoxLayoutChildExt;
-    // pub use super::BoxLayoutExt; // overlap
+    pub use super::AppBarExt;
+    pub use super::BackdropExt;
+    pub use super::BannerExt;
     pub use super::ButtonExt;
-    pub use super::ButtonGroupExt;
-    pub use super::ClipboardExt;
-    pub use super::ComboBoxExt;
+    pub use super::CardExt;
+    pub use super::CheckboxExt;
+    pub use super::ChipExt;
+    pub use super::CircularProgressExt;
+    pub use super::DataTableExt;
+    pub use super::DatePickerExt;
     pub use super::DialogExt;
-    pub use super::EntryExt;
-    pub use super::ExpanderExt;
-    pub use super::FadeEffectExt;
-    pub use super::FocusManagerExt;
-    pub use super::GridExt;
-    pub use super::IconExt;
-    pub use super::IconThemeExt;
-    // pub use super::ImageExt; // overlap
-    pub use super::ItemViewExt;
-    pub use super::KineticScrollViewExt;
-    pub use super::LabelExt;
-    pub use super::ListViewExt;
+    pub use super::DividerExt;
+    pub use super::DrawerExt;
+    pub use super::FabExt;
+    pub use super::FormfieldExt;
+    pub use super::IconButtonExt;
+    pub use super::ImageListExt;
+    pub use super::LinearProgressExt;
+    pub use super::ListExt;
     pub use super::MenuExt;
-    pub use super::NotebookExt;
-    pub use super::PagerExt;
-    pub use super::PathBarExt;
-    pub use super::ProgressBarExt;
-    pub use super::PushActionExt;
-    pub use super::ScrollBarExt;
-    pub use super::ScrollViewExt;
-    pub use super::SettingsExt;
+    pub use super::RadioExt;
+    pub use super::SheetExt;
     pub use super::SliderExt;
-    pub use super::SpinnerExt;
-    pub use super::StackChildExt;
-    pub use super::StackExt;
-    pub use super::StyleExt;
+    pub use super::SnackbarExt;
     pub use super::SurfaceExt;
-    pub use super::TableChildExt;
-    pub use super::TableExt;
-    pub use super::TextureCacheExt;
-    pub use super::ToggleExt;
-    pub use super::ToolbarExt;
+    pub use super::SwitchExt;
+    pub use super::TabExt;
+    pub use super::TextareaExt;
+    pub use super::TextfieldExt;
+    pub use super::TimePickerExt;
     pub use super::TooltipExt;
-    pub use super::ViewportExt;
     pub use super::WidgetExt;
     pub use super::WindowExt;
 
     pub use dx;
-    
+
     pub use animate::prelude::*;
     pub use ux_macro::*;
-    pub use primitives::prelude::*;
 
     pub mod application {
-        pub use animate::{run, init, quit};
+        pub use animate::{init, quit, run};
     }
 
-    pub use super::Transparency;
+    pub use super::Opacity;
 }
 
-pub trait Transparency {
-    fn transparency(&self, val :u8) -> Self;
+pub trait Opacity {
+    fn opacity(&self, val: u8) -> Self;
 }
 
-impl Transparency for Color {
-    fn transparency(&self, val :u8) -> Self {
+impl Opacity for Color {
+    fn opacity(&self, val: u8) -> Self {
         let color = *self;
-        let RgbColor { red, green, blue} = color.into();
-        Self::RGBA(red, green, blue, val)
+        let RgbColor { red, green, blue } = color.into();
+        Self::rgba(red, green, blue, val)
     }
 }
 

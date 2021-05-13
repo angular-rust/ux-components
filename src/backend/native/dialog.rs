@@ -1,7 +1,7 @@
 #![allow(unused_variables)]
 
 use crate::prelude::*;
-use crate::{PushAction, Actor, Button, Timeline, Widget};
+use crate::{Actor, Button, PushAction, Timeline, Widget};
 use std::{cell::RefCell, fmt};
 
 #[derive(Clone, Debug)]

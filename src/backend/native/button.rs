@@ -1,11 +1,11 @@
 #![allow(unused_variables)]
 
-use crate::prelude::*;
-use crate::{PushAction, Actor, Position, Widget};
+use crate::{prelude::*, Icon, StyleClass, Theme};
+use crate::{Actor, Position, PushAction, Text, Widget};
 use glib::signal::SignalHandlerId;
 use std::{cell::RefCell, fmt};
 
-#[derive(Clone, Debug)]
+#[derive(Default, Debug, Clone)]
 pub struct ButtonProps {
     pub text: Option<String>,
     pub icon_name: Option<String>,
@@ -20,12 +20,11 @@ pub struct ButtonProps {
     pub icon_position: Position,
     pub icon_visible: bool,
     pub label_visible: bool,
-    pub content_image: dx::Texture,
+    pub content_image: Option<dx::Texture>,
+    pub hbox: Option<Actor>,
+    pub icon: Option<Actor>,
+    pub label: Option<Actor>,
     // pub animation: Animation,
-    pub child: Actor,
-    pub hbox: Actor,
-    pub icon: Actor,
-    pub label: Actor,
     // pub action_label_binding: GBinding,
     // pub action_icon_binding: GBinding,
 }
@@ -33,23 +32,122 @@ pub struct ButtonProps {
 #[derive(Clone, Debug)]
 pub struct Button {
     props: RefCell<ButtonProps>,
-    widget: Widget,
+    inner: Widget,
 }
 
 impl Button {
-    pub fn new() -> Button {
-        // assert_initialized_main_thread!();
-        // unsafe { Actor::from_glib_none(ffi::button_new()).unsafe_cast() }
-        unimplemented!()
+    pub fn new() -> Self {
+        let props = ButtonProps::default();
+
+        let component = Self {
+            props: RefCell::new(props),
+            inner: Widget::new(),
+        };
+
+        component.init();
+        component
     }
 
-    pub fn with_label(text: &str) -> Button {
-        // assert_initialized_main_thread!();
-        // unsafe {
-        //     Actor::from_glib_none(ffi::button_new_with_label(text.to_glib_none().0))
-        //         .unsafe_cast()
-        // }
-        unimplemented!()
+    pub fn with_label(text: &str) -> Self {
+        let mut props = ButtonProps::default();
+        if !text.is_empty() {
+            props.text = Some(text.into())
+        }
+
+        let component = Self {
+            props: RefCell::new(props),
+            inner: Widget::new(),
+        };
+
+        component.init();
+        component
+    }
+
+    pub fn with_icon(name: &str) -> Self {
+        let mut props = ButtonProps::default();
+        if !name.is_empty() {
+            props.icon_name = Some(name.into())
+        }
+
+        let component = Self {
+            props: RefCell::new(props),
+            inner: Widget::new(),
+        };
+
+        component.init();
+        component
+    }
+
+    fn init(&self) {
+        println!("INIT BUTTON");
+
+        self.inner.set_reactive(true);
+
+        self.inner.set_background_color(Some(color::PINK_9));
+
+        // g_signal_connect (button, "style-changed",
+        //             G_CALLBACK (button_style_changed), NULL);
+        // g_signal_connect (button, "actor-added",
+        //                     G_CALLBACK (button_actor_added), NULL);
+        // g_signal_connect (button, "actor-removed",
+        //                     G_CALLBACK (button_actor_removed), NULL);
+
+        let mut props = self.props.borrow_mut();
+        props.icon_visible = true;
+        props.label_visible = true;
+        props.icon_position = Position::Left;
+
+        // take an extra reference to the hbox
+        // priv->hbox = g_object_ref (box_layout_new ());
+        // clutter_actor_add_child (CLUTTER_ACTOR (button), priv->hbox);
+
+        if let Some(name) = &props.icon_name {
+            println!("ADD ICON TO BUTTON [{}]", name);
+            let icon = Icon::new();
+            // priv->icon = icon_new ();
+            // clutter_actor_add_child (priv->hbox, priv->icon);
+            
+            self.inner.add_child(&icon);
+        }
+
+        if let Some(text) = &props.text {
+            let style = Theme::global().get(StyleClass::MdcButton).unwrap();
+            let mut fontfamily = if let Some(fontfamily) = style.fontfamily {
+                fontfamily
+            } else {
+                "Roboto".into()
+            };
+
+            fontfamily.push_str(" Normal 14px");
+
+            println!("ADD TEXT TO BUTTON [{}] [{}]", text, fontfamily);
+            let label = Text::with_text(Some(fontfamily.as_str()), text.as_str());
+            // priv->label = g_object_new (CLUTTER_TYPE_TEXT,
+            //                             "line-alignment", PANGO_ALIGN_CENTER,
+            //                             "ellipsize", PANGO_ELLIPSIZE_END,
+            //                             NULL);
+            // clutter_actor_add_child (priv->hbox, priv->label);
+            // let actor: &Actor = label.as_ref();
+            self.inner.add_child(&label);
+        }
+
+        // box_layout_child_set_expand (BOX_LAYOUT (priv->hbox),
+        //                                 priv->label, TRUE);
+        // box_layout_child_set_y_fill (BOX_LAYOUT (priv->hbox),
+        //                                 priv->label, FALSE);
+        // box_layout_child_set_x_fill (BOX_LAYOUT (priv->hbox),
+        //                                 priv->label, FALSE);
+
+        // box_layout_child_set_expand (BOX_LAYOUT (priv->hbox),
+        //                                 priv->icon, TRUE);
+        // box_layout_child_set_y_fill (BOX_LAYOUT (priv->hbox),
+        //                                 priv->icon, FALSE);
+        // box_layout_child_set_x_fill (BOX_LAYOUT (priv->hbox),
+        //                                 priv->icon, FALSE);
+
+        // button_update_contents (button);
+        // let tx = dx::Texture2D::from_file(ctx, filename);
+
     }
 }
 
@@ -72,7 +170,7 @@ impl Is<Widget> for Button {}
 
 impl AsRef<Widget> for Button {
     fn as_ref(&self) -> &Widget {
-        &self.widget
+        &self.inner
     }
 }
 
@@ -80,7 +178,7 @@ impl Is<Actor> for Button {}
 
 impl AsRef<Actor> for Button {
     fn as_ref(&self) -> &Actor {
-        let actor: &Actor = self.widget.as_ref();
+        let actor: &Actor = self.inner.as_ref();
         actor
     }
 }

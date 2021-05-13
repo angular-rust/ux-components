@@ -5,7 +5,7 @@ use crate::{Actor, Widget};
 use glib::signal::SignalHandlerId;
 use std::{cell::RefCell, fmt};
 
-#[derive(Clone, Debug)]
+#[derive(Default, Debug, Clone)]
 pub struct IconProps {
     pub icon_set: bool,
     pub size_set: bool,
@@ -19,14 +19,19 @@ pub struct IconProps {
 #[derive(Clone, Debug)]
 pub struct Icon {
     props: RefCell<IconProps>,
-    widget: Widget,
+    inner: Widget,
 }
 
 impl Icon {
     pub fn new() -> Icon {
-        // assert_initialized_main_thread!();
-        // unsafe { Actor::from_glib_none(ffi::icon_new()).unsafe_cast() }
-        unimplemented!()
+        let props = Default::default();
+
+        let component = Self {
+            props: RefCell::new(props),
+            inner: Widget::new(),
+        };
+
+        component
     }
 }
 
@@ -37,7 +42,7 @@ impl Default for Icon {
 }
 
 impl Object for Icon {}
-impl Is<Icon> for Icon {}
+impl Is<Icon> for Icon {} 
 
 impl AsRef<Icon> for Icon {
     fn as_ref(&self) -> &Icon {
@@ -49,7 +54,7 @@ impl Is<Widget> for Icon {}
 
 impl AsRef<Widget> for Icon {
     fn as_ref(&self) -> &Widget {
-        &self.widget
+        &self.inner
     }
 }
 
@@ -57,7 +62,7 @@ impl Is<Actor> for Icon {}
 
 impl AsRef<Actor> for Icon {
     fn as_ref(&self) -> &Actor {
-        let actor: &Actor = self.widget.as_ref();
+        let actor: &Actor = self.inner.as_ref();
         actor
     }
 }

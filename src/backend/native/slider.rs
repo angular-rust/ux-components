@@ -5,7 +5,7 @@ use crate::{Actor, Widget};
 use glib::signal::SignalHandlerId;
 use std::{cell::RefCell, fmt};
 
-#[derive(Clone, Debug)]
+#[derive(Default, Debug, Clone)]
 pub struct SliderProps {
     pub trough_bg: Option<Actor>,
     pub fill: Option<Actor>,
@@ -34,14 +34,24 @@ pub struct SliderProps {
 #[derive(Clone, Debug)]
 pub struct Slider {
     props: RefCell<SliderProps>,
-    widget: Widget,
+    inner: Widget,
 }
 
 impl Slider {
     pub fn new() -> Slider {
-        // assert_initialized_main_thread!();
-        // unsafe { Actor::from_glib_none(ffi::slider_new()).unsafe_cast() }
-        unimplemented!()
+        let props = SliderProps::default();
+
+        let component = Self {
+            props: RefCell::new(props),
+            inner: Widget::new(),
+        };
+
+        component.init();
+        component
+    }
+
+    fn init(&self) {
+        
     }
 }
 
@@ -64,7 +74,7 @@ impl Is<Widget> for Slider {}
 
 impl AsRef<Widget> for Slider {
     fn as_ref(&self) -> &Widget {
-        &self.widget
+        &self.inner
     }
 }
 
@@ -72,7 +82,7 @@ impl Is<Actor> for Slider {}
 
 impl AsRef<Actor> for Slider {
     fn as_ref(&self) -> &Actor {
-        let actor: &Actor = self.widget.as_ref();
+        let actor: &Actor = self.inner.as_ref();
         actor
     }
 }
