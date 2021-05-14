@@ -320,14 +320,14 @@ impl<O: Is<ListitemGroup>> ListitemGroupExt for O {
         //     f(&ListitemGroup::from_glib_borrow(this).unsafe_cast_ref())
         // }
         // unsafe {
-        //     let f: Box_<F> = Box_::new(f);
+        //     let f: Box<F> = Box::new(f);
         //     connect_raw(
         //         self.as_ptr() as *mut _,
         //         b"notify::active-button\0".as_ptr() as *const _,
         //         Some(transmute::<_, unsafe extern "C" fn()>(
         //             notify_active_button_trampoline::<Self, F> as *const (),
         //         )),
-        //         Box_::into_raw(f),
+        //         Box::into_raw(f),
         //     )
         // }
         unimplemented!()
@@ -345,14 +345,14 @@ impl<O: Is<ListitemGroup>> ListitemGroupExt for O {
         //     f(&ListitemGroup::from_glib_borrow(this).unsafe_cast_ref())
         // }
         // unsafe {
-        //     let f: Box_<F> = Box_::new(f);
+        //     let f: Box<F> = Box::new(f);
         //     connect_raw(
         //         self.as_ptr() as *mut _,
         //         b"notify::allow-no-active\0".as_ptr() as *const _,
         //         Some(transmute::<_, unsafe extern "C" fn()>(
         //             notify_allow_no_active_trampoline::<Self, F> as *const (),
         //         )),
-        //         Box_::into_raw(f),
+        //         Box::into_raw(f),
         //     )
         // }
         unimplemented!()

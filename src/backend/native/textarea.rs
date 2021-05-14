@@ -528,14 +528,14 @@ impl<O: Is<Textarea>> TextareaExt for O {
         //     f(&Textarea::from_glib_borrow(this).unsafe_cast_ref())
         // }
         // unsafe {
-        //     let f: Box_<F> = Box_::new(f);
+        //     let f: Box<F> = Box::new(f);
         //     connect_raw(
         //         self.as_ptr() as *mut _,
         //         b"primary-icon-clicked\0".as_ptr() as *const _,
         //         Some(transmute::<_, unsafe extern "C" fn()>(
         //             primary_icon_clicked_trampoline::<Self, F> as *const (),
         //         )),
-        //         Box_::into_raw(f),
+        //         Box::into_raw(f),
         //     )
         // }
         unimplemented!()
@@ -552,14 +552,14 @@ impl<O: Is<Textarea>> TextareaExt for O {
         //     f(&Textarea::from_glib_borrow(this).unsafe_cast_ref())
         // }
         // unsafe {
-        //     let f: Box_<F> = Box_::new(f);
+        //     let f: Box<F> = Box::new(f);
         //     connect_raw(
         //         self.as_ptr() as *mut _,
         //         b"secondary-icon-clicked\0".as_ptr() as *const _,
         //         Some(transmute::<_, unsafe extern "C" fn()>(
         //             secondary_icon_clicked_trampoline::<Self, F> as *const (),
         //         )),
-        //         Box_::into_raw(f),
+        //         Box::into_raw(f),
         //     )
         // }
         unimplemented!()
@@ -577,14 +577,14 @@ impl<O: Is<Textarea>> TextareaExt for O {
         //     f(&Textarea::from_glib_borrow(this).unsafe_cast_ref())
         // }
         // unsafe {
-        //     let f: Box_<F> = Box_::new(f);
+        //     let f: Box<F> = Box::new(f);
         //     connect_raw(
         //         self.as_ptr() as *mut _,
         //         b"notify::clutter-text\0".as_ptr() as *const _,
         //         Some(transmute::<_, unsafe extern "C" fn()>(
         //             notify_clutter_text_trampoline::<Self, F> as *const (),
         //         )),
-        //         Box_::into_raw(f),
+        //         Box::into_raw(f),
         //     )
         // }
         unimplemented!()
@@ -605,14 +605,14 @@ impl<O: Is<Textarea>> TextareaExt for O {
         //     f(&Textarea::from_glib_borrow(this).unsafe_cast_ref())
         // }
         // unsafe {
-        //     let f: Box_<F> = Box_::new(f);
+        //     let f: Box<F> = Box::new(f);
         //     connect_raw(
         //         self.as_ptr() as *mut _,
         //         b"notify::icon-highlight-suffix\0".as_ptr() as *const _,
         //         Some(transmute::<_, unsafe extern "C" fn()>(
         //             notify_icon_highlight_suffix_trampoline::<Self, F> as *const (),
         //         )),
-        //         Box_::into_raw(f),
+        //         Box::into_raw(f),
         //     )
         // }
         unimplemented!()
@@ -630,14 +630,14 @@ impl<O: Is<Textarea>> TextareaExt for O {
         //     f(&Textarea::from_glib_borrow(this).unsafe_cast_ref())
         // }
         // unsafe {
-        //     let f: Box_<F> = Box_::new(f);
+        //     let f: Box<F> = Box::new(f);
         //     connect_raw(
         //         self.as_ptr() as *mut _,
         //         b"notify::password-char\0".as_ptr() as *const _,
         //         Some(transmute::<_, unsafe extern "C" fn()>(
         //             notify_password_char_trampoline::<Self, F> as *const (),
         //         )),
-        //         Box_::into_raw(f),
+        //         Box::into_raw(f),
         //     )
         // }
         unimplemented!()
@@ -655,14 +655,14 @@ impl<O: Is<Textarea>> TextareaExt for O {
         //     f(&Textarea::from_glib_borrow(this).unsafe_cast_ref())
         // }
         // unsafe {
-        //     let f: Box_<F> = Box_::new(f);
+        //     let f: Box<F> = Box::new(f);
         //     connect_raw(
         //         self.as_ptr() as *mut _,
         //         b"notify::placeholder\0".as_ptr() as *const _,
         //         Some(transmute::<_, unsafe extern "C" fn()>(
         //             notify_placeholder_trampoline::<Self, F> as *const (),
         //         )),
-        //         Box_::into_raw(f),
+        //         Box::into_raw(f),
         //     )
         // }
         unimplemented!()
@@ -683,14 +683,14 @@ impl<O: Is<Textarea>> TextareaExt for O {
         //     f(&Textarea::from_glib_borrow(this).unsafe_cast_ref())
         // }
         // unsafe {
-        //     let f: Box_<F> = Box_::new(f);
+        //     let f: Box<F> = Box::new(f);
         //     connect_raw(
         //         self.as_ptr() as *mut _,
         //         b"notify::primary-icon-tooltip-text\0".as_ptr() as *const _,
         //         Some(transmute::<_, unsafe extern "C" fn()>(
         //             notify_primary_icon_tooltip_text_trampoline::<Self, F> as *const (),
         //         )),
-        //         Box_::into_raw(f),
+        //         Box::into_raw(f),
         //     )
         // }
         unimplemented!()
@@ -711,14 +711,14 @@ impl<O: Is<Textarea>> TextareaExt for O {
         //     f(&Textarea::from_glib_borrow(this).unsafe_cast_ref())
         // }
         // unsafe {
-        //     let f: Box_<F> = Box_::new(f);
+        //     let f: Box<F> = Box::new(f);
         //     connect_raw(
         //         self.as_ptr() as *mut _,
         //         b"notify::secondary-icon-tooltip-text\0".as_ptr() as *const _,
         //         Some(transmute::<_, unsafe extern "C" fn()>(
         //             notify_secondary_icon_tooltip_text_trampoline::<Self, F> as *const (),
         //         )),
-        //         Box_::into_raw(f),
+        //         Box::into_raw(f),
         //     )
         // }
         unimplemented!()
@@ -736,14 +736,14 @@ impl<O: Is<Textarea>> TextareaExt for O {
         //     f(&Textarea::from_glib_borrow(this).unsafe_cast_ref())
         // }
         // unsafe {
-        //     let f: Box_<F> = Box_::new(f);
+        //     let f: Box<F> = Box::new(f);
         //     connect_raw(
         //         self.as_ptr() as *mut _,
         //         b"notify::text\0".as_ptr() as *const _,
         //         Some(transmute::<_, unsafe extern "C" fn()>(
         //             notify_text_trampoline::<Self, F> as *const (),
         //         )),
-        //         Box_::into_raw(f),
+        //         Box::into_raw(f),
         //     )
         // }
         unimplemented!()

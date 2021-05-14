@@ -2,7 +2,7 @@
 
 use crate::prelude::*;
 use crate::HandlerId;
-use std::{boxed::Box as Box_, cell::RefCell, fmt};
+use std::{cell::RefCell, fmt};
 
 #[derive(Clone, Debug)]
 pub struct PushActionProps {
@@ -29,18 +29,18 @@ impl PushAction {
     pub fn new_full(
         name: &str,
         display_name: &str,
-        activated_cb: Option<Box_<dyn FnOnce(&PushAction) + 'static>>,
+        activated_cb: Option<Box<dyn FnOnce(&PushAction) + 'static>>,
     ) -> PushAction {
         // assert_initialized_main_thread!();
-        // let activated_cb_data: Box_<Option<Box_<dyn FnOnce(&Action) + 'static>>> =
-        //     Box_::new(activated_cb);
+        // let activated_cb_data: Box<Option<Box<dyn FnOnce(&Action) + 'static>>> =
+        //     Box::new(activated_cb);
         // unsafe extern "C" fn activated_cb_func(
         //     action: *mut ffi::Action,
         //     user_data: glib_sys::gpointer,
         // ) {
         //     let action = from_glib_borrow(action);
-        //     let callback: Box_<Option<Box_<dyn FnOnce(&Action) + 'static>>> =
-        //         Box_::from_raw(user_data as *mut _);
+        //     let callback: Box<Option<Box<dyn FnOnce(&Action) + 'static>>> =
+        //         Box::from_raw(user_data as *mut _);
         //     let callback = (*callback).expect("cannot get closure...");
         //     callback(&action)
         // }
@@ -49,13 +49,13 @@ impl PushAction {
         // } else {
         //     None
         // };
-        // let super_callback0: Box_<Option<Box_<dyn FnOnce(&Action) + 'static>>> = activated_cb_data;
+        // let super_callback0: Box<Option<Box<dyn FnOnce(&Action) + 'static>>> = activated_cb_data;
         // unsafe {
         //     from_glib_full(ffi::action_new_full(
         //         name.to_glib_none().0,
         //         display_name.to_glib_none().0,
         //         activated_cb,
-        //         Box_::into_raw(super_callback0) as *mut _,
+        //         Box::into_raw(super_callback0) as *mut _,
         //     ))
         // }
         unimplemented!()
@@ -334,14 +334,14 @@ impl<O: Is<PushAction>> PushActionExt for O {
     //     //     )
     //     // }
     //     // unsafe {
-    //     //     let f: Box_<F> = Box_::new(f);
+    //     //     let f: Box<F> = Box::new(f);
     //     //     connect_raw(
     //     //         self.as_ptr() as *mut _,
     //     //         b"activate\0".as_ptr() as *const _,
     //     //         Some(transmute::<_, unsafe extern "C" fn()>(
     //     //             activate_trampoline::<Self, F> as *const (),
     //     //         )),
-    //     //         Box_::into_raw(f),
+    //     //         Box::into_raw(f),
     //     //     )
     //     // }
     //     unimplemented!()
@@ -359,14 +359,14 @@ impl<O: Is<PushAction>> PushActionExt for O {
         //     f(&Action::from_glib_borrow(this).unsafe_cast_ref())
         // }
         // unsafe {
-        //     let f: Box_<F> = Box_::new(f);
+        //     let f: Box<F> = Box::new(f);
         //     connect_raw(
         //         self.as_ptr() as *mut _,
         //         b"notify::display-name\0".as_ptr() as *const _,
         //         Some(transmute::<_, unsafe extern "C" fn()>(
         //             notify_display_name_trampoline::<Self, F> as *const (),
         //         )),
-        //         Box_::into_raw(f),
+        //         Box::into_raw(f),
         //     )
         // }
         unimplemented!()
@@ -384,14 +384,14 @@ impl<O: Is<PushAction>> PushActionExt for O {
         //     f(&Action::from_glib_borrow(this).unsafe_cast_ref())
         // }
         // unsafe {
-        //     let f: Box_<F> = Box_::new(f);
+        //     let f: Box<F> = Box::new(f);
         //     connect_raw(
         //         self.as_ptr() as *mut _,
         //         b"notify::icon\0".as_ptr() as *const _,
         //         Some(transmute::<_, unsafe extern "C" fn()>(
         //             notify_icon_trampoline::<Self, F> as *const (),
         //         )),
-        //         Box_::into_raw(f),
+        //         Box::into_raw(f),
         //     )
         // }
         unimplemented!()

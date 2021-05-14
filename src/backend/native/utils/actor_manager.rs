@@ -458,14 +458,14 @@ impl<O: Is<ActorManager>> ActorManagerExt for O {
     //     //     )
     //     // }
     //     // unsafe {
-    //     //     let f: Box_<F> = Box_::new(f);
+    //     //     let f: Box<F> = Box::new(f);
     //     //     connect_raw(
     //     //         self.as_ptr() as *mut _,
     //     //         b"actor-added\0".as_ptr() as *const _,
     //     //         Some(transmute::<_, unsafe extern "C" fn()>(
     //     //             actor_added_trampoline::<Self, F> as *const (),
     //     //         )),
-    //     //         Box_::into_raw(f),
+    //     //         Box::into_raw(f),
     //     //     )
     //     // }
     //     unimplemented!()
@@ -494,14 +494,14 @@ impl<O: Is<ActorManager>> ActorManagerExt for O {
     //     //     )
     //     // }
     //     // unsafe {
-    //     //     let f: Box_<F> = Box_::new(f);
+    //     //     let f: Box<F> = Box::new(f);
     //     //     connect_raw(
     //     //         self.as_ptr() as *mut _,
     //     //         b"actor-created\0".as_ptr() as *const _,
     //     //         Some(transmute::<_, unsafe extern "C" fn()>(
     //     //             actor_created_trampoline::<Self, F> as *const (),
     //     //         )),
-    //     //         Box_::into_raw(f),
+    //     //         Box::into_raw(f),
     //     //     )
     //     // }
     //     unimplemented!()
@@ -522,14 +522,14 @@ impl<O: Is<ActorManager>> ActorManagerExt for O {
         //     )
         // }
         // unsafe {
-        //     let f: Box_<F> = Box_::new(f);
+        //     let f: Box<F> = Box::new(f);
         //     connect_raw(
         //         self.as_ptr() as *mut _,
         //         b"actor-finished\0".as_ptr() as *const _,
         //         Some(transmute::<_, unsafe extern "C" fn()>(
         //             actor_finished_trampoline::<Self, F> as *const (),
         //         )),
-        //         Box_::into_raw(f),
+        //         Box::into_raw(f),
         //     )
         // }
         unimplemented!()
@@ -562,14 +562,14 @@ impl<O: Is<ActorManager>> ActorManagerExt for O {
     //     //     )
     //     // }
     //     // unsafe {
-    //     //     let f: Box_<F> = Box_::new(f);
+    //     //     let f: Box<F> = Box::new(f);
     //     //     connect_raw(
     //     //         self.as_ptr() as *mut _,
     //     //         b"actor-removed\0".as_ptr() as *const _,
     //     //         Some(transmute::<_, unsafe extern "C" fn()>(
     //     //             actor_removed_trampoline::<Self, F> as *const (),
     //     //         )),
-    //     //         Box_::into_raw(f),
+    //     //         Box::into_raw(f),
     //     //     )
     //     // }
     //     unimplemented!()
@@ -590,14 +590,14 @@ impl<O: Is<ActorManager>> ActorManagerExt for O {
     //     //     f(&ActorManager::from_glib_borrow(this).unsafe_cast_ref(), id)
     //     // }
     //     // unsafe {
-    //     //     let f: Box_<F> = Box_::new(f);
+    //     //     let f: Box<F> = Box::new(f);
     //     //     connect_raw(
     //     //         self.as_ptr() as *mut _,
     //     //         b"operation-cancelled\0".as_ptr() as *const _,
     //     //         Some(transmute::<_, unsafe extern "C" fn()>(
     //     //             operation_cancelled_trampoline::<Self, F> as *const (),
     //     //         )),
-    //     //         Box_::into_raw(f),
+    //     //         Box::into_raw(f),
     //     //     )
     //     // }
     //     unimplemented!()
@@ -618,14 +618,14 @@ impl<O: Is<ActorManager>> ActorManagerExt for O {
     //     //     f(&ActorManager::from_glib_borrow(this).unsafe_cast_ref(), id)
     //     // }
     //     // unsafe {
-    //     //     let f: Box_<F> = Box_::new(f);
+    //     //     let f: Box<F> = Box::new(f);
     //     //     connect_raw(
     //     //         self.as_ptr() as *mut _,
     //     //         b"operation-completed\0".as_ptr() as *const _,
     //     //         Some(transmute::<_, unsafe extern "C" fn()>(
     //     //             operation_completed_trampoline::<Self, F> as *const (),
     //     //         )),
-    //     //         Box_::into_raw(f),
+    //     //         Box::into_raw(f),
     //     //     )
     //     // }
     //     unimplemented!()
@@ -654,14 +654,14 @@ impl<O: Is<ActorManager>> ActorManagerExt for O {
     //     //     )
     //     // }
     //     // unsafe {
-    //     //     let f: Box_<F> = Box_::new(f);
+    //     //     let f: Box<F> = Box::new(f);
     //     //     connect_raw(
     //     //         self.as_ptr() as *mut _,
     //     //         b"operation-failed\0".as_ptr() as *const _,
     //     //         Some(transmute::<_, unsafe extern "C" fn()>(
     //     //             operation_failed_trampoline::<Self, F> as *const (),
     //     //         )),
-    //     //         Box_::into_raw(f),
+    //     //         Box::into_raw(f),
     //     //     )
     //     // }
     //     unimplemented!()
@@ -679,14 +679,14 @@ impl<O: Is<ActorManager>> ActorManagerExt for O {
         //     f(&ActorManager::from_glib_borrow(this).unsafe_cast_ref())
         // }
         // unsafe {
-        //     let f: Box_<F> = Box_::new(f);
+        //     let f: Box<F> = Box::new(f);
         //     connect_raw(
         //         self.as_ptr() as *mut _,
         //         b"notify::n-operations\0".as_ptr() as *const _,
         //         Some(transmute::<_, unsafe extern "C" fn()>(
         //             notify_n_operations_trampoline::<Self, F> as *const (),
         //         )),
-        //         Box_::into_raw(f),
+        //         Box::into_raw(f),
         //     )
         // }
         unimplemented!()
@@ -704,14 +704,14 @@ impl<O: Is<ActorManager>> ActorManagerExt for O {
         //     f(&ActorManager::from_glib_borrow(this).unsafe_cast_ref())
         // }
         // unsafe {
-        //     let f: Box_<F> = Box_::new(f);
+        //     let f: Box<F> = Box::new(f);
         //     connect_raw(
         //         self.as_ptr() as *mut _,
         //         b"notify::time-slice\0".as_ptr() as *const _,
         //         Some(transmute::<_, unsafe extern "C" fn()>(
         //             notify_time_slice_trampoline::<Self, F> as *const (),
         //         )),
-        //         Box_::into_raw(f),
+        //         Box::into_raw(f),
         //     )
         // }
         unimplemented!()

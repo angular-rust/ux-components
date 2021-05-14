@@ -217,14 +217,14 @@ impl<O: Is<Menu>> MenuExt for O {
         //     )
         // }
         // unsafe {
-        //     let f: Box_<F> = Box_::new(f);
+        //     let f: Box<F> = Box::new(f);
         //     connect_raw(
         //         self.as_ptr() as *mut _,
         //         b"action-activated\0".as_ptr() as *const _,
         //         Some(transmute::<_, unsafe extern "C" fn()>(
         //             action_activated_trampoline::<Self, F> as *const (),
         //         )),
-        //         Box_::into_raw(f),
+        //         Box::into_raw(f),
         //     )
         // }
         unimplemented!()

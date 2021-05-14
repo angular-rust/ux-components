@@ -128,50 +128,6 @@ pub trait SurfaceExt: 'static {
     /// actor state.
     fn invalidate(&self);
 
-    /// Sets the size of the surface context, and invalidates the content.
-    ///
-    /// This function will cause the `self` to be invalidated only
-    /// if the size of the canvas surface has changed.
-    ///
-    /// If you want to invalidate the contents of the `self` when setting
-    /// the size, you can use the return value of the function to conditionally
-    /// call `Content::invalidate`:
-    ///
-    ///
-    /// ```text
-    ///   if (!canvas_set_size (canvas, width, height))
-    ///     content_invalidate (CONTENT (canvas));
-    /// ```
-    /// ## `width`
-    /// the width of the canvas, in pixels
-    /// ## `height`
-    /// the height of the canvas, in pixels
-    ///
-    /// # Returns
-    ///
-    /// this function returns `true` if the size change
-    ///  caused a content invalidation, and `false` otherwise
-    fn set_content_size(&self, width: f64, height: f64) -> bool;
-
-    /// The `Canvas::draw` signal is emitted each time a canvas is
-    /// invalidated.
-    ///
-    /// It is safe to connect multiple handlers to this signal: each
-    /// handler invocation will be automatically protected by `cairo_save`
-    /// and `cairo_restore` pairs.
-    /// ## `cr`
-    /// the Cairo context used to draw
-    /// ## `width`
-    /// the width of the `canvas`
-    /// ## `height`
-    /// the height of the `canvas`
-    ///
-    /// # Returns
-    ///
-    /// `true` if the signal emission should stop, and
-    ///  `false` otherwise
-    fn connect_draw<F: Fn(&Self, &Canvas, u32, u32) -> bool + 'static>(&self, f: F) -> HandlerId;
-
     fn connect_looped<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
     fn connect_property_animating_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
@@ -216,71 +172,7 @@ impl<O: Is<Surface>> SurfaceExt for O {
     /// actor state.
     fn invalidate(&self) {
         let surface = self.as_ref();
-        // surface.canvas.invalidate()
-        unimplemented!()
-    }
-    /// Sets the size of the surface context, and invalidates the content.
-    ///
-    /// This function will cause the `self` to be invalidated only
-    /// if the size of the canvas surface has changed.
-    ///
-    /// If you want to invalidate the contents of the `self` when setting
-    /// the size, you can use the return value of the function to conditionally
-    /// call `Content::invalidate`:
-    ///
-    ///
-    /// ```text
-    ///   if (!canvas_set_size (canvas, width, height))
-    ///     content_invalidate (CONTENT (canvas));
-    /// ```
-    /// ## `width`
-    /// the width of the canvas, in pixels
-    /// ## `height`
-    /// the height of the canvas, in pixels
-    ///
-    /// # Returns
-    ///
-    /// this function returns `true` if the size change
-    ///  caused a content invalidation, and `false` otherwise
-    fn set_content_size(&self, width: f64, height: f64) -> bool {
-        let surface = self.as_ref();
-        surface.canvas.set_size(width as u32, height as u32)
-    }
-
-    /// The `Canvas::draw` signal is emitted each time a canvas is
-    /// invalidated.
-    ///
-    /// It is safe to connect multiple handlers to this signal: each
-    /// handler invocation will be automatically protected by `cairo_save`
-    /// and `cairo_restore` pairs.
-    /// ## `cr`
-    /// the Cairo context used to draw
-    /// ## `width`
-    /// the width of the `canvas`
-    /// ## `height`
-    /// the height of the `canvas`
-    ///
-    /// # Returns
-    ///
-    /// `true` if the signal emission should stop, and
-    ///  `false` otherwise
-    fn connect_draw<F: Fn(&Self, &Canvas, u32, u32) -> bool + 'static>(&self, f: F) -> HandlerId {
-        let surface = self.as_ref();
-
-        let this = unsafe { &*(surface as *const Surface as *const Self) };
-
-        let result = surface
-            .canvas
-            .connect_draw(move |widget, cr, width, height| {
-                let ctx = animate::Canvas::new(cr);
-                f(this, &ctx, width, height)
-            });
-
-        // First redraw
-        // surface.canvas.invalidate();
-        unimplemented!()
-
-        // result
+        surface.canvas.invalidate()
     }
 
     fn connect_looped<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
@@ -294,14 +186,14 @@ impl<O: Is<Surface>> SurfaceExt for O {
         //     f(&Surface::from_glib_borrow(this).unsafe_cast_ref())
         // }
         // unsafe {
-        //     let f: Box_<F> = Box_::new(f);
+        //     let f: Box<F> = Box::new(f);
         //     connect_raw(
         //         self.as_ptr() as *mut _,
         //         b"looped\0".as_ptr() as *const _,
         //         Some(transmute::<_, unsafe extern "C" fn()>(
         //             looped_trampoline::<Self, F> as *const (),
         //         )),
-        //         Box_::into_raw(f),
+        //         Box::into_raw(f),
         //     )
         // }
         unimplemented!()
@@ -319,14 +211,14 @@ impl<O: Is<Surface>> SurfaceExt for O {
         //     f(&Surface::from_glib_borrow(this).unsafe_cast_ref())
         // }
         // unsafe {
-        //     let f: Box_<F> = Box_::new(f);
+        //     let f: Box<F> = Box::new(f);
         //     connect_raw(
         //         self.as_ptr() as *mut _,
         //         b"notify::animating\0".as_ptr() as *const _,
         //         Some(transmute::<_, unsafe extern "C" fn()>(
         //             notify_animating_trampoline::<Self, F> as *const (),
         //         )),
-        //         Box_::into_raw(f),
+        //         Box::into_raw(f),
         //     )
         // }
         unimplemented!()

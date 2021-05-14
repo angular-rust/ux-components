@@ -60,7 +60,7 @@ impl<O: Is<Clipboard>> ClipboardExt for O {
     ///
     fn get_text<P: FnOnce(&Clipboard, &str) + 'static>(&self, callback: P) {
         let clipboard = self.as_ref();
-        // let callback_data: Box_<P> = Box_::new(callback);
+        // let callback_data: Box<P> = Box::new(callback);
         // unsafe extern "C" fn callback_func<P: FnOnce(&Clipboard, &str) + 'static>(
         //     clipboard: *mut ffi::Clipboard,
         //     text: *const libc::c_char,
@@ -68,16 +68,16 @@ impl<O: Is<Clipboard>> ClipboardExt for O {
         // ) {
         //     let clipboard = from_glib_borrow(clipboard);
         //     let text: Borrowed<String> = from_glib_borrow(text);
-        //     let callback: Box_<P> = Box_::from_raw(user_data as *mut _);
+        //     let callback: Box<P> = Box::from_raw(user_data as *mut _);
         //     (*callback)(&clipboard, text.as_str());
         // }
         // let callback = Some(callback_func::<P> as _);
-        // let super_callback0: Box_<P> = callback_data;
+        // let super_callback0: Box<P> = callback_data;
         // unsafe {
         //     ffi::clipboard_get_text(
         //         self.as_ref().to_glib_none().0,
         //         callback,
-        //         Box_::into_raw(super_callback0) as *mut _,
+        //         Box::into_raw(super_callback0) as *mut _,
         //     );
         // }
 
