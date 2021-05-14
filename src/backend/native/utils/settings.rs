@@ -1,7 +1,7 @@
 #![allow(unused_variables)]
 
 use crate::prelude::*;
-use glib::signal::SignalHandlerId;
+use crate::HandlerId;
 use std::{cell::RefCell, fmt};
 
 #[derive(Clone, Debug)]
@@ -65,24 +65,18 @@ pub trait SettingsExt: 'static {
 
     fn set_property_touch_mode(&self, touch_mode: bool);
 
-    fn connect_property_drag_threshold_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId;
+    fn connect_property_drag_threshold_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_font_name_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_font_name_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_icon_theme_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_icon_theme_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_long_press_timeout_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId;
+    fn connect_property_long_press_timeout_notify<F: Fn(&Self) + 'static>(&self, f: F)
+        -> HandlerId;
 
-    fn connect_property_small_screen_notify<F: Fn(&Self) + 'static>(&self, f: F)
-        -> SignalHandlerId;
+    fn connect_property_small_screen_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_touch_mode_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_touch_mode_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 }
 
 impl<O: Is<Settings>> SettingsExt for O {
@@ -246,10 +240,7 @@ impl<O: Is<Settings>> SettingsExt for O {
         unimplemented!()
     }
 
-    fn connect_property_drag_threshold_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
+    fn connect_property_drag_threshold_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_drag_threshold_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::Settings,
         //     _param_spec: glib_sys::gpointer,
@@ -274,7 +265,7 @@ impl<O: Is<Settings>> SettingsExt for O {
         unimplemented!()
     }
 
-    fn connect_property_font_name_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_font_name_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_font_name_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::Settings,
         //     _param_spec: glib_sys::gpointer,
@@ -299,7 +290,7 @@ impl<O: Is<Settings>> SettingsExt for O {
         unimplemented!()
     }
 
-    fn connect_property_icon_theme_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_icon_theme_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_icon_theme_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::Settings,
         //     _param_spec: glib_sys::gpointer,
@@ -327,7 +318,7 @@ impl<O: Is<Settings>> SettingsExt for O {
     fn connect_property_long_press_timeout_notify<F: Fn(&Self) + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId {
+    ) -> HandlerId {
         // unsafe extern "C" fn notify_long_press_timeout_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::Settings,
         //     _param_spec: glib_sys::gpointer,
@@ -352,10 +343,7 @@ impl<O: Is<Settings>> SettingsExt for O {
         unimplemented!()
     }
 
-    fn connect_property_small_screen_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
+    fn connect_property_small_screen_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_small_screen_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::Settings,
         //     _param_spec: glib_sys::gpointer,
@@ -380,7 +368,7 @@ impl<O: Is<Settings>> SettingsExt for O {
         unimplemented!()
     }
 
-    fn connect_property_touch_mode_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_touch_mode_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_touch_mode_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::Settings,
         //     _param_spec: glib_sys::gpointer,

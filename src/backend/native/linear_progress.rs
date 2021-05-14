@@ -1,11 +1,10 @@
 #![allow(unused_variables)]
 
 use crate::prelude::*;
-use crate::{Actor, Widget};
-use glib::signal::SignalHandlerId;
+use crate::{Actor, HandlerId, Widget};
 use std::{cell::RefCell, fmt};
 
-#[derive(Clone, Debug)]
+#[derive(Debug)]
 pub struct LinearProgressFill {
     pub parent: Widget,
     pub height: u32,
@@ -17,7 +16,7 @@ pub struct LinearProgressProps {
     pub progress: f64,
 }
 
-#[derive(Clone, Debug)]
+#[derive(Debug)]
 pub struct LinearProgress {
     props: RefCell<LinearProgressProps>,
     widget: Widget,
@@ -81,7 +80,7 @@ pub trait LinearProgressExt: 'static {
     ///
     fn set_progress(&self, progress: f64);
 
-    fn connect_property_progress_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_progress_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 }
 
 impl<O: Is<LinearProgress>> LinearProgressExt for O {
@@ -117,7 +116,7 @@ impl<O: Is<LinearProgress>> LinearProgressExt for O {
         }
     }
 
-    fn connect_property_progress_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_progress_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_progress_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::LinearProgress,
         //     _param_spec: glib_sys::gpointer,

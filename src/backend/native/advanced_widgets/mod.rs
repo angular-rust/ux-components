@@ -46,6 +46,9 @@ pub use self::pagination::{Pagination, PaginationExt};
 mod parallax;
 pub use self::parallax::{Parallax, ParallaxExt};
 
+mod rail;
+pub use self::rail::{Rail, RailExt};
+
 mod rating;
 pub use self::rating::{Rating, RatingExt};
 

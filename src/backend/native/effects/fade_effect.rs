@@ -1,11 +1,10 @@
 #![allow(unused_variables)]
 
 use crate::prelude::*;
-use crate::{ActorMeta, Effect, OffscreenEffect};
-use glib::signal::SignalHandlerId;
+use crate::{ActorMeta, Effect, HandlerId, OffscreenEffect};
 use std::{cell::RefCell, fmt};
 
-#[derive(Clone, Debug)]
+#[derive(Debug)]
 pub struct FadeEffectProps {
     pub x: i32,
     pub y: i32,
@@ -30,7 +29,7 @@ pub struct FadeEffectProps {
     pub freeze_update: bool,
 }
 
-#[derive(Clone, Debug)]
+#[derive(Debug)]
 pub struct FadeEffect {
     props: RefCell<FadeEffectProps>,
 }
@@ -192,36 +191,25 @@ pub trait FadeEffectExt: 'static {
 
     fn set_property_freeze_update(&self, freeze_update: bool);
 
-    fn connect_property_border_bottom_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId;
+    fn connect_property_border_bottom_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_border_left_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_border_left_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_border_right_notify<F: Fn(&Self) + 'static>(&self, f: F)
-        -> SignalHandlerId;
+    fn connect_property_border_right_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_border_top_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_border_top_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_bounds_height_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId;
+    fn connect_property_bounds_height_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_bounds_width_notify<F: Fn(&Self) + 'static>(&self, f: F)
-        -> SignalHandlerId;
+    fn connect_property_bounds_width_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_bounds_x_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_bounds_x_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_bounds_y_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_bounds_y_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_color_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_color_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_freeze_update_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId;
+    fn connect_property_freeze_update_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 }
 
 impl<O: Is<FadeEffect>> FadeEffectExt for O {
@@ -630,10 +618,7 @@ impl<O: Is<FadeEffect>> FadeEffectExt for O {
         unimplemented!()
     }
 
-    fn connect_property_border_bottom_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
+    fn connect_property_border_bottom_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_border_bottom_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::FadeEffect,
         //     _param_spec: glib_sys::gpointer,
@@ -658,7 +643,7 @@ impl<O: Is<FadeEffect>> FadeEffectExt for O {
         unimplemented!()
     }
 
-    fn connect_property_border_left_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_border_left_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_border_left_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::FadeEffect,
         //     _param_spec: glib_sys::gpointer,
@@ -683,10 +668,7 @@ impl<O: Is<FadeEffect>> FadeEffectExt for O {
         unimplemented!()
     }
 
-    fn connect_property_border_right_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
+    fn connect_property_border_right_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_border_right_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::FadeEffect,
         //     _param_spec: glib_sys::gpointer,
@@ -711,7 +693,7 @@ impl<O: Is<FadeEffect>> FadeEffectExt for O {
         unimplemented!()
     }
 
-    fn connect_property_border_top_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_border_top_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_border_top_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::FadeEffect,
         //     _param_spec: glib_sys::gpointer,
@@ -736,10 +718,7 @@ impl<O: Is<FadeEffect>> FadeEffectExt for O {
         unimplemented!()
     }
 
-    fn connect_property_bounds_height_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
+    fn connect_property_bounds_height_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_bounds_height_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::FadeEffect,
         //     _param_spec: glib_sys::gpointer,
@@ -764,10 +743,7 @@ impl<O: Is<FadeEffect>> FadeEffectExt for O {
         unimplemented!()
     }
 
-    fn connect_property_bounds_width_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
+    fn connect_property_bounds_width_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_bounds_width_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::FadeEffect,
         //     _param_spec: glib_sys::gpointer,
@@ -792,7 +768,7 @@ impl<O: Is<FadeEffect>> FadeEffectExt for O {
         unimplemented!()
     }
 
-    fn connect_property_bounds_x_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_bounds_x_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_bounds_x_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::FadeEffect,
         //     _param_spec: glib_sys::gpointer,
@@ -817,7 +793,7 @@ impl<O: Is<FadeEffect>> FadeEffectExt for O {
         unimplemented!()
     }
 
-    fn connect_property_bounds_y_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_bounds_y_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_bounds_y_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::FadeEffect,
         //     _param_spec: glib_sys::gpointer,
@@ -842,7 +818,7 @@ impl<O: Is<FadeEffect>> FadeEffectExt for O {
         unimplemented!()
     }
 
-    fn connect_property_color_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_color_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_color_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::FadeEffect,
         //     _param_spec: glib_sys::gpointer,
@@ -867,10 +843,7 @@ impl<O: Is<FadeEffect>> FadeEffectExt for O {
         unimplemented!()
     }
 
-    fn connect_property_freeze_update_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
+    fn connect_property_freeze_update_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_freeze_update_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::FadeEffect,
         //     _param_spec: glib_sys::gpointer,

@@ -1,11 +1,10 @@
 #![allow(unused_variables)]
 
 use crate::prelude::*;
-use crate::{Actor, Tooltip, Widget};
-use glib::signal::SignalHandlerId;
+use crate::{Actor, HandlerId, Tooltip, Widget};
 use std::{cell::RefCell, fmt};
 
-#[derive(Clone, Debug)]
+#[derive(Debug)]
 pub struct TextfieldProps {
     pub entry: Option<Actor>,
     pub placeholder: Option<String>,
@@ -30,7 +29,7 @@ pub struct TextfieldProps {
     pub tooltip_timeout: u32,
 }
 
-#[derive(Clone, Debug)]
+#[derive(Debug)]
 pub struct Textfield {
     props: RefCell<TextfieldProps>,
     widget: Widget,
@@ -218,36 +217,32 @@ pub trait TextfieldExt: 'static {
     ///
     fn get_property_secondary_icon_tooltip_text(&self) -> Option<String>;
 
-    fn connect_primary_icon_clicked<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_primary_icon_clicked<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_secondary_icon_clicked<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_secondary_icon_clicked<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_clutter_text_notify<F: Fn(&Self) + 'static>(&self, f: F)
-        -> SignalHandlerId;
+    fn connect_property_clutter_text_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
     fn connect_property_icon_highlight_suffix_notify<F: Fn(&Self) + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId;
+    ) -> HandlerId;
 
-    fn connect_property_password_char_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId;
+    fn connect_property_password_char_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_placeholder_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_placeholder_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
     fn connect_property_primary_icon_tooltip_text_notify<F: Fn(&Self) + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId;
+    ) -> HandlerId;
 
     fn connect_property_secondary_icon_tooltip_text_notify<F: Fn(&Self) + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId;
+    ) -> HandlerId;
 
-    fn connect_property_text_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_text_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 }
 
 impl<O: Is<Textfield>> TextfieldExt for O {
@@ -522,7 +517,7 @@ impl<O: Is<Textfield>> TextfieldExt for O {
         unimplemented!()
     }
 
-    fn connect_primary_icon_clicked<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_primary_icon_clicked<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn primary_icon_clicked_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::Textfield,
         //     f: glib_sys::gpointer,
@@ -546,7 +541,7 @@ impl<O: Is<Textfield>> TextfieldExt for O {
         unimplemented!()
     }
 
-    fn connect_secondary_icon_clicked<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_secondary_icon_clicked<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn secondary_icon_clicked_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::Textfield,
         //     f: glib_sys::gpointer,
@@ -570,10 +565,7 @@ impl<O: Is<Textfield>> TextfieldExt for O {
         unimplemented!()
     }
 
-    fn connect_property_clutter_text_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
+    fn connect_property_clutter_text_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_clutter_text_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::Textfield,
         //     _param_spec: glib_sys::gpointer,
@@ -601,7 +593,7 @@ impl<O: Is<Textfield>> TextfieldExt for O {
     fn connect_property_icon_highlight_suffix_notify<F: Fn(&Self) + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId {
+    ) -> HandlerId {
         // unsafe extern "C" fn notify_icon_highlight_suffix_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::Textfield,
         //     _param_spec: glib_sys::gpointer,
@@ -626,10 +618,7 @@ impl<O: Is<Textfield>> TextfieldExt for O {
         unimplemented!()
     }
 
-    fn connect_property_password_char_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
+    fn connect_property_password_char_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_password_char_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::Textfield,
         //     _param_spec: glib_sys::gpointer,
@@ -654,7 +643,7 @@ impl<O: Is<Textfield>> TextfieldExt for O {
         unimplemented!()
     }
 
-    fn connect_property_placeholder_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_placeholder_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_placeholder_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::Textfield,
         //     _param_spec: glib_sys::gpointer,
@@ -682,7 +671,7 @@ impl<O: Is<Textfield>> TextfieldExt for O {
     fn connect_property_primary_icon_tooltip_text_notify<F: Fn(&Self) + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId {
+    ) -> HandlerId {
         // unsafe extern "C" fn notify_primary_icon_tooltip_text_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::Textfield,
         //     _param_spec: glib_sys::gpointer,
@@ -710,7 +699,7 @@ impl<O: Is<Textfield>> TextfieldExt for O {
     fn connect_property_secondary_icon_tooltip_text_notify<F: Fn(&Self) + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId {
+    ) -> HandlerId {
         // unsafe extern "C" fn notify_secondary_icon_tooltip_text_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::Textfield,
         //     _param_spec: glib_sys::gpointer,
@@ -735,7 +724,7 @@ impl<O: Is<Textfield>> TextfieldExt for O {
         unimplemented!()
     }
 
-    fn connect_property_text_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_text_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_text_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::Textfield,
         //     _param_spec: glib_sys::gpointer,

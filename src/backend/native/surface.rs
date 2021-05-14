@@ -1,11 +1,11 @@
 #![allow(unused_variables)]
+#![allow(unused_imports)]
 
 use crate::prelude::*;
-use crate::{Actor, ActorCanvas, Canvas, ScalingFilter, Widget};
-use glib::signal::SignalHandlerId;
+use crate::{Actor, ActorCanvas, Canvas, HandlerId, ScalingFilter, Widget};
 use std::{cell::RefCell, fmt, mem};
 
-#[derive(Clone, Debug)]
+#[derive(Debug)]
 pub struct SurfaceProps {
     pub texture: Option<dx::Handle>,
     pub material: Option<dx::Handle>,
@@ -16,7 +16,7 @@ pub struct SurfaceProps {
     pub animating: bool,
 }
 
-#[derive(Clone, Debug)]
+#[derive(Debug)]
 pub struct Surface {
     props: RefCell<SurfaceProps>,
     canvas: ActorCanvas,
@@ -37,27 +37,28 @@ impl Surface {
 
         let inner = Widget::new();
         let content = ActorCanvas::new().unwrap();
-        let canvas: ActorCanvas = unsafe { mem::transmute(content) };
+        // let canvas: ActorCanvas = unsafe { mem::transmute(content) };
 
-        // set the default surface size similar HTML5 Canvas
-        canvas.set_size(300, 150);
+        // // set the default surface size similar HTML5 Canvas
+        // canvas.set_size(300, 150);
 
-        {
-            let actor: &Actor = inner.as_ref();
+        // {
+        //     let actor: &Actor = inner.as_ref();
 
-            // set the default surface Actor size similar HTML5 Canvas
-            actor.set_size(300_f32, 150_f32);
-            actor.set_content(Some(&canvas));
-            actor.set_content_scaling_filters(ScalingFilter::Trilinear, ScalingFilter::Linear);
-        }
+        //     // set the default surface Actor size similar HTML5 Canvas
+        //     actor.set_size(300_f32, 150_f32);
+        //     // actor.set_content(Some(&canvas));
+        //     actor.set_content_scaling_filters(ScalingFilter::Trilinear, ScalingFilter::Linear);
+        // }
 
-        let component = Self {
-            props: RefCell::new(props),
-            canvas,
-            inner,
-        };
+        // let component = Self {
+        //     props: RefCell::new(props),
+        //     canvas,
+        //     inner,
+        // };
 
-        component
+        // component
+        unimplemented!()
     }
 }
 
@@ -169,14 +170,11 @@ pub trait SurfaceExt: 'static {
     ///
     /// `true` if the signal emission should stop, and
     ///  `false` otherwise
-    fn connect_draw<F: Fn(&Self, &Canvas, i32, i32) -> bool + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId;
+    fn connect_draw<F: Fn(&Self, &Canvas, u32, u32) -> bool + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_looped<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_looped<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_animating_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_animating_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 }
 
 impl<O: Is<Surface>> SurfaceExt for O {
@@ -218,7 +216,8 @@ impl<O: Is<Surface>> SurfaceExt for O {
     /// actor state.
     fn invalidate(&self) {
         let surface = self.as_ref();
-        surface.canvas.invalidate()
+        // surface.canvas.invalidate()
+        unimplemented!()
     }
     /// Sets the size of the surface context, and invalidates the content.
     ///
@@ -245,7 +244,7 @@ impl<O: Is<Surface>> SurfaceExt for O {
     ///  caused a content invalidation, and `false` otherwise
     fn set_content_size(&self, width: f64, height: f64) -> bool {
         let surface = self.as_ref();
-        surface.canvas.set_size(width as i32, height as i32)
+        surface.canvas.set_size(width as u32, height as u32)
     }
 
     /// The `Canvas::draw` signal is emitted each time a canvas is
@@ -265,10 +264,7 @@ impl<O: Is<Surface>> SurfaceExt for O {
     ///
     /// `true` if the signal emission should stop, and
     ///  `false` otherwise
-    fn connect_draw<F: Fn(&Self, &Canvas, i32, i32) -> bool + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
+    fn connect_draw<F: Fn(&Self, &Canvas, u32, u32) -> bool + 'static>(&self, f: F) -> HandlerId {
         let surface = self.as_ref();
 
         let this = unsafe { &*(surface as *const Surface as *const Self) };
@@ -281,12 +277,13 @@ impl<O: Is<Surface>> SurfaceExt for O {
             });
 
         // First redraw
-        surface.canvas.invalidate();
+        // surface.canvas.invalidate();
+        unimplemented!()
 
-        result
+        // result
     }
 
-    fn connect_looped<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_looped<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn looped_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::Surface,
         //     f: glib_sys::gpointer,
@@ -310,7 +307,7 @@ impl<O: Is<Surface>> SurfaceExt for O {
         unimplemented!()
     }
 
-    fn connect_property_animating_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_animating_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_animating_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::Surface,
         //     _param_spec: glib_sys::gpointer,

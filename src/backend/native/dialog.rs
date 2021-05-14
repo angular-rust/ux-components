@@ -21,7 +21,7 @@ pub struct DialogProps {
     pub actions: Vec<PushAction>,
 }
 
-#[derive(Clone, Debug)]
+#[derive(Debug)]
 pub struct Dialog {
     props: RefCell<DialogProps>,
     widget: Widget,

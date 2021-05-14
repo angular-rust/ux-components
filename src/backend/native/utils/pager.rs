@@ -1,11 +1,10 @@
 #![allow(unused_variables)]
 
 use crate::prelude::*;
-use crate::{Actor, ButtonGroup, Stack, Widget};
-use glib::signal::SignalHandlerId;
+use crate::{Actor, ButtonGroup, HandlerId, Stack, Widget};
 use std::{cell::RefCell, fmt};
 
-#[derive(Clone, Debug)]
+#[derive(Debug)]
 pub struct PagerProps {
     pub pages: Vec<Actor>,
     pub current_page: Vec<Actor>,
@@ -16,7 +15,7 @@ pub struct PagerProps {
     pub hover_timeout: u32,
 }
 
-#[derive(Clone, Debug)]
+#[derive(Debug)]
 pub struct Pager {
     props: RefCell<PagerProps>,
     widget: Widget,
@@ -169,14 +168,11 @@ pub trait PagerExt: 'static {
 
     fn set_property_page_num(&self, page_num: u32);
 
-    fn connect_property_edge_previews_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId;
+    fn connect_property_edge_previews_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_page_actor_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_page_actor_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_page_num_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_page_num_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 }
 
 impl<O: Is<Pager>> PagerExt for O {
@@ -407,10 +403,7 @@ impl<O: Is<Pager>> PagerExt for O {
         unimplemented!()
     }
 
-    fn connect_property_edge_previews_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
+    fn connect_property_edge_previews_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_edge_previews_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::Pager,
         //     _param_spec: glib_sys::gpointer,
@@ -435,7 +428,7 @@ impl<O: Is<Pager>> PagerExt for O {
         unimplemented!()
     }
 
-    fn connect_property_page_actor_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_page_actor_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_page_actor_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::Pager,
         //     _param_spec: glib_sys::gpointer,
@@ -460,7 +453,7 @@ impl<O: Is<Pager>> PagerExt for O {
         unimplemented!()
     }
 
-    fn connect_property_page_num_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_page_num_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_page_num_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::Pager,
         //     _param_spec: glib_sys::gpointer,

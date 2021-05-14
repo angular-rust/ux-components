@@ -2,8 +2,7 @@
 #![allow(dead_code)]
 
 use crate::prelude::*;
-use crate::{Actor, Adjustment, Orientation, Widget};
-use glib::signal::SignalHandlerId;
+use crate::{Actor, Adjustment, HandlerId, Orientation, Widget};
 use std::{cell::RefCell, fmt};
 
 #[derive(Clone, Copy, Debug)]
@@ -36,7 +35,7 @@ pub struct ScrollBarProps {
     pub orientation: Orientation,
 }
 
-#[derive(Clone, Debug)]
+#[derive(Debug)]
 pub struct ScrollBar {
     props: RefCell<ScrollBarProps>,
     widget: Widget,
@@ -108,13 +107,13 @@ pub trait ScrollBarExt: 'static {
 
     fn set_orientation(&self, orientation: Orientation);
 
-    fn connect_scroll_start<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_scroll_start<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_scroll_stop<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_scroll_stop<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_adjustment_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_adjustment_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_orientation_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_orientation_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 }
 
 impl<O: Is<ScrollBar>> ScrollBarExt for O {
@@ -201,7 +200,7 @@ impl<O: Is<ScrollBar>> ScrollBarExt for O {
         }
     }
 
-    fn connect_scroll_start<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_scroll_start<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn scroll_start_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::ScrollBar,
         //     f: glib_sys::gpointer,
@@ -225,7 +224,7 @@ impl<O: Is<ScrollBar>> ScrollBarExt for O {
         unimplemented!()
     }
 
-    fn connect_scroll_stop<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_scroll_stop<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn scroll_stop_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::ScrollBar,
         //     f: glib_sys::gpointer,
@@ -249,7 +248,7 @@ impl<O: Is<ScrollBar>> ScrollBarExt for O {
         unimplemented!()
     }
 
-    fn connect_property_adjustment_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_adjustment_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_adjustment_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::ScrollBar,
         //     _param_spec: glib_sys::gpointer,
@@ -274,7 +273,7 @@ impl<O: Is<ScrollBar>> ScrollBarExt for O {
         unimplemented!()
     }
 
-    fn connect_property_orientation_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_orientation_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_orientation_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::ScrollBar,
         //     _param_spec: glib_sys::gpointer,

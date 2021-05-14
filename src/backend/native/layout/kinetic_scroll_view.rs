@@ -2,10 +2,9 @@
 
 use crate::prelude::*;
 use crate::{
-    Actor, AutomaticScroll, Event, EventSequence, Geometry, InputDevice, KineticScrollViewState,
-    ScrollPolicy, Timeline, Widget,
+    Actor, AutomaticScroll, Event, EventSequence, HandlerId, InputDevice, KineticScrollViewState,
+    Rect, ScrollPolicy, Timeline, Widget,
 };
-use glib::signal::SignalHandlerId;
 use std::{cell::RefCell, fmt};
 
 #[derive(Clone, Debug)]
@@ -16,7 +15,7 @@ pub struct KineticScrollViewMotion {
     pub time: u64, // GTimeVal,
 }
 
-#[derive(Clone, Debug)]
+#[derive(Debug)]
 pub struct KineticScrollViewProps {
     pub child: Option<Actor>,
     pub use_captured: bool,
@@ -54,7 +53,7 @@ pub struct KineticScrollViewProps {
     pub state: KineticScrollViewState,
 }
 
-#[derive(Clone, Debug)]
+#[derive(Debug)]
 pub struct KineticScrollView {
     props: RefCell<KineticScrollViewProps>,
     widget: Widget,
@@ -110,7 +109,7 @@ pub trait KineticScrollViewExt: 'static {
     /// Ensures that a given region is visible in the ScrollView, with the top-left
     /// taking precedence.
     ///
-    fn ensure_visible(&self, geometry: &Geometry);
+    fn ensure_visible(&self, geometry: &Rect<f32>);
 
     /// get_acceleration_factor:
     /// @scroll: A #KineticScrollView
@@ -341,42 +340,29 @@ pub trait KineticScrollViewExt: 'static {
     fn connect_property_acceleration_factor_notify<F: Fn(&Self) + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId;
+    ) -> HandlerId;
 
-    fn connect_property_clamp_duration_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId;
+    fn connect_property_clamp_duration_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_clamp_mode_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_clamp_mode_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_clamp_to_center_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId;
+    fn connect_property_clamp_to_center_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_deceleration_notify<F: Fn(&Self) + 'static>(&self, f: F)
-        -> SignalHandlerId;
+    fn connect_property_deceleration_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_mouse_button_notify<F: Fn(&Self) + 'static>(&self, f: F)
-        -> SignalHandlerId;
+    fn connect_property_mouse_button_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_overshoot_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_overshoot_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_scroll_policy_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId;
+    fn connect_property_scroll_policy_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_snap_on_page_notify<F: Fn(&Self) + 'static>(&self, f: F)
-        -> SignalHandlerId;
+    fn connect_property_snap_on_page_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_state_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_state_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_use_captured_notify<F: Fn(&Self) + 'static>(&self, f: F)
-        -> SignalHandlerId;
+    fn connect_property_use_captured_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_use_grab_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_use_grab_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 }
 
 impl<O: Is<KineticScrollView>> KineticScrollViewExt for O {
@@ -387,7 +373,7 @@ impl<O: Is<KineticScrollView>> KineticScrollViewExt for O {
     /// Ensures that a given region is visible in the ScrollView, with the top-left
     /// taking precedence.
     ///
-    fn ensure_visible(&self, geometry: &Geometry) {
+    fn ensure_visible(&self, geometry: &Rect<f32>) {
         let scrollview = self.as_ref();
         // Adjustment *hadjustment, *vadjustment;
 
@@ -867,7 +853,7 @@ impl<O: Is<KineticScrollView>> KineticScrollViewExt for O {
     fn connect_property_acceleration_factor_notify<F: Fn(&Self) + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId {
+    ) -> HandlerId {
         // unsafe extern "C" fn notify_acceleration_factor_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::KineticScrollView,
         //     _param_spec: glib_sys::gpointer,
@@ -892,10 +878,7 @@ impl<O: Is<KineticScrollView>> KineticScrollViewExt for O {
         unimplemented!()
     }
 
-    fn connect_property_clamp_duration_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
+    fn connect_property_clamp_duration_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_clamp_duration_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::KineticScrollView,
         //     _param_spec: glib_sys::gpointer,
@@ -920,7 +903,7 @@ impl<O: Is<KineticScrollView>> KineticScrollViewExt for O {
         unimplemented!()
     }
 
-    fn connect_property_clamp_mode_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_clamp_mode_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_clamp_mode_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::KineticScrollView,
         //     _param_spec: glib_sys::gpointer,
@@ -945,10 +928,7 @@ impl<O: Is<KineticScrollView>> KineticScrollViewExt for O {
         unimplemented!()
     }
 
-    fn connect_property_clamp_to_center_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
+    fn connect_property_clamp_to_center_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_clamp_to_center_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::KineticScrollView,
         //     _param_spec: glib_sys::gpointer,
@@ -973,10 +953,7 @@ impl<O: Is<KineticScrollView>> KineticScrollViewExt for O {
         unimplemented!()
     }
 
-    fn connect_property_deceleration_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
+    fn connect_property_deceleration_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_deceleration_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::KineticScrollView,
         //     _param_spec: glib_sys::gpointer,
@@ -1001,10 +978,7 @@ impl<O: Is<KineticScrollView>> KineticScrollViewExt for O {
         unimplemented!()
     }
 
-    fn connect_property_mouse_button_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
+    fn connect_property_mouse_button_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_mouse_button_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::KineticScrollView,
         //     _param_spec: glib_sys::gpointer,
@@ -1029,7 +1003,7 @@ impl<O: Is<KineticScrollView>> KineticScrollViewExt for O {
         unimplemented!()
     }
 
-    fn connect_property_overshoot_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_overshoot_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_overshoot_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::KineticScrollView,
         //     _param_spec: glib_sys::gpointer,
@@ -1054,10 +1028,7 @@ impl<O: Is<KineticScrollView>> KineticScrollViewExt for O {
         unimplemented!()
     }
 
-    fn connect_property_scroll_policy_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
+    fn connect_property_scroll_policy_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_scroll_policy_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::KineticScrollView,
         //     _param_spec: glib_sys::gpointer,
@@ -1082,10 +1053,7 @@ impl<O: Is<KineticScrollView>> KineticScrollViewExt for O {
         unimplemented!()
     }
 
-    fn connect_property_snap_on_page_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
+    fn connect_property_snap_on_page_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_snap_on_page_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::KineticScrollView,
         //     _param_spec: glib_sys::gpointer,
@@ -1110,7 +1078,7 @@ impl<O: Is<KineticScrollView>> KineticScrollViewExt for O {
         unimplemented!()
     }
 
-    fn connect_property_state_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_state_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_state_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::KineticScrollView,
         //     _param_spec: glib_sys::gpointer,
@@ -1135,10 +1103,7 @@ impl<O: Is<KineticScrollView>> KineticScrollViewExt for O {
         unimplemented!()
     }
 
-    fn connect_property_use_captured_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
+    fn connect_property_use_captured_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_use_captured_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::KineticScrollView,
         //     _param_spec: glib_sys::gpointer,
@@ -1163,7 +1128,7 @@ impl<O: Is<KineticScrollView>> KineticScrollViewExt for O {
         unimplemented!()
     }
 
-    fn connect_property_use_grab_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_use_grab_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_use_grab_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::KineticScrollView,
         //     _param_spec: glib_sys::gpointer,

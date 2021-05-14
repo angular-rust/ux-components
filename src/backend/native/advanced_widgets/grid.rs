@@ -1,8 +1,7 @@
 #![allow(unused_variables)]
 
 use crate::prelude::*;
-use crate::{Actor, Adjustment, Align, Focusable, Orientation, Widget};
-use glib::signal::SignalHandlerId;
+use crate::{Actor, Adjustment, Align, Focusable, HandlerId, Orientation, Widget};
 use std::{cell::RefCell, fmt};
 
 #[derive(Clone, Debug)]
@@ -29,7 +28,7 @@ pub struct GridProps {
     pub ignore_css_row_spacing: bool,
 }
 
-#[derive(Clone, Debug)]
+#[derive(Debug)]
 pub struct Grid {
     props: RefCell<GridProps>,
     widget: Widget,
@@ -112,41 +111,24 @@ pub trait GridExt: 'static {
 
     fn set_row_spacing(&self, value: f32);
 
-    fn connect_property_child_x_align_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId;
+    fn connect_property_child_x_align_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_child_y_align_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId;
+    fn connect_property_child_y_align_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_column_spacing_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId;
+    fn connect_property_column_spacing_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_homogenous_columns_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId;
+    fn connect_property_homogenous_columns_notify<F: Fn(&Self) + 'static>(&self, f: F)
+        -> HandlerId;
 
-    fn connect_property_homogenous_rows_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId;
+    fn connect_property_homogenous_rows_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_line_alignment_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId;
+    fn connect_property_line_alignment_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_max_stride_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_max_stride_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_orientation_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_orientation_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_row_spacing_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_row_spacing_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 }
 
 impl<O: Is<Grid>> GridExt for O {
@@ -306,10 +288,7 @@ impl<O: Is<Grid>> GridExt for O {
         }
     }
 
-    fn connect_property_child_x_align_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
+    fn connect_property_child_x_align_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_child_x_align_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::Grid,
         //     _param_spec: glib_sys::gpointer,
@@ -334,10 +313,7 @@ impl<O: Is<Grid>> GridExt for O {
         unimplemented!()
     }
 
-    fn connect_property_child_y_align_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
+    fn connect_property_child_y_align_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_child_y_align_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::Grid,
         //     _param_spec: glib_sys::gpointer,
@@ -362,10 +338,7 @@ impl<O: Is<Grid>> GridExt for O {
         unimplemented!()
     }
 
-    fn connect_property_column_spacing_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
+    fn connect_property_column_spacing_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_column_spacing_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::Grid,
         //     _param_spec: glib_sys::gpointer,
@@ -393,7 +366,7 @@ impl<O: Is<Grid>> GridExt for O {
     fn connect_property_homogenous_columns_notify<F: Fn(&Self) + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId {
+    ) -> HandlerId {
         // unsafe extern "C" fn notify_homogenous_columns_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::Grid,
         //     _param_spec: glib_sys::gpointer,
@@ -418,10 +391,7 @@ impl<O: Is<Grid>> GridExt for O {
         unimplemented!()
     }
 
-    fn connect_property_homogenous_rows_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
+    fn connect_property_homogenous_rows_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_homogenous_rows_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::Grid,
         //     _param_spec: glib_sys::gpointer,
@@ -446,10 +416,7 @@ impl<O: Is<Grid>> GridExt for O {
         unimplemented!()
     }
 
-    fn connect_property_line_alignment_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
+    fn connect_property_line_alignment_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_line_alignment_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::Grid,
         //     _param_spec: glib_sys::gpointer,
@@ -474,7 +441,7 @@ impl<O: Is<Grid>> GridExt for O {
         unimplemented!()
     }
 
-    fn connect_property_max_stride_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_max_stride_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_max_stride_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::Grid,
         //     _param_spec: glib_sys::gpointer,
@@ -499,7 +466,7 @@ impl<O: Is<Grid>> GridExt for O {
         unimplemented!()
     }
 
-    fn connect_property_orientation_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_orientation_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_orientation_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::Grid,
         //     _param_spec: glib_sys::gpointer,
@@ -524,7 +491,7 @@ impl<O: Is<Grid>> GridExt for O {
         unimplemented!()
     }
 
-    fn connect_property_row_spacing_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_row_spacing_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_row_spacing_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::Grid,
         //     _param_spec: glib_sys::gpointer,

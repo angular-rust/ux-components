@@ -1,8 +1,7 @@
 #![allow(unused_variables)]
 
 use crate::prelude::*;
-use crate::{Actor, Widget};
-use glib::signal::SignalHandlerId;
+use crate::{Actor, HandlerId, Widget};
 use std::{cell::RefCell, fmt};
 
 #[derive(Default, Debug, Clone)]
@@ -31,7 +30,7 @@ pub struct SliderProps {
     pub buffer_value: f64,
 }
 
-#[derive(Clone, Debug)]
+#[derive(Debug)]
 pub struct Slider {
     props: RefCell<SliderProps>,
     inner: Widget,
@@ -50,9 +49,7 @@ impl Slider {
         component
     }
 
-    fn init(&self) {
-        
-    }
+    fn init(&self) {}
 }
 
 impl Default for Slider {
@@ -122,14 +119,13 @@ pub trait SliderExt: 'static {
     ///
     fn set_value(&self, value: f64);
 
-    fn connect_slide_start<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_slide_start<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_slide_stop<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_slide_stop<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_buffer_value_notify<F: Fn(&Self) + 'static>(&self, f: F)
-        -> SignalHandlerId;
+    fn connect_property_buffer_value_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_value_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_value_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 }
 
 impl<O: Is<Slider>> SliderExt for O {
@@ -209,7 +205,7 @@ impl<O: Is<Slider>> SliderExt for O {
         // g_object_notify(G_OBJECT(slider), "value");
     }
 
-    fn connect_slide_start<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_slide_start<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn slide_start_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::Slider,
         //     f: glib_sys::gpointer,
@@ -233,7 +229,7 @@ impl<O: Is<Slider>> SliderExt for O {
         unimplemented!()
     }
 
-    fn connect_slide_stop<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_slide_stop<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn slide_stop_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::Slider,
         //     f: glib_sys::gpointer,
@@ -257,10 +253,7 @@ impl<O: Is<Slider>> SliderExt for O {
         unimplemented!()
     }
 
-    fn connect_property_buffer_value_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
+    fn connect_property_buffer_value_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_buffer_value_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::Slider,
         //     _param_spec: glib_sys::gpointer,
@@ -285,7 +278,7 @@ impl<O: Is<Slider>> SliderExt for O {
         unimplemented!()
     }
 
-    fn connect_property_value_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_value_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_value_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::Slider,
         //     _param_spec: glib_sys::gpointer,

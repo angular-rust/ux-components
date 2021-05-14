@@ -180,16 +180,16 @@ pub trait BoxLayoutExt: 'static {
     fn connect_property_enable_animations_notify<F: Fn(&Self) + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId;
+    ) -> HandlerId;
 
-    fn connect_property_orientation_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_orientation_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
     fn connect_property_scroll_to_focused_notify<F: Fn(&Self) + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId;
+    ) -> HandlerId;
 
-    fn connect_property_spacing_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_spacing_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 }
 
 impl<O: Is<BoxLayout>> BoxLayoutExt for O {
@@ -412,7 +412,7 @@ impl<O: Is<BoxLayout>> BoxLayoutExt for O {
     fn connect_property_enable_animations_notify<F: Fn(&Self) + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId {
+    ) -> HandlerId {
         // unsafe extern "C" fn notify_enable_animations_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::BoxLayout,
         //     _param_spec: glib_sys::gpointer,
@@ -437,7 +437,7 @@ impl<O: Is<BoxLayout>> BoxLayoutExt for O {
         unimplemented!()
     }
 
-    fn connect_property_orientation_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_orientation_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_orientation_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::BoxLayout,
         //     _param_spec: glib_sys::gpointer,
@@ -465,7 +465,7 @@ impl<O: Is<BoxLayout>> BoxLayoutExt for O {
     fn connect_property_scroll_to_focused_notify<F: Fn(&Self) + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId {
+    ) -> HandlerId {
         // unsafe extern "C" fn notify_scroll_to_focused_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::BoxLayout,
         //     _param_spec: glib_sys::gpointer,
@@ -490,7 +490,7 @@ impl<O: Is<BoxLayout>> BoxLayoutExt for O {
         unimplemented!()
     }
 
-    fn connect_property_spacing_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_spacing_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_spacing_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::BoxLayout,
         //     _param_spec: glib_sys::gpointer,

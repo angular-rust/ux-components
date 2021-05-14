@@ -1,7 +1,7 @@
 #![allow(unused_variables)]
 
 use crate::prelude::*;
-use glib::signal::SignalHandlerId;
+use crate::HandlerId;
 use std::{boxed::Box as Box_, cell::RefCell, fmt};
 
 #[derive(Clone, Debug)]
@@ -61,32 +61,32 @@ impl PushAction {
         unimplemented!()
     }
 
-    pub fn new_stateful(
-        name: &str,
-        parameter_type: Option<&glib::VariantTy>,
-        state: &glib::Variant,
-    ) -> PushAction {
-        // assert_initialized_main_thread!();
-        // unsafe {
-        //     from_glib_none(ffi::action_new_stateful(
-        //         name.to_glib_none().0,
-        //         parameter_type.to_glib_none().0,
-        //         state.to_glib_none().0,
-        //     ))
-        // }
-        unimplemented!()
-    }
+    // pub fn new_stateful(
+    //     name: &str,
+    //     parameter_type: Option<&glib::VariantTy>,
+    //     state: &glib::Variant,
+    // ) -> PushAction {
+    //     // assert_initialized_main_thread!();
+    //     // unsafe {
+    //     //     from_glib_none(ffi::action_new_stateful(
+    //     //         name.to_glib_none().0,
+    //     //         parameter_type.to_glib_none().0,
+    //     //         state.to_glib_none().0,
+    //     //     ))
+    //     // }
+    //     unimplemented!()
+    // }
 
-    pub fn with_parameter(name: &str, parameter_type: Option<&glib::VariantTy>) -> PushAction {
-        // assert_initialized_main_thread!();
-        // unsafe {
-        //     from_glib_none(ffi::action_new_with_parameter(
-        //         name.to_glib_none().0,
-        //         parameter_type.to_glib_none().0,
-        //     ))
-        // }
-        unimplemented!()
-    }
+    // pub fn with_parameter(name: &str, parameter_type: Option<&glib::VariantTy>) -> PushAction {
+    //     // assert_initialized_main_thread!();
+    //     // unsafe {
+    //     //     from_glib_none(ffi::action_new_with_parameter(
+    //     //         name.to_glib_none().0,
+    //     //         parameter_type.to_glib_none().0,
+    //     //     ))
+    //     // }
+    //     unimplemented!()
+    // }
 }
 
 impl Default for PushAction {
@@ -173,15 +173,11 @@ pub trait PushActionExt: 'static {
     ///
     fn set_name(&self, name: &str);
 
-    fn connect_activate<F: Fn(&Self, Option<&glib::Variant>) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId;
+    // fn connect_activate<F: Fn(&Self, Option<&glib::Variant>) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_display_name_notify<F: Fn(&Self) + 'static>(&self, f: F)
-        -> SignalHandlerId;
+    fn connect_property_display_name_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_icon_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_icon_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 }
 
 impl<O: Is<PushAction>> PushActionExt for O {
@@ -321,43 +317,37 @@ impl<O: Is<PushAction>> PushActionExt for O {
         }
     }
 
-    fn connect_activate<F: Fn(&Self, Option<&glib::Variant>) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
-        // unsafe extern "C" fn activate_trampoline<P, F: Fn(&P, Option<&glib::Variant>) + 'static>(
-        //     this: *mut ffi::Action,
-        //     parameter: *mut glib_sys::GVariant,
-        //     f: glib_sys::gpointer,
-        // ) where
-        //     P: Is<Action>,
-        // {
-        //     let f: &F = &*(f as *const F);
-        //     f(
-        //         &Action::from_glib_borrow(this).unsafe_cast_ref(),
-        //         Option::<glib::Variant>::from_glib_borrow(parameter)
-        //             .as_ref()
-        //             .as_ref(),
-        //     )
-        // }
-        // unsafe {
-        //     let f: Box_<F> = Box_::new(f);
-        //     connect_raw(
-        //         self.as_ptr() as *mut _,
-        //         b"activate\0".as_ptr() as *const _,
-        //         Some(transmute::<_, unsafe extern "C" fn()>(
-        //             activate_trampoline::<Self, F> as *const (),
-        //         )),
-        //         Box_::into_raw(f),
-        //     )
-        // }
-        unimplemented!()
-    }
+    // fn connect_activate<F: Fn(&Self, Option<&glib::Variant>) + 'static>(&self, f: F) -> HandlerId {
+    //     // unsafe extern "C" fn activate_trampoline<P, F: Fn(&P, Option<&glib::Variant>) + 'static>(
+    //     //     this: *mut ffi::Action,
+    //     //     parameter: *mut glib_sys::GVariant,
+    //     //     f: glib_sys::gpointer,
+    //     // ) where
+    //     //     P: Is<Action>,
+    //     // {
+    //     //     let f: &F = &*(f as *const F);
+    //     //     f(
+    //     //         &Action::from_glib_borrow(this).unsafe_cast_ref(),
+    //     //         Option::<glib::Variant>::from_glib_borrow(parameter)
+    //     //             .as_ref()
+    //     //             .as_ref(),
+    //     //     )
+    //     // }
+    //     // unsafe {
+    //     //     let f: Box_<F> = Box_::new(f);
+    //     //     connect_raw(
+    //     //         self.as_ptr() as *mut _,
+    //     //         b"activate\0".as_ptr() as *const _,
+    //     //         Some(transmute::<_, unsafe extern "C" fn()>(
+    //     //             activate_trampoline::<Self, F> as *const (),
+    //     //         )),
+    //     //         Box_::into_raw(f),
+    //     //     )
+    //     // }
+    //     unimplemented!()
+    // }
 
-    fn connect_property_display_name_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
+    fn connect_property_display_name_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_display_name_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::Action,
         //     _param_spec: glib_sys::gpointer,
@@ -382,7 +372,7 @@ impl<O: Is<PushAction>> PushActionExt for O {
         unimplemented!()
     }
 
-    fn connect_property_icon_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_icon_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_icon_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::Action,
         //     _param_spec: glib_sys::gpointer,

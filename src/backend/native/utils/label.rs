@@ -1,8 +1,8 @@
 #![allow(unused_variables)]
+#![allow(unused_mut)]
 
 use crate::prelude::*;
-use crate::{Actor, Align, Effect, StyleClass, Text, Theme, Timeline, Widget};
-use glib::signal::SignalHandlerId;
+use crate::{Actor, Align, Effect, HandlerId, StyleClass, Text, Theme, Timeline, Widget};
 use std::{cell::RefCell, fmt};
 
 #[derive(Default, Debug, Clone)]
@@ -19,7 +19,7 @@ pub struct LabelProps {
     pub label: Option<Text>,
 }
 
-#[derive(Clone, Debug)]
+#[derive(Debug)]
 pub struct Label {
     props: RefCell<LabelProps>,
     inner: Widget,
@@ -64,10 +64,10 @@ impl Label {
                 "Roboto".into()
             };
 
-            // Sets the font used by a ClutterText. 
-            //The font_name string must either be NULL, 
-            // which means that the font name from the default ClutterBackend will be used; 
-            // or be something that can be parsed by the 
+            // Sets the font used by a ClutterText.
+            //The font_name string must either be NULL,
+            // which means that the font name from the default ClutterBackend will be used;
+            // or be something that can be parsed by the
             // pango_font_description_from_string() function, like:
             // "Sans 10"
             // "Serif 16px"
@@ -75,7 +75,7 @@ impl Label {
             // "sans bold 12"
             // "serif,monospace bold italic condensed 16"
             // "normal 10"
-            
+
             // The format of the string representation is:
             // "[FAMILY-LIST] [STYLE-OPTIONS] [SIZE]"
 
@@ -98,11 +98,10 @@ impl Label {
 
             // - Normal
             // - Small-Caps
-                
 
             // The available stretch styles are:
 
-            // Ultra-Condensed | the smallest width 
+            // Ultra-Condensed | the smallest width
             // Extra-Condensed |
             // Condensed |
             // Semi-Condensed |
@@ -114,12 +113,13 @@ impl Label {
 
             fontfamily.push_str(" Normal 14px");
             println!("ADD TEXT TO LABEL [{}] [{}]", text, fontfamily);
-            
+
             let label = Text::with_text(Some(fontfamily.as_str()), text.as_str());
             label.set_color(color::WHITE);
-            self.inner.add_child(&label);
-          
-            props.label = Some(label);
+            // self.inner.add_child(&label);
+
+            // props.label = Some(label);
+            unimplemented!()
         }
     }
 }
@@ -282,23 +282,21 @@ pub trait LabelExt: 'static {
 
     fn set_y_align(&self, align: Align);
 
-    fn connect_property_clutter_text_notify<F: Fn(&Self) + 'static>(&self, f: F)
-        -> SignalHandlerId;
+    fn connect_property_clutter_text_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_fade_out_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_fade_out_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_line_wrap_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_line_wrap_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_show_tooltip_notify<F: Fn(&Self) + 'static>(&self, f: F)
-        -> SignalHandlerId;
+    fn connect_property_show_tooltip_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_text_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_text_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_use_markup_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_use_markup_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_x_align_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_x_align_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_y_align_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_y_align_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 }
 
 impl<O: Is<Label>> LabelExt for O {
@@ -562,10 +560,7 @@ impl<O: Is<Label>> LabelExt for O {
         }
     }
 
-    fn connect_property_clutter_text_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
+    fn connect_property_clutter_text_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_clutter_text_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::Label,
         //     _param_spec: glib_sys::gpointer,
@@ -590,7 +585,7 @@ impl<O: Is<Label>> LabelExt for O {
         unimplemented!()
     }
 
-    fn connect_property_fade_out_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_fade_out_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_fade_out_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::Label,
         //     _param_spec: glib_sys::gpointer,
@@ -615,7 +610,7 @@ impl<O: Is<Label>> LabelExt for O {
         unimplemented!()
     }
 
-    fn connect_property_line_wrap_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_line_wrap_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_line_wrap_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::Label,
         //     _param_spec: glib_sys::gpointer,
@@ -640,10 +635,7 @@ impl<O: Is<Label>> LabelExt for O {
         unimplemented!()
     }
 
-    fn connect_property_show_tooltip_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
+    fn connect_property_show_tooltip_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_show_tooltip_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::Label,
         //     _param_spec: glib_sys::gpointer,
@@ -668,7 +660,7 @@ impl<O: Is<Label>> LabelExt for O {
         unimplemented!()
     }
 
-    fn connect_property_text_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_text_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_text_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::Label,
         //     _param_spec: glib_sys::gpointer,
@@ -693,7 +685,7 @@ impl<O: Is<Label>> LabelExt for O {
         unimplemented!()
     }
 
-    fn connect_property_use_markup_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_use_markup_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_use_markup_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::Label,
         //     _param_spec: glib_sys::gpointer,
@@ -718,7 +710,7 @@ impl<O: Is<Label>> LabelExt for O {
         unimplemented!()
     }
 
-    fn connect_property_x_align_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_x_align_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_x_align_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::Label,
         //     _param_spec: glib_sys::gpointer,
@@ -743,7 +735,7 @@ impl<O: Is<Label>> LabelExt for O {
         unimplemented!()
     }
 
-    fn connect_property_y_align_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_y_align_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_y_align_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::Label,
         //     _param_spec: glib_sys::gpointer,

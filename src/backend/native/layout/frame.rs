@@ -4,7 +4,7 @@ use crate::prelude::*;
 use crate::{Actor, Widget};
 use std::fmt;
 
-#[derive(Clone, Debug)]
+#[derive(Debug)]
 pub struct Frame {
     pub child: Option<Actor>,
     widget: Widget,

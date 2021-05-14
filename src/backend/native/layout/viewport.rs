@@ -1,8 +1,7 @@
 #![allow(unused_variables)]
 
 use crate::prelude::*;
-use crate::{Actor, Adjustment, Widget};
-use glib::signal::SignalHandlerId;
+use crate::{Actor, Adjustment, HandlerId, Widget};
 use std::{cell::RefCell, fmt};
 
 const ERROR_MARGIN: f32 = f32::EPSILON;
@@ -18,7 +17,7 @@ pub struct ViewportProps {
     pub child: Option<Actor>,
 }
 
-#[derive(Clone, Debug)]
+#[derive(Debug)]
 pub struct Viewport {
     props: RefCell<ViewportProps>,
     widget: Widget,
@@ -85,16 +84,13 @@ pub trait ViewportExt: 'static {
 
     fn set_property_z_origin(&self, z_origin: f32);
 
-    fn connect_property_sync_adjustments_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId;
+    fn connect_property_sync_adjustments_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_x_origin_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_x_origin_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_y_origin_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_y_origin_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_z_origin_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_z_origin_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 }
 
 impl<O: Is<Viewport>> ViewportExt for O {
@@ -242,10 +238,7 @@ impl<O: Is<Viewport>> ViewportExt for O {
         unimplemented!()
     }
 
-    fn connect_property_sync_adjustments_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
+    fn connect_property_sync_adjustments_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_sync_adjustments_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::Viewport,
         //     _param_spec: glib_sys::gpointer,
@@ -270,7 +263,7 @@ impl<O: Is<Viewport>> ViewportExt for O {
         unimplemented!()
     }
 
-    fn connect_property_x_origin_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_x_origin_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_x_origin_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::Viewport,
         //     _param_spec: glib_sys::gpointer,
@@ -295,7 +288,7 @@ impl<O: Is<Viewport>> ViewportExt for O {
         unimplemented!()
     }
 
-    fn connect_property_y_origin_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_y_origin_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_y_origin_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::Viewport,
         //     _param_spec: glib_sys::gpointer,
@@ -320,7 +313,7 @@ impl<O: Is<Viewport>> ViewportExt for O {
         unimplemented!()
     }
 
-    fn connect_property_z_origin_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_z_origin_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_z_origin_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::Viewport,
         //     _param_spec: glib_sys::gpointer,

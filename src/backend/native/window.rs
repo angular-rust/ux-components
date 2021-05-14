@@ -1,13 +1,14 @@
 #![allow(unused_variables)]
+#![allow(dead_code)]
 
 use crate::prelude::*;
 use crate::{
-    Actor, ActorBox, AllocationFlags, AnimationMode, Stage, Timeline, Toolbar, WindowRotation,
+    Actor, ActorBox, AllocationFlags, AnimationMode, HandlerId, Stage, Timeline, Toolbar,
+    WindowRotation,
 };
-use glib::signal::SignalHandlerId;
 use std::{cell::RefCell, fmt};
 
-#[derive(Clone, Debug)]
+#[derive(Debug)]
 pub struct WindowProps {
     // pub native_window: NativeWindow,
     pub has_toolbar: bool,
@@ -26,7 +27,7 @@ pub struct WindowProps {
     pub rotation_timeline: Option<Timeline>,
 }
 
-#[derive(Clone, Debug)]
+#[derive(Debug)]
 pub struct Window {
     props: RefCell<WindowProps>,
     pub stage: Stage, // previous called stage
@@ -68,12 +69,13 @@ impl Window {
     }
 
     fn reallocate(&self) {
-        let allocation_box = self.stage.get_allocation_box();
-        self.allocation_changed_cb(
-            &self.stage,
-            &allocation_box,
-            AllocationFlags::ALLOCATION_NONE,
-        );
+        // let allocation_box = self.stage.get_allocation_box();
+        // self.allocation_changed_cb(
+        //     &self.stage,
+        //     &allocation_box,
+        //     AllocationFlags::ALLOCATION_NONE,
+        // );
+        unimplemented!()
     }
 
     fn allocation_changed_cb(
@@ -472,44 +474,37 @@ pub trait WindowExt: 'static {
 
     /// The ::activate signal is emitted when the stage receives key focus
     /// from the underlying window system.
-    fn connect_activate<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_activate<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_destroy<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_destroy<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_child_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_child_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_fullscreen_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_fullscreen_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_has_toolbar_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_has_toolbar_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_icon_cogl_texture_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId;
+    fn connect_property_icon_cogl_texture_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_icon_name_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_icon_name_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_small_screen_notify<F: Fn(&Self) + 'static>(&self, f: F)
-        -> SignalHandlerId;
+    fn connect_property_small_screen_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_title_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_title_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_toolbar_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_toolbar_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_window_rotation_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId;
+    fn connect_property_window_rotation_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
     fn connect_property_window_rotation_angle_notify<F: Fn(&Self) + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId;
+    ) -> HandlerId;
 
     fn connect_property_window_rotation_timeline_notify<F: Fn(&Self) + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId;
+    ) -> HandlerId;
 }
 
 impl<O: Is<Window>> WindowExt for O {
@@ -621,7 +616,8 @@ impl<O: Is<Window>> WindowExt for O {
     fn get_toolbar(&self) -> Option<Toolbar> {
         let stage = self.as_ref();
         let props = stage.props.borrow();
-        props.toolbar.clone()
+        // props.toolbar.clone()
+        unimplemented!()
     }
 
     /// get_window_position:
@@ -664,9 +660,10 @@ impl<O: Is<Window>> WindowExt for O {
     /// window's toolbar, if it's enabled.
     ///
     fn get_window_size(&self) -> (i32, i32) {
-        let stage = self.as_ref();
-        let (width, height) = stage.stage.get_size();
-        (width as i32, height as i32)
+        // let stage = self.as_ref();
+        // let (width, height) = stage.stage.get_size();
+        // (width as i32, height as i32)
+        unimplemented!()
     }
 
     /// hide:
@@ -675,9 +672,10 @@ impl<O: Is<Window>> WindowExt for O {
     /// Hide the window
     ///
     fn hide(&self) -> &Self {
-        let stage = self.as_ref();
-        stage.stage.hide();
-        self
+        // let stage = self.as_ref();
+        // stage.stage.hide();
+        // self
+        unimplemented!()
     }
 
     /// present:
@@ -694,10 +692,11 @@ impl<O: Is<Window>> WindowExt for O {
     }
 
     fn set_background_color(&self, value: Option<Color>) {
-        let stage = self.as_ref();
-        let inner = &stage.stage;
+        // let stage = self.as_ref();
+        // let inner = &stage.stage;
 
-        inner.set_background_color(value);
+        // inner.set_background_color(value);
+        unimplemented!()
     }
 
     /// set_child:
@@ -719,16 +718,17 @@ impl<O: Is<Window>> WindowExt for O {
         //     window.stage.remove_all_children();
         // }
 
-        window.stage.add_child(actor);
+        // window.stage.add_child(actor);
 
-        // actor.real_queue_relayout();
-        // actor.queue_redraw();
+        // // actor.real_queue_relayout();
+        // // actor.queue_redraw();
 
-        window.reallocate();
-        window.stage.queue_relayout();
-        // window.stage.queue_redraw();
-        // window.stage.ensure_redraw();
-        // g_object_notify(G_OBJECT(window), "child");
+        // window.reallocate();
+        // window.stage.queue_relayout();
+        // // window.stage.queue_redraw();
+        // // window.stage.ensure_redraw();
+        // // g_object_notify(G_OBJECT(window), "child");
+        unimplemented!()
     }
 
     /// set_fullscreen:
@@ -966,9 +966,10 @@ impl<O: Is<Window>> WindowExt for O {
     /// </para></note>
     ///
     fn set_window_size(&self, width: i32, height: i32) -> &Self {
-        let stage = self.as_ref();
-        stage.stage.set_size(width as f32, height as f32);
-        self
+        // let stage = self.as_ref();
+        // stage.stage.set_size(width as f32, height as f32);
+        // self
+        unimplemented!()
     }
 
     /// show:
@@ -978,9 +979,10 @@ impl<O: Is<Window>> WindowExt for O {
     /// for proper reallocation is happen.
     ///
     fn show(&self) -> &Self {
-        let stage = self.as_ref();
-        stage.stage.show();
-        self
+        // let stage = self.as_ref();
+        // stage.stage.show();
+        // self
+        unimplemented!()
     }
 
     fn get_property_icon_cogl_texture(&self) -> Option<String> {
@@ -1049,7 +1051,7 @@ impl<O: Is<Window>> WindowExt for O {
     //     &*(self as *const Self as *const T)
     // }
 
-    fn connect_activate<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_activate<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         let window = self.as_ref();
 
         let this = unsafe { &*(window as *const Window as *const Self) };
@@ -1058,16 +1060,17 @@ impl<O: Is<Window>> WindowExt for O {
     }
 
     // TODO: &Self
-    fn connect_destroy<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
-        let stage = self.as_ref();
-        let this = unsafe { &*(stage as *const Window as *const Self) };
+    fn connect_destroy<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
+        // let stage = self.as_ref();
+        // let this = unsafe { &*(stage as *const Window as *const Self) };
 
-        stage.stage.connect_destroy(move |_| {
-            f(this);
-        })
+        // stage.stage.connect_destroy(move |_| {
+        //     f(this);
+        // })
+        unimplemented!()
     }
 
-    fn connect_property_child_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_child_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_child_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::Window,
         //     _param_spec: glib_sys::gpointer,
@@ -1092,7 +1095,7 @@ impl<O: Is<Window>> WindowExt for O {
         unimplemented!()
     }
 
-    fn connect_property_fullscreen_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_fullscreen_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_fullscreen_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::Window,
         //     _param_spec: glib_sys::gpointer,
@@ -1117,7 +1120,7 @@ impl<O: Is<Window>> WindowExt for O {
         unimplemented!()
     }
 
-    fn connect_property_has_toolbar_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_has_toolbar_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_has_toolbar_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::Window,
         //     _param_spec: glib_sys::gpointer,
@@ -1142,10 +1145,7 @@ impl<O: Is<Window>> WindowExt for O {
         unimplemented!()
     }
 
-    fn connect_property_icon_cogl_texture_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
+    fn connect_property_icon_cogl_texture_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_icon_cogl_texture_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::Window,
         //     _param_spec: glib_sys::gpointer,
@@ -1170,7 +1170,7 @@ impl<O: Is<Window>> WindowExt for O {
         unimplemented!()
     }
 
-    fn connect_property_icon_name_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_icon_name_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_icon_name_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::Window,
         //     _param_spec: glib_sys::gpointer,
@@ -1195,10 +1195,7 @@ impl<O: Is<Window>> WindowExt for O {
         unimplemented!()
     }
 
-    fn connect_property_small_screen_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
+    fn connect_property_small_screen_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_small_screen_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::Window,
         //     _param_spec: glib_sys::gpointer,
@@ -1223,7 +1220,7 @@ impl<O: Is<Window>> WindowExt for O {
         unimplemented!()
     }
 
-    fn connect_property_title_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_title_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_title_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::Window,
         //     _param_spec: glib_sys::gpointer,
@@ -1248,7 +1245,7 @@ impl<O: Is<Window>> WindowExt for O {
         unimplemented!()
     }
 
-    fn connect_property_toolbar_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_toolbar_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_toolbar_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::Window,
         //     _param_spec: glib_sys::gpointer,
@@ -1273,10 +1270,7 @@ impl<O: Is<Window>> WindowExt for O {
         unimplemented!()
     }
 
-    fn connect_property_window_rotation_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
+    fn connect_property_window_rotation_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_window_rotation_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::Window,
         //     _param_spec: glib_sys::gpointer,
@@ -1304,7 +1298,7 @@ impl<O: Is<Window>> WindowExt for O {
     fn connect_property_window_rotation_angle_notify<F: Fn(&Self) + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId {
+    ) -> HandlerId {
         // unsafe extern "C" fn notify_window_rotation_angle_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::Window,
         //     _param_spec: glib_sys::gpointer,
@@ -1332,7 +1326,7 @@ impl<O: Is<Window>> WindowExt for O {
     fn connect_property_window_rotation_timeline_notify<F: Fn(&Self) + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId {
+    ) -> HandlerId {
         // unsafe extern "C" fn notify_window_rotation_timeline_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::Window,
         //     _param_spec: glib_sys::gpointer,

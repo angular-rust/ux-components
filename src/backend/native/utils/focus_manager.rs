@@ -1,11 +1,10 @@
 #![allow(unused_variables)]
 
 use crate::prelude::*;
-use crate::{FocusDirection, FocusHint, Focusable, Stage};
-use glib::signal::SignalHandlerId;
+use crate::{FocusDirection, FocusHint, Focusable, HandlerId, Stage};
 use std::{cell::RefCell, fmt};
 
-#[derive(Clone, Debug)]
+#[derive(Debug)]
 pub struct FocusManagerProps {
     pub stage: Option<Stage>,
 
@@ -14,7 +13,7 @@ pub struct FocusManagerProps {
     pub refocus_idle: u32,
 }
 
-#[derive(Clone, Debug)]
+#[derive(Debug)]
 pub struct FocusManager {
     props: RefCell<FocusManagerProps>,
 }
@@ -85,9 +84,9 @@ pub trait FocusManagerExt: 'static {
     ///
     fn push_focus_with_hint(&self, focusable: &Focusable, hint: FocusHint);
 
-    fn connect_property_focused_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_focused_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_stage_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_stage_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 }
 
 impl<O: Is<FocusManager>> FocusManagerExt for O {
@@ -116,7 +115,8 @@ impl<O: Is<FocusManager>> FocusManagerExt for O {
         let focusmanager = self.as_ref();
         let props = focusmanager.props.borrow();
 
-        props.stage.clone()
+        // props.stage.clone()
+        unimplemented!()
     }
 
     /// focus_manager_move_focus:
@@ -246,7 +246,7 @@ impl<O: Is<FocusManager>> FocusManagerExt for O {
         // }
     }
 
-    fn connect_property_focused_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_focused_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_focused_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::FocusManager,
         //     _param_spec: glib_sys::gpointer,
@@ -271,7 +271,7 @@ impl<O: Is<FocusManager>> FocusManagerExt for O {
         unimplemented!()
     }
 
-    fn connect_property_stage_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_stage_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_stage_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::FocusManager,
         //     _param_spec: glib_sys::gpointer,

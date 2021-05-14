@@ -1,8 +1,7 @@
 #![allow(unused_variables)]
 
 use crate::prelude::*;
-use crate::{Actor, Widget};
-use glib::signal::SignalHandlerId;
+use crate::{Actor, HandlerId, Widget};
 use std::{cell::RefCell, fmt};
 
 #[derive(Clone, Debug)]
@@ -13,7 +12,7 @@ pub struct ToolbarProps {
     pub child: Option<Actor>,
 }
 
-#[derive(Clone, Debug)]
+#[derive(Debug)]
 pub struct Toolbar {
     props: RefCell<ToolbarProps>,
     widget: Widget,
@@ -77,13 +76,9 @@ pub trait ToolbarExt: 'static {
     ///
     fn set_has_close_button(&self, has_close_button: bool);
 
-    fn connect_close_button_clicked<F: Fn(&Self) -> bool + 'static>(&self, f: F)
-        -> SignalHandlerId;
+    fn connect_close_button_clicked<F: Fn(&Self) -> bool + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_has_close_button_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId;
+    fn connect_property_has_close_button_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 }
 
 impl<O: Is<Toolbar>> ToolbarExt for O {
@@ -134,10 +129,7 @@ impl<O: Is<Toolbar>> ToolbarExt for O {
         }
     }
 
-    fn connect_close_button_clicked<F: Fn(&Self) -> bool + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
+    fn connect_close_button_clicked<F: Fn(&Self) -> bool + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn close_button_clicked_trampoline<P, F: Fn(&P) -> bool + 'static>(
         //     this: *mut ffi::Toolbar,
         //     f: glib_sys::gpointer,
@@ -162,10 +154,7 @@ impl<O: Is<Toolbar>> ToolbarExt for O {
         unimplemented!()
     }
 
-    fn connect_property_has_close_button_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
+    fn connect_property_has_close_button_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_has_close_button_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::Toolbar,
         //     _param_spec: glib_sys::gpointer,

@@ -114,12 +114,12 @@ pub trait VideoTimelineExt: 'static {
     fn connect_property_active_button_notify<F: Fn(&Self) + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId;
+    ) -> HandlerId;
 
     fn connect_property_allow_no_active_notify<F: Fn(&Self) + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId;
+    ) -> HandlerId;
 }
 
 impl<O: Is<VideoTimeline>> VideoTimelineExt for O {
@@ -318,7 +318,7 @@ impl<O: Is<VideoTimeline>> VideoTimelineExt for O {
     fn connect_property_active_button_notify<F: Fn(&Self) + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId {
+    ) -> HandlerId {
         // unsafe extern "C" fn notify_active_button_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::VideoTimeline,
         //     _param_spec: glib_sys::gpointer,
@@ -346,7 +346,7 @@ impl<O: Is<VideoTimeline>> VideoTimelineExt for O {
     fn connect_property_allow_no_active_notify<F: Fn(&Self) + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId {
+    ) -> HandlerId {
         // unsafe extern "C" fn notify_allow_no_active_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::VideoTimeline,
         //     _param_spec: glib_sys::gpointer,

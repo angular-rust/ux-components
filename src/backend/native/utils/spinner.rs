@@ -1,11 +1,10 @@
 #![allow(unused_variables)]
 
 use crate::prelude::*;
-use crate::{Actor, Widget};
-use glib::signal::SignalHandlerId;
+use crate::{Actor, HandlerId, Widget};
 use std::{cell::RefCell, fmt};
 
-#[derive(Clone, Debug)]
+#[derive(Debug)]
 pub struct SpinnerProps {
     pub texture: Option<dx::Handle>,
     pub material: Option<dx::Handle>,
@@ -16,7 +15,7 @@ pub struct SpinnerProps {
     pub animating: bool,
 }
 
-#[derive(Clone, Debug)]
+#[derive(Debug)]
 pub struct Spinner {
     props: RefCell<SpinnerProps>,
     widget: Widget,
@@ -101,9 +100,9 @@ pub trait SpinnerExt: 'static {
     ///
     fn set_animating(&self, animating: bool);
 
-    fn connect_looped<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_looped<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_animating_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_animating_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 }
 
 impl<O: Is<Spinner>> SpinnerExt for O {
@@ -138,7 +137,7 @@ impl<O: Is<Spinner>> SpinnerExt for O {
         }
     }
 
-    fn connect_looped<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_looped<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn looped_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::Spinner,
         //     f: glib_sys::gpointer,
@@ -162,7 +161,7 @@ impl<O: Is<Spinner>> SpinnerExt for O {
         unimplemented!()
     }
 
-    fn connect_property_animating_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_animating_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_animating_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::Spinner,
         //     _param_spec: glib_sys::gpointer,

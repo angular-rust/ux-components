@@ -1,8 +1,7 @@
 #![allow(unused_variables)]
 
 use crate::prelude::*;
-use crate::{Actor, BoxLayout, ItemFactory, Model, Widget};
-use glib::signal::SignalHandlerId;
+use crate::{Actor, BoxLayout, HandlerId, ItemFactory, Model, Widget};
 use std::{cell::RefCell, fmt};
 
 #[derive(Clone, Debug)]
@@ -15,7 +14,7 @@ pub struct AttributeData {
 pub struct ListProps {
     pub model: Option<Model>,
     pub attributes: Vec<AttributeData>,
-    pub item_type: glib::types::Type,
+    // pub item_type: glib::types::Type,
     pub factory: Option<ItemFactory>,
     pub filter_changed: u64,
     pub row_added: u64,
@@ -25,7 +24,7 @@ pub struct ListProps {
     pub is_frozen: bool,
 }
 
-#[derive(Clone, Debug)]
+#[derive(Debug)]
 pub struct List {
     props: RefCell<ListProps>,
     widget: Widget,
@@ -115,7 +114,7 @@ pub trait ListExt: 'static {
     ///
     /// Returns: a #GType
     ///
-    fn get_item_type(&self) -> glib::types::Type;
+    // fn get_item_type(&self) -> glib::types::Type;
 
     /// get_model:
     /// @listview: An #List
@@ -141,7 +140,7 @@ pub trait ListExt: 'static {
     /// Set the item type used to create items representing each row in the
     /// model
     ///
-    fn set_item_type(&self, item_type: glib::types::Type);
+    // fn set_item_type(&self, item_type: glib::types::Type);
 
     /// set_model:
     /// @listview: An #List
@@ -159,11 +158,11 @@ pub trait ListExt: 'static {
     ///
     fn thaw(&self);
 
-    fn connect_property_factory_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_factory_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_item_type_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_item_type_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_model_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_model_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 }
 
 impl<O: Is<List>> ListExt for O {
@@ -218,12 +217,12 @@ impl<O: Is<List>> ListExt for O {
     ///
     /// Returns: a #GType
     ///
-    fn get_item_type(&self) -> glib::types::Type {
-        let listview = self.as_ref();
-        let props = listview.props.borrow();
+    // fn get_item_type(&self) -> glib::types::Type {
+    //     let listview = self.as_ref();
+    //     let props = listview.props.borrow();
 
-        props.item_type
-    }
+    //     props.item_type
+    // }
 
     /// get_model:
     /// @listview: An #List
@@ -272,15 +271,15 @@ impl<O: Is<List>> ListExt for O {
     /// Set the item type used to create items representing each row in the
     /// model
     ///
-    fn set_item_type(&self, item_type: glib::types::Type) {
-        let listview = self.as_ref();
-        let mut props = listview.props.borrow_mut();
+    // fn set_item_type(&self, item_type: glib::types::Type) {
+    //     let listview = self.as_ref();
+    //     let mut props = listview.props.borrow_mut();
 
-        props.item_type = item_type;
+    //     props.item_type = item_type;
 
-        // // update the view
-        // model_changed_cb(listview.model, listview);
-    }
+    //     // // update the view
+    //     // model_changed_cb(listview.model, listview);
+    // }
 
     /// set_model:
     /// @listview: An #List
@@ -361,7 +360,7 @@ impl<O: Is<List>> ListExt for O {
         // model_changed_cb(listview.model, listview);
     }
 
-    fn connect_property_factory_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_factory_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_factory_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::List,
         //     _param_spec: glib_sys::gpointer,
@@ -386,7 +385,7 @@ impl<O: Is<List>> ListExt for O {
         unimplemented!()
     }
 
-    fn connect_property_item_type_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_item_type_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_item_type_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::List,
         //     _param_spec: glib_sys::gpointer,
@@ -411,7 +410,7 @@ impl<O: Is<List>> ListExt for O {
         unimplemented!()
     }
 
-    fn connect_property_model_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_model_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_model_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::List,
         //     _param_spec: glib_sys::gpointer,

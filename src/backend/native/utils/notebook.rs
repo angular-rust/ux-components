@@ -1,8 +1,7 @@
 #![allow(unused_variables)]
 
 use crate::prelude::*;
-use crate::{Actor, Widget};
-use glib::signal::SignalHandlerId;
+use crate::{Actor, HandlerId, Widget};
 use std::{cell::RefCell, fmt};
 
 #[derive(Clone, Debug)]
@@ -11,7 +10,7 @@ pub struct NotebookProps {
     pub children: Vec<Actor>,
 }
 
-#[derive(Clone, Debug)]
+#[derive(Debug)]
 pub struct Notebook {
     props: RefCell<NotebookProps>,
     widget: Widget,
@@ -83,8 +82,7 @@ pub trait NotebookExt: 'static {
 
     fn set_current_page<P: Is<Actor>>(&self, page: &P);
 
-    fn connect_property_current_page_notify<F: Fn(&Self) + 'static>(&self, f: F)
-        -> SignalHandlerId;
+    fn connect_property_current_page_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 }
 
 impl<O: Is<Notebook>> NotebookExt for O {
@@ -164,10 +162,7 @@ impl<O: Is<Notebook>> NotebookExt for O {
         // g_object_notify(G_OBJECT(book), "current-page");
     }
 
-    fn connect_property_current_page_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
+    fn connect_property_current_page_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_current_page_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::Notebook,
         //     _param_spec: glib_sys::gpointer,

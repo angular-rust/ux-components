@@ -1,8 +1,7 @@
 #![allow(unused_variables)]
 
 use crate::prelude::*;
-use crate::{Actor, Timeline, Widget};
-use glib::signal::SignalHandlerId;
+use crate::{Actor, HandlerId, Timeline, Widget};
 use std::{cell::RefCell, fmt};
 
 #[derive(Clone, Debug)]
@@ -16,7 +15,7 @@ pub struct ExpansionPanelProps {
     pub child: Option<Actor>,
 }
 
-#[derive(Clone, Debug)]
+#[derive(Debug)]
 pub struct ExpansionPanel {
     props: RefCell<ExpansionPanelProps>,
     widget: Widget,
@@ -91,11 +90,11 @@ pub trait ExpansionPanelExt: 'static {
 
     fn get_property_label(&self) -> Option<String>;
 
-    fn connect_expand_complete<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_expand_complete<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_expanded_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_expanded_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_label_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_label_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 }
 
 impl<O: Is<ExpansionPanel>> ExpansionPanelExt for O {
@@ -158,7 +157,7 @@ impl<O: Is<ExpansionPanel>> ExpansionPanelExt for O {
         unimplemented!()
     }
 
-    fn connect_expand_complete<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_expand_complete<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn expand_complete_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::ExpansionPanel,
         //     f: glib_sys::gpointer,
@@ -182,7 +181,7 @@ impl<O: Is<ExpansionPanel>> ExpansionPanelExt for O {
         unimplemented!()
     }
 
-    fn connect_property_expanded_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_expanded_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_expanded_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::ExpansionPanel,
         //     _param_spec: glib_sys::gpointer,
@@ -207,7 +206,7 @@ impl<O: Is<ExpansionPanel>> ExpansionPanelExt for O {
         unimplemented!()
     }
 
-    fn connect_property_label_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_label_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_label_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::ExpansionPanel,
         //     _param_spec: glib_sys::gpointer,

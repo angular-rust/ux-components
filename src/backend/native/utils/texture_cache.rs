@@ -10,7 +10,7 @@ pub struct FinalizedClosure {
 }
 
 // Convention: posX with a value of -1 indicates whole texture
-#[derive(Clone, Debug)]
+#[derive(Debug)]
 pub struct TextureCacheItem {
     pub filename: String,
     pub width: i32,
@@ -21,7 +21,7 @@ pub struct TextureCacheItem {
     // pub meta: GHashTable,
 }
 
-#[derive(Clone, Debug)]
+#[derive(Debug)]
 pub struct TextureCacheMetaEntry {
     // pub ident: gpointer,
     pub texture: dx::Handle,

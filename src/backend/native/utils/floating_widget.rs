@@ -4,7 +4,7 @@ use crate::prelude::*;
 use crate::{Actor, Stage, Widget};
 use std::{cell::RefCell, fmt};
 
-#[derive(Clone, Debug)]
+#[derive(Debug)]
 pub struct FloatingWidgetProps {
     pub stage: Option<Stage>,
     pub paint_matrix: Option<dx::Matrix>,
@@ -13,7 +13,7 @@ pub struct FloatingWidgetProps {
     pub paint_handler: u64,
 }
 
-#[derive(Clone, Debug)]
+#[derive(Debug)]
 pub struct FloatingWidget {
     props: RefCell<FloatingWidgetProps>,
     widget: Widget,

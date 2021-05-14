@@ -1,8 +1,7 @@
 #![allow(unused_variables)]
 
 use crate::prelude::*;
-use crate::{Align, ChildMeta};
-use glib::signal::SignalHandlerId;
+use crate::{Align, ChildMeta, HandlerId};
 use std::{cell::RefCell, fmt};
 
 #[derive(Clone, Debug)]
@@ -145,17 +144,17 @@ pub trait StackChildExt: 'static {
     ///
     fn set_y_fill(&self, y_fill: bool);
 
-    fn connect_property_crop_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_crop_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_fit_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_fit_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_x_align_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_x_align_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_x_fill_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_x_fill_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_y_align_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_y_align_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_y_fill_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_y_fill_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 }
 
 impl<O: Is<StackChild>> StackChildExt for O {
@@ -339,7 +338,7 @@ impl<O: Is<StackChild>> StackChildExt for O {
         // actor_queue_relayout(child);
     }
 
-    fn connect_property_crop_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_crop_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_crop_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::StackChild,
         //     _param_spec: glib_sys::gpointer,
@@ -364,7 +363,7 @@ impl<O: Is<StackChild>> StackChildExt for O {
         unimplemented!()
     }
 
-    fn connect_property_fit_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_fit_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_fit_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::StackChild,
         //     _param_spec: glib_sys::gpointer,
@@ -389,7 +388,7 @@ impl<O: Is<StackChild>> StackChildExt for O {
         unimplemented!()
     }
 
-    fn connect_property_x_align_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_x_align_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_x_align_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::StackChild,
         //     _param_spec: glib_sys::gpointer,
@@ -414,7 +413,7 @@ impl<O: Is<StackChild>> StackChildExt for O {
         unimplemented!()
     }
 
-    fn connect_property_x_fill_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_x_fill_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_x_fill_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::StackChild,
         //     _param_spec: glib_sys::gpointer,
@@ -439,7 +438,7 @@ impl<O: Is<StackChild>> StackChildExt for O {
         unimplemented!()
     }
 
-    fn connect_property_y_align_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_y_align_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_y_align_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::StackChild,
         //     _param_spec: glib_sys::gpointer,
@@ -464,7 +463,7 @@ impl<O: Is<StackChild>> StackChildExt for O {
         unimplemented!()
     }
 
-    fn connect_property_y_fill_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_y_fill_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_y_fill_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::StackChild,
         //     _param_spec: glib_sys::gpointer,

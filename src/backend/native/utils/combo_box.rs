@@ -2,11 +2,10 @@
 #![allow(unused_imports)]
 
 use crate::{prelude::*, PushActionExt};
-use crate::{Actor, Icon, IconTheme, Label, PushAction, Widget};
-use glib::signal::SignalHandlerId;
+use crate::{Actor, HandlerId, Icon, IconTheme, Label, PushAction, Widget};
 use std::{cell::RefCell, fmt};
 
-#[derive(Clone, Debug)]
+#[derive(Debug)]
 pub struct ComboBoxProps {
     pub label: Option<Label>, //Actor,
     pub icon: Option<Icon>,   // Actor
@@ -20,7 +19,7 @@ pub struct ComboBoxProps {
     pub spacing: i32,
 }
 
-#[derive(Clone, Debug)]
+#[derive(Debug)]
 pub struct ComboBox {
     props: RefCell<ComboBoxProps>,
     widget: Widget,
@@ -169,14 +168,11 @@ pub trait ComboBoxExt: 'static {
     ///
     fn set_index(&self, index: i32);
 
-    fn connect_property_active_icon_name_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId;
+    fn connect_property_active_icon_name_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_active_text_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_active_text_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_index_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_index_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 }
 
 impl<O: Is<ComboBox>> ComboBoxExt for O {
@@ -415,10 +411,7 @@ impl<O: Is<ComboBox>> ComboBoxExt for O {
         // g_object_notify(G_OBJECT (box), "active-icon-name");
     }
 
-    fn connect_property_active_icon_name_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
+    fn connect_property_active_icon_name_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_active_icon_name_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::ComboBox,
         //     _param_spec: glib_sys::gpointer,
@@ -443,7 +436,7 @@ impl<O: Is<ComboBox>> ComboBoxExt for O {
         unimplemented!()
     }
 
-    fn connect_property_active_text_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_active_text_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_active_text_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::ComboBox,
         //     _param_spec: glib_sys::gpointer,
@@ -468,7 +461,7 @@ impl<O: Is<ComboBox>> ComboBoxExt for O {
         unimplemented!()
     }
 
-    fn connect_property_index_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_index_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_index_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::ComboBox,
         //     _param_spec: glib_sys::gpointer,

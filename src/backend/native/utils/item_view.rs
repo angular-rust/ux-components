@@ -1,8 +1,7 @@
 #![allow(unused_variables)]
 
 use crate::prelude::*;
-use crate::{Actor, Grid, ItemFactory, Model, Widget};
-use glib::signal::SignalHandlerId;
+use crate::{Actor, Grid, HandlerId, ItemFactory, Model, Widget};
 use std::{cell::RefCell, fmt};
 
 #[derive(Clone, Debug)]
@@ -15,7 +14,7 @@ pub struct AttributeData {
 pub struct ItemViewProps {
     pub model: Option<Model>,
     pub attributes: Vec<AttributeData>,
-    pub item_type: glib::types::Type,
+    // pub item_type: glib::types::Type,
     pub factory: Option<ItemFactory>,
     pub filter_changed: u64,
     pub row_added: u64,
@@ -25,7 +24,7 @@ pub struct ItemViewProps {
     pub is_frozen: bool,
 }
 
-#[derive(Clone, Debug)]
+#[derive(Debug)]
 pub struct ItemView {
     props: RefCell<ItemViewProps>,
     widget: Widget,
@@ -115,7 +114,7 @@ pub trait ItemViewExt: 'static {
     ///
     /// Returns: a #GType
     ///
-    fn get_item_type(&self) -> glib::types::Type;
+    // fn get_item_type(&self) -> glib::types::Type;
 
     /// get_model:
     /// @item_view: An #ItemView
@@ -140,7 +139,7 @@ pub trait ItemViewExt: 'static {
     ///
     /// Set the item type used to create items representing each row in the model
     ///
-    fn set_item_type(&self, item_type: glib::types::Type);
+    // fn set_item_type(&self, item_type: glib::types::Type);
 
     /// set_model:
     /// @item_view: An #ItemView
@@ -157,11 +156,11 @@ pub trait ItemViewExt: 'static {
     ///
     fn thaw(&self);
 
-    fn connect_property_factory_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_factory_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_item_type_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_item_type_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_model_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_model_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 }
 
 impl<O: Is<ItemView>> ItemViewExt for O {
@@ -218,12 +217,12 @@ impl<O: Is<ItemView>> ItemViewExt for O {
     ///
     /// Returns: a #GType
     ///
-    fn get_item_type(&self) -> glib::types::Type {
-        let itemview = self.as_ref();
-        let props = itemview.props.borrow();
+    // fn get_item_type(&self) -> glib::types::Type {
+    //     let itemview = self.as_ref();
+    //     let props = itemview.props.borrow();
 
-        props.item_type
-    }
+    //     props.item_type
+    // }
 
     /// get_model:
     /// @item_view: An #ItemView
@@ -271,14 +270,14 @@ impl<O: Is<ItemView>> ItemViewExt for O {
     ///
     /// Set the item type used to create items representing each row in the model
     ///
-    fn set_item_type(&self, item_type: glib::types::Type) {
-        let itemview = self.as_ref();
+    // fn set_item_type(&self, item_type: glib::types::Type) {
+    //     let itemview = self.as_ref();
 
-        // itemview.item_type = item_type;
+    //     // itemview.item_type = item_type;
 
-        // // update the view
-        // model_changed_cb(itemview.model, itemview);
-    }
+    //     // // update the view
+    //     // model_changed_cb(itemview.model, itemview);
+    // }
 
     /// set_model:
     /// @item_view: An #ItemView
@@ -356,7 +355,7 @@ impl<O: Is<ItemView>> ItemViewExt for O {
         // model_changed_cb(itemview.model, itemview);
     }
 
-    fn connect_property_factory_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_factory_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_factory_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::ItemView,
         //     _param_spec: glib_sys::gpointer,
@@ -381,7 +380,7 @@ impl<O: Is<ItemView>> ItemViewExt for O {
         unimplemented!()
     }
 
-    fn connect_property_item_type_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_item_type_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_item_type_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::ItemView,
         //     _param_spec: glib_sys::gpointer,
@@ -406,7 +405,7 @@ impl<O: Is<ItemView>> ItemViewExt for O {
         unimplemented!()
     }
 
-    fn connect_property_model_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_model_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_model_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::ItemView,
         //     _param_spec: glib_sys::gpointer,

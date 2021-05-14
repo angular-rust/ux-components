@@ -1,11 +1,10 @@
 #![allow(unused_variables)]
 
 use crate::prelude::*;
-use crate::{Actor, Stage};
-use glib::signal::SignalHandlerId;
+use crate::{Actor, HandlerId, Stage};
 use std::{cell::RefCell, fmt};
 
-#[derive(Clone, Debug)]
+#[derive(Debug)]
 pub struct ActorManagerProps {
     // pub ops: GQueue,
     // pub actor_op_links: GHashTable,
@@ -17,7 +16,7 @@ pub struct ActorManagerProps {
     pub stage: Option<Stage>,
 }
 
-#[derive(Clone, Debug)]
+#[derive(Debug)]
 pub struct ActorManager {
     props: RefCell<ActorManagerProps>,
 }
@@ -170,41 +169,40 @@ pub trait ActorManagerExt: 'static {
     // >(
     //     &self,
     //     f: F,
-    // ) -> SignalHandlerId;
+    // ) -> HandlerId;
 
     // fn connect_actor_created<F: Fn(&Self, u64, &Actor) + 'static>(
     //     &self,
     //     f: F,
-    // ) -> SignalHandlerId;
+    // ) -> HandlerId;
 
-    fn connect_actor_finished<F: Fn(&Self, &Actor) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_actor_finished<F: Fn(&Self, &Actor) + 'static>(&self, f: F) -> HandlerId;
 
     // fn connect_actor_removed<
     //     F: Fn(&Self, u64, &Actor, &Actor) + 'static,
     // >(
     //     &self,
     //     f: F,
-    // ) -> SignalHandlerId;
+    // ) -> HandlerId;
 
     // fn connect_operation_cancelled<F: Fn(&Self, u64) + 'static>(
     //     &self,
     //     f: F,
-    // ) -> SignalHandlerId;
+    // ) -> HandlerId;
 
     // fn connect_operation_completed<F: Fn(&Self, u64) + 'static>(
     //     &self,
     //     f: F,
-    // ) -> SignalHandlerId;
+    // ) -> HandlerId;
 
     // fn connect_operation_failed<F: Fn(&Self, u64, &glib::Error) + 'static>(
     //     &self,
     //     f: F,
-    // ) -> SignalHandlerId;
+    // ) -> HandlerId;
 
-    fn connect_property_n_operations_notify<F: Fn(&Self) + 'static>(&self, f: F)
-        -> SignalHandlerId;
+    fn connect_property_n_operations_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_time_slice_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_time_slice_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 }
 
 impl<O: Is<ActorManager>> ActorManagerExt for O {
@@ -328,7 +326,8 @@ impl<O: Is<ActorManager>> ActorManagerExt for O {
         let manager = self.as_ref();
         let props = manager.props.borrow();
 
-        props.stage.clone()
+        // props.stage.clone()
+        unimplemented!()
     }
 
     /// get_time_slice:
@@ -437,7 +436,7 @@ impl<O: Is<ActorManager>> ActorManagerExt for O {
     // >(
     //     &self,
     //     f: F,
-    // ) -> SignalHandlerId {
+    // ) -> HandlerId {
     //     // unsafe extern "C" fn actor_added_trampoline<
     //     //     P,
     //     //     F: Fn(&P, u64, &Actor, &Actor) + 'static,
@@ -475,7 +474,7 @@ impl<O: Is<ActorManager>> ActorManagerExt for O {
     // fn connect_actor_created<F: Fn(&Self, u64, &Actor) + 'static>(
     //     &self,
     //     f: F,
-    // ) -> SignalHandlerId {
+    // ) -> HandlerId {
     //     // unsafe extern "C" fn actor_created_trampoline<
     //     //     P,
     //     //     F: Fn(&P, u64, &Actor) + 'static,
@@ -508,7 +507,7 @@ impl<O: Is<ActorManager>> ActorManagerExt for O {
     //     unimplemented!()
     // }
 
-    fn connect_actor_finished<F: Fn(&Self, &Actor) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_actor_finished<F: Fn(&Self, &Actor) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn actor_finished_trampoline<P, F: Fn(&P, &Actor) + 'static>(
         //     this: *mut ffi::ActorManager,
         //     actor: *mut ffi::ClutterActor,
@@ -541,7 +540,7 @@ impl<O: Is<ActorManager>> ActorManagerExt for O {
     // >(
     //     &self,
     //     f: F,
-    // ) -> SignalHandlerId {
+    // ) -> HandlerId {
     //     // unsafe extern "C" fn actor_removed_trampoline<
     //     //     P,
     //     //     F: Fn(&P, u64, &Actor, &Actor) + 'static,
@@ -579,7 +578,7 @@ impl<O: Is<ActorManager>> ActorManagerExt for O {
     // fn connect_operation_cancelled<F: Fn(&Self, u64) + 'static>(
     //     &self,
     //     f: F,
-    // ) -> SignalHandlerId {
+    // ) -> HandlerId {
     //     // unsafe extern "C" fn operation_cancelled_trampoline<P, F: Fn(&P, u64) + 'static>(
     //     //     this: *mut ffi::ActorManager,
     //     //     id: u64,
@@ -607,7 +606,7 @@ impl<O: Is<ActorManager>> ActorManagerExt for O {
     // fn connect_operation_completed<F: Fn(&Self, u64) + 'static>(
     //     &self,
     //     f: F,
-    // ) -> SignalHandlerId {
+    // ) -> HandlerId {
     //     // unsafe extern "C" fn operation_completed_trampoline<P, F: Fn(&P, u64) + 'static>(
     //     //     this: *mut ffi::ActorManager,
     //     //     id: u64,
@@ -635,7 +634,7 @@ impl<O: Is<ActorManager>> ActorManagerExt for O {
     // fn connect_operation_failed<F: Fn(&Self, u64, &glib::Error) + 'static>(
     //     &self,
     //     f: F,
-    // ) -> SignalHandlerId {
+    // ) -> HandlerId {
     //     // unsafe extern "C" fn operation_failed_trampoline<
     //     //     P,
     //     //     F: Fn(&P, u64, &glib::Error) + 'static,
@@ -668,10 +667,7 @@ impl<O: Is<ActorManager>> ActorManagerExt for O {
     //     unimplemented!()
     // }
 
-    fn connect_property_n_operations_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
+    fn connect_property_n_operations_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_n_operations_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::ActorManager,
         //     _param_spec: glib_sys::gpointer,
@@ -696,7 +692,7 @@ impl<O: Is<ActorManager>> ActorManagerExt for O {
         unimplemented!()
     }
 
-    fn connect_property_time_slice_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_time_slice_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_time_slice_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::ActorManager,
         //     _param_spec: glib_sys::gpointer,

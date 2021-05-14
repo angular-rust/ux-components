@@ -1,17 +1,16 @@
 #![allow(unused_variables)]
 
 use crate::prelude::*;
-use crate::{Actor, FloatingWidget, PushAction, Widget};
-use glib::signal::SignalHandlerId;
+use crate::{Actor, FloatingWidget, HandlerId, PushAction, Widget};
 use std::{cell::RefCell, fmt};
 
-#[derive(Clone, Debug)]
+#[derive(Debug)]
 pub struct MenuChild {
     pub action: PushAction,
     pub widget: Widget, // called `box` before
 }
 
-#[derive(Clone, Debug)]
+#[derive(Debug)]
 pub struct MenuProps {
     pub children: Vec<MenuChild>,
     pub transition_out: bool,
@@ -27,7 +26,7 @@ pub struct MenuProps {
     pub down_source: u64,
 }
 
-#[derive(Clone, Debug)]
+#[derive(Debug)]
 pub struct Menu {
     props: RefCell<MenuProps>,
     widget: FloatingWidget,
@@ -115,10 +114,7 @@ pub trait MenuExt: 'static {
     ///
     fn show_with_position(&self, x: f32, y: f32);
 
-    fn connect_action_activated<F: Fn(&Self, &PushAction) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId;
+    fn connect_action_activated<F: Fn(&Self, &PushAction) + 'static>(&self, f: F) -> HandlerId;
 }
 
 impl<O: Is<Menu>> MenuExt for O {
@@ -206,10 +202,7 @@ impl<O: Is<Menu>> MenuExt for O {
         // actor_show(CLUTTER_ACTOR(menu));
     }
 
-    fn connect_action_activated<F: Fn(&Self, &PushAction) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
+    fn connect_action_activated<F: Fn(&Self, &PushAction) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn action_activated_trampoline<P, F: Fn(&P, &Action) + 'static>(
         //     this: *mut ffi::Menu,
         //     object: *mut ffi::Action,

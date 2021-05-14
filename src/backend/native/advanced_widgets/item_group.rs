@@ -1,18 +1,17 @@
 #![allow(unused_variables)]
 
 use crate::prelude::*;
-use crate::{Actor, Button};
-use glib::signal::SignalHandlerId;
+use crate::{Actor, Button, HandlerId};
 use std::{cell::RefCell, fmt};
 
-#[derive(Clone, Debug)]
+#[derive(Debug)]
 pub struct ItemGroupProps {
     pub active_button: Option<Button>,
     pub children: Vec<Button>,
     pub allow_no_active: bool,
 }
 
-#[derive(Clone, Debug)]
+#[derive(Debug)]
 pub struct ItemGroup {
     props: RefCell<ItemGroupProps>,
 }
@@ -111,15 +110,9 @@ pub trait ItemGroupExt: 'static {
     ///
     fn set_allow_no_active(&self, allow_no_active: bool);
 
-    fn connect_property_active_button_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId;
+    fn connect_property_active_button_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_allow_no_active_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId;
+    fn connect_property_allow_no_active_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 }
 
 impl<O: Is<ItemGroup>> ItemGroupExt for O {
@@ -315,10 +308,7 @@ impl<O: Is<ItemGroup>> ItemGroupExt for O {
         }
     }
 
-    fn connect_property_active_button_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
+    fn connect_property_active_button_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_active_button_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::ItemGroup,
         //     _param_spec: glib_sys::gpointer,
@@ -343,10 +333,7 @@ impl<O: Is<ItemGroup>> ItemGroupExt for O {
         unimplemented!()
     }
 
-    fn connect_property_allow_no_active_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
+    fn connect_property_allow_no_active_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_allow_no_active_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::ItemGroup,
         //     _param_spec: glib_sys::gpointer,

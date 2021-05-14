@@ -1,7 +1,7 @@
 #![allow(unused_variables)]
 
 use crate::prelude::*;
-use glib::signal::SignalHandlerId;
+use crate::HandlerId;
 use std::{cell::RefCell, fmt};
 
 #[derive(Clone, Debug)]
@@ -105,7 +105,7 @@ pub trait IconThemeExt: 'static {
     ///
     fn set_theme_name(&self, theme_name: &str);
 
-    fn connect_property_theme_name_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_theme_name_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 }
 
 impl<O: Is<IconTheme>> IconThemeExt for O {
@@ -247,7 +247,7 @@ impl<O: Is<IconTheme>> IconThemeExt for O {
         // g_object_notify(G_OBJECT(theme), "theme-name");
     }
 
-    fn connect_property_theme_name_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_theme_name_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_theme_name_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::IconTheme,
         //     _param_spec: glib_sys::gpointer,

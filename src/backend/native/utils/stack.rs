@@ -4,13 +4,13 @@ use crate::prelude::*;
 use crate::{Actor, ActorBox, Align, Widget};
 use std::{cell::RefCell, fmt};
 
-#[derive(Clone, Debug)]
+#[derive(Debug)]
 pub struct StackProps {
     pub current_focus: Actor,
     pub allocation: ActorBox,
 }
 
-#[derive(Clone, Debug)]
+#[derive(Debug)]
 pub struct Stack {
     props: RefCell<StackProps>,
     widget: Widget,

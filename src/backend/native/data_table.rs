@@ -1,8 +1,7 @@
 #![allow(unused_variables)]
 
 use crate::prelude::*;
-use crate::{Actor, Align, Focusable, Widget};
-use glib::signal::SignalHandlerId;
+use crate::{Actor, Align, Focusable, Widget, HandlerId};
 use std::{cell::RefCell, fmt};
 
 #[derive(Clone, Debug)]
@@ -36,7 +35,7 @@ pub struct DataTableProps {
     pub last_focus: Focusable,
 }
 
-#[derive(Clone, Debug)]
+#[derive(Debug)]
 pub struct DataTable {
     props: RefCell<DataTableProps>,
     widget: Widget,
@@ -212,16 +211,16 @@ pub trait DataTableExt: 'static {
     fn set_row_spacing(&self, spacing: u32);
 
     fn connect_property_column_count_notify<F: Fn(&Self) + 'static>(&self, f: F)
-        -> SignalHandlerId;
+        -> HandlerId;
 
     fn connect_property_column_spacing_notify<F: Fn(&Self) + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId;
+    ) -> HandlerId;
 
-    fn connect_property_row_count_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_row_count_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_row_spacing_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_row_spacing_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 }
 
 impl<O: Is<DataTable>> DataTableExt for O {
@@ -610,7 +609,7 @@ impl<O: Is<DataTable>> DataTableExt for O {
     fn connect_property_column_count_notify<F: Fn(&Self) + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId {
+    ) -> HandlerId {
         // unsafe extern "C" fn notify_column_count_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::DataTable,
         //     _param_spec: glib_sys::gpointer,
@@ -638,7 +637,7 @@ impl<O: Is<DataTable>> DataTableExt for O {
     fn connect_property_column_spacing_notify<F: Fn(&Self) + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId {
+    ) -> HandlerId {
         // unsafe extern "C" fn notify_column_spacing_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::DataTable,
         //     _param_spec: glib_sys::gpointer,
@@ -663,7 +662,7 @@ impl<O: Is<DataTable>> DataTableExt for O {
         unimplemented!()
     }
 
-    fn connect_property_row_count_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_row_count_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_row_count_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::DataTable,
         //     _param_spec: glib_sys::gpointer,
@@ -688,7 +687,7 @@ impl<O: Is<DataTable>> DataTableExt for O {
         unimplemented!()
     }
 
-    fn connect_property_row_spacing_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_row_spacing_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_row_spacing_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::DataTable,
         //     _param_spec: glib_sys::gpointer,

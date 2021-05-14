@@ -1,11 +1,10 @@
 #![allow(unused_variables)]
 
 use crate::prelude::*;
-use crate::{Actor, Widget};
-use glib::signal::SignalHandlerId;
+use crate::{Actor, HandlerId, Widget};
 use std::{cell::RefCell, fmt};
 
-#[derive(Default, Debug, Clone)]
+#[derive(Default, Debug)]
 pub struct IconProps {
     pub icon_set: bool,
     pub size_set: bool,
@@ -16,7 +15,7 @@ pub struct IconProps {
     pub icon_size: usize,
 }
 
-#[derive(Clone, Debug)]
+#[derive(Debug)]
 pub struct Icon {
     props: RefCell<IconProps>,
     inner: Widget,
@@ -42,7 +41,7 @@ impl Default for Icon {
 }
 
 impl Object for Icon {}
-impl Is<Icon> for Icon {} 
+impl Is<Icon> for Icon {}
 
 impl AsRef<Icon> for Icon {
     fn as_ref(&self) -> &Icon {
@@ -76,9 +75,9 @@ pub trait IconExt: 'static {
 
     fn set_icon_size(&self, size: usize);
 
-    fn connect_property_icon_name_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_icon_name_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_icon_size_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_icon_size_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 }
 
 impl<O: Is<Icon>> IconExt for O {
@@ -143,7 +142,7 @@ impl<O: Is<Icon>> IconExt for O {
         props.size_set = true;
     }
 
-    fn connect_property_icon_name_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_icon_name_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_icon_name_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::Icon,
         //     _param_spec: glib_sys::gpointer,
@@ -168,7 +167,7 @@ impl<O: Is<Icon>> IconExt for O {
         unimplemented!()
     }
 
-    fn connect_property_icon_size_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_icon_size_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_icon_size_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::Icon,
         //     _param_spec: glib_sys::gpointer,

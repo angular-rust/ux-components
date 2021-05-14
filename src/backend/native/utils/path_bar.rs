@@ -1,11 +1,10 @@
 #![allow(unused_variables)]
 
 use crate::prelude::*;
-use crate::{Actor, Textfield, Widget};
-use glib::signal::SignalHandlerId;
+use crate::{Actor, HandlerId, Textfield, Widget};
 use std::{cell::RefCell, fmt};
 
-#[derive(Clone, Debug)]
+#[derive(Debug)]
 pub struct PathBarProps {
     pub crumbs: Vec<Actor>,
     pub current_level: usize,
@@ -15,7 +14,7 @@ pub struct PathBarProps {
     pub entry: Option<Textfield>,
 }
 
-#[derive(Clone, Debug)]
+#[derive(Debug)]
 pub struct PathBar {
     props: RefCell<PathBarProps>,
     widget: Widget,
@@ -139,16 +138,13 @@ pub trait PathBarExt: 'static {
     ///
     fn set_text(&self, text: &str);
 
-    fn connect_property_clear_on_change_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId;
+    fn connect_property_clear_on_change_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_editable_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_editable_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_entry_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_entry_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_level_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_level_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 }
 
 impl<O: Is<PathBar>> PathBarExt for O {
@@ -204,7 +200,8 @@ impl<O: Is<PathBar>> PathBarExt for O {
         let pathbar = self.as_ref();
         let props = pathbar.props.borrow();
 
-        props.entry.clone()
+        // props.entry.clone()
+        unimplemented!()
     }
 
     fn get_label(&self, level: usize) -> Option<String> {
@@ -397,10 +394,7 @@ impl<O: Is<PathBar>> PathBarExt for O {
         }
     }
 
-    fn connect_property_clear_on_change_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
+    fn connect_property_clear_on_change_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_clear_on_change_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::PathBar,
         //     _param_spec: glib_sys::gpointer,
@@ -425,7 +419,7 @@ impl<O: Is<PathBar>> PathBarExt for O {
         unimplemented!()
     }
 
-    fn connect_property_editable_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_editable_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_editable_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::PathBar,
         //     _param_spec: glib_sys::gpointer,
@@ -450,7 +444,7 @@ impl<O: Is<PathBar>> PathBarExt for O {
         unimplemented!()
     }
 
-    fn connect_property_entry_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_entry_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_entry_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::PathBar,
         //     _param_spec: glib_sys::gpointer,
@@ -475,7 +469,7 @@ impl<O: Is<PathBar>> PathBarExt for O {
         unimplemented!()
     }
 
-    fn connect_property_level_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_level_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_level_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::PathBar,
         //     _param_spec: glib_sys::gpointer,

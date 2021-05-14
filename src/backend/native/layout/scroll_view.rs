@@ -1,8 +1,7 @@
 #![allow(unused_variables)]
 
 use crate::prelude::*;
-use crate::{Actor, Geometry, ScrollPolicy, Widget};
-use glib::signal::SignalHandlerId;
+use crate::{Actor, HandlerId, Rect, ScrollPolicy, Widget};
 use std::{cell::RefCell, fmt};
 
 #[derive(Clone, Debug)]
@@ -17,7 +16,7 @@ pub struct ScrollViewProps {
     pub scroll_visibility: ScrollPolicy,
 }
 
-#[derive(Clone, Debug)]
+#[derive(Debug)]
 pub struct ScrollView {
     props: RefCell<ScrollViewProps>,
     widget: Widget,
@@ -71,7 +70,7 @@ pub trait ScrollViewExt: 'static {
     /// Ensures that a given region is visible in the ScrollView, with the top-left
     /// taking precedence.
     ///
-    fn ensure_visible(&self, geometry: &Geometry);
+    fn ensure_visible(&self, geometry: &Rect<f32>);
 
     fn get_enable_mouse_scrolling(&self) -> bool;
 
@@ -88,17 +87,11 @@ pub trait ScrollViewExt: 'static {
     fn connect_property_enable_mouse_scrolling_notify<F: Fn(&Self) + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId;
+    ) -> HandlerId;
 
-    fn connect_property_scroll_policy_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId;
+    fn connect_property_scroll_policy_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_scroll_visibility_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId;
+    fn connect_property_scroll_visibility_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 }
 
 impl<O: Is<ScrollView>> ScrollViewExt for O {
@@ -109,7 +102,7 @@ impl<O: Is<ScrollView>> ScrollViewExt for O {
     /// Ensures that a given region is visible in the ScrollView, with the top-left
     /// taking precedence.
     ///
-    fn ensure_visible(&self, geometry: &Geometry) {
+    fn ensure_visible(&self, geometry: &Rect<f32>) {
         let scrollview = self.as_ref();
 
         // _scroll_view_ensure_visible_axis(SCROLL_BAR(scrollview.hscroll),
@@ -181,7 +174,7 @@ impl<O: Is<ScrollView>> ScrollViewExt for O {
     fn connect_property_enable_mouse_scrolling_notify<F: Fn(&Self) + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId {
+    ) -> HandlerId {
         // unsafe extern "C" fn notify_enable_mouse_scrolling_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::ScrollView,
         //     _param_spec: glib_sys::gpointer,
@@ -206,10 +199,7 @@ impl<O: Is<ScrollView>> ScrollViewExt for O {
         unimplemented!()
     }
 
-    fn connect_property_scroll_policy_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
+    fn connect_property_scroll_policy_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_scroll_policy_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::ScrollView,
         //     _param_spec: glib_sys::gpointer,
@@ -234,10 +224,7 @@ impl<O: Is<ScrollView>> ScrollViewExt for O {
         unimplemented!()
     }
 
-    fn connect_property_scroll_visibility_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
+    fn connect_property_scroll_visibility_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_scroll_visibility_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::ScrollView,
         //     _param_spec: glib_sys::gpointer,

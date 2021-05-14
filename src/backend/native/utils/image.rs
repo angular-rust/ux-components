@@ -1,8 +1,7 @@
 #![allow(unused_variables)]
 
 use crate::prelude::*;
-use crate::{Actor, ImageScaleMode, Timeline, Widget};
-use glib::signal::SignalHandlerId;
+use crate::{Actor, HandlerId, ImageScaleMode, Timeline, Widget};
 use std::{cell::RefCell, fmt};
 
 #[derive(Clone, Debug)]
@@ -26,7 +25,7 @@ pub struct ImageAsyncData {
     // pub error: GError,
 }
 
-#[derive(Clone, Debug)]
+#[derive(Debug)]
 pub struct ImageProps {
     pub mode: ImageScaleMode,
     pub previous_mode: ImageScaleMode,
@@ -48,7 +47,7 @@ pub struct ImageProps {
     pub async_load_data: Option<ImageAsyncData>,
 }
 
-#[derive(Clone, Debug)]
+#[derive(Debug)]
 pub struct Image {
     props: RefCell<ImageProps>,
 }
@@ -206,7 +205,7 @@ pub trait ImageExt: 'static {
     ///
     /// Returns: #true if the image was successfully updated
     ///
-    fn set_from_buffer(&self, buffer: &[u8]) -> Result<(), glib::Error>;
+    // fn set_from_buffer(&self, buffer: &[u8]) -> Result<(), glib::Error>;
 
     /// set_from_buffer_at_size:
     /// @image: An #Image
@@ -226,12 +225,12 @@ pub trait ImageExt: 'static {
     ///
     /// Returns: #true if the image was successfully updated
     ///
-    fn set_from_buffer_at_size(
-        &self,
-        buffer: &[u8],
-        width: i32,
-        height: i32,
-    ) -> Result<(), glib::Error>;
+    // fn set_from_buffer_at_size(
+    //     &self,
+    //     buffer: &[u8],
+    //     width: i32,
+    //     height: i32,
+    // ) -> Result<(), glib::Error>;
 
     /// set_from_cogl_texture:
     /// @image: A #Image
@@ -257,14 +256,14 @@ pub trait ImageExt: 'static {
     ///
     /// Returns: #true if the image was successfully updated
     ///
-    fn set_from_data(
-        &self,
-        data: &[u8],
-        pixel_format: dx::PixelFormat,
-        width: i32,
-        height: i32,
-        rowstride: i32,
-    ) -> Result<(), glib::Error>;
+    // fn set_from_data(
+    //     &self,
+    //     data: &[u8],
+    //     pixel_format: dx::PixelFormat,
+    //     width: i32,
+    //     height: i32,
+    //     rowstride: i32,
+    // ) -> Result<(), glib::Error>;
 
     /// set_from_file:
     /// @image: An #Image
@@ -276,7 +275,7 @@ pub trait ImageExt: 'static {
     ///
     /// Returns: #true if the image was successfully updated
     ///
-    fn set_from_file(&self, filename: &str) -> Result<(), glib::Error>;
+    // fn set_from_file(&self, filename: &str) -> Result<(), glib::Error>;
 
     /// set_from_file_at_size:
     /// @image: An #Image
@@ -291,12 +290,12 @@ pub trait ImageExt: 'static {
     ///
     /// Returns: #true if the image was successfully updated
     ///
-    fn set_from_file_at_size(
-        &self,
-        filename: &str,
-        width: i32,
-        height: i32,
-    ) -> Result<(), glib::Error>;
+    // fn set_from_file_at_size(
+    //     &self,
+    //     filename: &str,
+    //     width: i32,
+    //     height: i32,
+    // ) -> Result<(), glib::Error>;
 
     /// set_image_rotation:
     /// @image: A #Image
@@ -364,43 +363,34 @@ pub trait ImageExt: 'static {
 
     fn set_property_filename(&self, filename: Option<&str>);
 
-    fn connect_image_load_error<F: Fn(&Self, &glib::Error) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId;
+    // fn connect_image_load_error<F: Fn(&Self, &glib::Error) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_image_loaded<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_image_loaded<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_allow_upscale_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId;
+    fn connect_property_allow_upscale_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_filename_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_filename_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_image_rotation_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId;
+    fn connect_property_image_rotation_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_load_async_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_load_async_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
     fn connect_property_scale_height_threshold_notify<F: Fn(&Self) + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId;
+    ) -> HandlerId;
 
-    fn connect_property_scale_mode_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_scale_mode_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
     fn connect_property_scale_width_threshold_notify<F: Fn(&Self) + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId;
+    ) -> HandlerId;
 
     fn connect_property_transition_duration_notify<F: Fn(&Self) + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId;
+    ) -> HandlerId;
 }
 
 impl<O: Is<Image>> ImageExt for O {
@@ -599,9 +589,9 @@ impl<O: Is<Image>> ImageExt for O {
     ///
     /// Returns: #true if the image was successfully updated
     ///
-    fn set_from_buffer(&self, buffer: &[u8]) -> Result<(), glib::Error> {
-        self.set_from_buffer_at_size(buffer, -1, -1)
-    }
+    // fn set_from_buffer(&self, buffer: &[u8]) -> Result<(), glib::Error> {
+    //     self.set_from_buffer_at_size(buffer, -1, -1)
+    // }
 
     /// set_from_buffer_at_size:
     /// @image: An #Image
@@ -621,38 +611,38 @@ impl<O: Is<Image>> ImageExt for O {
     ///
     /// Returns: #true if the image was successfully updated
     ///
-    fn set_from_buffer_at_size(
-        &self,
-        buffer: &[u8],
-        width: i32,
-        height: i32,
-    ) -> Result<(), glib::Error> {
-        let image = self.as_ref();
-        let props = image.props.borrow();
+    // fn set_from_buffer_at_size(
+    //     &self,
+    //     buffer: &[u8],
+    //     width: i32,
+    //     height: i32,
+    // ) -> Result<(), glib::Error> {
+    //     let image = self.as_ref();
+    //     let props = image.props.borrow();
 
-        if props.load_async {
-            //     return image.set_async(None, buffer, buffer_size,
-            //                             buffer_free_func, width, height, error);
-        }
+    //     if props.load_async {
+    //         //     return image.set_async(None, buffer, buffer_size,
+    //         //                             buffer_free_func, width, height, error);
+    //     }
 
-        // let pixbuf: GdkPixbuf = Image::pixbuf_new(None, buffer, buffer_size, width, height,
-        //     image.width_threshold, image.height_threshold,
-        //     image.upscale, None, error);
-        // if !pixbuf {
-        //     return false;
-        // }
+    //     // let pixbuf: GdkPixbuf = Image::pixbuf_new(None, buffer, buffer_size, width, height,
+    //     //     image.width_threshold, image.height_threshold,
+    //     //     image.upscale, None, error);
+    //     // if !pixbuf {
+    //     //     return false;
+    //     // }
 
-        // let retval = image.set_from_pixbuf(pixbuf, None, error);
+    //     // let retval = image.set_from_pixbuf(pixbuf, None, error);
 
-        // g_object_unref(pixbuf);
+    //     // g_object_unref(pixbuf);
 
-        // if buffer_free_func {
-        //     buffer_free_func((gpointer)buffer);
-        // }
+    //     // if buffer_free_func {
+    //     //     buffer_free_func((gpointer)buffer);
+    //     // }
 
-        // retval
-        unimplemented!()
-    }
+    //     // retval
+    //     unimplemented!()
+    // }
 
     /// set_from_cogl_texture:
     /// @image: A #Image
@@ -764,21 +754,21 @@ impl<O: Is<Image>> ImageExt for O {
     ///
     /// Returns: #true if the image was successfully updated
     ///
-    fn set_from_data(
-        &self,
-        data: &[u8],
-        pixel_format: dx::PixelFormat,
-        width: i32,
-        height: i32,
-        rowstride: i32,
-    ) -> Result<(), glib::Error> {
-        let image = self.as_ref();
+    // fn set_from_data(
+    //     &self,
+    //     data: &[u8],
+    //     pixel_format: dx::PixelFormat,
+    //     width: i32,
+    //     height: i32,
+    //     rowstride: i32,
+    // ) -> Result<(), glib::Error> {
+    //     let image = self.as_ref();
 
-        // image.set_from_data_internal(image, data, None, false,
-        //                                       pixel_format, width, height,
-        //                                       rowstride, error);
-        unimplemented!()
-    }
+    //     // image.set_from_data_internal(image, data, None, false,
+    //     //                                       pixel_format, width, height,
+    //     //                                       rowstride, error);
+    //     unimplemented!()
+    // }
 
     /// set_from_file:
     /// @image: An #Image
@@ -790,10 +780,10 @@ impl<O: Is<Image>> ImageExt for O {
     ///
     /// Returns: #true if the image was successfully updated
     ///
-    fn set_from_file(&self, filename: &str) -> Result<(), glib::Error> {
-        let image = self.as_ref();
-        image.set_from_file_at_size(filename, -1, -1)
-    }
+    // fn set_from_file(&self, filename: &str) -> Result<(), glib::Error> {
+    //     let image = self.as_ref();
+    //     image.set_from_file_at_size(filename, -1, -1)
+    // }
 
     /// set_from_file_at_size:
     /// @image: An #Image
@@ -808,75 +798,75 @@ impl<O: Is<Image>> ImageExt for O {
     ///
     /// Returns: #true if the image was successfully updated
     ///
-    fn set_from_file_at_size(
-        &self,
-        filename: &str,
-        width: i32,
-        height: i32,
-    ) -> Result<(), glib::Error> {
-        let image = self.as_ref();
+    // fn set_from_file_at_size(
+    //     &self,
+    //     filename: &str,
+    //     width: i32,
+    //     height: i32,
+    // ) -> Result<(), glib::Error> {
+    //     let image = self.as_ref();
 
-        // GdkPixbuf *pixbuf;
-        // ImagePrivate *priv;
-        // TextureCache *cache;
-        // gboolean retval, use_cache;
+    //     // GdkPixbuf *pixbuf;
+    //     // ImagePrivate *priv;
+    //     // TextureCache *cache;
+    //     // gboolean retval, use_cache;
 
-        // pixbuf = None;
+    //     // pixbuf = None;
 
-        // // Check if the processed image is in the cache - we don't use the cache
-        // // if we're loading at a particular size.
-        // cache = texture_cache_get_default();
-        // use_cache = true;
+    //     // // Check if the processed image is in the cache - we don't use the cache
+    //     // // if we're loading at a particular size.
+    //     // cache = texture_cache_get_default();
+    //     // use_cache = true;
 
-        // if (width != -1) || (height != -1) ||
-        //     !texture_cache_contains_meta(cache, filename,
-        //                                     GINT_TO_POINTER(image_cache_quark)) {
-        //     // Check if the unprocessed image is in the cache, and if so, skip
-        //     // loading it and set it from the Cogl texture handle.
-        //     if (width == -1) && (height == -1) &&
-        //         texture_cache_contains(cache, filename) {
-        //         if image_set_from_cogl_texture(image,
-        //             texture_cache_get_cogl_texture(cache, filename)) {
-        //             // Add the processed image to the cache
-        //             texture_cache_insert_meta (cache, filename,
-        //                                         GINT_TO_POINTER (image_cache_quark),
-        //                                         image.texture, None);
-        //             return true;
-        //         } else {
-        //             g_set_error (error, IMAGE_ERROR, IMAGE_ERROR_INTERNAL,
-        //                         "Setting image '%s' from CoglTexture failed",
-        //                         filename);
-        //             return false;
-        //         }
-        //     }
+    //     // if (width != -1) || (height != -1) ||
+    //     //     !texture_cache_contains_meta(cache, filename,
+    //     //                                     GINT_TO_POINTER(image_cache_quark)) {
+    //     //     // Check if the unprocessed image is in the cache, and if so, skip
+    //     //     // loading it and set it from the Cogl texture handle.
+    //     //     if (width == -1) && (height == -1) &&
+    //     //         texture_cache_contains(cache, filename) {
+    //     //         if image_set_from_cogl_texture(image,
+    //     //             texture_cache_get_cogl_texture(cache, filename)) {
+    //     //             // Add the processed image to the cache
+    //     //             texture_cache_insert_meta (cache, filename,
+    //     //                                         GINT_TO_POINTER (image_cache_quark),
+    //     //                                         image.texture, None);
+    //     //             return true;
+    //     //         } else {
+    //     //             g_set_error (error, IMAGE_ERROR, IMAGE_ERROR_INTERNAL,
+    //     //                         "Setting image '%s' from CoglTexture failed",
+    //     //                         filename);
+    //     //             return false;
+    //     //         }
+    //     //     }
 
-        //     // Load the pixbuf in a thread, then later on upload it to the GPU
-        //     if image.load_async {
-        //         return image.set_async(filename, None, 0, None,
-        //                                 width, height, error);
-        //     }
+    //     //     // Load the pixbuf in a thread, then later on upload it to the GPU
+    //     //     if image.load_async {
+    //     //         return image.set_async(filename, None, 0, None,
+    //     //                                 width, height, error);
+    //     //     }
 
-        //     // Synchronously load the pixbuf and set it
-        //     pixbuf = image_pixbuf_new(filename, None, 0, width, height,
-        //         image.width_threshold,
-        //         image.height_threshold,
-        //         image.upscale, &use_cache, error);
+    //     //     // Synchronously load the pixbuf and set it
+    //     //     pixbuf = image_pixbuf_new(filename, None, 0, width, height,
+    //     //         image.width_threshold,
+    //     //         image.height_threshold,
+    //     //         image.upscale, &use_cache, error);
 
-        //     if !pixbuf {
-        //         return false;
-        //     }
-        // }
+    //     //     if !pixbuf {
+    //     //         return false;
+    //     //     }
+    //     // }
 
-        // retval = image.set_from_pixbuf(pixbuf, use_cache ? filename : None, error);
+    //     // retval = image.set_from_pixbuf(pixbuf, use_cache ? filename : None, error);
 
-        // if pixbuf {
-        //     g_object_unref (pixbuf);
-        // }
+    //     // if pixbuf {
+    //     //     g_object_unref (pixbuf);
+    //     // }
 
-        // return retval;
+    //     // return retval;
 
-        unimplemented!()
-    }
+    //     unimplemented!()
+    // }
 
     /// set_image_rotation:
     /// @image: A #Image
@@ -1019,38 +1009,35 @@ impl<O: Is<Image>> ImageExt for O {
         unimplemented!()
     }
 
-    fn connect_image_load_error<F: Fn(&Self, &glib::Error) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
-        // unsafe extern "C" fn image_load_error_trampoline<P, F: Fn(&P, &glib::Error) + 'static>(
-        //     this: *mut ffi::Image,
-        //     object: *mut glib_sys::GError,
-        //     f: glib_sys::gpointer,
-        // ) where
-        //     P: Is<Image>,
-        // {
-        //     let f: &F = &*(f as *const F);
-        //     f(
-        //         &Image::from_glib_borrow(this).unsafe_cast_ref(),
-        //         &from_glib_borrow(object),
-        //     )
-        // }
-        // unsafe {
-        //     let f: Box_<F> = Box_::new(f);
-        //     connect_raw(
-        //         self.as_ptr() as *mut _,
-        //         b"image-load-error\0".as_ptr() as *const _,
-        //         Some(transmute::<_, unsafe extern "C" fn()>(
-        //             image_load_error_trampoline::<Self, F> as *const (),
-        //         )),
-        //         Box_::into_raw(f),
-        //     )
-        // }
-        unimplemented!()
-    }
+    // fn connect_image_load_error<F: Fn(&Self, &glib::Error) + 'static>(&self, f: F) -> HandlerId {
+    //     // unsafe extern "C" fn image_load_error_trampoline<P, F: Fn(&P, &glib::Error) + 'static>(
+    //     //     this: *mut ffi::Image,
+    //     //     object: *mut glib_sys::GError,
+    //     //     f: glib_sys::gpointer,
+    //     // ) where
+    //     //     P: Is<Image>,
+    //     // {
+    //     //     let f: &F = &*(f as *const F);
+    //     //     f(
+    //     //         &Image::from_glib_borrow(this).unsafe_cast_ref(),
+    //     //         &from_glib_borrow(object),
+    //     //     )
+    //     // }
+    //     // unsafe {
+    //     //     let f: Box_<F> = Box_::new(f);
+    //     //     connect_raw(
+    //     //         self.as_ptr() as *mut _,
+    //     //         b"image-load-error\0".as_ptr() as *const _,
+    //     //         Some(transmute::<_, unsafe extern "C" fn()>(
+    //     //             image_load_error_trampoline::<Self, F> as *const (),
+    //     //         )),
+    //     //         Box_::into_raw(f),
+    //     //     )
+    //     // }
+    //     unimplemented!()
+    // }
 
-    fn connect_image_loaded<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_image_loaded<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn image_loaded_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::Image,
         //     f: glib_sys::gpointer,
@@ -1074,10 +1061,7 @@ impl<O: Is<Image>> ImageExt for O {
         unimplemented!()
     }
 
-    fn connect_property_allow_upscale_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
+    fn connect_property_allow_upscale_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_allow_upscale_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::Image,
         //     _param_spec: glib_sys::gpointer,
@@ -1102,7 +1086,7 @@ impl<O: Is<Image>> ImageExt for O {
         unimplemented!()
     }
 
-    fn connect_property_filename_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_filename_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_filename_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::Image,
         //     _param_spec: glib_sys::gpointer,
@@ -1127,10 +1111,7 @@ impl<O: Is<Image>> ImageExt for O {
         unimplemented!()
     }
 
-    fn connect_property_image_rotation_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
+    fn connect_property_image_rotation_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_image_rotation_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::Image,
         //     _param_spec: glib_sys::gpointer,
@@ -1155,7 +1136,7 @@ impl<O: Is<Image>> ImageExt for O {
         unimplemented!()
     }
 
-    fn connect_property_load_async_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_load_async_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_load_async_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::Image,
         //     _param_spec: glib_sys::gpointer,
@@ -1183,7 +1164,7 @@ impl<O: Is<Image>> ImageExt for O {
     fn connect_property_scale_height_threshold_notify<F: Fn(&Self) + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId {
+    ) -> HandlerId {
         // unsafe extern "C" fn notify_scale_height_threshold_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::Image,
         //     _param_spec: glib_sys::gpointer,
@@ -1208,7 +1189,7 @@ impl<O: Is<Image>> ImageExt for O {
         unimplemented!()
     }
 
-    fn connect_property_scale_mode_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_scale_mode_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_scale_mode_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::Image,
         //     _param_spec: glib_sys::gpointer,
@@ -1236,7 +1217,7 @@ impl<O: Is<Image>> ImageExt for O {
     fn connect_property_scale_width_threshold_notify<F: Fn(&Self) + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId {
+    ) -> HandlerId {
         // unsafe extern "C" fn notify_scale_width_threshold_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::Image,
         //     _param_spec: glib_sys::gpointer,
@@ -1264,7 +1245,7 @@ impl<O: Is<Image>> ImageExt for O {
     fn connect_property_transition_duration_notify<F: Fn(&Self) + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId {
+    ) -> HandlerId {
         // unsafe extern "C" fn notify_transition_duration_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::Image,
         //     _param_spec: glib_sys::gpointer,

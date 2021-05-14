@@ -1,12 +1,11 @@
 #![allow(unused_variables)]
 
 use crate::{prelude::*, Icon, StyleClass, Theme};
-use crate::{Actor, Position, PushAction, Text, Widget};
-use glib::signal::SignalHandlerId;
+use crate::{Actor, Position, PushAction, Text, Widget, HandlerId};
 use std::{cell::RefCell, fmt};
 
-#[derive(Default, Clone, Debug)]
-pub struct RatingProps {
+#[derive(Default, Debug)]
+pub struct RailProps {
     pub text: Option<String>,
     pub icon_name: Option<String>,
     pub style_icon_name: Option<String>,
@@ -29,15 +28,15 @@ pub struct RatingProps {
     // pub action_icon_binding: GBinding,
 }
 
-#[derive(Clone, Debug)]
-pub struct Rating {
-    props: RefCell<RatingProps>,
+#[derive(Debug)]
+pub struct Rail {
+    props: RefCell<RailProps>,
     inner: Widget,
 }
 
-impl Rating {
+impl Rail {
     pub fn new() -> Self {
-        let props = RatingProps::default();
+        let props = RailProps::default();
 
         let component = Self {
             props: RefCell::new(props),
@@ -49,7 +48,7 @@ impl Rating {
     }
 
     pub fn with_label(text: &str) -> Self {
-        let mut props = RatingProps::default();
+        let mut props = RailProps::default();
         if !text.is_empty() {
             props.text = Some(text.into())
         }
@@ -64,7 +63,7 @@ impl Rating {
     }
 
     pub fn with_icon(name: &str) -> Self {
-        let mut props = RatingProps::default();
+        let mut props = RailProps::default();
         if !name.is_empty() {
             props.icon_name = Some(name.into())
         }
@@ -124,7 +123,7 @@ impl Rating {
             //                             NULL);
             // clutter_actor_add_child (priv->hbox, priv->label);
             // let actor: &Actor = label.as_ref();
-            self.inner.add_child(&label);
+            // self.inner.add_child(&label);
         }
 
         // box_layout_child_set_expand (BOX_LAYOUT (priv->hbox),
@@ -145,39 +144,39 @@ impl Rating {
     }
 }
 
-impl Default for Rating {
+impl Default for Rail {
     fn default() -> Self {
         Self::new()
     }
 }
 
-impl Object for Rating {}
-impl Is<Rating> for Rating {}
+impl Object for Rail {}
+impl Is<Rail> for Rail {}
 
-impl AsRef<Rating> for Rating {
-    fn as_ref(&self) -> &Rating {
+impl AsRef<Rail> for Rail {
+    fn as_ref(&self) -> &Rail {
         self
     }
 }
 
-impl Is<Widget> for Rating {}
+impl Is<Widget> for Rail {}
 
-impl AsRef<Widget> for Rating {
+impl AsRef<Widget> for Rail {
     fn as_ref(&self) -> &Widget {
         &self.inner
     }
 }
 
-impl Is<Actor> for Rating {}
+impl Is<Actor> for Rail {}
 
-impl AsRef<Actor> for Rating {
+impl AsRef<Actor> for Rail {
     fn as_ref(&self) -> &Actor {
         let actor: &Actor = self.inner.as_ref();
         actor
     }
 }
 
-pub trait RatingExt: 'static {
+pub trait RailExt: 'static {
     /// get_action:
     /// @button: A #Rating
     ///
@@ -338,35 +337,35 @@ pub trait RatingExt: 'static {
     ///
     fn set_toggled(&self, toggled: bool);
 
-    fn connect_clicked<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_clicked<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_action_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_action_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_icon_name_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_icon_name_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
     fn connect_property_icon_position_notify<F: Fn(&Self) + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId;
+    ) -> HandlerId;
 
-    fn connect_property_icon_size_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_icon_size_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
     fn connect_property_icon_visible_notify<F: Fn(&Self) + 'static>(&self, f: F)
-        -> SignalHandlerId;
+        -> HandlerId;
 
-    fn connect_property_is_toggle_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_is_toggle_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_label_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_label_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
     fn connect_property_label_visible_notify<F: Fn(&Self) + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId;
+    ) -> HandlerId;
 
-    fn connect_property_toggled_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_toggled_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 }
 
-impl<O: Is<Rating>> RatingExt for O {
+impl<O: Is<Rail>> RailExt for O {
     /// get_action:
     /// @button: A #Rating
     ///
@@ -671,7 +670,7 @@ impl<O: Is<Rating>> RatingExt for O {
         }
     }
 
-    fn connect_clicked<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_clicked<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn clicked_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::Rating,
         //     f: glib_sys::gpointer,
@@ -695,7 +694,7 @@ impl<O: Is<Rating>> RatingExt for O {
         unimplemented!()
     }
 
-    fn connect_property_action_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_action_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_action_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::Rating,
         //     _param_spec: glib_sys::gpointer,
@@ -720,7 +719,7 @@ impl<O: Is<Rating>> RatingExt for O {
         unimplemented!()
     }
 
-    fn connect_property_icon_name_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_icon_name_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_icon_name_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::Rating,
         //     _param_spec: glib_sys::gpointer,
@@ -748,7 +747,7 @@ impl<O: Is<Rating>> RatingExt for O {
     fn connect_property_icon_position_notify<F: Fn(&Self) + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId {
+    ) -> HandlerId {
         // unsafe extern "C" fn notify_icon_position_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::Rating,
         //     _param_spec: glib_sys::gpointer,
@@ -773,7 +772,7 @@ impl<O: Is<Rating>> RatingExt for O {
         unimplemented!()
     }
 
-    fn connect_property_icon_size_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_icon_size_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_icon_size_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::Rating,
         //     _param_spec: glib_sys::gpointer,
@@ -801,7 +800,7 @@ impl<O: Is<Rating>> RatingExt for O {
     fn connect_property_icon_visible_notify<F: Fn(&Self) + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId {
+    ) -> HandlerId {
         // unsafe extern "C" fn notify_icon_visible_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::Rating,
         //     _param_spec: glib_sys::gpointer,
@@ -826,7 +825,7 @@ impl<O: Is<Rating>> RatingExt for O {
         unimplemented!()
     }
 
-    fn connect_property_is_toggle_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_is_toggle_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_is_toggle_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::Rating,
         //     _param_spec: glib_sys::gpointer,
@@ -851,7 +850,7 @@ impl<O: Is<Rating>> RatingExt for O {
         unimplemented!()
     }
 
-    fn connect_property_label_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_label_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_label_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::Rating,
         //     _param_spec: glib_sys::gpointer,
@@ -879,7 +878,7 @@ impl<O: Is<Rating>> RatingExt for O {
     fn connect_property_label_visible_notify<F: Fn(&Self) + 'static>(
         &self,
         f: F,
-    ) -> SignalHandlerId {
+    ) -> HandlerId {
         // unsafe extern "C" fn notify_label_visible_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::Rating,
         //     _param_spec: glib_sys::gpointer,
@@ -904,7 +903,7 @@ impl<O: Is<Rating>> RatingExt for O {
         unimplemented!()
     }
 
-    fn connect_property_toggled_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_toggled_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_toggled_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::Rating,
         //     _param_spec: glib_sys::gpointer,
@@ -930,8 +929,8 @@ impl<O: Is<Rating>> RatingExt for O {
     }
 }
 
-impl fmt::Display for Rating {
+impl fmt::Display for Rail {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "Rating")
+        write!(f, "Rail")
     }
 }

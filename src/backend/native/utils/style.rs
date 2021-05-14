@@ -1,8 +1,7 @@
 #![allow(unused_variables)]
 
 use crate::prelude::*;
-use glib::signal::SignalHandlerId;
-use gobject_sys::GValue;
+use crate::HandlerId;
 use std::{cell::RefCell, fmt};
 
 #[derive(Clone, Default, Debug)]
@@ -59,9 +58,9 @@ pub struct StylableCache {
 
 #[derive(Clone, Debug)]
 pub struct StyleProperty {
-    pub value_type: glib::types::Type,
+    // pub value_type: glib::types::Type,
     pub value_name: String,
-    pub value: GValue,
+    // pub value: GValue,
 }
 
 #[derive(Clone, Default, Debug)]
@@ -187,7 +186,7 @@ pub trait StyleExt: 'static {
     /// returns: #true if the style information was loaded successfully. Returns
     /// #false on error.
     ///
-    fn load_from_data(&self, id: &str, data: &str) -> Result<(), glib::Error>;
+    // fn load_from_data(&self, id: &str, data: &str) -> Result<(), glib::Error>;
 
     /// load_from_file:
     /// @style: a #Style
@@ -199,11 +198,11 @@ pub trait StyleExt: 'static {
     /// returns: #true if the style information was loaded successfully. Returns
     /// #false on error.
     ///
-    fn load_from_file(&self, filename: &str) -> Result<(), glib::Error>;
+    // fn load_from_file(&self, filename: &str) -> Result<(), glib::Error>;
 
-    fn load_from_resource(&self, path: &str) -> Result<(), glib::Error>;
+    // fn load_from_resource(&self, path: &str) -> Result<(), glib::Error>;
 
-    fn connect_changed<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_changed<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 }
 
 impl<O: Is<Style>> StyleExt for O {
@@ -232,12 +231,12 @@ impl<O: Is<Style>> StyleExt for O {
     /// returns: #true if the style information was loaded successfully. Returns
     /// #false on error.
     ///
-    fn load_from_data(&self, id: &str, data: &str) -> Result<(), glib::Error> {
-        let style = self.as_ref();
+    // fn load_from_data(&self, id: &str, data: &str) -> Result<(), glib::Error> {
+    //     let style = self.as_ref();
 
-        // style_real_load_from_file(style, id, data, error, 0);
-        unimplemented!()
-    }
+    //     // style_real_load_from_file(style, id, data, error, 0);
+    //     unimplemented!()
+    // }
 
     /// load_from_file:
     /// @style: a #Style
@@ -249,36 +248,36 @@ impl<O: Is<Style>> StyleExt for O {
     /// returns: #true if the style information was loaded successfully. Returns
     /// #false on error.
     ///
-    fn load_from_file(&self, filename: &str) -> Result<(), glib::Error> {
-        let style = self.as_ref();
-        // style_real_load_from_file (style, filename, None, error, 0);
-        unimplemented!()
-    }
+    // fn load_from_file(&self, filename: &str) -> Result<(), glib::Error> {
+    //     let style = self.as_ref();
+    //     // style_real_load_from_file (style, filename, None, error, 0);
+    //     unimplemented!()
+    // }
 
-    fn load_from_resource(&self, path: &str) -> Result<(), glib::Error> {
-        // GBytes *bytes;
-        // GError *internal_error = None;
-        // gchar *id;
+    // fn load_from_resource(&self, path: &str) -> Result<(), glib::Error> {
+    //     // GBytes *bytes;
+    //     // GError *internal_error = None;
+    //     // gchar *id;
 
-        // bytes = g_resources_lookup_data(path, G_RESOURCE_LOOKUP_FLAGS_NONE,
-        //                                 &internal_error);
+    //     // bytes = g_resources_lookup_data(path, G_RESOURCE_LOOKUP_FLAGS_NONE,
+    //     //                                 &internal_error);
 
-        // if !bytes && internal_error {
-        //     g_propagate_error(error, internal_error);
+    //     // if !bytes && internal_error {
+    //     //     g_propagate_error(error, internal_error);
 
-        //     return false;
-        // }
+    //     //     return false;
+    //     // }
 
-        // id = g_strconcat("resource://", path, None);
+    //     // id = g_strconcat("resource://", path, None);
 
-        // style_real_load_from_file(style, id, g_bytes_get_data (bytes, None),  error, 0);
-        // g_bytes_unref(bytes);
+    //     // style_real_load_from_file(style, id, g_bytes_get_data (bytes, None),  error, 0);
+    //     // g_bytes_unref(bytes);
 
-        // return true;
-        unimplemented!()
-    }
+    //     // return true;
+    //     unimplemented!()
+    // }
 
-    fn connect_changed<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_changed<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn changed_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::Style,
         //     f: glib_sys::gpointer,

@@ -1,11 +1,10 @@
 #![allow(unused_variables)]
 
 use crate::prelude::*;
-use crate::{Actor, Timeline, Widget};
-use glib::signal::SignalHandlerId;
+use crate::{Actor, HandlerId, Timeline, Widget};
 use std::{cell::RefCell, fmt};
 
-#[derive(Clone, Debug)]
+#[derive(Debug)]
 pub struct ToggleHandle {
     pub parent: Widget,
 }
@@ -22,7 +21,7 @@ pub struct ToggleProps {
     pub last_move: f32,
 }
 
-#[derive(Clone, Debug)]
+#[derive(Debug)]
 pub struct Toggle {
     props: RefCell<ToggleProps>,
     widget: Widget,
@@ -73,7 +72,7 @@ pub trait ToggleExt: 'static {
 
     fn set_active(&self, active: bool);
 
-    fn connect_property_active_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_active_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 }
 
 impl<O: Is<Toggle>> ToggleExt for O {
@@ -127,7 +126,7 @@ impl<O: Is<Toggle>> ToggleExt for O {
         }
     }
 
-    fn connect_property_active_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_active_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_active_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::Toggle,
         //     _param_spec: glib_sys::gpointer,

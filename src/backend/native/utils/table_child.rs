@@ -1,8 +1,7 @@
 #![allow(unused_variables)]
 
 use crate::prelude::*;
-use crate::Align;
-use glib::signal::SignalHandlerId;
+use crate::{Align, HandlerId};
 use std::fmt;
 
 #[derive(Clone, Debug)]
@@ -58,25 +57,25 @@ pub trait TableChildExt: 'static {
 
     fn set_property_y_fill(&self, y_fill: bool);
 
-    fn connect_property_column_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_column_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_column_span_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_column_span_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_row_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_row_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_row_span_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_row_span_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_x_align_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_x_align_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_x_expand_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_x_expand_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_x_fill_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_x_fill_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_y_align_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_y_align_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_y_expand_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_y_expand_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_y_fill_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_y_fill_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 }
 
 impl<O: Is<TableChild>> TableChildExt for O {
@@ -328,7 +327,7 @@ impl<O: Is<TableChild>> TableChildExt for O {
         unimplemented!()
     }
 
-    fn connect_property_column_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_column_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_column_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::TableChild,
         //     _param_spec: glib_sys::gpointer,
@@ -353,7 +352,7 @@ impl<O: Is<TableChild>> TableChildExt for O {
         unimplemented!()
     }
 
-    fn connect_property_column_span_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_column_span_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_column_span_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::TableChild,
         //     _param_spec: glib_sys::gpointer,
@@ -378,7 +377,7 @@ impl<O: Is<TableChild>> TableChildExt for O {
         unimplemented!()
     }
 
-    fn connect_property_row_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_row_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_row_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::TableChild,
         //     _param_spec: glib_sys::gpointer,
@@ -403,7 +402,7 @@ impl<O: Is<TableChild>> TableChildExt for O {
         unimplemented!()
     }
 
-    fn connect_property_row_span_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_row_span_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_row_span_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::TableChild,
         //     _param_spec: glib_sys::gpointer,
@@ -428,7 +427,7 @@ impl<O: Is<TableChild>> TableChildExt for O {
         unimplemented!()
     }
 
-    fn connect_property_x_align_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_x_align_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_x_align_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::TableChild,
         //     _param_spec: glib_sys::gpointer,
@@ -453,7 +452,7 @@ impl<O: Is<TableChild>> TableChildExt for O {
         unimplemented!()
     }
 
-    fn connect_property_x_expand_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_x_expand_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_x_expand_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::TableChild,
         //     _param_spec: glib_sys::gpointer,
@@ -478,7 +477,7 @@ impl<O: Is<TableChild>> TableChildExt for O {
         unimplemented!()
     }
 
-    fn connect_property_x_fill_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_x_fill_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_x_fill_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::TableChild,
         //     _param_spec: glib_sys::gpointer,
@@ -503,7 +502,7 @@ impl<O: Is<TableChild>> TableChildExt for O {
         unimplemented!()
     }
 
-    fn connect_property_y_align_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_y_align_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_y_align_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::TableChild,
         //     _param_spec: glib_sys::gpointer,
@@ -528,7 +527,7 @@ impl<O: Is<TableChild>> TableChildExt for O {
         unimplemented!()
     }
 
-    fn connect_property_y_expand_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_y_expand_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_y_expand_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::TableChild,
         //     _param_spec: glib_sys::gpointer,
@@ -553,7 +552,7 @@ impl<O: Is<TableChild>> TableChildExt for O {
         unimplemented!()
     }
 
-    fn connect_property_y_fill_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_y_fill_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_y_fill_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::TableChild,
         //     _param_spec: glib_sys::gpointer,

@@ -1,24 +1,23 @@
 #![allow(unused_variables)]
 
 use crate::prelude::*;
-use crate::{Actor, ActorBox, BorderImage, FloatingWidget, Geometry, Widget};
-use glib::signal::SignalHandlerId;
+use crate::{Actor, ActorBox, BorderImage, FloatingWidget, HandlerId, Rect, Widget};
 use std::{cell::RefCell, fmt};
 
-#[derive(Clone, Debug)]
+#[derive(Debug)]
 pub struct TooltipProps {
     pub label: Option<Actor>,
     pub arrow_box: Option<ActorBox>,
     pub arrow_offset: f32,
     pub actor_below: f32,
-    pub tip_area: Option<Geometry>,
+    pub tip_area: Option<Rect<f32>>,
     pub stage_matrix: dx::Matrix,
     pub border_image: BorderImage,
     pub text_allocation: Option<ActorBox>,
     pub border_image_texture: Option<dx::Handle>,
 }
 
-#[derive(Clone, Debug)]
+#[derive(Debug)]
 pub struct Tooltip {
     props: RefCell<TooltipProps>,
     widget: FloatingWidget,
@@ -95,7 +94,7 @@ pub trait TooltipExt: 'static {
     /// Returns: the #Geometry, owned by the tooltip which must not be freed
     /// by the application.
     ///
-    fn get_tip_area(&self) -> Option<Geometry>;
+    fn get_tip_area(&self) -> Option<Rect<f32>>;
 
     /// hide:
     /// @tooltip: a #Tooltip
@@ -114,11 +113,11 @@ pub trait TooltipExt: 'static {
 
     /// set_tip_area:
     /// @tooltip: A #Tooltip
-    /// @area: A #Geometry
+    /// @area: A #Rect<f32>
     ///
     /// Set the area on the stage that the tooltip applies to.
     ///
-    fn set_tip_area(&self, area: &Geometry);
+    fn set_tip_area(&self, area: &Rect<f32>);
 
     /// set_tip_area_from_actor:
     /// @tooltip: A #Tooltip
@@ -137,9 +136,9 @@ pub trait TooltipExt: 'static {
     ///
     fn show(&self);
 
-    fn connect_property_text_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_text_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_tip_area_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_tip_area_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 }
 
 impl<O: Is<Tooltip>> TooltipExt for O {
@@ -164,7 +163,7 @@ impl<O: Is<Tooltip>> TooltipExt for O {
     /// Returns: the #Geometry, owned by the tooltip which must not be freed
     /// by the application.
     ///
-    fn get_tip_area(&self) -> Option<Geometry> {
+    fn get_tip_area(&self) -> Option<Rect<f32>> {
         let tooltip = self.as_ref();
         let props = tooltip.props.borrow();
 
@@ -218,7 +217,7 @@ impl<O: Is<Tooltip>> TooltipExt for O {
     ///
     /// Set the area on the stage that the tooltip applies to.
     ///
-    fn set_tip_area(&self, area: &Geometry) {
+    fn set_tip_area(&self, area: &Rect<f32>) {
         let tooltip = self.as_ref();
         let props = tooltip.props.borrow();
 
@@ -300,7 +299,7 @@ impl<O: Is<Tooltip>> TooltipExt for O {
         // }
     }
 
-    fn connect_property_text_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_text_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_text_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::Tooltip,
         //     _param_spec: glib_sys::gpointer,
@@ -325,7 +324,7 @@ impl<O: Is<Tooltip>> TooltipExt for O {
         unimplemented!()
     }
 
-    fn connect_property_tip_area_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_tip_area_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_tip_area_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::Tooltip,
         //     _param_spec: glib_sys::gpointer,

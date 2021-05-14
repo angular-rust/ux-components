@@ -1,8 +1,7 @@
 #![allow(unused_variables)]
 
 use crate::prelude::*;
-use crate::Timeline;
-use glib::signal::SignalHandlerId;
+use crate::{HandlerId, Timeline};
 use std::{cell::RefCell, fmt};
 
 #[derive(Clone, Debug)]
@@ -435,33 +434,27 @@ pub trait AdjustmentExt: 'static {
         page_size: f64,
     );
 
-    fn connect_changed<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_changed<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_changed_immediate<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_changed_immediate<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_interpolation_completed<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_interpolation_completed<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_clamp_value_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_clamp_value_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_elastic_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_elastic_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_lower_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_lower_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_page_increment_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId;
+    fn connect_property_page_increment_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_page_size_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_page_size_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_step_increment_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId;
+    fn connect_property_step_increment_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_upper_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_upper_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
-    fn connect_property_value_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+    fn connect_property_value_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 }
 
 impl<O: Is<Adjustment>> AdjustmentExt for O {
@@ -816,7 +809,7 @@ impl<O: Is<Adjustment>> AdjustmentExt for O {
         // g_object_thaw_notify(G_OBJECT (adjustment));
     }
 
-    fn connect_changed<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_changed<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn changed_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::Adjustment,
         //     f: glib_sys::gpointer,
@@ -840,7 +833,7 @@ impl<O: Is<Adjustment>> AdjustmentExt for O {
         unimplemented!()
     }
 
-    fn connect_changed_immediate<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_changed_immediate<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn changed_immediate_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::Adjustment,
         //     f: glib_sys::gpointer,
@@ -864,7 +857,7 @@ impl<O: Is<Adjustment>> AdjustmentExt for O {
         unimplemented!()
     }
 
-    fn connect_interpolation_completed<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_interpolation_completed<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn interpolation_completed_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::Adjustment,
         //     f: glib_sys::gpointer,
@@ -888,7 +881,7 @@ impl<O: Is<Adjustment>> AdjustmentExt for O {
         unimplemented!()
     }
 
-    fn connect_property_clamp_value_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_clamp_value_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_clamp_value_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::Adjustment,
         //     _param_spec: glib_sys::gpointer,
@@ -913,7 +906,7 @@ impl<O: Is<Adjustment>> AdjustmentExt for O {
         unimplemented!()
     }
 
-    fn connect_property_elastic_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_elastic_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_elastic_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::Adjustment,
         //     _param_spec: glib_sys::gpointer,
@@ -938,7 +931,7 @@ impl<O: Is<Adjustment>> AdjustmentExt for O {
         unimplemented!()
     }
 
-    fn connect_property_lower_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_lower_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_lower_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::Adjustment,
         //     _param_spec: glib_sys::gpointer,
@@ -963,10 +956,7 @@ impl<O: Is<Adjustment>> AdjustmentExt for O {
         unimplemented!()
     }
 
-    fn connect_property_page_increment_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
+    fn connect_property_page_increment_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_page_increment_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::Adjustment,
         //     _param_spec: glib_sys::gpointer,
@@ -991,7 +981,7 @@ impl<O: Is<Adjustment>> AdjustmentExt for O {
         unimplemented!()
     }
 
-    fn connect_property_page_size_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_page_size_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_page_size_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::Adjustment,
         //     _param_spec: glib_sys::gpointer,
@@ -1016,10 +1006,7 @@ impl<O: Is<Adjustment>> AdjustmentExt for O {
         unimplemented!()
     }
 
-    fn connect_property_step_increment_notify<F: Fn(&Self) + 'static>(
-        &self,
-        f: F,
-    ) -> SignalHandlerId {
+    fn connect_property_step_increment_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_step_increment_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::Adjustment,
         //     _param_spec: glib_sys::gpointer,
@@ -1044,7 +1031,7 @@ impl<O: Is<Adjustment>> AdjustmentExt for O {
         unimplemented!()
     }
 
-    fn connect_property_upper_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_upper_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_upper_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::Adjustment,
         //     _param_spec: glib_sys::gpointer,
@@ -1069,7 +1056,7 @@ impl<O: Is<Adjustment>> AdjustmentExt for O {
         unimplemented!()
     }
 
-    fn connect_property_value_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+    fn connect_property_value_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId {
         // unsafe extern "C" fn notify_value_trampoline<P, F: Fn(&P) + 'static>(
         //     this: *mut ffi::Adjustment,
         //     _param_spec: glib_sys::gpointer,
