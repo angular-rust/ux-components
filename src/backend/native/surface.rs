@@ -2,13 +2,14 @@
 #![allow(unused_imports)]
 
 use crate::prelude::*;
-use crate::{Actor, ActorCanvas, Canvas, HandlerId, ScalingFilter, Widget};
+use crate::{Actor, ActorCanvas, HandlerId, ScalingFilter, Widget};
+// use crate::Canvas;
 use std::{cell::RefCell, fmt, mem};
 
 #[derive(Debug)]
 pub struct SurfaceProps {
-    pub texture: Option<dx::Handle>,
-    pub material: Option<dx::Handle>,
+    pub texture: Option<dx::core::Handle>,
+    pub material: Option<dx::core::Handle>,
     pub frames: u32,
     pub anim_duration: u32,
     pub current_frame: u32,

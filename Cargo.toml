@@ -22,8 +22,8 @@ name = "components"
 features = ["dox"]
 
 [features]
-dox = ["ux-animate/dox", "ux-charts/dox", "ux-dx/dox", "pango/dox"]
-# , "x11/dox", "gobject-sys/dox",
+dox = ["ux-animate/dox", "ux-charts/dox", "ux-dx/dox"]
+# , "x11/dox", "gobject-sys/dox", , "pango/dox"
 
 [dependencies]
 log = "0.4"
@@ -41,13 +41,9 @@ fontdue = "0.5.0"
 # ux-css = "0"
 
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies]
-png = "0.16"
-# gobject-sys = "0.10"
-# glib = "0.10"
-pango = "0.9"
-# x11 = "2.18"
-cairo-rs = { version = "0.9", features = ["png"] }
-gio = { version = "0.9", features = ["v2_58"] }
+# png = "0.16"
+# pango = "0.9"
+# cairo-rs = { version = "0.9", features = ["png"] }
 
 # starup notifications
 notify-rust = "4"

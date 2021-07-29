@@ -7,8 +7,8 @@ use std::{cell::RefCell, fmt};
 #[derive(Debug)]
 pub struct FloatingWidgetProps {
     pub stage: Option<Stage>,
-    pub paint_matrix: Option<dx::Matrix>,
-    pub pick_matrix: Option<dx::Matrix>,
+    pub paint_matrix: Option<dx::core::Matrix>,
+    pub pick_matrix: Option<dx::core::Matrix>,
     pub pick_handler: u64,
     pub paint_handler: u64,
 }

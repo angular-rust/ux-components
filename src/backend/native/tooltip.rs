@@ -11,10 +11,10 @@ pub struct TooltipProps {
     pub arrow_offset: f32,
     pub actor_below: f32,
     pub tip_area: Option<Rect<f32>>,
-    pub stage_matrix: dx::Matrix,
+    pub stage_matrix: dx::core::Matrix,
     pub border_image: BorderImage,
     pub text_allocation: Option<ActorBox>,
-    pub border_image_texture: Option<dx::Handle>,
+    pub border_image_texture: Option<dx::core::Handle>,
 }
 
 #[derive(Debug)]

@@ -17,14 +17,14 @@ pub struct TextureCacheItem {
     pub height: i32,
     pub pos_x: i32,
     pub pos_y: i32,
-    pub ptr: dx::Handle,
+    pub ptr: dx::core::Handle,
     // pub meta: GHashTable,
 }
 
 #[derive(Debug)]
 pub struct TextureCacheMetaEntry {
     // pub ident: gpointer,
-    pub texture: dx::Handle,
+    pub texture: dx::core::Handle,
     // pub destroy_func: GDestroyNotify,
 }
 
@@ -98,7 +98,7 @@ pub trait TextureCacheExt: 'static {
     ///
     /// Returns: (transfer none): a #CoglHandle to the cached texture
     ///
-    fn get_cogl_texture(&self, uri: &str) -> Option<dx::Handle>;
+    fn get_cogl_texture(&self, uri: &str) -> Option<dx::core::Handle>;
 
     /// get_meta_cogl_texture:
     /// @self: A #TextureCache
@@ -136,7 +136,7 @@ pub trait TextureCacheExt: 'static {
     /// If the image is already in the cache, this texture will replace it. A
     /// reference will be taken on the given texture.
     ///
-    fn insert(&self, uri: &str, texture: dx::Handle);
+    fn insert(&self, uri: &str, texture: dx::core::Handle);
 
     /// insert_meta:
     /// @self: A #TextureCache
@@ -197,7 +197,7 @@ impl<O: Is<TextureCache>> TextureCacheExt for O {
     ///
     /// Returns: (transfer none): a #CoglHandle to the cached texture
     ///
-    fn get_cogl_texture(&self, uri: &str) -> Option<dx::Handle> {
+    fn get_cogl_texture(&self, uri: &str) -> Option<dx::core::Handle> {
         // unsafe { TODO: call ffi:texture_cache_get_cogl_texture() }
         unimplemented!()
     }
@@ -245,7 +245,7 @@ impl<O: Is<TextureCache>> TextureCacheExt for O {
     /// If the image is already in the cache, this texture will replace it. A
     /// reference will be taken on the given texture.
     ///
-    fn insert(&self, uri: &str, texture: dx::Handle) {
+    fn insert(&self, uri: &str, texture: dx::core::Handle) {
         // unsafe { TODO: call ffi:texture_cache_insert() }
     }
 

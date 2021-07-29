@@ -6,8 +6,8 @@ use std::{cell::RefCell, fmt};
 
 #[derive(Debug)]
 pub struct SpinnerProps {
-    pub texture: Option<dx::Handle>,
-    pub material: Option<dx::Handle>,
+    pub texture: Option<dx::core::Handle>,
+    pub material: Option<dx::core::Handle>,
     pub frames: u32,
     pub anim_duration: u32,
     pub current_frame: u32,

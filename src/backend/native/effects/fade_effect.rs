@@ -16,10 +16,10 @@ pub struct FadeEffectProps {
     pub width: f32,
     pub height: f32,
 
-    pub vbo: dx::Handle,
-    pub indices: dx::Handle,
+    pub vbo: dx::core::Handle,
+    pub indices: dx::core::Handle,
     pub n_quads: u32,
-    pub old_material: dx::Material,
+    pub old_material: dx::core::Material,
     pub blocked_id: u64,
 
     pub x_offset: f32,

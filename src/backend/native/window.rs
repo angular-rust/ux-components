@@ -20,7 +20,7 @@ pub struct WindowProps {
     pub start_angle: f32,
     pub end_angle: f32,
     pub angle: f32,
-    pub icon_texture: Option<dx::Handle>,
+    pub icon_texture: Option<dx::core::Handle>,
     pub toolbar: Option<Toolbar>,
     pub resize_grip: Option<Actor>,
     pub debug_actor: Option<Actor>,
@@ -171,7 +171,7 @@ impl Default for Window {
         timeline.set_progress_mode(AnimationMode::EaseInOutQuad);
 
         let inner = Stage::new();
-        inner.set_user_resizable(true);
+        inner.set_resizable(true);
 
         let props = WindowProps {
             has_toolbar: true,
@@ -384,7 +384,7 @@ pub trait WindowExt: 'static {
     ///
     fn set_has_toolbar(&self, toolbar: bool);
 
-    fn set_icon_from_cogl_texture(&self, texture: dx::Handle);
+    fn set_icon_from_cogl_texture(&self, texture: dx::core::Handle);
 
     /// set_icon_name:
     /// @window: A #Stage
@@ -577,7 +577,7 @@ impl<O: Is<Window>> WindowExt for O {
 
     fn get_resisable(&self) -> bool {
         let stage = self.as_ref();
-        stage.stage.get_user_resizable()
+        stage.stage.get_resizable()
     }
 
     /// get_small_screen:
@@ -778,7 +778,7 @@ impl<O: Is<Window>> WindowExt for O {
         }
     }
 
-    fn set_icon_from_cogl_texture(&self, texture: dx::Handle) {
+    fn set_icon_from_cogl_texture(&self, texture: dx::core::Handle) {
         // unsafe { TODO: call ffi:window_set_icon_from_cogl_texture() }
         unimplemented!()
     }
@@ -808,7 +808,7 @@ impl<O: Is<Window>> WindowExt for O {
 
     fn set_resizable(&self, resizable: bool) -> &Self {
         let stage = self.as_ref();
-        stage.stage.set_user_resizable(resizable);
+        stage.stage.set_resizable(resizable);
         self
     }
 
@@ -966,10 +966,9 @@ impl<O: Is<Window>> WindowExt for O {
     /// </para></note>
     ///
     fn set_window_size(&self, width: i32, height: i32) -> &Self {
-        // let stage = self.as_ref();
-        // stage.stage.set_size(width as f32, height as f32);
-        // self
-        unimplemented!()
+        let stage = self.as_ref();
+        stage.stage.set_window_size(width, height);
+        self
     }
 
     /// show:

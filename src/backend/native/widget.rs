@@ -27,9 +27,9 @@ pub struct WidgetProps {
     ux_border_image: BorderImage,
     ux_background_image: BorderImage,
 
-    border_image: Option<dx::Handle>,
-    old_border_image: Option<dx::Handle>,
-    background_image: Option<dx::Handle>,
+    border_image: Option<dx::core::Handle>,
+    old_border_image: Option<dx::core::Handle>,
+    background_image: Option<dx::core::Handle>,
     background_image_box: Option<ActorBox>,
     bg_color: Option<Color>,
     opacity: f64,
@@ -172,7 +172,7 @@ pub trait WidgetExt: 'static {
     /// Returns: (transfer none): a #Color
     fn get_background_color(&self) -> Option<Color>;
 
-    fn get_background_texture(&self) -> Option<dx::Handle>;
+    fn get_background_texture(&self) -> Option<dx::core::Handle>;
 
     /// get_disabled:
     /// @widget: an #Widget
@@ -351,7 +351,7 @@ impl<O: Is<Widget>> WidgetExt for O {
         props.bg_color
     }
 
-    fn get_background_texture(&self) -> Option<dx::Handle> {
+    fn get_background_texture(&self) -> Option<dx::core::Handle> {
         // unsafe { TODO: call ffi:widget_get_background_texture() }
         unimplemented!()
     }

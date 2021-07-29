@@ -19,7 +19,7 @@ pub struct TreeviewProps {
     pub icon_position: Position,
     pub icon_visible: bool,
     pub label_visible: bool,
-    pub content_image: Option<dx::Texture>,
+    pub content_image: Option<dx::core::Texture>,
     pub hbox: Option<Actor>,
     pub icon: Option<Actor>,
     pub label: Option<Actor>,

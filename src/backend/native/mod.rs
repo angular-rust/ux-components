@@ -237,22 +237,6 @@ impl Default for Align {
     }
 }
 
-/// FontWeight:
-/// Normal: Normal font weight
-/// Bold: Bold font weight
-/// Bolder: Bolder font weight
-/// Lighter: Lighter font weight
-///
-/// Support values of font weight
-///
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
-pub enum FontWeight {
-    Normal,
-    Bold,
-    Bolder,
-    Lighter,
-}
-
 /// ScrollPolicy:
 /// None: Never scroll
 /// Horizontal: Only allow horizontal scrolling

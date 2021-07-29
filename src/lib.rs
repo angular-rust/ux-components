@@ -8,6 +8,8 @@
     clippy::collapsible_if
 )]
 
+#![doc(html_logo_url = "https://dudochkin-victor.github.io/assets/ux-components/logo.svg")]
+
 mod backend;
 pub use backend::*;
 

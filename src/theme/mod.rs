@@ -1,5 +1,6 @@
 #![allow(unused_imports, unused_variables)]
-use animate::{Color, Gradient, Pattern};
+use animate::{Color, Gradient};
+// use animate::Pattern;
 use intmap::IntMap;
 use once_cell::sync::OnceCell;
 use std::{

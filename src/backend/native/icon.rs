@@ -9,7 +9,7 @@ pub struct IconProps {
     pub icon_set: bool,
     pub size_set: bool,
     pub is_content_image: bool,
-    pub icon_texture: Option<dx::Texture>,
+    pub icon_texture: Option<dx::core::Texture>,
     pub icon_name: Option<String>,
     pub icon_suffix: Option<String>,
     pub icon_size: usize,
