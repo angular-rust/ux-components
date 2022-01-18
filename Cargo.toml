@@ -22,23 +22,27 @@ name = "components"
 features = ["dox"]
 
 [features]
-dox = ["ux-animate/dox", "ux-charts/dox", "ux-dx/dox"]
-# , "x11/dox", "gobject-sys/dox", , "pango/dox"
+dox = ["ux-charts/dox", "ux-dx/dox"]
+# "ux-animate/dox", "x11/dox", "gobject-sys/dox", , "pango/dox"
 
 [dependencies]
 log = "0.4"
 bitflags = "1.0"
-ruex = "0.1"
+rand = "0.8"
 ux-macro = "0.1"
-ux-dx = "0.1"
+ux-dx = "0.2"
 ux-dataflow = "0.1"
-ux-animate = "0.1"
+# ux-animate = "0.1"
 ux-charts = "0.1"
-once_cell = "1.7.2"
-intmap = "0.7.0"
-url = "2.2.1"
-fontdue = "0.5.0"
+once_cell = "1.7"
+intmap = "0.7"
+url = "2.2"
+fontdue = "0.5"
+cgmath = "0.18"
+structopt = "0.3"
+stretch = "0.3.2"
 # ux-css = "0"
+crossbeam = "0.8.1"
 
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies]
 # png = "0.16"
@@ -53,7 +57,7 @@ wasm-bindgen = "0.2"
 js-sys = "0.3"
 wasm-bindgen-futures = "0.4"
 wasm-logger = "0.2"
-gloo = "0.2"
+gloo = "0.3"
 wasm-bindgen-test = "0.3"
 
 [target.'cfg(target_arch = "wasm32")'.dependencies.web-sys]
