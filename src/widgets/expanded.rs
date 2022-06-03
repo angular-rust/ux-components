@@ -4,7 +4,7 @@ use crate::{
     widgets::Widget,
 };
 
-use super::NullWidget;
+use super::NoneWidget;
 
 pub struct Expanded {
     pub key: Key,
@@ -17,14 +17,13 @@ impl Default for Expanded {
         Self {
             key: Default::default(),
             flex: Default::default(),
-            child: box NullWidget,
+            child: box NoneWidget,
         }
     }
 }
 
 impl Widget for Expanded {
     fn create_element(&self) -> Box<dyn Element> {
-        log::info!("Create ExpandedElement");
         box ExpandedElement::new(self)
     }
 }

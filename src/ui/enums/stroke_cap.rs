@@ -4,3 +4,9 @@ pub enum StrokeCap {
     Round = 1,
     Square = 2,
 }
+
+impl Default for StrokeCap {
+    fn default() -> Self {
+        Self::Butt
+    }
+}

@@ -3,7 +3,7 @@ use crate::{
     foundation::{colorspace::Color, Id, Key, WidgetProperties},
     painting::NotchedShape,
     ui::Clip,
-    widgets::{NullWidget, Widget},
+    widgets::{NoneWidget, Widget},
 };
 
 pub struct BottomAppBar {
@@ -25,14 +25,13 @@ impl Default for BottomAppBar {
             shape: Default::default(),
             clip_behavior: Default::default(),
             notch_margin: Default::default(),
-            child: box NullWidget,
+            child: box NoneWidget,
         }
     }
 }
 
 impl Widget for BottomAppBar {
     fn create_element(&self) -> Box<dyn Element> {
-        log::info!("Create BottomAppBarElement");
         box BottomAppBarElement::new(self)
     }
 }

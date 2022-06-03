@@ -17,7 +17,7 @@ pub struct FormfieldProps {
     pub primary_icon_filename: String,
     pub secondary_icon_filename: String,
     pub icon_highlight_suffix: Option<String>,
-    pub spacing: f64,
+    pub spacing: f32,
     pub password_char: char,
     pub undo_history: Vec<String>,
     pub undo_timeout_source: u64,

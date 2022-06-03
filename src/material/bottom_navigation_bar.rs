@@ -11,7 +11,7 @@ use super::{BottomNavigationBarLandscapeLayout, BottomNavigationBarType};
 pub struct BottomNavigationBar {
     pub key: Key,
     // pub items: Vec<BottomNavigationBarItem>,
-    pub on_tap: Option<Box<dyn ValueChanged<i32>>>,
+    pub on_tap: Option<ValueChanged<i32>>,
     pub current_index: i32,
     pub elevation: f32,
     pub bar_type: BottomNavigationBarType,
@@ -64,7 +64,6 @@ impl Default for BottomNavigationBar {
 
 impl Widget for BottomNavigationBar {
     fn create_element(&self) -> Box<dyn Element> {
-        log::info!("Create BottomNavigationBarElement");
         box BottomNavigationBarElement::new(self)
     }
 }

@@ -1,17 +1,17 @@
 use crate::{
     elements::{Element, StackElement},
     foundation::{Id, Key, WidgetProperties},
-    material::AlignmentGeometry,
-    ui::{Clip, TextDirection},
+    material::{AlignmentGeometry, NoneAlignmentGeometry},
+    ui::{Clip, TextDirection}, rendering::StackFit,
 };
 
 use super::Widget;
 
 pub struct Stack {
     pub key: Key,
-    pub alignment: AlignmentGeometry,
+    pub alignment: Box<dyn AlignmentGeometry>,
     pub text_direction: TextDirection,
-    // pub fit: StackFit,
+    pub fit: StackFit,
     // @Deprecated("Use clipBehavior instead. See the migration guide in flutter.dev/go/clip-behavior.")
     // pub overflow: Overflow,
     pub clip_behavior: Clip,
@@ -22,9 +22,9 @@ impl Default for Stack {
     fn default() -> Self {
         Self {
             key: Default::default(),
-            alignment: Default::default(),
+            alignment: box NoneAlignmentGeometry,
             text_direction: Default::default(),
-            // fit: Default::default(),
+            fit: Default::default(),
             // overflow: Default::default(),
             clip_behavior: Default::default(),
             children: Default::default(),
@@ -34,7 +34,6 @@ impl Default for Stack {
 
 impl Widget for Stack {
     fn create_element(&self) -> Box<dyn Element> {
-        log::info!("Create StackElement");
         box StackElement::new(self)
     }
 }

@@ -5,14 +5,14 @@ use std::{
     fmt::{Debug, Formatter, Result},
     rc::Rc,
 };
-use stretch::{node::Node, style};
+use stretch::{geometry, node::Node, style};
 
-use crate::prelude::Singleton;
+use crate::prelude::{OnDemand, Singleton, Color};
 
 use crate::{
     foundation::Signal,
     material::Divider,
-    rendering::backend::{WidgetRenderFactory, WidgetRenderHolder},
+    rendering::backend::{WidgetRenderFactory, WidgetRenderHolder, WidgetRenderer},
     services::LayoutSystem,
 };
 
@@ -32,6 +32,12 @@ pub struct DividerElement {
     /// The current state. Read/Write
     state: bool, // = true;
 
+    pub height: f32,
+    pub thickness: f32,
+    pub indent: f32,
+    pub end_indent: f32,
+    pub color: Color,
+
     /// Emitted whenever state is changed.
     /// `function(new_state: bool, prev_state: bool)`
     pub onchange: Signal<DividerStateChangeEvent>,
@@ -44,13 +50,39 @@ pub struct DividerElement {
 
 impl Debug for DividerElement {
     fn fmt(&self, f: &mut Formatter<'_>) -> Result {
-        f.debug_struct("CheckboxElement").finish()
+        f.debug_struct("DividerElement").finish()
     }
 }
 
 impl DividerElement {
     pub fn new(widget: &Divider) -> Self {
-        let node = LayoutSystem::new_node(style::Style { ..default() }, vec![]).unwrap();
+        let thickness = if widget.thickness != 0.0 {
+            widget.thickness
+        } else {
+            1.0
+        };
+
+        let height = if widget.height != 0.0 {
+            widget.height
+        } else {
+            thickness
+        };
+
+        let node = LayoutSystem::new_node(
+            style::Style {
+                size: geometry::Size {
+                    width: style::Dimension::Percent(1.0),
+                    height: style::Dimension::Points(height),
+                },
+                min_size: geometry::Size {
+                    width: style::Dimension::Percent(1.0),
+                    height: style::Dimension::Points(height),
+                },
+                ..default()
+            },
+            vec![],
+        )
+        .unwrap();
 
         let component = WidgetComponent::get(widget.key.id());
 
@@ -66,6 +98,11 @@ impl DividerElement {
             component,
             onchange: Signal::new(),
             state,
+            height,
+            thickness,
+            indent: widget.indent,
+            end_indent: widget.end_indent,
+            color: widget.color,
             renderer: WidgetRenderFactory::global().get::<Self>(),
             node,
         };
@@ -124,13 +161,6 @@ impl Element for DividerElement {
                 comp.w = layout.size.width;
                 comp.h = layout.size.height;
 
-                log::warn!(
-                    "Relayout DividerElement {}x{} {}x{}",
-                    comp.x,
-                    comp.y,
-                    comp.w,
-                    comp.h
-                );
                 true
             }
             Err(e) => {
@@ -143,6 +173,34 @@ impl Element for DividerElement {
             // self.leading.relayout();
             // self.title.relayout();
             // self.flexible_space.relayout();
+        }
+    }
+
+    fn render(&self) {
+        {
+            let mut comp = self.component.borrow_mut();
+
+            assert!(
+                !comp.destroyed,
+                "Widget was already destroyed but is being interacted with"
+            );
+
+            if comp.renderable && comp.onrender.is_some() {
+                let _ = comp.onrender.get().try_send(());
+            }
+        }
+
+        if let Some(ref render) = self.renderer {
+            render.render(self);
+        }
+
+        {
+            // let comp = self.component.borrow();
+            // for child in comp.children.iter() {
+            //     if let Some(widget) = child.widget() {
+            //         widget.render();
+            //     }
+            // }
         }
     }
 }

@@ -1,3 +1,7 @@
+use std::rc::Rc;
+
+use dx::engine::d2::Painter;
+
 // dependOnInheritedElement(InheritedElement ancestor, {Object aspect}) -> InheritedWidget
 // Registers this build context with ancestor such that when ancestor's widget changes this build context is rebuilt.
 //
@@ -40,4 +44,7 @@
 // visitChildElements(ElementVisitor visitor) -> void
 // Walks the children of this widget.
 
-pub struct BuildContext;
+
+pub struct BuildContext{
+    pub painter: Rc<Painter>
+}

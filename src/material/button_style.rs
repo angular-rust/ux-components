@@ -8,8 +8,8 @@ use crate::{
 };
 
 use super::{
-    AlignmentGeometry, InteractiveInkFeatureFactory, MaterialStateProperty, MaterialTapTargetSize,
-    VisualDensity,
+    AlignmentGeometry, InteractiveInkFeatureFactory, MaterialStateProperty, NoneAlignmentGeometry, MaterialTapTargetSize,
+    VisualDensity
 };
 
 pub struct ButtonStyle {
@@ -19,18 +19,18 @@ pub struct ButtonStyle {
     pub overlay_color: MaterialStateProperty<Color>,
     pub shadow_color: MaterialStateProperty<Color>,
     pub elevation: MaterialStateProperty<f32>,
-    pub padding: MaterialStateProperty<EdgeInsetsGeometry>,
+    pub padding: MaterialStateProperty<Option<Box<dyn EdgeInsetsGeometry>>>,
     pub minimum_size: MaterialStateProperty<Size>,
     pub fixed_size: MaterialStateProperty<Size>,
     pub maximum_size: MaterialStateProperty<Size>,
     pub side: MaterialStateProperty<BorderSide>,
-    pub shape: MaterialStateProperty<OutlinedBorder>,
+    pub shape: MaterialStateProperty<Option<Box<dyn OutlinedBorder>>>,
     pub mouse_cursor: MaterialStateProperty<MouseCursor>,
     pub visual_density: VisualDensity,
     pub tap_target_size: MaterialTapTargetSize,
     pub animation_duration: Duration,
     pub enable_feedback: bool,
-    pub alignment: AlignmentGeometry,
+    pub alignment: Box<dyn AlignmentGeometry>,
     pub splash_factory: InteractiveInkFeatureFactory,
 }
 
@@ -54,7 +54,7 @@ impl Default for ButtonStyle {
             tap_target_size: Default::default(),
             animation_duration: Default::default(),
             enable_feedback: Default::default(),
-            alignment: Default::default(),
+            alignment: box NoneAlignmentGeometry,
             splash_factory: Default::default(),
         }
     }

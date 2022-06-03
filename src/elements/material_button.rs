@@ -1,3 +1,4 @@
+#![allow(deprecated)]
 use cgmath::Point2;
 use std::{
     cell::RefCell,
@@ -12,7 +13,7 @@ use crate::prelude::Singleton;
 use crate::{
     foundation::{Helper, MouseEvent},
     material::MaterialButton,
-    rendering::backend::{WidgetRenderFactory, WidgetRenderHolder},
+    rendering::backend::{WidgetRenderFactory, WidgetRenderHolder, WidgetRenderer},
     services::LayoutSystem,
 };
 
@@ -45,10 +46,10 @@ impl MaterialButtonElement {
         let node = LayoutSystem::new_node(
             style::Style {
                 padding: geometry::Rect {
-                    start: style::Dimension::Points(20.0),
-                    end: style::Dimension::Points(20.0),
-                    top: style::Dimension::Points(20.0),
-                    bottom: style::Dimension::Points(20.0),
+                    start: style::Dimension::Points(2.0),
+                    end: style::Dimension::Points(2.0),
+                    top: style::Dimension::Points(2.0),
+                    bottom: style::Dimension::Points(2.0),
                 },
                 size: geometry::Size {
                     width: style::Dimension::Percent(1.0),
@@ -67,7 +68,7 @@ impl MaterialButtonElement {
         // }
 
         let child = widget.child.create_element();
-        child.node().map(|child| {
+        if let Some(child) = child.node() {
             let child_style = LayoutSystem::style(child).unwrap();
             LayoutSystem::set_style(
                 child,
@@ -81,7 +82,7 @@ impl MaterialButtonElement {
             )
             .unwrap();
             LayoutSystem::set_children(node, vec![child]).unwrap()
-        });
+        }
 
         Self {
             component,
@@ -149,12 +150,11 @@ impl Element for MaterialButtonElement {
     }
 
     fn render(&self) {
-        // log::info!("Render Default Element Impl");
         // {
         //     let comp = self.component.borrow();
 
         //     assert!(
-        //         comp.destroyed == false,
+        //         !comp.destroyed,
         //         "Widget was already destroyed but is being interacted with"
         //     );
 
@@ -163,13 +163,15 @@ impl Element for MaterialButtonElement {
         //     }
         // }
 
+        if let Some(ref render) = self.renderer {
+            render.render(self);
+        }
+
         // for child in comp.children.iter() {
         //     if let Some(widget) = child.widget() {
         //         widget.render();
         //     }
         // }
-
-        log::warn!("Render MaterialButtonElement");
 
         // center do not have a render, so we render the child
         self.child.render();
@@ -188,13 +190,6 @@ impl Element for MaterialButtonElement {
                 comp.w = layout.size.width;
                 comp.h = layout.size.height;
 
-                log::warn!(
-                    "Relayout MaterialButtonElement {}x{} {}x{}",
-                    comp.x,
-                    comp.y,
-                    comp.w,
-                    comp.h
-                );
                 true
             }
             Err(e) => {

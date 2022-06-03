@@ -8,7 +8,7 @@ use crate::{
 pub struct CloseButton {
     pub key: Key,
     pub color: Color,
-    pub on_pressed: Option<Box<dyn VoidCallback>>,
+    pub on_pressed: Option<VoidCallback>,
 }
 
 impl Default for CloseButton {
@@ -23,7 +23,6 @@ impl Default for CloseButton {
 
 impl Widget for CloseButton {
     fn create_element(&self) -> Box<dyn Element> {
-        log::info!("Create CloseButtonElement");
         box CloseButtonElement::new(self)
     }
 }

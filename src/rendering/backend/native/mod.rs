@@ -195,10 +195,10 @@ pub struct BorderImage {
 /// The padding from the internal border of the parent container.
 #[derive(Default, Debug, Clone, Copy)]
 pub struct Padding {
-    pub top: f64,
-    pub right: f64,
-    pub bottom: f64,
-    pub left: f64,
+    pub top: f32,
+    pub right: f32,
+    pub bottom: f32,
+    pub left: f32,
 }
 
 /// TextShadow:
@@ -210,9 +210,9 @@ pub struct Padding {
 /// Properties of a text shadow
 #[derive(Clone, Debug)]
 pub struct TextShadow {
-    h_offset: f64,
-    v_offset: f64,
-    blur: f64,
+    h_offset: f32,
+    v_offset: f32,
+    blur: f32,
     color: Color,
 }
 

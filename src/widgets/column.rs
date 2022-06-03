@@ -23,7 +23,7 @@ impl Default for Column {
         Self {
             key: Default::default(),
             main_axis_alignment: Default::default(),
-            main_axis_size: Default::default(),
+            main_axis_size: MainAxisSize::Max,
             cross_axis_alignment: Default::default(),
             text_direction: Default::default(),
             vertical_direction: Default::default(),
@@ -35,7 +35,6 @@ impl Default for Column {
 
 impl Widget for Column {
     fn create_element(&self) -> Box<dyn Element> {
-        log::info!("Create ColumnElement");
         box ColumnElement::new(self)
     }
 }

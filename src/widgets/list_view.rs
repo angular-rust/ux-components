@@ -2,11 +2,83 @@ use crate::{
     elements::{Element, ListViewElement},
     foundation::{Id, Key, WidgetProperties},
     gestures::DragStartBehavior,
-    painting::EdgeInsetsGeometry,
+    painting::{EdgeInsetsGeometry, NoneEdgeInsetsGeometry, Axis},
     ui::Clip,
 };
 
-use super::{NullWidget, Widget};
+use super::{NoneWidget, Widget, BuildContext, ScrollController};
+
+pub type IndexedWidgetBuilder = Box<dyn Fn(BuildContext, usize) -> Box<dyn Widget>>;
+
+// Creates a scrollable, linear array of widgets that are created on demand. [...]
+pub struct ListViewBuilder {
+    pub key: Key,
+    pub scroll_direction: Axis, // = Axis.vertical, 
+    pub reverse: bool, // = false, 
+    pub controller: ScrollController, 
+    pub primary: bool, 
+    // pub physics: ScrollPhysics, 
+    pub shrink_wrap: bool, //  = false, 
+    pub padding: Box<dyn EdgeInsetsGeometry>, 
+    pub item_extent: f32, 
+    pub prototype_item: Box<dyn Widget>, 
+    pub item_builder: IndexedWidgetBuilder, 
+    pub item_count: usize, 
+    pub add_automatic_keep_alives: bool, // = true, 
+    pub add_repaint_boundaries: bool, // = true, 
+    pub add_semantic_indexes: bool, // = true, 
+    pub cache_extent: f32, 
+    pub semantic_child_count: usize, 
+    pub drag_start_behavior: DragStartBehavior, // = DragStartBehavior.start, 
+    // pub keyboard_dismiss_behavior: ScrollViewKeyboardDismissBehavior, // = ScrollViewKeyboardDismissBehavior.manual, 
+    pub restoration_id: String, 
+    pub clip_behavior: Clip, // = Clip.hardEdge
+}
+
+// Creates a scrollable, linear array of widgets with a custom child model. [...]
+pub struct ListViewCustom {
+    // Key? key, 
+    // Axis scrollDirection = Axis.vertical, 
+    // bool reverse = false, 
+    // ScrollController? controller, 
+    // bool? primary, 
+    // ScrollPhysics? physics, 
+    // bool shrinkWrap = false, 
+    // EdgeInsetsGeometry? padding, 
+    // double? itemExtent, 
+    // Widget? prototypeItem, 
+    // required SliverChildDelegate childrenDelegate, 
+    // double? cacheExtent, 
+    // int? semanticChildCount, 
+    // DragStartBehavior dragStartBehavior = DragStartBehavior.start, 
+    // ScrollViewKeyboardDismissBehavior keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.manual, 
+    // String? restorationId, 
+    // Clip clipBehavior = Clip.hardEdge
+}
+
+// Creates a fixed-length scrollable linear array of list "items" separated by list item "separators". [...]
+pub struct ListViewSeparated {
+    // Key? key, 
+    // Axis scrollDirection = Axis.vertical, 
+    // bool reverse = false, 
+    // ScrollController? controller, 
+    // bool? primary, 
+    // ScrollPhysics? physics, 
+    // bool shrinkWrap = false, 
+    // EdgeInsetsGeometry? padding, 
+    // required IndexedWidgetBuilder itemBuilder, 
+    // required IndexedWidgetBuilder separatorBuilder, 
+    // required int itemCount, 
+    // bool addAutomaticKeepAlives = true, 
+    // bool addRepaintBoundaries = true, 
+    // bool addSemanticIndexes = true, 
+    // double? cacheExtent, 
+    // DragStartBehavior dragStartBehavior = DragStartBehavior.start, 
+    // ScrollViewKeyboardDismissBehavior keyboardDismissBehavior = ScrollViewKeyboardDismissBehavior.manual, 
+    // String? restorationId, 
+    // Clip clipBehavior = Clip.hardEdge
+}
+
 
 pub struct ListView {
     pub key: Key,
@@ -16,7 +88,7 @@ pub struct ListView {
     pub primary: bool,
     // pub physics: ScrollPhysics,
     pub shrink_wrap: bool, // = false
-    pub padding: EdgeInsetsGeometry,
+    pub padding: Box<dyn EdgeInsetsGeometry>,
     pub item_extent: f32,
     pub prototype_item: Box<dyn Widget>,
     pub add_automatic_keep_alives: bool, // = true
@@ -41,9 +113,9 @@ impl Default for ListView {
             primary: Default::default(),
             // physics: Default::default(),
             shrink_wrap: Default::default(),
-            padding: Default::default(),
+            padding: box NoneEdgeInsetsGeometry,
             item_extent: Default::default(),
-            prototype_item: box NullWidget,
+            prototype_item: box NoneWidget,
             add_automatic_keep_alives: Default::default(),
             add_repaint_boundaries: Default::default(),
             add_semantic_indexes: Default::default(),
@@ -60,7 +132,6 @@ impl Default for ListView {
 
 impl Widget for ListView {
     fn create_element(&self) -> Box<dyn Element> {
-        log::info!("Create ListViewElement");
         box ListViewElement::new(self)
     }
 }

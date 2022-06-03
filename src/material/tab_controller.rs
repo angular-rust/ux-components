@@ -18,7 +18,6 @@ impl Default for TabController {
 
 impl Widget for TabController {
     fn create_element(&self) -> Box<dyn Element> {
-        log::info!("Create TabControllerElement");
         box TabControllerElement::new(self)
     }
 }

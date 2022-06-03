@@ -29,16 +29,8 @@ use crate::{
 };
 
 use crate::{
-    elements::{Element, NullElement},
-    rendering::backend::{
-        gles::{
-            AppBarRender, ButtonRender, CanvasRender, CheckboxRender, DropdownRender, ImageRender,
-            LabelRender, ListRender, MaterialAppRender, PanelRender, ProgressIndicatorRender,
-            ScaffoldRender, ScrollableRender, SliderRender, TextEditRender, TextRender,
-            WindowRender,
-        },
-        WidgetRenderFactory,
-    },
+    elements::{Element, NoneElement},
+    rendering::backend::{gles::*, WidgetRenderFactory},
 };
 
 use super::MaterialApplication;
@@ -47,6 +39,7 @@ pub struct MaterialApplicationHost<T> {
     phantom: PhantomData<T>,
     root: Box<dyn Element>,
     cursor: Point2<f32>,
+    pub painter: Rc<Painter>,
 }
 
 impl<T> SetterMut<Box<dyn Element>> for MaterialApplicationHost<T> {
@@ -67,34 +60,41 @@ impl<T> AsyncActivityHost<MaterialApplication> for MaterialApplicationHost<T> {
         store: &mut Store<Self::Context, StoreKey>,
         context: &mut Self::Context,
     ) -> Result<Self, Self::Error> {
+        let painter = Rc::new(Painter::new());
+
         // Composition root in terms of Dependecy Injection
         // We fill WidgetRenderFactory with default render implementations
         {
-            let painter = Rc::new(Painter::new());
-
             let factory = WidgetRenderFactory::global();
             factory.register(box AppBarRender::new(painter.clone()));
             factory.register(box ButtonRender);
             factory.register(box CanvasRender);
             factory.register(box CheckboxRender);
+            factory.register(box DividerRender::new(painter.clone()));
             factory.register(box DropdownRender);
-            factory.register(box ImageRender);
+            factory.register(box ImageRender::new(painter.clone()));
             factory.register(box LabelRender);
             factory.register(box ListRender);
-            factory.register(box MaterialAppRender::new(painter.clone()));
+            factory.register(box MaterialAppRender::new(painter.clone())); // set the projection matrix and do other necessary things
+            factory.register(box MaterialButtonRender::new(painter.clone()));
+            factory.register(box NavigationRailDestinationRender::new(painter.clone()));
+            factory.register(box NavigationRailRender::new(painter.clone()));
             factory.register(box PanelRender);
             factory.register(box ProgressIndicatorRender);
-            factory.register(box ScaffoldRender);
+            factory.register(box ScaffoldRender::new(painter.clone()));
             factory.register(box ScrollableRender);
             factory.register(box SliderRender);
             factory.register(box TextRender::new(painter.clone()));
             factory.register(box TextEditRender);
+            factory.register(box VerticalDividerRender::new(painter.clone()));
             factory.register(box WindowRender);
         }
+
         Ok(Self {
             phantom: PhantomData,
-            root: box NullElement::default(),
+            root: box NoneElement::default(),
             cursor: Point2::new(0.0, 0.0),
+            painter,
         })
     }
 }

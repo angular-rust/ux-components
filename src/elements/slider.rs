@@ -137,7 +137,7 @@ impl SliderElement {
         state.ignore_set = false;
 
         self.onchange.emit(&SliderChangeEvent {
-            value: value,
+            value,
             percent: state.percent,
         });
     }
@@ -244,13 +244,6 @@ impl Element for SliderElement {
                 comp.w = layout.size.width;
                 comp.h = layout.size.height;
 
-                log::warn!(
-                    "Relayout SliderElement {}x{} {}x{}",
-                    comp.x,
-                    comp.y,
-                    comp.w,
-                    comp.h
-                );
                 true
             }
             Err(e) => {

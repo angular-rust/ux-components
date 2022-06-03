@@ -44,7 +44,7 @@ pub struct RadioElement {
 
 impl Debug for RadioElement {
     fn fmt(&self, f: &mut Formatter<'_>) -> Result {
-        f.debug_struct("CheckboxElement").finish()
+        f.debug_struct("RadioElement").finish()
     }
 }
 
@@ -122,13 +122,6 @@ impl Element for RadioElement {
                 comp.w = layout.size.width;
                 comp.h = layout.size.height;
 
-                log::warn!(
-                    "Relayout RadioElement {}x{} {}x{}",
-                    comp.x,
-                    comp.y,
-                    comp.w,
-                    comp.h
-                );
                 true
             }
             Err(e) => {

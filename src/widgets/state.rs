@@ -43,5 +43,5 @@ use super::{BuildContext, StatefulWidget};
 // pub struct State<T: StatefulWidget>(T);
 
 pub trait State<T: StatefulWidget> {
-    fn build(&self, context: BuildContext) -> &dyn Widget;
+    fn build(&self, context: Option<BuildContext>) -> &dyn Widget;
 }

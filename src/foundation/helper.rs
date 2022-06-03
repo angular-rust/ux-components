@@ -6,15 +6,13 @@ pub struct Helper {}
 impl Helper {
     // static
     pub fn sign(x: f32) -> i32 {
-        return if x < 0.0 {
+        if x < 0.0 {
             -1
+        } else if x > 0.0 {
+            1
         } else {
-            if x > 0.0 {
-                1
-            } else {
-                0
-            }
-        };
+            0
+        }
     }
 
     // static
@@ -41,7 +39,7 @@ impl Helper {
     // static
     // ?val:Option<i32>
     pub fn uniqueid(val: Option<u32>) -> String {
-        let val = val.unwrap_or(rand::random());
+        let val = val.unwrap_or_else(rand::random);
 
         fn to_char(value: u32) -> char {
             if value > 9 {
@@ -51,7 +49,7 @@ impl Helper {
                 }
                 char::from_u32(ascii).unwrap()
             } else {
-                format!("{}", value).chars().nth(0).unwrap()
+                format!("{}", value).chars().next().unwrap()
             }
         } //to_char
 

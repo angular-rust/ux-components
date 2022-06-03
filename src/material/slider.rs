@@ -8,9 +8,9 @@ use crate::{
 pub struct Slider {
     pub key: Key,
     pub value: f32,
-    pub on_changed: Option<Box<dyn ValueChanged<f32>>>,
-    pub on_change_start: Option<Box<dyn ValueChanged<f32>>>,
-    pub on_change_end: Option<Box<dyn ValueChanged<f32>>>,
+    pub on_changed: Option<ValueChanged<f32>>,
+    pub on_change_start: Option<ValueChanged<f32>>,
+    pub on_change_end: Option<ValueChanged<f32>>,
     pub min: f32,
     pub max: f32,
     pub divisions: i32,
@@ -49,7 +49,6 @@ impl Default for Slider {
 
 impl Widget for Slider {
     fn create_element(&self) -> Box<dyn Element> {
-        log::info!("Create SliderElement");
         box SliderElement::new(self)
     }
 }

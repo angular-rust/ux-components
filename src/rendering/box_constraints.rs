@@ -1,14 +1,14 @@
 // constrain(Size size) → Size
-// Returns the size that both satisfies the constraints and is as close as possible to the given size. [...]
+// Returns the size that both satisfies the constraints and is as close as possible to the given size.
 //
 // constrainDimensions(double width, double height) → Size
-// Returns the size that both satisfies the constraints and is as close as possible to the given width and height. [...]
+// Returns the size that both satisfies the constraints and is as close as possible to the given width and height.
 //
 // constrainHeight([double height = double.infinity]) → double
 // Returns the height that both satisfies the constraints and is as close as possible to the given height.
 //
 // constrainSizeAndAttemptToPreserveAspectRatio(Size size) → Size
-// Returns a size that attempts to meet the following conditions, in order: [...]
+// Returns a size that attempts to meet the following conditions, in order:
 //
 // constrainWidth([double width = double.infinity]) → double
 // Returns the width that both satisfies the constraints and is as close as possible to the given width.
@@ -17,7 +17,7 @@
 // Creates a copy of this box constraints but with the given fields replaced with the new values.
 //
 // debugAssertIsValid({bool isAppliedConstraint = false, InformationCollector? informationCollector}) → bool
-// Asserts that the constraints are valid. [...]
+// Asserts that the constraints are valid.
 // override
 //
 // deflate(EdgeInsets edges) → BoxConstraints
@@ -36,13 +36,13 @@
 // Returns new box constraints that remove the minimum width and height requirements.
 //
 // normalize() → BoxConstraints
-// Returns a box constraints that isNormalized. [...]
+// Returns a box constraints that isNormalized.
 //
 // tighten({double? width, double? height}) → BoxConstraints
 // Returns new box constraints with a tight width and/or height as close to the given width and height as possible while still respecting the original box constraints.
 //
 // toString() → String
-// A string representation of this object. [...]
+// A string representation of this object.
 // override
 //
 // widthConstraints() → BoxConstraints

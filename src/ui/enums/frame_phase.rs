@@ -7,3 +7,9 @@ pub enum FramePhase {
     RasterFinish = 4,
     RasterFinishWallTime = 5,
 }
+
+impl Default for FramePhase {
+    fn default() -> Self {
+        Self::VsyncStart
+    }
+}

@@ -10,7 +10,6 @@ use stretch::{node::Node, style};
 use crate::prelude::Singleton;
 
 use crate::{
-    // prelude::OnDemand,
     foundation::{properties::LabelProperties, Signal},
     rendering::backend::{WidgetRenderFactory, WidgetRenderHolder},
     services::LayoutSystem,
@@ -109,13 +108,6 @@ impl Element for LabelElement {
                 comp.w = layout.size.width;
                 comp.h = layout.size.height;
 
-                log::warn!(
-                    "Relayout LabelElement {}x{} {}x{}",
-                    comp.x,
-                    comp.y,
-                    comp.w,
-                    comp.h
-                );
                 true
             }
             Err(e) => {

@@ -1,3 +1,4 @@
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum MainAxisAlignment {
     Start = 0,
     End = 1,

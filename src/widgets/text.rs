@@ -7,7 +7,7 @@ use crate::{
 };
 
 pub struct Text {
-    pub data: String,
+    pub text: String,
     pub key: Key,
     pub style: TextStyle,
     // pub strut_style: StrutStyle,// TODO:
@@ -26,7 +26,7 @@ pub struct Text {
 impl Default for Text {
     fn default() -> Self {
         Self {
-            data: Default::default(),
+            text: Default::default(),
             key: Default::default(),
             style: Default::default(),
             // strut_style: Default::default(),
@@ -46,7 +46,6 @@ impl Default for Text {
 
 impl Widget for Text {
     fn create_element(&self) -> Box<dyn Element> {
-        log::info!("Create TextElement");
         box TextElement::new(self)
     }
 }

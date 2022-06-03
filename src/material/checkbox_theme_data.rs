@@ -1,6 +1,6 @@
 use crate::{
     foundation::colorspace::Color,
-    painting::{BorderSide, OutlinedBorder},
+    painting::{BorderSide, NoneOutlinedBorder, OutlinedBorder},
     services::MouseCursor,
 };
 
@@ -13,7 +13,7 @@ pub struct CheckboxThemeData {
     pub splash_radius: f32,
     pub material_tap_target_size: MaterialTapTargetSize,
     pub visual_density: VisualDensity,
-    pub shape: OutlinedBorder,
+    pub shape: Box<dyn OutlinedBorder>,
     pub side: BorderSide,
 }
 
@@ -27,7 +27,7 @@ impl Default for CheckboxThemeData {
             splash_radius: Default::default(),
             material_tap_target_size: Default::default(),
             visual_density: Default::default(),
-            shape: Default::default(),
+            shape: box NoneOutlinedBorder,
             side: Default::default(),
         }
     }

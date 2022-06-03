@@ -39,7 +39,6 @@ impl Default for Scrollable {
 
 impl Widget for Scrollable {
     fn create_element(&self) -> Box<dyn Element> {
-        log::info!("Create ScrollableElement");
         box ScrollableElement::new(self)
     }
 }

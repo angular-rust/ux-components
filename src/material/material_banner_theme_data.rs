@@ -1,12 +1,12 @@
 use crate::{
     foundation::colorspace::Color,
-    painting::{EdgeInsetsGeometry, TextStyle},
+    painting::{EdgeInsetsGeometry, TextStyle, NoneEdgeInsetsGeometry},
 };
 pub struct MaterialBannerThemeData {
     pub background_color: Color,
     pub content_text_style: TextStyle,
-    pub padding: EdgeInsetsGeometry,
-    pub leading_padding: EdgeInsetsGeometry,
+    pub padding: Box<dyn EdgeInsetsGeometry>,
+    pub leading_padding: Box<dyn EdgeInsetsGeometry>,
 }
 
 impl Default for MaterialBannerThemeData {
@@ -14,8 +14,8 @@ impl Default for MaterialBannerThemeData {
         Self {
             background_color: Default::default(),
             content_text_style: Default::default(),
-            padding: Default::default(),
-            leading_padding: Default::default(),
+            padding: box NoneEdgeInsetsGeometry,
+            leading_padding: box NoneEdgeInsetsGeometry,
         }
     }
 }

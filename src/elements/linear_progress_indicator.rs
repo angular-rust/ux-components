@@ -44,7 +44,7 @@ pub struct LinearProgressIndicatorElement {
 
 impl Debug for LinearProgressIndicatorElement {
     fn fmt(&self, f: &mut Formatter<'_>) -> Result {
-        f.debug_struct("CheckboxElement").finish()
+        f.debug_struct("LinearProgressIndicatorElement").finish()
     }
 }
 
@@ -125,13 +125,6 @@ impl Element for LinearProgressIndicatorElement {
                 comp.w = layout.size.width;
                 comp.h = layout.size.height;
 
-                log::warn!(
-                    "Relayout LinearProgressIndicatorElement {}x{} {}x{}",
-                    comp.x,
-                    comp.y,
-                    comp.w,
-                    comp.h
-                );
                 true
             }
             Err(e) => {

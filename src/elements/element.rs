@@ -3,9 +3,10 @@ use cgmath::Point2;
 use std::cell::RefCell;
 use stretch::node::Node;
 
+use crate::prelude::OnDemand;
+
 use crate::{
     foundation::{ChildBounds, Helper, Id, KeyEvent, MouseEvent, Slot, TextEvent, WidgetClipEvent},
-    prelude::OnDemand,
     widgets::Widget,
 };
 
@@ -265,7 +266,7 @@ where
     ) -> Vec<WidgetComponent> {
         // let comp = self.as_ref().borrow();
 
-        // assert!(comp.destroyed == false, "Widget was already destroyed but is being interacted with");
+        // assert!(!comp.destroyed, "Widget was already destroyed but is being interacted with");
 
         // let result = into.unwrap_or_default();
 
@@ -304,7 +305,7 @@ where
         let comp = self.as_ref().borrow();
 
         assert!(
-            comp.destroyed == false,
+            !comp.destroyed,
             "Widget was already destroyed but is being interacted with"
         );
 
@@ -348,7 +349,7 @@ where
         let comp = self.as_ref().borrow();
 
         assert!(
-            comp.destroyed == false,
+            !comp.destroyed,
             "Widget was already destroyed but is being interacted with"
         );
 
@@ -373,7 +374,7 @@ where
         let comp = self.as_ref().borrow();
 
         assert!(
-            comp.destroyed == false,
+            !comp.destroyed,
             "Widget was already destroyed but is being interacted with"
         );
 
@@ -402,7 +403,7 @@ where
         let mut comp = self.as_ref().borrow_mut();
 
         assert!(
-            comp.destroyed == false,
+            !comp.destroyed,
             "Widget was already destroyed but is being interacted with"
         );
 
@@ -429,16 +430,14 @@ where
             // }
 
             // self.onclipchanged();
-        } else {
-            if comp.onclip.is_some() {
-                let _ = comp.onclip.get().try_send(WidgetClipEvent {
-                    clipped: true,
-                    h: 0.0,
-                    w: 0.0,
-                    x: 0.0,
-                    y: 0.0,
-                });
-            }
+        } else if comp.onclip.is_some() {
+            let _ = comp.onclip.get().try_send(WidgetClipEvent {
+                clipped: true,
+                h: 0.0,
+                w: 0.0,
+                x: 0.0,
+                y: 0.0,
+            });
         }
     }
 
@@ -447,7 +446,7 @@ where
         let mut comp = self.as_ref().borrow_mut();
 
         assert!(
-            comp.destroyed == false,
+            !comp.destroyed,
             "Widget was already destroyed but is being interacted with"
         );
 
@@ -475,7 +474,7 @@ where
         let mut comp = self.as_ref().borrow_mut();
 
         assert!(
-            comp.destroyed == false,
+            !comp.destroyed,
             "Widget was already destroyed but is being interacted with"
         );
 
@@ -505,7 +504,7 @@ where
         let comp = self.as_ref().borrow();
 
         assert!(
-            comp.destroyed == false,
+            !comp.destroyed,
             "Widget was already destroyed but is being interacted with"
         );
 
@@ -532,7 +531,7 @@ where
         let mut comp = self.as_ref().borrow_mut();
 
         assert!(
-            comp.destroyed == false,
+            !comp.destroyed,
             "Widget was already destroyed but is being interacted with"
         );
 
@@ -559,7 +558,7 @@ where
         let mut comp = self.as_ref().borrow_mut();
 
         assert!(
-            comp.destroyed == false,
+            !comp.destroyed,
             "Widget was already destroyed but is being interacted with"
         );
 
@@ -580,11 +579,11 @@ where
         let mut comp = self.as_ref().borrow_mut();
 
         assert!(
-            comp.destroyed == false,
+            !comp.destroyed,
             "Widget was already destroyed but is being interacted with"
         );
 
-        if comp.children.len() == 0 {
+        if comp.children.is_empty() {
             comp.children_bounds.x = 0.0;
             comp.children_bounds.y = 0.0;
             comp.children_bounds.w = 0.0;
@@ -627,11 +626,10 @@ where
     }
 
     fn render(&self) {
-        log::error!("Render Default Element Impl");
         let mut comp = self.as_ref().borrow_mut();
 
         assert!(
-            comp.destroyed == false,
+            !comp.destroyed,
             "Widget was already destroyed but is being interacted with"
         );
 
@@ -650,7 +648,7 @@ where
         let mut comp = self.as_ref().borrow_mut();
 
         assert!(
-            comp.destroyed == false,
+            !comp.destroyed,
             "Widget was already destroyed but is being interacted with"
         );
 
@@ -675,7 +673,7 @@ where
         let mut comp = self.as_ref().borrow_mut();
 
         assert!(
-            comp.destroyed == false,
+            !comp.destroyed,
             "Widget was already destroyed but is being interacted with"
         );
 
@@ -700,7 +698,7 @@ where
         let mut comp = self.as_ref().borrow_mut();
 
         assert!(
-            comp.destroyed == false,
+            !comp.destroyed,
             "Widget was already destroyed but is being interacted with"
         );
 
@@ -725,7 +723,7 @@ where
         let mut comp = self.as_ref().borrow_mut();
 
         assert!(
-            comp.destroyed == false,
+            !comp.destroyed,
             "Widget was already destroyed but is being interacted with"
         );
 
@@ -750,7 +748,7 @@ where
         let mut comp = self.as_ref().borrow_mut();
 
         assert!(
-            comp.destroyed == false,
+            !comp.destroyed,
             "Widget was already destroyed but is being interacted with"
         );
 
@@ -775,7 +773,7 @@ where
         let mut comp = self.as_ref().borrow_mut();
 
         assert!(
-            comp.destroyed == false,
+            !comp.destroyed,
             "Widget was already destroyed but is being interacted with"
         );
 
@@ -800,7 +798,7 @@ where
         let mut comp = self.as_ref().borrow_mut();
 
         assert!(
-            comp.destroyed == false,
+            !comp.destroyed,
             "Widget was already destroyed but is being interacted with"
         );
 
@@ -825,7 +823,7 @@ where
         let mut comp = self.as_ref().borrow_mut();
 
         assert!(
-            comp.destroyed == false,
+            !comp.destroyed,
             "Widget was already destroyed but is being interacted with"
         );
 
@@ -839,7 +837,7 @@ where
         let mut comp = self.as_ref().borrow_mut();
 
         assert!(
-            comp.destroyed == false,
+            !comp.destroyed,
             "Widget was already destroyed but is being interacted with"
         );
 
@@ -853,7 +851,7 @@ where
         let mut comp = self.as_ref().borrow_mut();
 
         assert!(
-            comp.destroyed == false,
+            !comp.destroyed,
             "Widget was already destroyed but is being interacted with"
         );
 
@@ -868,7 +866,7 @@ where
         let mut comp = self.as_ref().borrow_mut();
 
         assert!(
-            comp.destroyed == false,
+            !comp.destroyed,
             "attempt to destroy control twice `$self` ($name)"
         );
 
@@ -926,7 +924,7 @@ where
         let comp = self.as_ref().borrow();
 
         assert!(
-            comp.destroyed == false,
+            !comp.destroyed,
             "Widget was already destroyed but is being interacted with"
         );
     }
@@ -935,7 +933,7 @@ where
         let mut comp = self.as_ref().borrow_mut();
 
         assert!(
-            comp.destroyed == false,
+            !comp.destroyed,
             "Widget was already destroyed but is being interacted with"
         );
 
@@ -964,7 +962,7 @@ where
         let mut comp = self.as_ref().borrow_mut();
 
         assert!(
-            comp.destroyed == false,
+            !comp.destroyed,
             "Widget was already destroyed but is being interacted with"
         );
 
@@ -991,7 +989,7 @@ where
         let mut comp = self.as_ref().borrow_mut();
 
         assert!(
-            comp.destroyed == false,
+            !comp.destroyed,
             "Widget was already destroyed but is being interacted with"
         );
 
@@ -1024,7 +1022,7 @@ where
         let mut comp = self.as_ref().borrow_mut();
 
         assert!(
-            comp.destroyed == false,
+            !comp.destroyed,
             "Widget was already destroyed but is being interacted with"
         );
 
@@ -1049,7 +1047,7 @@ where
         let mut comp = self.as_ref().borrow_mut();
 
         assert!(
-            comp.destroyed == false,
+            !comp.destroyed,
             "Widget was already destroyed but is being interacted with"
         );
 
@@ -1082,7 +1080,7 @@ where
         let mut comp = self.as_ref().borrow_mut();
 
         assert!(
-            comp.destroyed == false,
+            !comp.destroyed,
             "Widget was already destroyed but is being interacted with"
         );
 
@@ -1122,7 +1120,7 @@ where
         let mut comp = self.as_ref().borrow_mut();
 
         assert!(
-            comp.destroyed == false,
+            !comp.destroyed,
             "Widget was already destroyed but is being interacted with"
         );
 
@@ -1153,7 +1151,7 @@ where
         let mut comp = self.as_ref().borrow_mut();
 
         assert!(
-            comp.destroyed == false,
+            !comp.destroyed,
             "Widget was already destroyed but is being interacted with"
         );
 
@@ -1171,13 +1169,13 @@ where
     }
 
     fn set_size(&self, w: f32, h: f32) {
-        // log::info!("Set Size Default Impl {}x{}", w, h);
+        log::info!("Set Size Default Impl {}x{}", w, h);
 
         let (dw, dh) = {
             let mut comp = self.as_ref().borrow_mut();
 
             assert!(
-                comp.destroyed == false,
+                !comp.destroyed,
                 "Widget was already destroyed but is being interacted with"
             );
 
@@ -1486,7 +1484,7 @@ where
         let comp = self.as_ref().borrow();
 
         assert!(
-            comp.destroyed == false,
+            !comp.destroyed,
             "Widget was already destroyed but is being interacted with"
         );
 
@@ -1496,7 +1494,7 @@ where
         //         nodes += widget.nodes();
         //     }
         // }
-        return nodes;
+        nodes
     }
 
     #[inline]
@@ -1555,7 +1553,7 @@ where
         let mut comp = self.as_ref().borrow_mut();
 
         assert!(
-            comp.destroyed == false,
+            !comp.destroyed,
             "Widget was already destroyed but is being interacted with"
         );
 
@@ -1594,7 +1592,7 @@ where
         let mut comp = self.as_ref().borrow_mut();
 
         assert!(
-            comp.destroyed == false,
+            !comp.destroyed,
             "Widget was already destroyed but is being interacted with"
         );
 

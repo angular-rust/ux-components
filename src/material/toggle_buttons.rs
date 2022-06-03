@@ -67,7 +67,6 @@ impl Default for ToggleButtons {
 
 impl Widget for ToggleButtons {
     fn create_element(&self) -> Box<dyn Element> {
-        log::info!("Create ToggleButtonsElement");
         box ToggleButtonsElement::new(self)
     }
 }

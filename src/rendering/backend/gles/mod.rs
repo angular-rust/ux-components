@@ -13,6 +13,9 @@ pub use self::canvas::*;
 mod checkbox;
 pub use self::checkbox::*;
 
+mod divider;
+pub use self::divider::*;
+
 mod dropdown;
 pub use self::dropdown::*;
 
@@ -27,6 +30,15 @@ pub use self::list::*;
 
 mod material_app;
 pub use self::material_app::*;
+
+mod material_button;
+pub use self::material_button::*;
+
+mod navigation_rail_destination;
+pub use self::navigation_rail_destination::*;
+
+mod navigation_rail;
+pub use self::navigation_rail::*;
 
 mod panel;
 pub use self::panel::*;
@@ -48,6 +60,9 @@ pub use self::text::*;
 
 mod textedit;
 pub use self::textedit::*;
+
+mod vertical_divider;
+pub use self::vertical_divider::*;
 
 mod window;
 pub use self::window::*;

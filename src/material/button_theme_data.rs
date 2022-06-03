@@ -1,6 +1,6 @@
 use crate::{
     foundation::colorspace::Color,
-    painting::{EdgeInsetsGeometry, ShapeBorder},
+    painting::{EdgeInsetsGeometry, NoneEdgeInsetsGeometry, NoneShapeBorder, ShapeBorder},
 };
 
 use super::{ButtonBarLayoutBehavior, ButtonTextTheme, ColorScheme, MaterialTapTargetSize};
@@ -10,7 +10,7 @@ copyWith({ButtonTextTheme? textTheme, ButtonBarLayoutBehavior? layoutBehavior, d
 Creates a copy of this button theme data object with the matching fields replaced with the non-null parameter values.
 
 debugFillProperties(DiagnosticPropertiesBuilder properties) -> void
-Add additional properties associated with the node. [...]
+Add additional properties associated with the node.
 override
 
 getAnimationDuration(MaterialButton button) -> Duration
@@ -78,8 +78,8 @@ pub struct ButtonThemeData {
     pub text_theme: ButtonTextTheme,
     pub min_width: f32,
     pub height: f32,
-    pub padding: EdgeInsetsGeometry,
-    pub shape: ShapeBorder,
+    pub padding: Box<dyn EdgeInsetsGeometry>,
+    pub shape: Box<dyn ShapeBorder>,
     pub layout_behavior: ButtonBarLayoutBehavior,
     pub aligned_dropdown: bool,
     pub button_color: Color,
@@ -98,8 +98,8 @@ impl Default for ButtonThemeData {
             text_theme: Default::default(),
             min_width: Default::default(),
             height: Default::default(),
-            padding: Default::default(),
-            shape: Default::default(),
+            padding: box NoneEdgeInsetsGeometry,
+            shape: box NoneShapeBorder,
             layout_behavior: Default::default(),
             aligned_dropdown: Default::default(),
             button_color: Default::default(),

@@ -2,7 +2,7 @@ use crate::{
     elements::{Element, NavigationRailElement},
     foundation::{colorspace::Color, Id, Key, ValueChanged, WidgetProperties},
     painting::TextStyle,
-    widgets::{IconThemeData, NullWidget, Widget},
+    widgets::{IconThemeData, NoneWidget, Widget},
 };
 
 use super::{NavigationRailDestination, NavigationRailLabelType};
@@ -15,7 +15,7 @@ pub struct NavigationRail {
     pub trailing: Box<dyn Widget>,
     pub destinations: Vec<NavigationRailDestination>,
     pub selected_index: i32,
-    pub on_destination_selected: Option<Box<dyn ValueChanged<i32>>>,
+    pub on_destination_selected: Option<ValueChanged<i32>>,
     pub elevation: f32,
     pub group_alignment: f32,
     pub label_type: NavigationRailLabelType,
@@ -33,8 +33,8 @@ impl Default for NavigationRail {
             key: Default::default(),
             background_color: Default::default(),
             extended: Default::default(),
-            leading: box NullWidget,
-            trailing: box NullWidget,
+            leading: box NoneWidget,
+            trailing: box NoneWidget,
             destinations: Default::default(),
             selected_index: Default::default(),
             on_destination_selected: Default::default(),
@@ -53,7 +53,6 @@ impl Default for NavigationRail {
 
 impl Widget for NavigationRail {
     fn create_element(&self) -> Box<dyn Element> {
-        log::info!("Create NavigationRailElement");
         box NavigationRailElement::new(self)
     }
 }

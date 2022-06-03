@@ -42,7 +42,6 @@ impl Default for DatePickerDialog {
 
 impl Widget for DatePickerDialog {
     fn create_element(&self) -> Box<dyn Element> {
-        log::info!("Create DatePickerDialogElement");
         box DatePickerDialogElement::new(self)
     }
 }

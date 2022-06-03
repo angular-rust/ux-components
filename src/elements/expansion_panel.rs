@@ -44,7 +44,7 @@ pub struct ExpansionPanelElement {
 
 impl Debug for ExpansionPanelElement {
     fn fmt(&self, f: &mut Formatter<'_>) -> Result {
-        f.debug_struct("CheckboxElement").finish()
+        f.debug_struct("ExpansionPanelElement").finish()
     }
 }
 
@@ -125,13 +125,6 @@ impl Element for ExpansionPanelElement {
                 comp.w = layout.size.width;
                 comp.h = layout.size.height;
 
-                log::warn!(
-                    "Relayout ExpansionPanelElement {}x{} {}x{}",
-                    comp.x,
-                    comp.y,
-                    comp.w,
-                    comp.h
-                );
                 true
             }
             Err(e) => {

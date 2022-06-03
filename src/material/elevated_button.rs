@@ -1,49 +1,75 @@
 use crate::{
     elements::{Element, ElevatedButtonElement},
-    foundation::{Id, Key, WidgetProperties},
+    foundation::{Id, Key, WidgetProperties, ValueChanged},
     ui::{Clip, VoidCallback},
-    widgets::{FocusNode, NullWidget, Widget},
+    widgets::{FocusNode, NoneWidget, Widget},
 };
 
 use super::ButtonStyle;
 
-// defaultStyleOf(BuildContext context) → ButtonStyle
-// Defines the button's default appearance. [...]
+// defaultStyleOf(BuildContext context): ButtonStyle
+// Defines the button's default appearance.
 // override
 //
-// themeStyleOf(BuildContext context) → ButtonStyle?
+// themeStyleOf(BuildContext context): ButtonStyle?
 // Returns the ElevatedButtonThemeData.style of the closest ElevatedButtonTheme ancestor.
 // override
 
 pub struct ElevatedButton {
-    pub key: Key,
-    pub on_pressed: Option<Box<dyn VoidCallback>>,
-    pub on_long_press: Option<Box<dyn VoidCallback>>,
-    pub style: ButtonStyle,
-    pub focus_node: FocusNode,
-    pub autofocus: bool,     // = false,
-    pub clip_behavior: Clip, // = Clip.none,
+    // True if this widget will be selected as the initial focus when no other node in its scope is currently focused.
+    pub autofocus: bool,
+    
+    // Typically the button's label.
     pub child: Box<dyn Widget>,
+    
+    // The content will be clipped (or not) according to this option.
+    pub clip_behavior: Clip,
+    
+    // Whether the button is enabled or disabled.
+    pub enabled: bool,
+    
+    // An optional focus node to use as the focus node for this widget.
+    pub focus_node: FocusNode,
+    
+    // Controls how one widget replaces another widget in the tree.
+    pub key: Key,
+    
+    // Handler called when the focus changes.
+    pub on_focus_change: Option<ValueChanged<bool>>,
+    
+    // Called when a pointer enters or exits the button response area.
+    pub on_hover: Option<ValueChanged<bool>>,
+    
+    // Called when the button is long-pressed.
+    pub on_long_press: Option<VoidCallback>,
+    
+    // Called when the button is tapped or otherwise activated.
+    pub on_pressed: Option<VoidCallback>,
+    
+    // Customizes this button's appearance.
+    pub style: ButtonStyle,
 }
 
 impl Default for ElevatedButton {
     fn default() -> Self {
         Self {
-            key: Default::default(),
-            on_pressed: Default::default(),
-            on_long_press: Default::default(),
-            style: Default::default(),
-            focus_node: Default::default(),
             autofocus: Default::default(),
+            child: box NoneWidget,
             clip_behavior: Default::default(),
-            child: box NullWidget,
+            enabled: Default::default(),
+            focus_node: Default::default(),
+            key: Default::default(),
+            on_focus_change: Default::default(),
+            on_hover: Default::default(),
+            on_long_press: Default::default(),
+            on_pressed: Default::default(),
+            style: Default::default(),            
         }
     }
 }
 
 impl Widget for ElevatedButton {
     fn create_element(&self) -> Box<dyn Element> {
-        log::info!("Create ElevatedButtonElement");
         box ElevatedButtonElement::new(self)
     }
 }

@@ -8,7 +8,7 @@ use crate::{
     widgets::{
         Action, GenerateAppTitle, GlobalKey, InitialRouteListFactory, Intent,
         LocaleListResolutionCallback, LocaleResolutionCallback, NavigatorObserver, NavigatorState,
-        NullWidget, RouteFactory, ScrollBehavior, ShortcutActivator, TransitionBuilder, Widget,
+        NoneWidget, RouteFactory, ScrollBehavior, ShortcutActivator, TransitionBuilder, Widget,
         WidgetBuilder,
     },
 };
@@ -20,7 +20,7 @@ pub struct MaterialApp {
     pub navigator_key: GlobalKey<NavigatorState>,
     pub scaffold_messenger_key: GlobalKey<ScaffoldMessengerState>,
     pub home: Box<dyn Widget>,
-    pub routes: HashMap<String, Box<dyn WidgetBuilder>>,
+    pub routes: HashMap<String, Box<WidgetBuilder>>,
     pub initial_route: String,
     pub on_generate_route: Option<Box<dyn RouteFactory<String>>>, // TODO: String generic should be fixed
     pub on_generate_initial_routes: Option<Box<dyn InitialRouteListFactory>>,
@@ -59,7 +59,7 @@ impl Default for MaterialApp {
             key: Default::default(),
             navigator_key: Default::default(),
             scaffold_messenger_key: Default::default(),
-            home: box NullWidget,
+            home: box NoneWidget,
             routes: Default::default(),
             initial_route: Default::default(),
             on_generate_route: Default::default(),
@@ -96,7 +96,6 @@ impl Default for MaterialApp {
 
 impl Widget for MaterialApp {
     fn create_element(&self) -> Box<dyn Element> {
-        log::info!("Create MaterialAppElement");
         box MaterialAppElement::new(self)
     }
 }

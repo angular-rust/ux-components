@@ -8,5 +8,5 @@
 // Returns true if the resources for this delegate should be loaded again by calling the load method.
 //
 // toString() -> String
-// A string representation of this object. [...]
+// A string representation of this object.
 pub struct LocalizationsDelegate;

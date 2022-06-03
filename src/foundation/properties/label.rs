@@ -1,4 +1,6 @@
-use crate::foundation::{Id, Key, MouseEvent, Signal, TextAlign, WidgetProperties};
+use crate::prelude::TextAlign;
+
+use crate::foundation::{Id, Key, MouseEvent, Signal, WidgetProperties};
 
 /// Options for constructing a Label
 #[derive(Debug, Clone)]

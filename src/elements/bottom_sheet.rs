@@ -44,7 +44,7 @@ pub struct BottomSheetElement {
 
 impl Debug for BottomSheetElement {
     fn fmt(&self, f: &mut Formatter<'_>) -> Result {
-        f.debug_struct("CheckboxElement").finish()
+        f.debug_struct("BottomSheetElement").finish()
     }
 }
 
@@ -125,13 +125,6 @@ impl Element for BottomSheetElement {
                 comp.w = layout.size.width;
                 comp.h = layout.size.height;
 
-                log::warn!(
-                    "Relayout BottomSheetElement {}x{} {}x{}",
-                    comp.x,
-                    comp.y,
-                    comp.w,
-                    comp.h
-                );
                 true
             }
             Err(e) => {

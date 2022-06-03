@@ -150,7 +150,7 @@ impl Focus {
         false
     }
 
-    fn get_markable(&self, target: &dyn Element, x: f32, y: f32) -> Option<&Box<dyn Element>> {
+    fn get_markable(&self, target: &dyn Element, x: f32, y: f32) -> Option<&dyn Element> {
         let highest = target.topmost_child_at_point(x, y);
         if let Some(current) = highest {
             if current.id() == target.id() {
@@ -213,7 +213,7 @@ impl Focus {
             //if the mouse has left the current marked control, unmark
             if let Some(marked) = self.canvas.marked() {
                 if !marked.contains(e.x as f32, e.y as f32) {
-                    self.unmark_control(marked, e);
+                    self.unmark_control(marked.as_ref(), e);
                 }
             }
 
@@ -237,7 +237,7 @@ impl Focus {
         }
     }
 
-    fn reset_marked(&self, control: &Box<dyn Element>, e: &mut MouseEvent) {
+    fn reset_marked(&self, control: &dyn Element, e: &mut MouseEvent) {
         if control.is_marked() {
             self.unmark_control(control, e);
         }
@@ -254,14 +254,14 @@ impl Focus {
     fn find_marked(&self, e: &mut MouseEvent) -> Option<&Box<dyn Element>> {
         match self.get_focusable(e.x as f32, e.y as f32) {
             Some(marked) => {
-                self.mark_control(marked, e);
+                self.mark_control(marked.as_ref(), e);
                 Some(marked)
             }
             None => None,
         }
     }
 
-    fn unmark_control(&self, control: &Box<dyn Element>, e: &mut MouseEvent) {
+    fn unmark_control(&self, control: &dyn Element, e: &mut MouseEvent) {
         if control.is_marked() {
             control.unmark();
 
@@ -271,10 +271,10 @@ impl Focus {
         }
     }
 
-    fn mark_control(&self, control: &Box<dyn Element>, e: &mut MouseEvent) {
+    fn mark_control(&self, control: &dyn Element, e: &mut MouseEvent) {
         if !control.is_marked() {
             if let Some(marked) = self.canvas.marked() {
-                self.reset_marked(marked, e);
+                self.reset_marked(marked.as_ref(), e);
             }
             control.mark();
 

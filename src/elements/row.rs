@@ -5,11 +5,12 @@ use std::{
     fmt::{Debug, Formatter, Result},
     rc::Rc,
 };
-use stretch::{node::Node, style};
+use stretch::{geometry, node::Node, style};
+
+use crate::prelude::OnDemand;
 
 use crate::{
     foundation::{Helper, Id, KeyEvent, MouseEvent, ScaleChangeEvent, Signal, TextEvent},
-    prelude::OnDemand,
     services::LayoutSystem,
     widgets::Row,
 };
@@ -29,6 +30,8 @@ struct RowState {
 
 pub struct RowElement {
     pub component: Rc<RefCell<WidgetComponent>>, // TODO: should deal with other
+
+    pub children: Vec<Box<dyn Element>>,
 
     /// The current focused control, None if none
     pub focused: Option<Id>, // WidgetComponent
@@ -65,8 +68,6 @@ impl Debug for RowElement {
 
 impl RowElement {
     pub fn new(widget: &Row) -> Self {
-        let node = LayoutSystem::new_node(style::Style { ..default() }, vec![]).unwrap();
-
         // assert!(options.rendering.is_some(), "No Rendering given to Canvas, cannot create a canvas without one.");
 
         let component = WidgetComponent::get(widget.key.id());
@@ -78,9 +79,68 @@ impl RowElement {
         // canvas = self;
         // let scale = widget.scale;
 
-        // let home_element = widget.home.create_element();
+        let mut children = Vec::new();
+
+        let mut child_nodes = Vec::new();
+        let mut child_height = 0.0;
+
+        for child in widget.children.iter() {
+            let element = child.create_element();
+            let child_nodes = &mut child_nodes;
+            if let Some(child) = element.node() {
+                // calculate row height
+                let child_style = LayoutSystem::style(child).unwrap();
+                if let style::Dimension::Points(height) = child_style.size.height {
+                    if child_height < height {
+                        child_height = height;
+                    }
+                }
+                // if let style::Dimension::Points(width) = child_style.size.width {
+                //     println!("OOPS {}", width);
+                // }
+                child_nodes.push(child);
+            }
+
+            children.push(element);
+        }
+
+        let height = if child_height != 0.0 {
+            style::Dimension::Points(child_height)
+        } else {
+            style::Dimension::Percent(1.0)
+        };
+
+        let node = LayoutSystem::new_node(
+            style::Style {
+                flex_direction: style::FlexDirection::Row,
+                // align_items: style::AlignItems::Stretch,
+                // align_content: style::AlignContent::FlexStart,
+                // justify_content: style::JustifyContent::Center,
+                size: geometry::Size {
+                    width: style::Dimension::Percent(1.0),
+                    height,
+                },
+                ..default()
+            },
+            vec![],
+        )
+        .unwrap();
+
+        LayoutSystem::set_children(node, child_nodes).unwrap();
+
+        // for element in children.iter() {
+        //     element.node().map(|child| {
+        //         let child_style = LayoutSystem::style(child).unwrap();
+        //         // calculate row height
+        //         if let style::Dimension::Points(width) = child_style.size.width {
+        //             println!("Check {}", width);
+        //         }
+        //     });
+        // }
+
         Self {
             captured: None,
+            children,
             component,
             state: Default::default(),
             focus_invalid: true,
@@ -113,7 +173,7 @@ impl RowElement {
             }
         }
 
-        return None;
+        None
     }
 
     //Internal
@@ -255,11 +315,46 @@ impl Element for RowElement {
     }
 
     fn mousedown(&self, e: &mut MouseEvent) {
-        self.state.borrow_mut().mouse_down = true;
-        let mut component = self.component.borrow_mut();
+        // self.state.borrow_mut().mouse_down = true;
+        // let component = self.component.borrow();
+        // component.onmousedown.emit(e);
 
-        if component.onmousedown.is_some() {
-            let _ = component.onmousedown.get().try_send(e.clone());
+        // log::info!("{:?}", e);
+        // self.state.borrow_mut().mouse_down = true;
+        // let component = self.component.borrow();
+        // component.onmousedown.emit(e);
+
+        // TODO: remove this check
+        let inside = {
+            let comp = self.component.borrow();
+            Helper::in_rect(e.x as f32, e.y as f32, comp.x, comp.y, comp.w, comp.h)
+        };
+
+        // Scaffold should used as root widget after MaterialApp
+        // so all events should be inside
+        if inside {
+            let x = e.x as f32;
+            let y = e.y as f32;
+
+            // if self.title.contains(x, y) {
+            //     log::info!("Is an Title");
+            //     self.title.mousedown(e);
+            // }
+
+            // if self.flexible_space.contains(x, y) {
+            //     // log::info!("Is an FAB");
+            //     self.flexible_space.mousedown(e);
+            // }
+
+            for child in self.children.iter() {
+                if child.contains(x, y) {
+                    child.mousedown(e);
+                }
+            }
+            // if self.drawer.contains(x, y) {
+            //     // log::info!("Is an Drawer");
+            //     self.drawer.mousedown(e);
+            // }
         }
     }
 
@@ -333,6 +428,23 @@ impl Element for RowElement {
         // }
     }
 
+    fn render(&self) {
+        let comp = self.as_ref().borrow();
+
+        assert!(
+            !comp.destroyed,
+            "Widget was already destroyed but is being interacted with"
+        );
+
+        // if comp.renderable {
+        //     comp.onrender.emit(&());
+        // }
+
+        for child in self.children.iter() {
+            child.render();
+        }
+    }
+
     fn destroy(&self) {
         // self.base.destroy();
 
@@ -347,6 +459,16 @@ impl Element for RowElement {
     }
 
     fn relayout(&self, origin: Point2<f32>) {
+        // for element in self.children.iter() {
+        //     element.node().map(|child| {
+        //         let child_style = LayoutSystem::style(child).unwrap();
+        //         // calculate row height
+        //         if let style::Dimension::Points(width) = child_style.size.width {
+        //             println!("Check {}", width);
+        //         }
+        //     });
+        // }
+
         let update_childs = match LayoutSystem::layout(self.node) {
             Ok(layout) => {
                 let mut comp = self.as_ref().borrow_mut();
@@ -355,13 +477,6 @@ impl Element for RowElement {
                 comp.w = layout.size.width;
                 comp.h = layout.size.height;
 
-                log::warn!(
-                    "Relayout RowElement {}x{} {}x{}",
-                    comp.x,
-                    comp.y,
-                    comp.w,
-                    comp.h
-                );
                 true
             }
             Err(e) => {
@@ -371,9 +486,24 @@ impl Element for RowElement {
         };
 
         if update_childs {
-            // self.leading.relayout();
-            // self.title.relayout();
-            // self.flexible_space.relayout();
+            let comp = self.as_ref().borrow();
+            let origin = Point2 {
+                x: comp.x,
+                y: comp.y,
+            };
+
+            for child in self.children.iter() {
+
+                // child.node().map(|child| {
+                //     let child_style = LayoutSystem::style(child).unwrap();
+                //     // calculate row height
+                //     if let style::Dimension::Points(width) = child_style.size.width {
+                //         println!("Check: {}", width);
+                //     }
+                // });
+
+                child.relayout(origin);
+            }
         }
     }
 }

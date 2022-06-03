@@ -7,3 +7,9 @@ pub enum PlaceholderAlignment {
     Bottom = 4,
     Middle = 5,
 }
+
+impl Default for PlaceholderAlignment {
+    fn default() -> Self {
+        Self::Baseline
+    }
+}

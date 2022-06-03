@@ -7,11 +7,10 @@ use std::{
 };
 use stretch::{geometry, node::Node, style};
 
-use crate::prelude::Singleton;
+use crate::prelude::{OnDemand, Singleton};
 
 use crate::{
     foundation::{Helper, Id, KeyEvent, MouseEvent, ScaleChangeEvent, Signal, TextEvent},
-    prelude::OnDemand,
     rendering::backend::{WidgetRenderFactory, WidgetRenderHolder, WidgetRenderer},
     services::LayoutSystem,
     widgets::NavigationToolbar,
@@ -74,7 +73,7 @@ pub struct NavigationToolbarElement {
 
     state: RefCell<NavigationToolbarState>,
     // The concrete renderer for this control instance
-    pub render: Option<Rc<WidgetRenderHolder<Self>>>,
+    pub renderer: Option<Rc<WidgetRenderHolder<Self>>>,
 
     // The node in layout system
     pub node: Node,
@@ -171,7 +170,7 @@ impl NavigationToolbarElement {
         // let scale = widget.scale;
 
         let leading = widget.leading.create_element();
-        leading.node().map(|child| {
+        if let Some(child) = leading.node() {
             let child_style = LayoutSystem::style(child).unwrap();
             LayoutSystem::set_style(
                 child,
@@ -182,10 +181,10 @@ impl NavigationToolbarElement {
             )
             .unwrap();
             LayoutSystem::set_children(topline.leading, vec![child]).unwrap();
-        });
+        }
 
         let middle = widget.middle.create_element();
-        middle.node().map(|child| {
+        if let Some(child) = middle.node() {
             let child_style = LayoutSystem::style(child).unwrap();
             LayoutSystem::set_style(
                 child,
@@ -196,7 +195,7 @@ impl NavigationToolbarElement {
             )
             .unwrap();
             LayoutSystem::set_children(topline.central, vec![child]).unwrap();
-        });
+        }
 
         let trailing = widget.trailing.create_element();
         // flexible_space.node().map(|child| {
@@ -260,7 +259,7 @@ impl NavigationToolbarElement {
             onmarkedchange: Signal::new(),
             onscalechange: Signal::new(),
             scale: 1.0,
-            render: WidgetRenderFactory::global().get::<Self>(),
+            renderer: WidgetRenderFactory::global().get::<Self>(),
             node,
             topline,
         }
@@ -284,7 +283,7 @@ impl NavigationToolbarElement {
             }
         }
 
-        return None;
+        None
     }
 
     //Internal
@@ -540,13 +539,6 @@ impl Element for NavigationToolbarElement {
                 comp.w = layout.size.width;
                 comp.h = layout.size.height;
 
-                log::warn!(
-                    "Relayout NavigationToolbar {}x{} {}x{}",
-                    comp.x,
-                    comp.y,
-                    comp.w,
-                    comp.h
-                );
                 true
             }
             Err(e) => {
@@ -602,12 +594,11 @@ impl Element for NavigationToolbarElement {
     }
 
     fn render(&self) {
-        log::info!("Render NavigationToolbar");
         {
             let mut comp = self.component.borrow_mut();
 
             assert!(
-                comp.destroyed == false,
+                !comp.destroyed,
                 "Widget was already destroyed but is being interacted with"
             );
 
@@ -616,7 +607,7 @@ impl Element for NavigationToolbarElement {
             }
         }
 
-        if let Some(ref render) = self.render {
+        if let Some(ref render) = self.renderer {
             render.render(self);
         }
 

@@ -13,9 +13,9 @@ pub struct Stepper {
     // pub physics: ScrollPhysics,
     // pub stepper_type: StepperType,
     pub current_step: i32,
-    pub on_step_tapped: Option<Box<dyn ValueChanged<i32>>>,
-    pub on_step_continue: Option<Box<dyn VoidCallback>>,
-    pub on_step_cancel: Option<Box<dyn VoidCallback>>,
+    pub on_step_tapped: Option<ValueChanged<i32>>,
+    pub on_step_continue: Option<VoidCallback>,
+    pub on_step_cancel: Option<VoidCallback>,
     // pub controls_builder: ControlsWidgetBuilder,
     pub elevation: f32,
 }
@@ -39,7 +39,6 @@ impl Default for Stepper {
 
 impl Widget for Stepper {
     fn create_element(&self) -> Box<dyn Element> {
-        log::info!("Create StepperElement");
         box StepperElement::new(self)
     }
 }

@@ -7,9 +7,10 @@ use std::{
 };
 use stretch::{geometry, node::Node, style};
 
+use crate::prelude::OnDemand;
+
 use crate::{
     foundation::{Helper, Id, KeyEvent, MouseEvent, ScaleChangeEvent, Signal, TextEvent},
-    prelude::OnDemand,
     services::LayoutSystem,
     widgets::Flow,
 };
@@ -100,7 +101,7 @@ impl FlowElement {
         for child in widget.children.iter() {
             let element = child.create_element();
             let child_nodes = &mut child_nodes;
-            element.node().map(|child| {
+            if let Some(child) = element.node() {
                 // let child_style = LayoutSystem::style(child).unwrap();
                 // LayoutSystem::set_style(
                 //     child,
@@ -111,7 +112,7 @@ impl FlowElement {
                 // )
                 // .unwrap();
                 child_nodes.push(child);
-            });
+            }
 
             children.push(element);
         }
@@ -153,7 +154,7 @@ impl FlowElement {
             }
         }
 
-        return None;
+        None
     }
 
     //Internal
@@ -409,11 +410,10 @@ impl Element for FlowElement {
     }
 
     fn render(&self) {
-        log::info!("Render FlowElement");
         let comp = self.as_ref().borrow();
 
         assert!(
-            comp.destroyed == false,
+            !comp.destroyed,
             "Widget was already destroyed but is being interacted with"
         );
 
@@ -453,13 +453,6 @@ impl Element for FlowElement {
                 comp.w = layout.size.width;
                 comp.h = layout.size.height;
 
-                log::warn!(
-                    "Relayout FlowElement {}x{} {}x{}",
-                    comp.x,
-                    comp.y,
-                    comp.w,
-                    comp.h
-                );
                 true
             }
             Err(e) => {

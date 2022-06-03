@@ -27,8 +27,8 @@ jobs:
           profile: minimal
           default: true
 
-      - name: Install Clutter
-        run: sudo apt-get update && sudo apt-get install libclutter-1.0-dev libpango1.0-dev
+      - name: Install udev
+        run: sudo apt-get install libudev-dev
 
       - name: Restore cache
         uses: Swatinem/rust-cache@v1

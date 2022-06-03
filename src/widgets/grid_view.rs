@@ -2,7 +2,7 @@ use crate::{
     elements::{Element, GridViewElement},
     foundation::{Id, Key, WidgetProperties},
     gestures::DragStartBehavior,
-    painting::EdgeInsetsGeometry,
+    painting::{EdgeInsetsGeometry, NoneEdgeInsetsGeometry},
     ui::Clip,
 };
 
@@ -16,7 +16,7 @@ pub struct GridView {
     pub primary: bool,
     // pub physics: ScrollPhysics,
     pub shrink_wrap: bool, // = false
-    pub padding: EdgeInsetsGeometry,
+    pub padding: Box<dyn EdgeInsetsGeometry>,
     // pub grid_delegate: SliverGridDelegate,
     pub add_automatic_keep_alives: bool, // = true
     pub add_repaint_boundaries: bool,    // = true
@@ -40,7 +40,7 @@ impl Default for GridView {
             primary: Default::default(),
             // physics: Default::default(),
             shrink_wrap: Default::default(),
-            padding: Default::default(),
+            padding: box NoneEdgeInsetsGeometry,
             // grid_delegate: Default::default(),
             add_automatic_keep_alives: Default::default(),
             add_repaint_boundaries: Default::default(),
@@ -58,7 +58,6 @@ impl Default for GridView {
 
 impl Widget for GridView {
     fn create_element(&self) -> Box<dyn Element> {
-        log::info!("Create GridViewElement");
         box GridViewElement::new(self)
     }
 }

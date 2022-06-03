@@ -44,7 +44,7 @@ pub struct CircularProgressIndicatorElement {
 
 impl Debug for CircularProgressIndicatorElement {
     fn fmt(&self, f: &mut Formatter<'_>) -> Result {
-        f.debug_struct("CheckboxElement").finish()
+        f.debug_struct("CircularProgressIndicatorElement").finish()
     }
 }
 
@@ -125,13 +125,6 @@ impl Element for CircularProgressIndicatorElement {
                 comp.w = layout.size.width;
                 comp.h = layout.size.height;
 
-                log::warn!(
-                    "Relayout CircularProgressIndicatorElement {}x{} {}x{}",
-                    comp.x,
-                    comp.y,
-                    comp.w,
-                    comp.h
-                );
                 true
             }
             Err(e) => {

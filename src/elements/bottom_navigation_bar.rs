@@ -7,17 +7,14 @@ use std::{
 };
 use stretch::{geometry, node::Node, style};
 
-use crate::prelude::Singleton;
+use crate::prelude::{OnDemand, Singleton};
 
 use crate::{
-    foundation::Id,
-    foundation::Signal,
-    foundation::{Helper, KeyEvent, MouseEvent, ScaleChangeEvent, TextEvent},
+    foundation::{Helper, Id, KeyEvent, MouseEvent, ScaleChangeEvent, Signal, TextEvent},
     material::BottomNavigationBar,
-    prelude::OnDemand,
     rendering::backend::{WidgetRenderFactory, WidgetRenderHolder, WidgetRenderer},
     services::LayoutSystem,
-    widgets::{NullWidget, Widget},
+    widgets::{NoneWidget, Widget},
 };
 
 use super::{Element, WidgetComponent};
@@ -75,7 +72,7 @@ pub struct BottomNavigationBarElement {
 
     state: RefCell<BottomNavigationBarState>,
     // The concrete renderer for this control instance
-    pub render: Option<Rc<WidgetRenderHolder<Self>>>,
+    pub renderer: Option<Rc<WidgetRenderHolder<Self>>>,
 
     // The node in layout system
     pub node: Node,
@@ -188,7 +185,7 @@ impl BottomNavigationBarElement {
         // let scale = widget.scale;
         let childs = Vec::new();
 
-        let leading = NullWidget.create_element();
+        let leading = NoneWidget.create_element();
         // let leading = widget.leading.create_element();
         // leading.node().map(|child| {
         //     let child_style = LayoutSystem::style(child).unwrap();
@@ -207,7 +204,7 @@ impl BottomNavigationBarElement {
         //     &childs.push(child);
         // });
 
-        let title = NullWidget.create_element();
+        let title = NoneWidget.create_element();
         // let title = widget.title.create_element();
         // title.node().map(|child| {
         //     let child_style = LayoutSystem::style(child).unwrap();
@@ -226,7 +223,7 @@ impl BottomNavigationBarElement {
         //     &childs.push(child);
         // });
 
-        let flexible_space = NullWidget.create_element();
+        let flexible_space = NoneWidget.create_element();
         // let flexible_space = widget.flexible_space.create_element();
         // flexible_space.node().map(|child| {
         //     let child_style = LayoutSystem::style(child).unwrap();
@@ -262,7 +259,7 @@ impl BottomNavigationBarElement {
             onmarkedchange: Signal::new(),
             onscalechange: Signal::new(),
             scale: 1.0,
-            render: WidgetRenderFactory::global().get::<Self>(),
+            renderer: WidgetRenderFactory::global().get::<Self>(),
             node,
             topline,
         }
@@ -286,7 +283,7 @@ impl BottomNavigationBarElement {
             }
         }
 
-        return None;
+        None
     }
 
     //Internal
@@ -505,13 +502,6 @@ impl Element for BottomNavigationBarElement {
                 comp.w = layout.size.width;
                 comp.h = layout.size.height;
 
-                log::warn!(
-                    "Relayout BottomNavigationBar {}x{} {}x{}",
-                    comp.x,
-                    comp.y,
-                    comp.w,
-                    comp.h
-                );
                 true
             }
             Err(e) => {
@@ -544,12 +534,11 @@ impl Element for BottomNavigationBarElement {
     }
 
     fn render(&self) {
-        log::info!("Render BottomNavigationBar");
         {
             let mut comp = self.component.borrow_mut();
 
             assert!(
-                comp.destroyed == false,
+                !comp.destroyed,
                 "Widget was already destroyed but is being interacted with"
             );
 
@@ -558,7 +547,7 @@ impl Element for BottomNavigationBarElement {
             }
         }
 
-        if let Some(ref render) = self.render {
+        if let Some(ref render) = self.renderer {
             render.render(self);
         }
 

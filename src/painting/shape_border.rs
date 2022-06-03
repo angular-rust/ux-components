@@ -1,37 +1,35 @@
-/*
-add(ShapeBorder other, {bool reversed = false}) → ShapeBorder?
-Attempts to create a new object that represents the amalgamation of this border and the other border. [...]
-@protected
+pub trait ShapeBorder {
+    // The widths of the sides of this border represented as an EdgeInsets.
+    // dimensions: EdgeInsetsGeometry
 
-getInnerPath(Rect rect, {TextDirection? textDirection}) → Path
-Create a Path that describes the inner edge of the border. [...]
+    // Attempts to create a new object that represents the amalgamation of this border and the other border.
+    // add(ShapeBorder other, {bool reversed = false}) → ShapeBorder?
 
-getOuterPath(Rect rect, {TextDirection? textDirection}) → Path
-Create a Path that describes the outer edge of the border. [...]
+    // Create a Path that describes the inner edge of the border.
+    // getInnerPath(Rect rect, {TextDirection? textDirection}) → Path
 
-lerpFrom(ShapeBorder? a, double t) → ShapeBorder?
-Linearly interpolates from another ShapeBorder (possibly of another class) to this. [...]
-@protected
+    // Create a Path that describes the outer edge of the border.
+    // getOuterPath(Rect rect, {TextDirection? textDirection}) → Path
 
-lerpTo(ShapeBorder? b, double t) → ShapeBorder?
-Linearly interpolates from this to another ShapeBorder (possibly of another class). [...]
-@protected
+    // Linearly interpolates from another ShapeBorder (possibly of another class) to this.
+    // lerpFrom(ShapeBorder? a, double t) → ShapeBorder?
 
-paint(Canvas canvas, Rect rect, {TextDirection? textDirection}) → void
-Paints the border within the given Rect on the given Canvas. [...]
+    // Linearly interpolates from this to another ShapeBorder (possibly of another class).
+    // lerpTo(ShapeBorder? b, double t) → ShapeBorder?
 
-scale(double t) → ShapeBorder
-Creates a copy of this border, scaled by the factor t. [...]
+    // Paints the border within the given Rect on the given Canvas.
+    // paint(Canvas canvas, Rect rect, {TextDirection? textDirection}) → void
 
-toString() → String
-A string representation of this object. [...]
-override
-*/
+    // Creates a copy of this border, scaled by the factor t.
+    // scale(double t) → ShapeBorder
+}
 
-pub struct ShapeBorder;
+pub struct NoneShapeBorder;
 
-impl Default for ShapeBorder {
+impl ShapeBorder for NoneShapeBorder {}
+
+impl Default for NoneShapeBorder {
     fn default() -> Self {
-        Self {}
+        Self
     }
 }

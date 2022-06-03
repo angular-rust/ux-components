@@ -2,15 +2,15 @@ use crate::{
     elements::{ButtonStyleButtonElement, Element},
     foundation::{Id, Key, WidgetProperties},
     ui::{Clip, VoidCallback},
-    widgets::{FocusNode, NullWidget, Widget},
+    widgets::{FocusNode, NoneWidget, Widget},
 };
 
 use super::ButtonStyle;
 
 pub struct ButtonStyleButton {
     pub key: Key,
-    pub on_pressed: Option<Box<dyn VoidCallback>>,
-    pub on_long_press: Option<Box<dyn VoidCallback>>,
+    pub on_pressed: Option<VoidCallback>,
+    pub on_long_press: Option<VoidCallback>,
     pub style: ButtonStyle,
     pub focus_node: FocusNode,
     pub autofocus: bool,
@@ -28,14 +28,13 @@ impl Default for ButtonStyleButton {
             focus_node: Default::default(),
             autofocus: Default::default(),
             clip_behavior: Default::default(),
-            child: box NullWidget,
+            child: box NoneWidget,
         }
     }
 }
 
 impl Widget for ButtonStyleButton {
     fn create_element(&self) -> Box<dyn Element> {
-        log::info!("Create ButtonStyleButtonElement");
         box ButtonStyleButtonElement::new(self)
     }
 }

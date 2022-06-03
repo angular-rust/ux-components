@@ -1,9 +1,9 @@
 use crate::{
     elements::{Element, PopupMenuButtonElement},
     foundation::{colorspace::Color, Id, Key, WidgetProperties},
-    painting::{EdgeInsetsGeometry, ShapeBorder},
+    painting::{EdgeInsetsGeometry, NoneEdgeInsetsGeometry, NoneShapeBorder, ShapeBorder},
     ui::Offset,
-    widgets::{NullWidget, Widget},
+    widgets::{NoneWidget, Widget},
 };
 
 pub struct PopupMenuButton {
@@ -14,13 +14,13 @@ pub struct PopupMenuButton {
     // pub on_canceled: PopupMenuCanceled,
     pub tooltip: String,
     pub elevation: f32,
-    pub padding: EdgeInsetsGeometry,
+    pub padding: Box<dyn EdgeInsetsGeometry>,
     pub child: Box<dyn Widget>,
     pub icon: Box<dyn Widget>,
     pub icon_size: f32,
     pub offset: Offset,
     pub enabled: bool,
-    pub shape: ShapeBorder,
+    pub shape: Box<dyn ShapeBorder>,
     pub color: Color,
     pub enable_feedback: bool,
 }
@@ -35,13 +35,13 @@ impl Default for PopupMenuButton {
             // on_canceled: Default::default(),
             tooltip: Default::default(),
             elevation: Default::default(),
-            padding: Default::default(),
-            child: box NullWidget,
-            icon: box NullWidget,
+            padding: box NoneEdgeInsetsGeometry,
+            child: box NoneWidget,
+            icon: box NoneWidget,
             icon_size: Default::default(),
             offset: Default::default(),
             enabled: Default::default(),
-            shape: Default::default(),
+            shape: box NoneShapeBorder,
             color: Default::default(),
             enable_feedback: Default::default(),
         }
@@ -50,7 +50,6 @@ impl Default for PopupMenuButton {
 
 impl Widget for PopupMenuButton {
     fn create_element(&self) -> Box<dyn Element> {
-        log::info!("Create PopupMenuButtonElement");
         box PopupMenuButtonElement::new(self)
     }
 }

@@ -6,3 +6,9 @@ pub enum PointerDeviceKind {
     InvertedStylus = 3,
     Unknown = 4,
 }
+
+impl Default for PointerDeviceKind {
+    fn default() -> Self {
+        Self::Touch
+    }
+}

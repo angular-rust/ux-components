@@ -1,7 +1,7 @@
 use crate::{
     elements::{DataTableElement, Element},
     foundation::{colorspace::Color, Id, Key, WidgetProperties},
-    painting::{Decoration, TextStyle},
+    painting::{Decoration, NoneDecoration, TextStyle},
     widgets::Widget,
 };
 
@@ -13,7 +13,7 @@ pub struct DataTable {
     pub sort_column_index: i32,
     pub sort_ascending: bool,
     // pub on_select_all: ValueSetter<bool>,
-    pub decoration: Decoration,
+    pub decoration: Box<dyn Decoration>,
     pub data_row_color: MaterialStateProperty<Color>,
     pub data_row_height: f32,
     pub data_text_style: TextStyle,
@@ -37,7 +37,7 @@ impl Default for DataTable {
             sort_column_index: Default::default(),
             sort_ascending: Default::default(),
             // on_select_all: Default::default(),
-            decoration: Default::default(),
+            decoration: box NoneDecoration,
             data_row_color: Default::default(),
             data_row_height: Default::default(),
             data_text_style: Default::default(),
@@ -57,7 +57,6 @@ impl Default for DataTable {
 
 impl Widget for DataTable {
     fn create_element(&self) -> Box<dyn Element> {
-        log::info!("Create DataTableElement");
         box DataTableElement::new(self)
     }
 }

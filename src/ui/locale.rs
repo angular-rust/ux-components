@@ -1,8 +1,9 @@
 // toLanguageTag() → String
-// Returns a syntactically valid Unicode BCP47 Locale Identifier. [...]
+// Returns a syntactically valid Unicode BCP47 Locale Identifier.
 //
 // toString() → String
-// Returns a string representing the locale. [...]
+// Returns a string representing the locale.
+#[derive(Debug, Clone, PartialEq, Hash)]
 pub struct Locale {
     pub language_code: String, // = "und",
     pub script_code: String,

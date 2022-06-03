@@ -13,7 +13,7 @@ pub struct LinearProgressFill {
 #[derive(Clone, Debug)]
 pub struct LinearProgressProps {
     pub fill: Option<Actor>,
-    pub progress: f64,
+    pub progress: f32,
 }
 
 #[derive(Debug)]
@@ -70,7 +70,7 @@ pub trait LinearProgressExt: 'static {
     ///
     /// Returns: A value between 0.0 and 1.0
     ///
-    fn get_progress(&self) -> f64;
+    fn get_progress(&self) -> f32;
 
     /// set_progress:
     /// @bar: A #LinearProgress
@@ -78,7 +78,7 @@ pub trait LinearProgressExt: 'static {
     ///
     /// Set the progress of the progress bar
     ///
-    fn set_progress(&self, progress: f64);
+    fn set_progress(&self, progress: f32);
 
     fn connect_property_progress_notify<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 }
@@ -91,7 +91,7 @@ impl<O: Is<LinearProgress>> LinearProgressExt for O {
     ///
     /// Returns: A value between 0.0 and 1.0
     ///
-    fn get_progress(&self) -> f64 {
+    fn get_progress(&self) -> f32 {
         let progressbar = self.as_ref();
         let props = progressbar.props.borrow();
 
@@ -104,7 +104,7 @@ impl<O: Is<LinearProgress>> LinearProgressExt for O {
     ///
     /// Set the progress of the progress bar
     ///
-    fn set_progress(&self, progress: f64) {
+    fn set_progress(&self, progress: f32) {
         let progressbar = self.as_ref();
         let mut props = progressbar.props.borrow_mut();
 

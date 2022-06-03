@@ -7,11 +7,10 @@ use std::{
 };
 use stretch::{geometry, node::Node, style};
 
-use crate::prelude::Singleton;
+use crate::prelude::{OnDemand, Singleton};
 
 use crate::{
     foundation::Signal,
-    prelude::OnDemand,
     rendering::backend::{WidgetRenderFactory, WidgetRenderHolder, WidgetRenderer},
     services::LayoutSystem,
     widgets::Text,
@@ -35,7 +34,7 @@ pub struct TextElement {
     pub onchange: Signal<String>,
 
     // The concrete renderer for this control instance
-    pub render: Option<Rc<WidgetRenderHolder<Self>>>,
+    pub renderer: Option<Rc<WidgetRenderHolder<Self>>>,
     // The node in layout system
     pub node: Node,
 }
@@ -51,8 +50,8 @@ impl TextElement {
         let node = LayoutSystem::new_node(
             style::Style {
                 size: geometry::Size {
-                    width: style::Dimension::Points(64.0),
-                    height: style::Dimension::Points(64.0),
+                    width: style::Dimension::Percent(1.0),
+                    height: style::Dimension::Points(25.0),
                 },
                 ..default()
             },
@@ -68,13 +67,13 @@ impl TextElement {
         //     component.onmouseup.listen(box move |e| handler.emit(e));
         // }
 
-        let text = widget.data.clone();
+        let text = widget.text.clone();
 
         Self {
             component,
             state: RefCell::new(TextState { text }),
             onchange: Signal::new(),
-            render: WidgetRenderFactory::global().get::<Self>(),
+            renderer: WidgetRenderFactory::global().get::<Self>(),
             node,
         }
     }
@@ -102,12 +101,11 @@ impl AsRef<RefCell<WidgetComponent>> for TextElement {
 
 impl Element for TextElement {
     fn render(&self) {
-        log::info!("Render: [{}]", self.text());
         {
             let mut comp = self.component.borrow_mut();
 
             assert!(
-                comp.destroyed == false,
+                !comp.destroyed,
                 "Widget was already destroyed but is being interacted with"
             );
 
@@ -116,7 +114,7 @@ impl Element for TextElement {
             }
         }
 
-        if let Some(ref render) = self.render {
+        if let Some(ref render) = self.renderer {
             render.render(self);
         }
 
@@ -149,14 +147,6 @@ impl Element for TextElement {
                 comp.w = layout.size.width;
                 comp.h = layout.size.height;
 
-                log::warn!(
-                    "Relayout TextElement [{}] {}x{} {}x{}",
-                    self.text(),
-                    comp.x,
-                    comp.y,
-                    comp.w,
-                    comp.h
-                );
                 true
             }
             Err(e) => {

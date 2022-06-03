@@ -4,7 +4,7 @@ use crate::{
     widgets::Widget,
 };
 
-use super::NullWidget;
+use super::NoneWidget;
 
 pub struct Center {
     pub key: Key,
@@ -19,14 +19,13 @@ impl Default for Center {
             key: Default::default(),
             width_factor: Default::default(),
             height_factor: Default::default(),
-            child: box NullWidget,
+            child: box NoneWidget,
         }
     }
 }
 
 impl Widget for Center {
     fn create_element(&self) -> Box<dyn Element> {
-        log::info!("Create CenterElement");
         box CenterElement::new(self)
     }
 }

@@ -27,7 +27,6 @@ impl Default for ImageIcon {
 
 impl Widget for ImageIcon {
     fn create_element(&self) -> Box<dyn Element> {
-        log::info!("Create ImageIconElement");
         box ImageIconElement::new(self)
     }
 }

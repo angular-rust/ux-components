@@ -8,3 +8,9 @@ pub enum PointerChange {
     Move = 5,
     Up = 6,
 }
+
+impl Default for PointerChange {
+    fn default() -> Self {
+        Self::Cancel
+    }
+}

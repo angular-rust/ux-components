@@ -3,19 +3,21 @@ use crate::{
     foundation::{colorspace::Color, Id, Key, ValueChanged, WidgetProperties},
     gestures::DragStartBehavior,
     painting::TextStyle,
-    services::MouseCursor,
+    services::{MouseCursor, TextInputType},
     ui::{
         BoxHeightStyle, BoxWidthStyle, Brightness, Radius, TextAlign, TextDirection, VoidCallback,
     },
-    widgets::{FocusNode, Widget},
+    widgets::{FocusNode, Widget, TextEditingController},
 };
+
+use super::InputDecoration;
 
 pub struct TextField {
     pub key: Key,
-    // pub controller: TextEditingController,
+    pub controller: TextEditingController,
     pub focus_node: FocusNode,
-    // pub decoration: InputDecoration,
-    // pub keyboard_type: TextInputType,
+    pub decoration: InputDecoration,
+    pub keyboard_type: TextInputType,
     // pub text_input_action: TextInputAction,
     // pub text_capitalization: TextCapitalization,
     pub style: TextStyle,
@@ -40,9 +42,9 @@ pub struct TextField {
     // @Deprecated("Use maxLengthEnforcement parameter which provides more specific ' 'behavior related to the maxLength limit. ")
     pub max_length_enforced: bool,
     // pub max_length_enforcement: MaxLengthEnforcement,
-    pub on_changed: Option<Box<dyn ValueChanged<String>>>,
-    pub on_editing_complete: Option<Box<dyn VoidCallback>>,
-    pub on_submitted: Option<Box<dyn ValueChanged<String>>>,
+    pub on_changed: Option<ValueChanged<String>>,
+    pub on_editing_complete: Option<VoidCallback>,
+    pub on_submitted: Option<ValueChanged<String>>,
     // pub on_app_private_command: AppPrivateCommandCallback,
     // pub input_formatters: Vec<TextInputFormatter>,
     pub enabled: bool,
@@ -71,10 +73,10 @@ impl Default for TextField {
     fn default() -> Self {
         Self {
             key: Default::default(),
-            // controller: Default::default(),
+            controller: Default::default(),
             focus_node: Default::default(),
-            // decoration: Default::default(),
-            // keyboard_type: Default::default(),
+            decoration: Default::default(),
+            keyboard_type: Default::default(),
             // text_input_action: Default::default(),
             // text_capitalization: Default::default(),
             style: Default::default(),
@@ -129,7 +131,6 @@ impl Default for TextField {
 
 impl Widget for TextField {
     fn create_element(&self) -> Box<dyn Element> {
-        log::info!("Create TextFieldElement");
         box TextFieldElement::new(self)
     }
 }

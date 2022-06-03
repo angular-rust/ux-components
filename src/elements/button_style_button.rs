@@ -44,7 +44,7 @@ pub struct ButtonStyleButtonElement {
 
 impl Debug for ButtonStyleButtonElement {
     fn fmt(&self, f: &mut Formatter<'_>) -> Result {
-        f.debug_struct("CheckboxElement").finish()
+        f.debug_struct("ButtonStyleButtonElement").finish()
     }
 }
 
@@ -125,13 +125,6 @@ impl Element for ButtonStyleButtonElement {
                 comp.w = layout.size.width;
                 comp.h = layout.size.height;
 
-                log::warn!(
-                    "Relayout ButtonStyleButtonElement {}x{} {}x{}",
-                    comp.x,
-                    comp.y,
-                    comp.w,
-                    comp.h
-                );
                 true
             }
             Err(e) => {

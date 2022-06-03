@@ -4,7 +4,5 @@ use crate::{elements::TextEditElement, rendering::backend::WidgetRenderer};
 pub struct TextEditRender;
 
 impl WidgetRenderer<TextEditElement> for TextEditRender {
-    fn render(&self, widget: &TextEditElement) {
-        println!("TextEditRender");
-    }
+    fn render(&self, widget: &TextEditElement) {}
 }

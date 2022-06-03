@@ -30,7 +30,6 @@ impl Default for Icon {
 
 impl Widget for Icon {
     fn create_element(&self) -> Box<dyn Element> {
-        log::info!("Create IconElement");
         box IconElement::new(self)
     }
 }

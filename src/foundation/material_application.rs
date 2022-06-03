@@ -7,9 +7,10 @@ use structopt::StructOpt;
 
 use crate::prelude::SetterMut;
 
+use crate::widgets::StatefulWidget;
 use crate::{
     platform::core::{Instance, PresentMode, SurfaceConfiguration, TextureFormat, TextureUsages},
-    widgets::{BuildContext, Widget, WidgetBuilder},
+    widgets::{BuildContext, Widget, WidgetBuilder, State},
     winit::{
         dpi::{LogicalSize, PhysicalPosition, PhysicalSize, Position, Size},
         error::{ExternalError, NotSupportedError},
@@ -66,7 +67,7 @@ struct Opt {
 impl MaterialApplication {
     pub fn run<D>(mut context: D::Context, settings: ApplicationSettings)
     where
-        D: WidgetBuilder + Context + Default + 'static,
+        D: StatefulWidget<Out = D> + Context + Default + 'static, 
         // D: SceneActivity<Self> + WidgetBuilder + Context + 'static,
     {
         log::info!("starting async \"{}\"", settings.title);
@@ -97,7 +98,7 @@ impl MaterialApplication {
         let window = WindowBuilder::new()
             .with_min_inner_size(Size::Logical(LogicalSize::new(64.0, 64.0)))
             .with_inner_size(Size::Physical(PhysicalSize::new(width, height)))
-            .with_title(settings.title.clone())
+            .with_title(settings.title)
             .build(&event_loop)
             .unwrap();
 
@@ -133,8 +134,17 @@ impl MaterialApplication {
             .map_err(|e| error::Error::app_initialization_failure(format!("{:?}", e)))
             .unwrap();
 
+        // let state: Box<dyn State<D>> = D::default().create_state();
+        
         // set the root to  application
-        app.set(D::default().build(BuildContext).create_element());
+        app.set(
+            D::default()
+                .create_state()
+                .build(Some(BuildContext {
+                    painter: app.painter.clone(),
+                }))
+                .create_element(),
+        );
 
         // loop over time and run the application
         let start_time = Monotonic::now();
@@ -156,7 +166,7 @@ impl MaterialApplication {
                             window_id,
                         } if window_id == window.id() => {
                             // route to external handlers
-                            app.before_event(&mut runner, &mut context, &event).await;
+                            app.before_event(&mut runner, &mut context, event).await;
 
                             match event {
                                 WindowEvent::Resized(physical_size) => {
@@ -399,7 +409,7 @@ impl MaterialApplication {
                             }
 
                             // route to external handlers
-                            app.after_event(&mut runner, &mut context, &event).await;
+                            app.after_event(&mut runner, &mut context, event).await;
                         }
                         // Event::MainEventsCleared => {
                         //     // We draw only in RedrawRequested to filter only current window
@@ -450,7 +460,7 @@ impl MaterialApplication {
 
     /// Returns the scale factor that can be used to map logical pixels to physical pixels, and vice versa.
     ///
-    /// See the [`dpi`](winit::dpi) module for more information.
+    /// See the [`dpi`](crate::winit::dpi) module for more information.
     ///
     /// Note that this value can change depending on user action (for example if the window is
     /// moved to another screen); as such, tracking `WindowEvent::ScaleFactorChanged` events is

@@ -1,7 +1,7 @@
 use crate::{
     elements::{Element, ExpansionPanelElement},
     foundation::{colorspace::Color, Id, Key, WidgetProperties},
-    widgets::{NullWidget, Widget},
+    widgets::{NoneWidget, Widget},
 };
 
 pub struct ExpansionPanel {
@@ -18,7 +18,7 @@ impl Default for ExpansionPanel {
         Self {
             key: Default::default(),
             // header_builder: Default::default(),
-            body: box NullWidget,
+            body: box NoneWidget,
             is_expanded: Default::default(),
             can_tap_on_header: Default::default(),
             background_color: Default::default(),
@@ -28,7 +28,6 @@ impl Default for ExpansionPanel {
 
 impl Widget for ExpansionPanel {
     fn create_element(&self) -> Box<dyn Element> {
-        log::info!("Create ExpansionPanelElement");
         box ExpansionPanelElement::new(self)
     }
 }

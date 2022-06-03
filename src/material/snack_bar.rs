@@ -3,9 +3,9 @@ use std::time::Duration;
 use crate::{
     elements::{Element, SnackBarElement},
     foundation::{colorspace::Color, Id, Key, WidgetProperties},
-    painting::{EdgeInsetsGeometry, ShapeBorder},
+    painting::{EdgeInsetsGeometry, NoneEdgeInsetsGeometry, NoneShapeBorder, ShapeBorder},
     ui::VoidCallback,
-    widgets::{NullWidget, Widget},
+    widgets::{NoneWidget, Widget},
 };
 
 use super::SnackBarBehavior;
@@ -15,15 +15,15 @@ pub struct SnackBar {
     pub content: Box<dyn Widget>,
     pub background_color: Color,
     pub elevation: f32,
-    pub margin: EdgeInsetsGeometry,
-    pub padding: EdgeInsetsGeometry,
+    pub margin: Box<dyn EdgeInsetsGeometry>,
+    pub padding: Box<dyn EdgeInsetsGeometry>,
     pub width: f32,
-    pub shape: ShapeBorder,
+    pub shape: Box<dyn ShapeBorder>,
     pub behavior: SnackBarBehavior,
     // pub action: SnackBarAction,
     pub duration: Duration,
     // pub animation: Animation<f32>,
-    pub on_visible: Option<Box<dyn VoidCallback>>,
+    pub on_visible: Option<VoidCallback>,
     // pub dismiss_direction: DismissDirection,
 }
 
@@ -31,13 +31,13 @@ impl Default for SnackBar {
     fn default() -> Self {
         Self {
             key: Default::default(),
-            content: box NullWidget,
+            content: box NoneWidget,
             background_color: Default::default(),
             elevation: Default::default(),
-            margin: Default::default(),
-            padding: Default::default(),
+            margin: box NoneEdgeInsetsGeometry,
+            padding: box NoneEdgeInsetsGeometry,
             width: Default::default(),
-            shape: Default::default(),
+            shape: box NoneShapeBorder,
             behavior: Default::default(),
             // action: Default::default(),
             duration: Default::default(),
@@ -50,7 +50,6 @@ impl Default for SnackBar {
 
 impl Widget for SnackBar {
     fn create_element(&self) -> Box<dyn Element> {
-        log::info!("Create SnackBarElement");
         box SnackBarElement::new(self)
     }
 }

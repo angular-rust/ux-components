@@ -26,7 +26,6 @@ impl Default for TabPageSelector {
 
 impl Widget for TabPageSelector {
     fn create_element(&self) -> Box<dyn Element> {
-        log::info!("Create TabPageSelectorElement");
         box TabPageSelectorElement::new(self)
     }
 }

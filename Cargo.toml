@@ -22,7 +22,8 @@ name = "components"
 features = ["dox"]
 
 [features]
-dox = ["ux-charts/dox", "ux-dx/dox"]
+dox = ["ux-dx/dox"]
+# "ux-charts/dox"
 # "ux-animate/dox", "x11/dox", "gobject-sys/dox", , "pango/dox"
 
 [dependencies]
@@ -33,16 +34,18 @@ ux-macro = "0.1"
 ux-dx = "0.2"
 ux-dataflow = "0.1"
 # ux-animate = "0.1"
-ux-charts = "0.1"
+# ux-charts = "0.1"
 once_cell = "1.7"
 intmap = "0.7"
 url = "2.2"
-fontdue = "0.5"
+fontdue = "0.7.2"
 cgmath = "0.18"
 structopt = "0.3"
 stretch = "0.3.2"
 # ux-css = "0"
 crossbeam = "0.8.1"
+bytes = "1.1.0"
+futures = "0.3.21"
 
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies]
 # png = "0.16"

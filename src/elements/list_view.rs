@@ -7,9 +7,10 @@ use std::{
 };
 use stretch::{geometry, node::Node, style};
 
+use crate::prelude::OnDemand;
+
 use crate::{
     foundation::{Helper, Id, KeyEvent, MouseEvent, ScaleChangeEvent, Signal, TextEvent},
-    prelude::OnDemand,
     services::LayoutSystem,
     widgets::ListView,
 };
@@ -101,7 +102,7 @@ impl ListViewElement {
             let element = child.create_element();
             let child_nodes = &mut child_nodes;
 
-            element.node().map(|child| {
+            if let Some(child) = element.node() {
                 // let child_style = LayoutSystem::style(child).unwrap();
                 // LayoutSystem::set_style(
                 //     child,
@@ -112,7 +113,7 @@ impl ListViewElement {
                 // )
                 // .unwrap();
                 child_nodes.push(child);
-            });
+            }
 
             children.push(element);
         }
@@ -154,7 +155,7 @@ impl ListViewElement {
             }
         }
 
-        return None;
+        None
     }
 
     //Internal
@@ -410,11 +411,10 @@ impl Element for ListViewElement {
     }
 
     fn render(&self) {
-        log::info!("Render ListViewElement");
         let comp = self.as_ref().borrow();
 
         assert!(
-            comp.destroyed == false,
+            !comp.destroyed,
             "Widget was already destroyed but is being interacted with"
         );
 
@@ -454,13 +454,6 @@ impl Element for ListViewElement {
                 comp.w = layout.size.width;
                 comp.h = layout.size.height;
 
-                log::warn!(
-                    "Relayout ListViewElement {}x{} {}x{}",
-                    comp.x,
-                    comp.y,
-                    comp.w,
-                    comp.h
-                );
                 true
             }
             Err(e) => {

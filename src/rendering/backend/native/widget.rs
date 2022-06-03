@@ -34,7 +34,7 @@ pub struct WidgetProps {
     background_image: Option<Handle>,
     background_image_box: Option<ActorBox>,
     bg_color: Option<Color>,
-    opacity: f64,
+    opacity: f32,
     is_disabled: bool,
     parent_disabled: bool,
     long_press_source: u32,
@@ -42,14 +42,14 @@ pub struct WidgetProps {
     // sequences: GHashTable,
 
     // width/height set by css
-    css_width: f64,
-    css_height: f64,
+    css_width: f32,
+    css_height: f32,
 
     // previous size state before css width/height were applied
-    old_min_width: f64,
-    old_min_height: f64,
-    old_nat_width: f64,
-    old_nat_height: f64,
+    old_min_width: f32,
+    old_min_height: f32,
+    old_nat_width: f32,
+    old_nat_height: f32,
 
     old_min_width_set: bool,
     old_min_height_set: bool,
@@ -333,8 +333,8 @@ impl<O: Is<Widget>> WidgetExt for O {
         let y1 = props.padding.top;
 
         let (width, height) = allocation.get_size();
-        let x2 = f64::max(x1, width as f64 - props.padding.right);
-        let y2 = f64::max(y1, height as f64 - props.padding.bottom);
+        let x2 = f32::max(x1, width as f32 - props.padding.right);
+        let y2 = f32::max(y1, height as f32 - props.padding.bottom);
         // TODO: put x1,y2,x2,y2 into area
     }
 
@@ -627,10 +627,10 @@ impl<O: Is<Widget>> WidgetExt for O {
     //     // clutter_actor_get_abs_allocation_vertices ((ClutterActor*) widget,
     //     //                                             verts);
 
-    //     // let mut x: f64;
-    //     // let mut y: f64;
-    //     // let mut x2: f64;
-    //     // let mut y2: f64;
+    //     // let mut x: f32;
+    //     // let mut y: f32;
+    //     // let mut x2: f32;
+    //     // let mut y2: f32;
 
     //     // x = y = G_MAXFLOAT;
     //     // x2 = y2 = -G_MAXFLOAT;

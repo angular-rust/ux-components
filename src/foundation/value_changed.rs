@@ -1,3 +1,1 @@
-pub trait ValueChanged<T> {
-    fn on_changed(&self, value: T);
-}
+pub type ValueChanged<T> = Box<dyn Fn(T)>;

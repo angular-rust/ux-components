@@ -7,6 +7,12 @@ pub struct InputBorder {
     pub border_side: BorderSide,
 }
 
+impl InputBorder {
+    pub const NONE: InputBorder = InputBorder {
+        border_side: BorderSide::NONE,
+    };
+}
+
 impl Default for InputBorder {
     fn default() -> Self {
         Self {

@@ -1,120 +1,60 @@
-use crate::{
-    elements::Element, properties::WidgetProperties, services::MouseCursor, ui::Locale,
-    widgets::Widget, WidgetId,
-};
+use crate::{services::{MouseCursor, PointerEnterEventListener, PointerExitEventListener}, ui::Locale, gestures::GestureRecognizer};
 
-use super::TextStyle;
+use super::{TextStyle, InlineSpan};
 
 pub struct TextSpan {
-    pub text: String,
-    // pub children: Vec<InlineSpan>,
-    pub style: TextStyle,
-    // pub recognizer: GestureRecognizer,
+    // Additional spans to include as children.
+    pub children: Vec<Box<dyn InlineSpan>>,
+
+    // Returns the value of mouseCursor.
+    pub cursor: MouseCursor,
+
+    // The language of the text in this span and its span children.
+    pub locale: Option<Locale>,
+
+    // Mouse cursor when the mouse hovers over this span.
     pub mouse_cursor: MouseCursor,
-    // pub on_enter: PointerEnterEventListener,
-    // pub on_exit: PointerExitEventListener,
+
+    // Triggered when a mouse pointer, with or without buttons pressed, has entered the region and validForMouseTracker is true.
+    pub on_enter: PointerEnterEventListener,
+
+    // Triggered when a mouse pointer, with or without buttons pressed, has exited the region and validForMouseTracker is true.
+    pub on_exit: PointerExitEventListener,
+
+    // A gesture recognizer that will receive events that hit this span.
+    pub recognizer: GestureRecognizer,
+
+    // An alternative semantics label for this TextSpan.
     pub semantics_label: String,
-    pub locale: Locale,
+
+    // Whether the assistive technologies should spell out this text character by character.
     pub spell_out: bool,
+
+    // The TextStyle to apply to this span.
+    pub style: TextStyle,
+
+    // The text contained in this span.
+    pub text: String,
+
+    // Whether this is included when MouseTracker collects the list of annotations.
+    pub valid_for_mouse_tracker: bool,
 }
 
 impl Default for TextSpan {
     fn default() -> Self {
         Self {
-            text: Default::default(),
-            // children: Default::default(),
-            style: Default::default(),
-            // recognizer: Default::default(),
-            mouse_cursor: Default::default(),
-            // on_enter: Default::default(),
-            // on_exit: Default::default(),
-            semantics_label: Default::default(),
+            children: Default::default(),
+            cursor: Default::default(),
             locale: Default::default(),
+            mouse_cursor: Default::default(),
+            on_enter: box |_| {},
+            on_exit: box |_| {},
+            recognizer: Default::default(),
+            semantics_label: Default::default(),
             spell_out: Default::default(),
+            style: Default::default(),
+            text: Default::default(),
+            valid_for_mouse_tracker: Default::default(),
         }
-    }
-}
-
-impl Widget for TextSpan {
-    fn create_element(&self) -> Box<dyn Element> {
-        log::info!("Create TextSpanElement");
-        box TextSpanElement::new(self)
-    }
-}
-
-impl WidgetProperties for TextSpan {
-    fn x(&self) -> f32 {
-        // self.x
-        0.0
-    }
-
-    fn y(&self) -> f32 {
-        // self.y
-        0.0
-    }
-
-    fn w(&self) -> f32 {
-        // self.w
-        0.0
-    }
-
-    fn h(&self) -> f32 {
-        // self.h
-        0.0
-    }
-
-    fn w_min(&self) -> f32 {
-        // self.w_min
-        0.0
-    }
-
-    fn h_min(&self) -> f32 {
-        // self.h_min
-        0.0
-    }
-
-    fn w_max(&self) -> f32 {
-        // self.w_max
-        0.0
-    }
-
-    fn h_max(&self) -> f32 {
-        // self.h_max
-        0.0
-    }
-
-    fn parent(&self) -> Option<WidgetId> {
-        // self.parent
-        None
-    }
-
-    fn depth(&self) -> f32 {
-        // self.depth
-        0.0
-    }
-
-    fn visible(&self) -> bool {
-        // self.visible
-        true
-    }
-
-    fn mouse_input(&self) -> bool {
-        // self.mouse_input
-        true
-    }
-
-    fn key_input(&self) -> bool {
-        // self.key_input
-        true
-    }
-
-    fn renderable(&self) -> bool {
-        // self.renderable
-        true
-    }
-
-    fn internal_visible(&self) -> bool {
-        // self.internal_visible
-        true
     }
 }

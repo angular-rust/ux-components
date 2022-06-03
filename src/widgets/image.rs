@@ -1,15 +1,65 @@
+#![allow(unreachable_code)]
+
+use std::future::Future;
+
 use crate::{
     elements::ImageElement,
     foundation::{colorspace::Color, Id, Key, WidgetProperties},
-    material::AlignmentGeometry,
-    painting::ImageProvider,
+    material::{AlignmentGeometry, NoneAlignmentGeometry},
+    painting::{ImageProvider, DecoderCallback, ImageErrorListener, ImageConfiguration, ImageCacheStatus, ImageStreamCompleter, ImageStream, BoxFit},
     ui::{BlendMode, FilterQuality},
     widgets::{Element, Widget},
 };
 
+pub struct NoneImage;
+
+impl ImageProvider for NoneImage {
+    fn create_stream(&self, configuration: ImageConfiguration) -> ImageStream {
+        Default::default()
+    }
+
+    fn evict(
+        &self,
+        cache: Option<crate::painting::ImageCache>,
+        configuration: ImageConfiguration, /*= ImageConfiguration.empty*/
+    ) -> Box<dyn Future<Output = bool>> {
+        todo!()
+    }
+
+    fn load(&self, key: Key, decode: Box<DecoderCallback>) -> ImageStreamCompleter {
+        todo!()
+    }
+
+    fn obtain_cache_status(
+        &self,
+        configuration: ImageConfiguration,
+        handle_error: Option<Box<ImageErrorListener>>,
+    ) -> Box<dyn Future<Output = Option<ImageCacheStatus>>> {
+        todo!()
+    }
+
+    fn obtain_key(&self, configuration: ImageConfiguration) -> Box<dyn Future<Output = Key>> {
+        todo!()
+    }
+
+    fn resolve(&self, configuration: ImageConfiguration) -> ImageStream {
+        todo!()
+    }
+
+    fn resolve_stream_for_key(
+        &self,
+        configuration: ImageConfiguration,
+        stream: ImageStream,
+        key: Key,
+        handle_error: Option<Box<ImageErrorListener>>,
+    ) {
+        todo!()
+    }
+}
+
 pub struct Image {
     pub key: Key,
-    pub image: ImageProvider<String>,
+    pub image: Box<dyn ImageProvider>,
     // pub frame_builder: ImageFrameBuilder,
     // pub loading_builder: ImageLoadingBuilder,
     // pub error_builder: ImageErrorWidgetBuilder,
@@ -20,8 +70,8 @@ pub struct Image {
     pub color: Color,
     // pub opacity: Animation<f32>,
     pub color_blend_mode: BlendMode,
-    // pub fit: BoxFit,
-    pub alignment: AlignmentGeometry,
+    pub fit: BoxFit,
+    pub alignment: Box<dyn AlignmentGeometry>,
     // pub repeat: ImageRepeat,
     // pub center_slice: crate::Rect<f32>,
     pub match_text_direction: bool,
@@ -29,12 +79,12 @@ pub struct Image {
     pub is_anti_alias: bool,
     pub filter_quality: FilterQuality,
 }
-
+ 
 impl Default for Image {
     fn default() -> Self {
         Self {
             key: Default::default(),
-            image: Default::default(),
+            image: box NoneImage,
             // frame_builder: Default::default(),
             // loading_builder: Default::default(),
             // error_builder: Default::default(),
@@ -45,8 +95,8 @@ impl Default for Image {
             color: Default::default(),
             // opacity: Default::default(),
             color_blend_mode: Default::default(),
-            // fit: Default::default(),
-            alignment: Default::default(),
+            fit: Default::default(),
+            alignment: box NoneAlignmentGeometry,
             // repeat: Default::default(),
             // center_slice: Default::default(),
             match_text_direction: Default::default(),
@@ -59,7 +109,6 @@ impl Default for Image {
 
 impl Widget for Image {
     fn create_element(&self) -> Box<dyn Element> {
-        log::info!("Create ImageElement");
         box ImageElement::new(self)
     }
 }

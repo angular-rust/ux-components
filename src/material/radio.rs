@@ -11,7 +11,7 @@ pub struct Radio<T: Default> {
     pub key: Key,
     pub value: T,
     pub group_value: T,
-    pub on_changed: Option<Box<dyn ValueChanged<T>>>,
+    pub on_changed: Option<ValueChanged<T>>,
     pub mouse_cursor: MouseCursor,
     pub toggleable: bool,
     pub active_color: Color,
@@ -51,7 +51,6 @@ impl<T: Default> Default for Radio<T> {
 
 impl<T: Default> Widget for Radio<T> {
     fn create_element(&self) -> Box<dyn Element> {
-        log::info!("Create RadioElement");
         box RadioElement::new(self)
     }
 }

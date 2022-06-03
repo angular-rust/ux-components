@@ -7,12 +7,12 @@ use std::{
 };
 use stretch::{node::Node, style};
 
-use crate::prelude::Singleton;
+use crate::prelude::{Singleton, TextAlign};
 
 use crate::{
     foundation::{
         properties::{LabelProperties, PanelProperties, WindowProperties},
-        MouseEvent, Signal, TextAlign,
+        MouseEvent, Signal,
     },
     rendering::backend::{WidgetRenderFactory, WidgetRenderHolder},
     services::LayoutSystem,
@@ -205,9 +205,9 @@ impl WindowElement {
         }
 
         self.state.borrow_mut().resizing = false;
-        self.resize_handle
-            .as_ref()
-            .map(|ref handle| handle.uncapture());
+        if let Some(handle) = self.resize_handle.as_ref() {
+            handle.uncapture()
+        }
     }
 
     fn on_resize_down(&mut self, e: &mut MouseEvent, _: f32) {
@@ -227,7 +227,10 @@ impl WindowElement {
         state.resizing = true;
         state.resize_x = e.x as f32;
         state.resize_y = e.y as f32;
-        self.resize_handle.as_ref().map(|handle| handle.capture());
+
+        if let Some(handle) = self.resize_handle.as_ref() {
+            handle.capture()
+        }
         e.bubble = false;
     }
 
@@ -237,7 +240,7 @@ impl WindowElement {
         }
         self.collapsed = !self.collapsed;
 
-        if self.collapsed == true {
+        if self.collapsed {
             self.pre_resize = if let Some(ref handle) = self.resize_handle {
                 handle.visible()
             } else {
@@ -483,13 +486,6 @@ impl Element for WindowElement {
                 comp.w = layout.size.width;
                 comp.h = layout.size.height;
 
-                log::warn!(
-                    "Relayout WindowElement {}x{} {}x{}",
-                    comp.x,
-                    comp.y,
-                    comp.w,
-                    comp.h
-                );
                 true
             }
             Err(e) => {

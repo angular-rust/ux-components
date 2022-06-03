@@ -1,6 +1,6 @@
 use crate::{
     foundation::colorspace::Color,
-    painting::{EdgeInsetsGeometry, ShapeBorder},
+    painting::{EdgeInsetsGeometry, NoneEdgeInsetsGeometry, NoneShapeBorder, ShapeBorder},
     ui::Clip,
 };
 
@@ -9,8 +9,8 @@ pub struct CardTheme {
     pub color: Color,
     pub shadow_color: Color,
     pub elevation: f32,
-    pub margin: EdgeInsetsGeometry,
-    pub shape: ShapeBorder,
+    pub margin: Box<dyn EdgeInsetsGeometry>,
+    pub shape: Box<dyn ShapeBorder>,
 }
 
 impl Default for CardTheme {
@@ -20,8 +20,8 @@ impl Default for CardTheme {
             color: Default::default(),
             shadow_color: Default::default(),
             elevation: Default::default(),
-            margin: Default::default(),
-            shape: Default::default(),
+            margin: box NoneEdgeInsetsGeometry,
+            shape: box NoneShapeBorder,
         }
     }
 }

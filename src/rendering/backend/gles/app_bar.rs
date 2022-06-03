@@ -19,7 +19,7 @@ impl WidgetRenderer<AppBarElement> for AppBarRender {
     fn render(&self, widget: &AppBarElement) {
         let comp = widget.as_ref().borrow();
 
-        println!("AppBarRender {}x{} {}x{}", comp.x, comp.y, comp.w, comp.h);
+        // println!("AppBarRender {}x{} {}x{}", comp.x, comp.y, comp.w, comp.h);
 
         self.painter.set_color(color::WHITE);
 

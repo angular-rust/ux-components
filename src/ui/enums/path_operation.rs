@@ -6,3 +6,9 @@ pub enum PathOperation {
     Union = 2,
     Xor = 3,
 }
+
+impl Default for PathOperation {
+    fn default() -> Self {
+        Self::Difference
+    }
+}

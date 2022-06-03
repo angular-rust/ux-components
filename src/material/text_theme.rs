@@ -2,17 +2,17 @@ use crate::painting::TextStyle;
 
 /*
 apply({String? fontFamily, double fontSizeFactor = 1.0, double fontSizeDelta = 0.0, Color? displayColor, Color? bodyColor, TextDecoration? decoration, Color? decorationColor, TextDecorationStyle? decorationStyle}) → TextTheme
-Creates a copy of this text theme but with the given field replaced in each of the individual text styles. [...]
+Creates a copy of this text theme but with the given field replaced in each of the individual text styles.
 
 copyWith({TextStyle? headline1, TextStyle? headline2, TextStyle? headline3, TextStyle? headline4, TextStyle? headline5, TextStyle? headline6, TextStyle? subtitle1, TextStyle? subtitle2, TextStyle? bodyText1, TextStyle? bodyText2, TextStyle? caption, TextStyle? button, TextStyle? overline}) → TextTheme
-Creates a copy of this text theme but with the given fields replaced with the new values. [...]
+Creates a copy of this text theme but with the given fields replaced with the new values.
 
 debugFillProperties(DiagnosticPropertiesBuilder properties) → void
-Add additional properties associated with the node. [...]
+Add additional properties associated with the node.
 override
 
 merge(TextTheme? other) → TextTheme
-Creates a new TextTheme where each text style from this object has been merged with the matching text style from the other object. [...]
+Creates a new TextTheme where each text style from this object has been merged with the matching text style from the other object.
 */
 
 pub struct TextTheme {

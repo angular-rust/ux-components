@@ -3,20 +3,22 @@ use std::time::Duration;
 use crate::{
     elements::{Element, RawMaterialButtonElement},
     foundation::{colorspace::Color, Id, Key, ValueChanged, WidgetProperties},
-    painting::{EdgeInsetsGeometry, ShapeBorder, TextStyle},
+    painting::{
+        EdgeInsetsGeometry, NoneEdgeInsetsGeometry, NoneShapeBorder, ShapeBorder, TextStyle,
+    },
     rendering::BoxConstraints,
     services::MouseCursor,
     ui::{Clip, VoidCallback},
-    widgets::{FocusNode, NullWidget, Widget},
+    widgets::{FocusNode, NoneWidget, Widget},
 };
 
 use super::{MaterialTapTargetSize, VisualDensity};
 
 pub struct RawMaterialButton {
     pub key: Key,
-    pub on_pressed: Option<Box<dyn VoidCallback>>,
-    pub on_long_press: Option<Box<dyn VoidCallback>>,
-    pub on_highlight_changed: Option<Box<dyn ValueChanged<bool>>>,
+    pub on_pressed: Option<VoidCallback>,
+    pub on_long_press: Option<VoidCallback>,
+    pub on_highlight_changed: Option<ValueChanged<bool>>,
     pub mouse_cursor: MouseCursor,
     pub text_style: TextStyle,
     pub fill_color: Color,
@@ -29,10 +31,10 @@ pub struct RawMaterialButton {
     pub hover_elevation: f32,
     pub highlight_elevation: f32,
     pub disabled_elevation: f32,
-    pub padding: EdgeInsetsGeometry,
+    pub padding: Box<dyn EdgeInsetsGeometry>,
     pub visual_density: VisualDensity,
     pub constraints: BoxConstraints,
-    pub shape: ShapeBorder,
+    pub shape: Box<dyn ShapeBorder>,
     pub animation_duration: Duration,
     pub clip_behavior: Clip,
     pub focus_node: FocusNode,
@@ -61,16 +63,16 @@ impl Default for RawMaterialButton {
             hover_elevation: Default::default(),
             highlight_elevation: Default::default(),
             disabled_elevation: Default::default(),
-            padding: Default::default(),
+            padding: box NoneEdgeInsetsGeometry,
             visual_density: Default::default(),
             constraints: Default::default(),
-            shape: Default::default(),
+            shape: box NoneShapeBorder,
             animation_duration: Default::default(),
             clip_behavior: Default::default(),
             focus_node: Default::default(),
             autofocus: Default::default(),
             material_tap_target_size: Default::default(),
-            child: box NullWidget,
+            child: box NoneWidget,
             enable_feedback: Default::default(),
         }
     }
@@ -78,7 +80,6 @@ impl Default for RawMaterialButton {
 
 impl Widget for RawMaterialButton {
     fn create_element(&self) -> Box<dyn Element> {
-        log::info!("Create RawMaterialButtonElement");
         box RawMaterialButtonElement::new(self)
     }
 }

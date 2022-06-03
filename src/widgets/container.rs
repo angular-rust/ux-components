@@ -1,31 +1,32 @@
 use cgmath::prelude::*;
+
 use cgmath::Matrix4;
 
 use crate::{
     elements::{ContainerElement, Element},
     foundation::{colorspace::Color, Id, Key, WidgetProperties},
-    material::AlignmentGeometry,
-    painting::{Decoration, EdgeInsetsGeometry},
+    material::{AlignmentGeometry, NoneAlignmentGeometry},
+    painting::{Decoration, EdgeInsetsGeometry, NoneDecoration, NoneEdgeInsetsGeometry},
     rendering::BoxConstraints,
     ui::Clip,
     widgets::Widget,
 };
 
-use super::NullWidget;
+use super::NoneWidget;
 
 pub struct Container {
     pub key: Key,
-    pub alignment: AlignmentGeometry,
-    pub padding: EdgeInsetsGeometry,
+    pub alignment: Box<dyn AlignmentGeometry>,
+    pub padding: Box<dyn EdgeInsetsGeometry>,
     pub color: Color,
-    pub decoration: Decoration,
-    pub foreground_decoration: Decoration,
+    pub decoration: Box<dyn Decoration>,
+    pub foreground_decoration: Box<dyn Decoration>,
     pub width: f32,
     pub height: f32,
     pub constraints: BoxConstraints,
-    pub margin: EdgeInsetsGeometry,
+    pub margin: Box<dyn EdgeInsetsGeometry>,
     pub transform: Matrix4<f32>,
-    pub transform_alignment: AlignmentGeometry,
+    pub transform_alignment: Box<dyn AlignmentGeometry>,
     pub child: Box<dyn Widget>,
     pub clip_behavior: Clip,
 }
@@ -34,18 +35,18 @@ impl Default for Container {
     fn default() -> Self {
         Self {
             key: Default::default(),
-            alignment: Default::default(),
-            padding: Default::default(),
+            alignment: box NoneAlignmentGeometry,
+            padding: box NoneEdgeInsetsGeometry,
             color: Default::default(),
-            decoration: Default::default(),
-            foreground_decoration: Default::default(),
+            decoration: box NoneDecoration,
+            foreground_decoration: box NoneDecoration,
             width: Default::default(),
             height: Default::default(),
             constraints: Default::default(),
-            margin: Default::default(),
+            margin: box NoneEdgeInsetsGeometry,
             transform: Matrix4::identity(),
-            transform_alignment: Default::default(),
-            child: box NullWidget,
+            transform_alignment: box NoneAlignmentGeometry,
+            child: box NoneWidget,
             clip_behavior: Default::default(),
         }
     }
@@ -53,7 +54,6 @@ impl Default for Container {
 
 impl Widget for Container {
     fn create_element(&self) -> Box<dyn Element> {
-        log::info!("Create ContainerElement");
         box ContainerElement::new(self)
     }
 }

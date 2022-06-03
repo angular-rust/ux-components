@@ -1,7 +1,7 @@
 use crate::{
     elements::{CheckboxElement, Element},
     foundation::{colorspace::Color, Id, Key, ValueChanged, WidgetProperties},
-    painting::{BorderSide, OutlinedBorder},
+    painting::{BorderSide, NoneOutlinedBorder, OutlinedBorder},
     services::MouseCursor,
     widgets::{FocusNode, Widget},
 };
@@ -12,7 +12,7 @@ pub struct Checkbox {
     pub key: Key,
     pub value: bool,
     pub tristate: bool,
-    pub on_changed: Option<Box<dyn ValueChanged<bool>>>,
+    pub on_changed: Option<ValueChanged<bool>>,
     pub mouse_cursor: MouseCursor,
     pub active_color: Color,
     pub fill_color: MaterialStateProperty<Color>,
@@ -25,7 +25,7 @@ pub struct Checkbox {
     pub visual_density: VisualDensity,
     pub focus_node: FocusNode,
     pub autofocus: bool,
-    pub shape: OutlinedBorder,
+    pub shape: Box<dyn OutlinedBorder>,
     pub side: BorderSide,
 }
 
@@ -48,7 +48,7 @@ impl Default for Checkbox {
             visual_density: Default::default(),
             focus_node: Default::default(),
             autofocus: Default::default(),
-            shape: Default::default(),
+            shape: box NoneOutlinedBorder,
             side: Default::default(),
         }
     }
@@ -56,7 +56,6 @@ impl Default for Checkbox {
 
 impl Widget for Checkbox {
     fn create_element(&self) -> Box<dyn Element> {
-        log::info!("Create CheckboxElement");
         box CheckboxElement::new(self)
     }
 }

@@ -35,7 +35,6 @@ impl Default for Row {
 
 impl Widget for Row {
     fn create_element(&self) -> Box<dyn Element> {
-        log::info!("Create RowElement");
         box RowElement::new(self)
     }
 }

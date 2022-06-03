@@ -32,7 +32,6 @@ impl Default for LinearProgressIndicator {
 
 impl Widget for LinearProgressIndicator {
     fn create_element(&self) -> Box<dyn Element> {
-        log::info!("Create LinearProgressIndicatorElement");
         box LinearProgressIndicatorElement::new(self)
     }
 }

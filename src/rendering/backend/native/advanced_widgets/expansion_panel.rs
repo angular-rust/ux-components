@@ -8,7 +8,7 @@ use std::{cell::RefCell, fmt};
 pub struct ExpansionPanelProps {
     pub label: Option<Actor>,
     pub arrow: Option<Actor>,
-    pub spacing: f64,
+    pub spacing: f32,
     pub timeline: Option<Timeline>,
     pub progress: u64,
     pub expanded: bool,

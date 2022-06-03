@@ -44,7 +44,7 @@ pub struct ListTileElement {
 
 impl Debug for ListTileElement {
     fn fmt(&self, f: &mut Formatter<'_>) -> Result {
-        f.debug_struct("CheckboxElement").finish()
+        f.debug_struct("ListTileElement").finish()
     }
 }
 
@@ -125,13 +125,6 @@ impl Element for ListTileElement {
                 comp.w = layout.size.width;
                 comp.h = layout.size.height;
 
-                log::warn!(
-                    "Relayout ListTileElement {}x{} {}x{}",
-                    comp.x,
-                    comp.y,
-                    comp.w,
-                    comp.h
-                );
                 true
             }
             Err(e) => {

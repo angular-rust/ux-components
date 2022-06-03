@@ -44,7 +44,7 @@ pub struct TabBarViewElement {
 
 impl Debug for TabBarViewElement {
     fn fmt(&self, f: &mut Formatter<'_>) -> Result {
-        f.debug_struct("CheckboxElement").finish()
+        f.debug_struct("TabBarViewElement").finish()
     }
 }
 
@@ -125,13 +125,6 @@ impl Element for TabBarViewElement {
                 comp.w = layout.size.width;
                 comp.h = layout.size.height;
 
-                log::warn!(
-                    "Relayout TabBarViewElement {}x{} {}x{}",
-                    comp.x,
-                    comp.y,
-                    comp.w,
-                    comp.h
-                );
                 true
             }
             Err(e) => {

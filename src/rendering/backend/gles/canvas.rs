@@ -4,7 +4,5 @@ use crate::{elements::CanvasElement, rendering::backend::WidgetRenderer};
 pub struct CanvasRender;
 
 impl WidgetRenderer<CanvasElement> for CanvasRender {
-    fn render(&self, widget: &CanvasElement) {
-        println!("CanvasRender");
-    }
+    fn render(&self, widget: &CanvasElement) {}
 }

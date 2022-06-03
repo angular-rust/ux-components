@@ -50,7 +50,6 @@ impl Default for ScrollView {
 
 impl Widget for ScrollView {
     fn create_element(&self) -> Box<dyn Element> {
-        log::info!("Create ScrollViewElement");
         box ScrollViewElement::new(self)
     }
 }

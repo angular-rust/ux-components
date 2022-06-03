@@ -27,7 +27,6 @@ impl Default for Placeholder {
 
 impl Widget for Placeholder {
     fn create_element(&self) -> Box<dyn Element> {
-        log::info!("Create PlaceholderElement");
         box PlaceholderElement::new(self)
     }
 }

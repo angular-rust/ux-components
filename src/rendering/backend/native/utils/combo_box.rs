@@ -15,8 +15,8 @@ pub struct ComboBoxProps {
     pub marker: Option<Texture>,
     pub actions: Vec<PushAction>,
 
-    pub clip_x: f64,
-    pub clip_y: f64,
+    pub clip_x: f32,
+    pub clip_y: f32,
     pub index: i32,
     pub spacing: i32,
 }

@@ -12,15 +12,15 @@ use super::{MaterialStateProperty, MaterialTapTargetSize};
 pub struct Switch {
     pub key: Key,
     pub value: bool,
-    pub on_changed: Option<Box<dyn ValueChanged<bool>>>,
+    pub on_changed: Option<ValueChanged<bool>>,
     pub active_color: Color,
     pub active_track_color: Color,
     pub inactive_thumb_color: Color,
     pub inactive_track_color: Color,
-    pub active_thumb_image: ImageProvider<String>,
-    pub on_active_thumb_image_error: Option<Box<dyn ImageErrorListener<String>>>,
-    pub inactive_thumb_image: ImageProvider<String>,
-    pub on_inactive_thumb_image_error: Option<Box<dyn ImageErrorListener<String>>>,
+    pub active_thumb_image: Option<Box<dyn ImageProvider>>,
+    pub on_active_thumb_image_error: Option<Box<ImageErrorListener>>,
+    pub inactive_thumb_image: Option<Box<dyn ImageProvider>>,
+    pub on_inactive_thumb_image_error: Option<Box<ImageErrorListener>>,
     pub thumb_color: MaterialStateProperty<Color>,
     pub track_color: MaterialStateProperty<Color>,
     pub material_tap_target_size: MaterialTapTargetSize,
@@ -65,7 +65,6 @@ impl Default for Switch {
 
 impl Widget for Switch {
     fn create_element(&self) -> Box<dyn Element> {
-        log::info!("Create SwitchElement");
         box SwitchElement::new(self)
     }
 }

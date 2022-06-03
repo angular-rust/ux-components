@@ -26,8 +26,8 @@ pub struct SliderProps {
     pub handle_width: u32,
     pub handle_height: u32,
 
-    pub value: f64,
-    pub buffer_value: f64,
+    pub value: f32,
+    pub buffer_value: f32,
 }
 
 #[derive(Debug)]
@@ -92,7 +92,7 @@ pub trait SliderExt: 'static {
     ///
     /// Returns: The current value of the "buffer-value" property.
     ///
-    fn get_buffer_value(&self) -> f64;
+    fn get_buffer_value(&self) -> f32;
 
     /// get_value:
     /// @bar: A #Slider
@@ -101,7 +101,7 @@ pub trait SliderExt: 'static {
     ///
     /// Returns: gdouble
     ///
-    fn get_value(&self) -> f64;
+    fn get_value(&self) -> f32;
 
     /// set_buffer_value:
     /// @slider: A #Slider
@@ -109,7 +109,7 @@ pub trait SliderExt: 'static {
     ///
     /// Set the value of the #Slider:buffer-value property.
     ///
-    fn set_buffer_value(&self, value: f64);
+    fn set_buffer_value(&self, value: f32);
 
     /// set_value:
     /// @bar: A #Slider
@@ -117,7 +117,7 @@ pub trait SliderExt: 'static {
     ///
     /// Set the value of the slider
     ///
-    fn set_value(&self, value: f64);
+    fn set_value(&self, value: f32);
 
     fn connect_slide_start<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
 
@@ -136,7 +136,7 @@ impl<O: Is<Slider>> SliderExt for O {
     ///
     /// Returns: The current value of the "buffer-value" property.
     ///
-    fn get_buffer_value(&self) -> f64 {
+    fn get_buffer_value(&self) -> f32 {
         let slider = self.as_ref();
         let props = slider.props.borrow();
 
@@ -150,7 +150,7 @@ impl<O: Is<Slider>> SliderExt for O {
     ///
     /// Returns: gdouble
     ///
-    fn get_value(&self) -> f64 {
+    fn get_value(&self) -> f32 {
         let slider = self.as_ref();
         let props = slider.props.borrow();
 
@@ -163,7 +163,7 @@ impl<O: Is<Slider>> SliderExt for O {
     ///
     /// Set the value of the #Slider:buffer-value property.
     ///
-    fn set_buffer_value(&self, value: f64) {
+    fn set_buffer_value(&self, value: f32) {
         let slider = self.as_ref();
         let mut props = slider.props.borrow_mut();
 
@@ -182,7 +182,7 @@ impl<O: Is<Slider>> SliderExt for O {
     ///
     /// Set the value of the slider
     ///
-    fn set_value(&self, value: f64) {
+    fn set_value(&self, value: f32) {
         let slider = self.as_ref();
         let mut props = slider.props.borrow_mut();
 

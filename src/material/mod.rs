@@ -2,6 +2,14 @@
 // calendar_date_picker
 
 // mod tab_controller;
+mod enums;
+pub use self::enums::*;
+
+mod about_list_tile;
+pub use self::about_list_tile::*;
+
+mod action_chip;
+pub use self::action_chip::*;
 
 mod alert_dialog;
 pub use self::alert_dialog::*;
@@ -51,6 +59,9 @@ pub use self::button_bar_theme_data::*;
 mod button_text_theme;
 pub use self::button_text_theme::*;
 
+mod button_bar;
+pub use self::button_bar::*;
+
 mod button_style_button;
 pub use self::button_style_button::*;
 
@@ -81,6 +92,12 @@ pub use self::chip_theme_data::*;
 mod chip;
 pub use self::chip::*;
 
+mod choice_chip;
+pub use self::choice_chip::*;
+
+mod circle_avatar;
+pub use self::circle_avatar::*;
+
 mod circular_progress_indicator;
 pub use self::circular_progress_indicator::*;
 
@@ -89,6 +106,9 @@ pub use self::close_button::*;
 
 mod color_scheme;
 pub use self::color_scheme::*;
+
+mod consts;
+pub use self::consts::*;
 
 mod data_table_theme_data;
 pub use self::data_table_theme_data::*;
@@ -126,6 +146,15 @@ pub use self::elevated_button::*;
 mod expansion_panel;
 pub use self::expansion_panel::*;
 
+mod filter_chip;
+pub use self::filter_chip::*;
+
+mod flat_button;
+pub use self::flat_button::*;
+
+mod flexible_space_bar;
+pub use self::flexible_space_bar::*;
+
 mod floating_action_button_animator;
 pub use self::floating_action_button_animator::*;
 
@@ -138,6 +167,9 @@ pub use self::floating_action_button_theme_data::*;
 mod floating_action_button;
 pub use self::floating_action_button::*;
 
+mod floating_label_alignment;
+pub use self::floating_label_alignment::*;
+
 mod floating_label_behavior;
 pub use self::floating_label_behavior::*;
 
@@ -147,11 +179,23 @@ pub use self::icon_button::*;
 mod icons;
 pub use self::icons::*;
 
+mod ink_well;
+pub use self::ink_well::*;
+
+mod ink;
+pub use self::ink::*;
+
 mod input_border;
 pub use self::input_border::*;
 
+mod input_chip;
+pub use self::input_chip::*;
+
 mod input_decoration_theme;
 pub use self::input_decoration_theme::*;
+
+mod input_decoration;
+pub use self::input_decoration::*;
 
 mod interactive_ink_feature_factory;
 pub use self::interactive_ink_feature_factory::*;
@@ -177,11 +221,20 @@ pub use self::material_button::*;
 mod material_color;
 pub use self::material_color::*;
 
+mod material_page_route;
+pub use self::material_page_route::*;
+
 mod material_state_property;
 pub use self::material_state_property::*;
 
 mod material_tap_target_size;
 pub use self::material_tap_target_size::*;
+
+mod material;
+pub use self::material::*;
+
+mod modal_bottom_sheet;
+pub use self::modal_bottom_sheet::*;
 
 mod navigation_rail_destination;
 pub use self::navigation_rail_destination::*;
@@ -194,6 +247,12 @@ pub use self::navigation_rail_label_type::*;
 
 mod navigation_rail;
 pub use self::navigation_rail::*;
+
+mod outline_button;
+pub use self::outline_button::*;
+
+mod outline_input_border;
+pub use self::outline_input_border::*;
 
 mod outlined_button_theme_data;
 pub use self::outlined_button_theme_data::*;
@@ -225,6 +284,9 @@ pub use self::radio_theme_data::*;
 mod radio;
 pub use self::radio::*;
 
+mod raised_button;
+pub use self::raised_button::*;
+
 mod range_slider_thumb_shape;
 pub use self::range_slider_thumb_shape::*;
 
@@ -242,6 +304,9 @@ pub use self::range_thumb_selector::*;
 
 mod range_values;
 pub use self::range_values::*;
+
+mod raw_chip;
+pub use self::raw_chip::*;
 
 mod raw_material_button;
 pub use self::raw_material_button::*;
@@ -284,6 +349,9 @@ pub use self::slider_track_shape::*;
 
 mod slider;
 pub use self::slider::*;
+
+mod sliver_app_bar;
+pub use self::sliver_app_bar::*;
 
 mod snack_bar_behavior;
 pub use self::snack_bar_behavior::*;
@@ -345,6 +413,9 @@ pub use self::theme_data::*;
 mod theme_mode;
 pub use self::theme_mode::*;
 
+mod theme;
+pub use self::theme::*;
+
 mod thumb;
 pub use self::thumb::*;
 
@@ -365,6 +436,12 @@ pub use self::tooltip_trigger_mode::*;
 
 mod typography;
 pub use self::typography::*;
+
+mod user_accounts_drawer_header;
+pub use self::user_accounts_drawer_header::*;
+
+mod vertical_divider;
+pub use self::vertical_divider::*;
 
 mod visual_density;
 pub use self::visual_density::*;

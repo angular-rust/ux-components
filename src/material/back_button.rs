@@ -8,7 +8,7 @@ use crate::{
 pub struct BackButton {
     pub key: Key,
     pub color: Color,
-    pub on_pressed: Option<Box<dyn VoidCallback>>,
+    pub on_pressed: Option<VoidCallback>,
 }
 
 impl Default for BackButton {
@@ -23,7 +23,6 @@ impl Default for BackButton {
 
 impl Widget for BackButton {
     fn create_element(&self) -> Box<dyn Element> {
-        log::info!("Create BackButtonElement");
         box BackButtonElement::new(self)
     }
 }

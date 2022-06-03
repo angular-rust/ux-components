@@ -1,9 +1,9 @@
 use crate::{
     elements::{Element, ListTileElement},
     foundation::{colorspace::Color, Id, Key, WidgetProperties},
-    painting::{EdgeInsetsGeometry, ShapeBorder},
+    painting::{EdgeInsetsGeometry, NoneEdgeInsetsGeometry, NoneShapeBorder, ShapeBorder},
     services::MouseCursor,
-    widgets::{FocusNode, NullWidget, Widget},
+    widgets::{FocusNode, NoneWidget, Widget},
 };
 
 use super::VisualDensity;
@@ -17,8 +17,8 @@ pub struct ListTile {
     pub is_three_line: bool,
     pub dense: bool,
     pub visual_density: VisualDensity,
-    pub shape: ShapeBorder,
-    pub content_padding: EdgeInsetsGeometry,
+    pub shape: Box<dyn ShapeBorder>,
+    pub content_padding: Box<dyn EdgeInsetsGeometry>,
     pub enabled: bool,
     // pub on_tap: GestureTapCallback,
     // pub on_long_press: GestureLongPressCallback,
@@ -40,15 +40,15 @@ impl Default for ListTile {
     fn default() -> Self {
         Self {
             key: Default::default(),
-            leading: box NullWidget,
-            title: box NullWidget,
-            subtitle: box NullWidget,
-            trailing: box NullWidget,
+            leading: box NoneWidget,
+            title: box NoneWidget,
+            subtitle: box NoneWidget,
+            trailing: box NoneWidget,
             is_three_line: Default::default(),
             dense: Default::default(),
             visual_density: Default::default(),
-            shape: Default::default(),
-            content_padding: Default::default(),
+            shape: box NoneShapeBorder,
+            content_padding: box NoneEdgeInsetsGeometry,
             enabled: Default::default(),
             // on_tap: Default::default(),
             // on_long_press: Default::default(),
@@ -70,7 +70,6 @@ impl Default for ListTile {
 
 impl Widget for ListTile {
     fn create_element(&self) -> Box<dyn Element> {
-        log::info!("Create ListTileElement");
         box ListTileElement::new(self)
     }
 }

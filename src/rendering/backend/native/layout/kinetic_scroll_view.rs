@@ -43,10 +43,10 @@ pub struct KineticScrollViewProps {
     pub deceleration_timeline: Option<Timeline>,
     pub dx: f32,
     pub dy: f32,
-    pub decel_rate: f64,
-    pub overshoot: f64,
-    pub accumulated_delta: f64,
-    pub acceleration_factor: f64,
+    pub decel_rate: f32,
+    pub overshoot: f32,
+    pub accumulated_delta: f32,
+    pub acceleration_factor: f32,
     pub scroll_policy: ScrollPolicy,
     pub clamp_duration: u32,
     pub clamp_mode: u64,
@@ -118,7 +118,7 @@ pub trait KineticScrollViewExt: 'static {
     ///
     /// Returns: The initial acceleration factor of the kinetic scroll-view
     ///
-    fn get_acceleration_factor(&self) -> f64;
+    fn get_acceleration_factor(&self) -> f32;
 
     /// get_clamp_duration:
     /// @scroll: A #KineticScrollView
@@ -154,7 +154,7 @@ pub trait KineticScrollViewExt: 'static {
     ///
     /// Returns: The deceleration rate of the kinetic scroll-view
     ///
-    fn get_deceleration(&self) -> f64;
+    fn get_deceleration(&self) -> f32;
 
     /// get_input:
     /// @scroll: A #KineticScrollView
@@ -182,7 +182,7 @@ pub trait KineticScrollViewExt: 'static {
     /// Retrieves the deceleration rate multiplier used when the scroll-view is
     /// scrolling beyond its boundaries.
     ///
-    fn get_overshoot(&self) -> f64;
+    fn get_overshoot(&self) -> f32;
 
     /// get_scroll_policy:
     /// @scroll: A #KineticScrollView
@@ -224,7 +224,7 @@ pub trait KineticScrollViewExt: 'static {
     ///
     /// Factor applied to the initial momentum.
     ///
-    fn set_acceleration_factor(&self, acceleration_factor: f64);
+    fn set_acceleration_factor(&self, acceleration_factor: f32);
 
     /// set_clamp_duration:
     /// @scroll: A #KineticScrollView
@@ -258,7 +258,7 @@ pub trait KineticScrollViewExt: 'static {
     /// scroll-view. This is the value that the momentum is divided by
     /// every 60th of a second.
     ///
-    fn set_deceleration(&self, rate: f64);
+    fn set_deceleration(&self, rate: f32);
 
     /// set_mouse_button:
     /// @scroll: A #KineticScrollView
@@ -281,7 +281,7 @@ pub trait KineticScrollViewExt: 'static {
     ///
     /// See set_deceleration()
     ///
-    fn set_overshoot(&self, overshoot: f64);
+    fn set_overshoot(&self, overshoot: f32);
 
     /// set_scroll_policy:
     /// @scroll: A #KineticScrollView
@@ -396,7 +396,7 @@ impl<O: Is<KineticScrollView>> KineticScrollViewExt for O {
     ///
     /// Returns: The initial acceleration factor of the kinetic scroll-view
     ///
-    fn get_acceleration_factor(&self) -> f64 {
+    fn get_acceleration_factor(&self) -> f32 {
         let scrollview = self.as_ref();
         let props = scrollview.props.borrow();
 
@@ -452,7 +452,7 @@ impl<O: Is<KineticScrollView>> KineticScrollViewExt for O {
     ///
     /// Returns: The deceleration rate of the kinetic scroll-view
     ///
-    fn get_deceleration(&self) -> f64 {
+    fn get_deceleration(&self) -> f32 {
         let scrollview = self.as_ref();
         let props = scrollview.props.borrow();
 
@@ -495,7 +495,7 @@ impl<O: Is<KineticScrollView>> KineticScrollViewExt for O {
     /// Retrieves the deceleration rate multiplier used when the scroll-view is
     /// scrolling beyond its boundaries.
     ///
-    fn get_overshoot(&self) -> f64 {
+    fn get_overshoot(&self) -> f32 {
         let scrollview = self.as_ref();
         let props = scrollview.props.borrow();
 
@@ -562,7 +562,7 @@ impl<O: Is<KineticScrollView>> KineticScrollViewExt for O {
     ///
     /// Factor applied to the initial momentum.
     ///
-    fn set_acceleration_factor(&self, acceleration_factor: f64) {
+    fn set_acceleration_factor(&self, acceleration_factor: f32) {
         let scrollview = self.as_ref();
         let mut props = scrollview.props.borrow_mut();
 
@@ -628,7 +628,7 @@ impl<O: Is<KineticScrollView>> KineticScrollViewExt for O {
     /// scroll-view. This is the value that the momentum is divided by
     /// every 60th of a second.
     ///
-    fn set_deceleration(&self, rate: f64) {
+    fn set_deceleration(&self, rate: f32) {
         let scrollview = self.as_ref();
         let mut props = scrollview.props.borrow_mut();
 
@@ -667,7 +667,7 @@ impl<O: Is<KineticScrollView>> KineticScrollViewExt for O {
     ///
     /// See set_deceleration()
     ///
-    fn set_overshoot(&self, overshoot: f64) {
+    fn set_overshoot(&self, overshoot: f32) {
         let scrollview = self.as_ref();
         let mut props = scrollview.props.borrow_mut();
 

@@ -44,7 +44,7 @@ pub struct RefreshIndicatorElement {
 
 impl Debug for RefreshIndicatorElement {
     fn fmt(&self, f: &mut Formatter<'_>) -> Result {
-        f.debug_struct("CheckboxElement").finish()
+        f.debug_struct("RefreshIndicatorElement").finish()
     }
 }
 
@@ -125,13 +125,6 @@ impl Element for RefreshIndicatorElement {
                 comp.w = layout.size.width;
                 comp.h = layout.size.height;
 
-                log::warn!(
-                    "Relayout RefreshIndicatorElement {}x{} {}x{}",
-                    comp.x,
-                    comp.y,
-                    comp.w,
-                    comp.h
-                );
                 true
             }
             Err(e) => {

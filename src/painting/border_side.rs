@@ -1,3 +1,5 @@
+use crate::prelude::color;
+
 use crate::foundation::colorspace::Color;
 
 use super::BorderStyle;
@@ -12,6 +14,15 @@ pub struct BorderSide {
     pub color: Color,
     pub width: f32,
     pub style: BorderStyle,
+}
+
+impl BorderSide {
+    // A hairline black border that is not rendered.
+    pub const NONE: BorderSide = BorderSide{
+        width: 0.0, 
+        style: BorderStyle::None,
+        color: color::BLACK,
+    };
 }
 
 impl Default for BorderSide {

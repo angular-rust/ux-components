@@ -4,7 +4,5 @@ use crate::{elements::LabelElement, rendering::backend::WidgetRenderer};
 pub struct LabelRender;
 
 impl WidgetRenderer<LabelElement> for LabelRender {
-    fn render(&self, widget: &LabelElement) {
-        println!("LabelRender");
-    }
+    fn render(&self, widget: &LabelElement) {}
 }

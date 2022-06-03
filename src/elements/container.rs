@@ -7,9 +7,10 @@ use std::{
 };
 use stretch::{node::Node, style};
 
+use crate::prelude::OnDemand;
+
 use crate::{
     foundation::{Helper, Id, KeyEvent, MouseEvent, ScaleChangeEvent, Signal, TextEvent},
-    prelude::OnDemand,
     services::LayoutSystem,
     widgets::Container,
 };
@@ -113,7 +114,7 @@ impl ContainerElement {
             }
         }
 
-        return None;
+        None
     }
 
     //Internal
@@ -355,13 +356,6 @@ impl Element for ContainerElement {
                 comp.w = layout.size.width;
                 comp.h = layout.size.height;
 
-                log::warn!(
-                    "Relayout ContainerElement {}x{} {}x{}",
-                    comp.x,
-                    comp.y,
-                    comp.w,
-                    comp.h
-                );
                 true
             }
             Err(e) => {

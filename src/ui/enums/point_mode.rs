@@ -4,3 +4,9 @@ pub enum PointMode {
     Lines = 1,
     Polygon = 2,
 }
+
+impl Default for PointMode {
+    fn default() -> Self {
+        Self::Points
+    }
+}

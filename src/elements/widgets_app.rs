@@ -7,11 +7,10 @@ use std::{
 };
 use stretch::{geometry, node::Node, number, style};
 
-use crate::prelude::Singleton;
+use crate::prelude::{OnDemand, Singleton};
 
 use crate::{
     foundation::{Id, KeyEvent, MouseEvent, ScaleChangeEvent, Signal, TextEvent},
-    prelude::OnDemand,
     rendering::backend::{WidgetRenderFactory, WidgetRenderHolder, WidgetRenderer},
     services::LayoutSystem,
     widgets::WidgetsApp,
@@ -60,7 +59,7 @@ pub struct WidgetsAppElement {
 
     state: RefCell<WidgetsAppState>,
     // The concrete renderer for this control instance
-    pub render: Option<Rc<WidgetRenderHolder<Self>>>,
+    pub renderer: Option<Rc<WidgetRenderHolder<Self>>>,
     // The node in layout system
     pub node: Node,
 }
@@ -100,7 +99,7 @@ impl WidgetsAppElement {
 
         // If home is not NullElement so override
         // the home layout and set it as child
-        home.node().map(|child| {
+        if let Some(child) = home.node() {
             let child_style = LayoutSystem::style(child).unwrap();
             LayoutSystem::set_style(
                 child,
@@ -114,7 +113,7 @@ impl WidgetsAppElement {
             )
             .unwrap();
             LayoutSystem::set_children(node, vec![child]).unwrap()
-        });
+        }
 
         Self {
             component,
@@ -129,7 +128,7 @@ impl WidgetsAppElement {
             onmarkedchange: Signal::new(),
             onscalechange: Signal::new(),
             scale: 1.0,
-            render: WidgetRenderFactory::global().get::<Self>(),
+            renderer: WidgetRenderFactory::global().get::<Self>(),
             node,
         }
     }
@@ -152,7 +151,7 @@ impl WidgetsAppElement {
             }
         }
 
-        return None;
+        None
     }
 
     //Internal
@@ -392,13 +391,13 @@ impl Element for WidgetsAppElement {
     }
 
     fn set_size(&self, w: f32, h: f32) {
-        // log::warn!("Set Size Material App {}x{}", w, h);
+        // log::warn!("Set Size WidgetsAppElement {}x{}", w, h);
 
         // let (dw, dh) = {
         //     let mut comp = self.as_ref().borrow_mut();
 
         //     assert!(
-        //         comp.destroyed == false,
+        //         !comp.destroyed,
         //         "Widget was already destroyed but is being interacted with"
         //     );
 
@@ -480,7 +479,7 @@ impl Element for WidgetsAppElement {
             let mut comp = self.component.borrow_mut();
 
             assert!(
-                comp.destroyed == false,
+                !comp.destroyed,
                 "Widget was already destroyed but is being interacted with"
             );
 
@@ -489,7 +488,7 @@ impl Element for WidgetsAppElement {
             }
         }
 
-        if let Some(ref render) = self.render {
+        if let Some(ref render) = self.renderer {
             render.render(self);
         }
 
@@ -504,7 +503,7 @@ impl Element for WidgetsAppElement {
             // }
         }
 
-        if let Some(ref render) = self.render {
+        if let Some(ref render) = self.renderer {
             render.post_render(self);
         }
     }

@@ -1,10 +1,10 @@
 use crate::{
     elements::{AppBarElement, Element},
     foundation::{colorspace::Color, Id, Key, WidgetProperties},
-    painting::{ShapeBorder, TextStyle},
+    painting::{NoneShapeBorder, ShapeBorder, TextStyle},
     services::SystemUiOverlayStyle,
     ui::{Brightness, Size},
-    widgets::{IconThemeData, NullWidget, PreferredSizeWidget, Widget},
+    widgets::{IconThemeData, NoneWidget, PreferredSizeWidget, Widget},
 };
 
 use super::TextTheme;
@@ -19,7 +19,7 @@ pub struct AppBar {
     pub bottom: Box<dyn PreferredSizeWidget>,
     pub elevation: f32,
     pub shadow_color: Color,
-    pub shape: ShapeBorder,
+    pub shape: Box<dyn ShapeBorder>,
     pub background_color: Color,
     pub foreground_color: Color,
     // @Deprecated("This property is no longer used, please use system_overlay_style instead. ")
@@ -47,15 +47,15 @@ impl Default for AppBar {
     fn default() -> Self {
         Self {
             key: Default::default(),
-            leading: box NullWidget,
+            leading: box NoneWidget,
             automatically_imply_leading: Default::default(),
-            title: box NullWidget,
+            title: box NoneWidget,
             actions: Default::default(),
-            flexible_space: box NullWidget,
-            bottom: box NullWidget,
+            flexible_space: box NoneWidget,
+            bottom: box NoneWidget,
             elevation: Default::default(),
             shadow_color: Default::default(),
-            shape: Default::default(),
+            shape: box NoneShapeBorder,
             background_color: Default::default(),
             foreground_color: Default::default(),
             brightness: Default::default(),
@@ -68,7 +68,7 @@ impl Default for AppBar {
             title_spacing: Default::default(),
             toolbar_opacity: Default::default(),
             bottom_opacity: Default::default(),
-            toolbar_height: Default::default(),
+            toolbar_height: 64.0,
             leading_width: Default::default(),
             backwards_compatibility: Default::default(),
             toolbar_text_style: Default::default(),
@@ -80,13 +80,12 @@ impl Default for AppBar {
 
 impl PreferredSizeWidget for AppBar {
     fn preferred_size(&self) -> Size {
-        todo!()
+        Size(0.0, self.toolbar_height) // +  bottom widget's preferred height
     }
 }
 
 impl Widget for AppBar {
     fn create_element(&self) -> Box<dyn Element> {
-        log::info!("Create AppBarElement");
         box AppBarElement::new(self)
     }
 }

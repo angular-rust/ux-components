@@ -5,3 +5,9 @@ pub enum AppLifecycleState {
     Paused = 2,
     Detached = 3,
 }
+
+impl Default for AppLifecycleState {
+    fn default() -> Self {
+        Self::Resumed
+    }
+}

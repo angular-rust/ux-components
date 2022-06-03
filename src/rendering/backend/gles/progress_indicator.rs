@@ -4,7 +4,5 @@ use crate::{elements::ProgressIndicatorElement, rendering::backend::WidgetRender
 pub struct ProgressIndicatorRender;
 
 impl WidgetRenderer<ProgressIndicatorElement> for ProgressIndicatorRender {
-    fn render(&self, widget: &ProgressIndicatorElement) {
-        println!("ProgressIndicatorRender");
-    }
+    fn render(&self, widget: &ProgressIndicatorElement) {}
 }

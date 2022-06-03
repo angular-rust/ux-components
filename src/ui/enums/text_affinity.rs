@@ -3,3 +3,9 @@ pub enum TextAffinity {
     Upstream = 0,
     Downstream = 1,
 }
+
+impl Default for TextAffinity {
+    fn default() -> Self {
+        Self::Upstream
+    }
+}

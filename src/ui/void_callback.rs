@@ -1,3 +1,1 @@
-pub trait VoidCallback {
-    fn callback(&self);
-}
+pub type VoidCallback = Box<dyn Fn()>;

@@ -4,7 +4,5 @@ use crate::{elements::ListElement, rendering::backend::WidgetRenderer};
 pub struct ListRender;
 
 impl WidgetRenderer<ListElement> for ListRender {
-    fn render(&self, widget: &ListElement) {
-        println!("ListRender");
-    }
+    fn render(&self, widget: &ListElement) {}
 }

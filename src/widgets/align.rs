@@ -1,15 +1,15 @@
 use crate::{
     elements::{AlignElement, Element},
     foundation::{Id, Key, WidgetProperties},
-    material::AlignmentGeometry,
+    material::{AlignmentGeometry, NoneAlignmentGeometry},
     widgets::Widget,
 };
 
-use super::NullWidget;
+use super::NoneWidget;
 
 pub struct Align {
     pub key: Key,
-    pub alignment: AlignmentGeometry,
+    pub alignment: Box<dyn AlignmentGeometry>,
     pub width_factor: f32,
     pub height_factor: f32,
     pub child: Box<dyn Widget>,
@@ -19,17 +19,16 @@ impl Default for Align {
     fn default() -> Self {
         Self {
             key: Default::default(),
-            alignment: Default::default(),
+            alignment: box NoneAlignmentGeometry,
             width_factor: Default::default(),
             height_factor: Default::default(),
-            child: box NullWidget,
+            child: box NoneWidget,
         }
     }
 }
 
 impl Widget for Align {
     fn create_element(&self) -> Box<dyn Element> {
-        log::info!("Create AlignElement");
         box AlignElement::new(self)
     }
 }

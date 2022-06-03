@@ -1,10 +1,10 @@
 use crate::{
     elements::{BottomSheetElement, Element},
     foundation::{colorspace::Color, Id, Key, WidgetProperties},
-    painting::ShapeBorder,
+    painting::{NoneShapeBorder, ShapeBorder},
     rendering::BoxConstraints,
     ui::{Clip, VoidCallback},
-    widgets::{Widget, WidgetBuilder},
+    widgets::{NoneWidget, Widget, WidgetBuilder},
 };
 
 pub struct BottomSheet {
@@ -15,11 +15,11 @@ pub struct BottomSheet {
     // pub on_drag_end: BottomSheetDragEndHandler,
     pub background_color: Color,
     pub elevation: f32,
-    pub shape: ShapeBorder,
+    pub shape: Box<dyn ShapeBorder>,
     pub clip_behavior: Clip,
     pub constraints: BoxConstraints,
-    pub on_closing: Option<Box<dyn VoidCallback>>,
-    pub builder: Option<Box<dyn WidgetBuilder>>,
+    pub on_closing: Option<VoidCallback>,
+    pub builder: WidgetBuilder,
 }
 
 impl Default for BottomSheet {
@@ -32,18 +32,17 @@ impl Default for BottomSheet {
             // on_drag_end: Default::default(),
             background_color: Default::default(),
             elevation: Default::default(),
-            shape: Default::default(),
+            shape: box NoneShapeBorder,
             clip_behavior: Default::default(),
             constraints: Default::default(),
             on_closing: Default::default(),
-            builder: Default::default(),
+            builder: box |_| box NoneWidget,
         }
     }
 }
 
 impl Widget for BottomSheet {
     fn create_element(&self) -> Box<dyn Element> {
-        log::info!("Create BottomSheetElement");
         box BottomSheetElement::new(self)
     }
 }

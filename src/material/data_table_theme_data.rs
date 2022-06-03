@@ -1,12 +1,12 @@
 use crate::{
     foundation::colorspace::Color,
-    painting::{Decoration, TextStyle},
+    painting::{Decoration, NoneDecoration, TextStyle},
 };
 
 use super::MaterialStateProperty;
 
 pub struct DataTableThemeData {
-    pub decoration: Decoration,
+    pub decoration: Box<dyn Decoration>,
     pub data_row_color: MaterialStateProperty<Color>,
     pub data_row_height: f32,
     pub data_text_style: TextStyle,
@@ -22,7 +22,7 @@ pub struct DataTableThemeData {
 impl Default for DataTableThemeData {
     fn default() -> Self {
         Self {
-            decoration: Default::default(),
+            decoration: box NoneDecoration,
             data_row_color: Default::default(),
             data_row_height: Default::default(),
             data_text_style: Default::default(),

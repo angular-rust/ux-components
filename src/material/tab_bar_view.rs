@@ -27,7 +27,6 @@ impl Default for TabBarView {
 
 impl Widget for TabBarView {
     fn create_element(&self) -> Box<dyn Element> {
-        log::info!("Create TabBarViewElement");
         box TabBarViewElement::new(self)
     }
 }

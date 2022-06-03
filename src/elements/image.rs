@@ -7,13 +7,15 @@ use std::{
 };
 use stretch::{node::Node, style};
 
-use crate::prelude::Singleton;
+use crate::prelude::{OnDemand, Singleton};
 
 use crate::{
     foundation::Signal,
-    rendering::backend::{WidgetRenderFactory, WidgetRenderHolder},
+    painting::{ImageInfo, ImageStreamListener},
+    rendering::backend::{WidgetRenderFactory, WidgetRenderHolder, WidgetRenderer},
     services::LayoutSystem,
     widgets::Image,
+    engine::d2,
 };
 
 use super::{Element, WidgetComponent};
@@ -31,6 +33,7 @@ pub struct ImageElement {
 
     state: RefCell<ImageState>,
 
+    pub image: Option<d2::Image>,
     /// Emitted whenever the path/id is changed.
     /// `fn(new_path:String)`
     pub onchange: Signal<String>,
@@ -53,12 +56,28 @@ impl ImageElement {
 
         let component = WidgetComponent::get(widget.key.id());
 
+        let stream = widget.image.create_stream(Default::default());
+
+        let image = {
+            let container: Rc<RefCell<Option<d2::Image>>> = Rc::new(RefCell::new(None));
+            let image = container.clone();
+            stream.add_listener(ImageStreamListener::new(
+                box move |info: ImageInfo, synchronous_call| {
+                    image.replace(Some(info.image));
+                },
+                None,
+                None,
+            ));
+            container.take()
+        };
+
         // let path = widget.path.clone();
         let path = String::new();
 
         Self {
             component,
             state: RefCell::new(ImageState { path }),
+            image,
             onchange: Signal::new(),
             renderer: WidgetRenderFactory::global().get::<Self>(),
             node,
@@ -105,13 +124,6 @@ impl Element for ImageElement {
                 comp.w = layout.size.width;
                 comp.h = layout.size.height;
 
-                log::warn!(
-                    "Relayout ImageElement {}x{} {}x{}",
-                    comp.x,
-                    comp.y,
-                    comp.w,
-                    comp.h
-                );
                 true
             }
             Err(e) => {
@@ -124,6 +136,34 @@ impl Element for ImageElement {
             // self.leading.relayout();
             // self.title.relayout();
             // self.flexible_space.relayout();
+        }
+    }
+
+    fn render(&self) {
+        {
+            let mut comp = self.component.borrow_mut();
+
+            assert!(
+                !comp.destroyed,
+                "Widget was already destroyed but is being interacted with"
+            );
+
+            if comp.renderable && comp.onrender.is_some() {
+                let _ = comp.onrender.get().try_send(());
+            }
+        }
+
+        if let Some(ref render) = self.renderer {
+            render.render(self);
+        }
+
+        {
+            // let comp = self.component.borrow();
+            // for child in comp.children.iter() {
+            //     if let Some(widget) = child.widget() {
+            //         widget.render();
+            //     }
+            // }
         }
     }
 }

@@ -26,7 +26,6 @@ impl Default for Flow {
 
 impl Widget for Flow {
     fn create_element(&self) -> Box<dyn Element> {
-        log::info!("Create FlowElement");
         box FlowElement::new(self)
     }
 }

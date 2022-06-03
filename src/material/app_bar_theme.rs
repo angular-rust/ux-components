@@ -1,6 +1,6 @@
 use crate::{
     foundation::colorspace::Color,
-    painting::{ShapeBorder, TextStyle},
+    painting::{ShapeBorder, TextStyle, NoneShapeBorder},
     services::SystemUiOverlayStyle,
     ui::Brightness,
     widgets::IconThemeData,
@@ -16,7 +16,7 @@ pub struct AppBarTheme {
     pub foreground_color: Color,
     pub elevation: f32,
     pub shadow_color: Color,
-    pub shape: ShapeBorder,
+    pub shape: Box<dyn ShapeBorder>,
     pub icon_theme: IconThemeData,
     pub actions_icon_theme: IconThemeData,
     // @Deprecated("This property is no longer used, please use toolbarTextStyle and titleTextStyle instead. ")
@@ -40,7 +40,7 @@ impl Default for AppBarTheme {
             foreground_color: Default::default(),
             elevation: Default::default(),
             shadow_color: Default::default(),
-            shape: Default::default(),
+            shape: box NoneShapeBorder,
             icon_theme: Default::default(),
             actions_icon_theme: Default::default(),
             text_theme: Default::default(),

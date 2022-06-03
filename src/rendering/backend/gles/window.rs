@@ -4,7 +4,5 @@ use crate::{elements::WindowElement, rendering::backend::WidgetRenderer};
 pub struct WindowRender;
 
 impl WidgetRenderer<WindowElement> for WindowRender {
-    fn render(&self, widget: &WindowElement) {
-        println!("WindowRender");
-    }
+    fn render(&self, widget: &WindowElement) {}
 }

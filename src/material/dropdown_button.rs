@@ -3,10 +3,11 @@ use crate::{
     foundation::{colorspace::Color, Id, Key, ValueChanged, WidgetProperties},
     painting::{BorderRadius, TextStyle},
     ui::VoidCallback,
-    widgets::{FocusNode, NullWidget, Widget},
+    widgets::{FocusNode, NoneWidget, Widget},
 };
 
-use super::AlignmentGeometry;
+use super::{AlignmentGeometry, NoneAlignmentGeometry};
+
 pub struct DropdownButton<T: Default> {
     pub key: Key,
     // pub items: Vec<DropdownMenuItem<T>>,
@@ -14,8 +15,8 @@ pub struct DropdownButton<T: Default> {
     pub value: T,
     pub hint: Box<dyn Widget>,
     pub disabled_hint: Box<dyn Widget>,
-    pub on_changed: Option<Box<dyn ValueChanged<T>>>,
-    pub on_tap: Option<Box<dyn VoidCallback>>,
+    pub on_changed: Option<ValueChanged<T>>,
+    pub on_tap: Option<VoidCallback>,
     pub elevation: i32,
     pub style: TextStyle,
     pub underline: Box<dyn Widget>,
@@ -32,7 +33,7 @@ pub struct DropdownButton<T: Default> {
     pub dropdown_color: Color,
     pub menu_max_height: f32,
     pub enable_feedback: bool,
-    pub alignment: AlignmentGeometry,
+    pub alignment: Box<dyn AlignmentGeometry>,
     pub border_radius: BorderRadius,
 }
 
@@ -43,14 +44,14 @@ impl<T: Default> Default for DropdownButton<T> {
             // items: Default::default(),
             // selected_item_builder: Default::default(),
             value: Default::default(),
-            hint: box NullWidget,
-            disabled_hint: box NullWidget,
+            hint: box NoneWidget,
+            disabled_hint: box NoneWidget,
             on_changed: Default::default(),
             on_tap: Default::default(),
             elevation: Default::default(),
             style: Default::default(),
-            underline: box NullWidget,
-            icon: box NullWidget,
+            underline: box NoneWidget,
+            icon: box NoneWidget,
             icon_disabled_color: Default::default(),
             icon_enabled_color: Default::default(),
             icon_size: Default::default(),
@@ -63,7 +64,7 @@ impl<T: Default> Default for DropdownButton<T> {
             dropdown_color: Default::default(),
             menu_max_height: Default::default(),
             enable_feedback: Default::default(),
-            alignment: Default::default(),
+            alignment: box NoneAlignmentGeometry,
             border_radius: Default::default(),
         }
     }
@@ -71,7 +72,6 @@ impl<T: Default> Default for DropdownButton<T> {
 
 impl<T: Default> Widget for DropdownButton<T> {
     fn create_element(&self) -> Box<dyn Element> {
-        log::info!("Create DropdownButtonElement");
         box DropdownButtonElement::new(self)
     }
 }

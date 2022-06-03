@@ -4,3 +4,9 @@ pub enum KeyEventType {
     Up = 1,
     Repeat = 2,
 }
+
+impl Default for KeyEventType {
+    fn default() -> Self {
+        Self::Down
+    }
+}

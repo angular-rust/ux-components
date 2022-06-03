@@ -1,6 +1,8 @@
 use crate::{
     foundation::colorspace::Color,
-    painting::{EdgeInsetsGeometry, ShapeBorder, TextStyle},
+    painting::{
+        EdgeInsetsGeometry, NoneEdgeInsetsGeometry, NoneShapeBorder, ShapeBorder, TextStyle,
+    },
     rendering::BoxConstraints,
 };
 
@@ -15,14 +17,14 @@ pub struct FloatingActionButtonThemeData {
     pub hover_elevation: f32,
     pub disabled_elevation: f32,
     pub highlight_elevation: f32,
-    pub shape: ShapeBorder,
+    pub shape: Box<dyn ShapeBorder>,
     pub enable_feedback: bool,
     pub size_constraints: BoxConstraints,
     pub small_size_constraints: BoxConstraints,
     pub large_size_constraints: BoxConstraints,
     pub extended_size_constraints: BoxConstraints,
     pub extended_icon_label_spacing: f32,
-    pub extended_padding: EdgeInsetsGeometry,
+    pub extended_padding: Box<dyn EdgeInsetsGeometry>,
     pub extended_text_style: TextStyle,
 }
 
@@ -39,14 +41,14 @@ impl Default for FloatingActionButtonThemeData {
             hover_elevation: Default::default(),
             disabled_elevation: Default::default(),
             highlight_elevation: Default::default(),
-            shape: Default::default(),
+            shape: box NoneShapeBorder,
             enable_feedback: Default::default(),
             size_constraints: Default::default(),
             small_size_constraints: Default::default(),
             large_size_constraints: Default::default(),
             extended_size_constraints: Default::default(),
             extended_icon_label_spacing: Default::default(),
-            extended_padding: Default::default(),
+            extended_padding: box NoneEdgeInsetsGeometry,
             extended_text_style: Default::default(),
         }
     }

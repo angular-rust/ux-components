@@ -1,7 +1,7 @@
 use crate::{
     elements::{DrawerElement, Element},
     foundation::{Id, Key, WidgetProperties},
-    widgets::{NullWidget, Widget},
+    widgets::{NoneWidget, Widget},
 };
 
 pub struct Drawer {
@@ -16,7 +16,7 @@ impl Default for Drawer {
         Self {
             key: Default::default(),
             elevation: Default::default(),
-            child: box NullWidget,
+            child: box NoneWidget,
             semantic_label: Default::default(),
         }
     }
@@ -24,7 +24,6 @@ impl Default for Drawer {
 
 impl Widget for Drawer {
     fn create_element(&self) -> Box<dyn Element> {
-        log::info!("Create DrawerElement");
         box DrawerElement::new(self)
     }
 }

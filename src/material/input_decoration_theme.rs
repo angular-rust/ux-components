@@ -1,6 +1,6 @@
 use crate::{
     foundation::colorspace::Color,
-    painting::{EdgeInsetsGeometry, TextStyle},
+    painting::{EdgeInsetsGeometry, TextStyle, NoneEdgeInsetsGeometry},
     rendering::BoxConstraints,
 };
 
@@ -16,7 +16,7 @@ pub struct InputDecorationTheme {
     pub error_max_lines: i32,
     pub floating_label_behavior: FloatingLabelBehavior,
     pub is_dense: bool,
-    pub content_padding: EdgeInsetsGeometry,
+    pub content_padding: Box<dyn EdgeInsetsGeometry>,
     pub is_collapsed: bool,
     pub prefix_style: TextStyle,
     pub suffix_style: TextStyle,
@@ -47,7 +47,7 @@ impl Default for InputDecorationTheme {
             error_max_lines: Default::default(),
             floating_label_behavior: Default::default(),
             is_dense: Default::default(),
-            content_padding: Default::default(),
+            content_padding: box NoneEdgeInsetsGeometry,
             is_collapsed: Default::default(),
             prefix_style: Default::default(),
             suffix_style: Default::default(),

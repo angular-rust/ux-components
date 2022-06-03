@@ -1,21 +1,21 @@
 use crate::{
     elements::{Element, IconButtonElement},
     foundation::{colorspace::Color, Id, Key, WidgetProperties},
-    painting::EdgeInsetsGeometry,
+    painting::{EdgeInsetsGeometry, NoneEdgeInsetsGeometry},
     rendering::BoxConstraints,
     services::MouseCursor,
     ui::VoidCallback,
-    widgets::{FocusNode, NullWidget, Widget},
+    widgets::{FocusNode, NoneWidget, Widget},
 };
 
-use super::{AlignmentGeometry, VisualDensity};
+use super::{AlignmentGeometry, NoneAlignmentGeometry, VisualDensity};
 
 pub struct IconButton {
     pub key: Key,
     pub icon_size: f32,
     pub visual_density: VisualDensity,
-    pub padding: EdgeInsetsGeometry,
-    pub alignment: AlignmentGeometry,
+    pub padding: Box<dyn EdgeInsetsGeometry>,
+    pub alignment: Box<dyn AlignmentGeometry>,
     pub splash_radius: f32,
     pub color: Color,
     pub focus_color: Color,
@@ -23,7 +23,7 @@ pub struct IconButton {
     pub highlight_color: Color,
     pub splash_color: Color,
     pub disabled_color: Color,
-    pub on_pressed: Option<Box<dyn VoidCallback>>,
+    pub on_pressed: Option<VoidCallback>,
     pub mouse_cursor: MouseCursor,
     pub focus_node: FocusNode,
     pub autofocus: bool,
@@ -39,8 +39,8 @@ impl Default for IconButton {
             key: Default::default(),
             icon_size: Default::default(),
             visual_density: Default::default(),
-            padding: Default::default(),
-            alignment: Default::default(),
+            padding: box NoneEdgeInsetsGeometry,
+            alignment: box NoneAlignmentGeometry,
             splash_radius: Default::default(),
             color: Default::default(),
             focus_color: Default::default(),
@@ -55,14 +55,13 @@ impl Default for IconButton {
             tooltip: Default::default(),
             enable_feedback: Default::default(),
             constraints: Default::default(),
-            icon: box NullWidget,
+            icon: box NoneWidget,
         }
     }
 }
 
 impl Widget for IconButton {
     fn create_element(&self) -> Box<dyn Element> {
-        log::info!("Create IconButtonElement");
         box IconButtonElement::new(self)
     }
 }

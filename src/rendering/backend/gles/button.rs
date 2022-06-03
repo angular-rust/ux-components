@@ -4,7 +4,5 @@ use crate::{elements::ButtonElement, rendering::backend::WidgetRenderer};
 pub struct ButtonRender;
 
 impl WidgetRenderer<ButtonElement> for ButtonRender {
-    fn render(&self, widget: &ButtonElement) {
-        println!("ButtonRender");
-    }
+    fn render(&self, widget: &ButtonElement) {}
 }

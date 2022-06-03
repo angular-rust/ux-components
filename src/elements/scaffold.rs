@@ -1,4 +1,5 @@
 use cgmath::Point2;
+use dx::prelude::Color;
 use std::{
     cell::RefCell,
     default::default,
@@ -7,12 +8,11 @@ use std::{
 };
 use stretch::{geometry, node::Node, style};
 
-use crate::prelude::Singleton;
+use crate::prelude::{OnDemand, Singleton};
 
 use crate::{
     foundation::{Helper, Id, KeyEvent, MouseEvent, ScaleChangeEvent, Signal, TextEvent},
     material::Scaffold,
-    prelude::OnDemand,
     rendering::backend::{WidgetRenderFactory, WidgetRenderHolder, WidgetRenderer},
     services::LayoutSystem,
 };
@@ -64,9 +64,11 @@ pub struct ScaffoldElement {
     /// On scale changed
     pub onscalechange: Signal<ScaleChangeEvent>,
 
+    pub background_color: Color,
+
     state: RefCell<ScaffoldState>,
     // The concrete renderer for this control instance
-    pub render: Option<Rc<WidgetRenderHolder<Self>>>,
+    pub renderer: Option<Rc<WidgetRenderHolder<Self>>>,
     // The node in layout system
     pub node: Node,
 }
@@ -104,31 +106,32 @@ impl ScaffoldElement {
 
         let mut childs = Vec::new();
 
+        let app_bar_height = widget.app_bar.preferred_size().1;
         let app_bar = widget.app_bar.create_element();
         {
             let childs = &mut childs;
-            app_bar.node().map(|child| {
+            if let Some(child) = app_bar.node() {
                 let child_style = LayoutSystem::style(child).unwrap();
                 LayoutSystem::set_style(
                     child,
                     style::Style {
                         align_self: style::AlignSelf::FlexStart,
-                        // size: geometry::Size {
-                        //     width: style::Dimension::Percent(1.0),
-                        //     height: style::Dimension::Points(64.0),
-                        // },
+                        size: geometry::Size {
+                            width: style::Dimension::Percent(1.0),
+                            height: style::Dimension::Points(app_bar_height),
+                        },
                         ..child_style
                     },
                 )
                 .unwrap();
                 childs.push(child);
-            });
+            }
         }
 
         let body = widget.body.create_element();
         {
             let childs = &mut childs;
-            body.node().map(|child| {
+            if let Some(child) = body.node() {
                 let child_style = LayoutSystem::style(child).unwrap();
                 LayoutSystem::set_style(
                     child,
@@ -143,7 +146,7 @@ impl ScaffoldElement {
                 )
                 .unwrap();
                 childs.push(child);
-            });
+            }
         }
 
         // Not in layout tree
@@ -156,22 +159,9 @@ impl ScaffoldElement {
         let bottom_navigation_bar = widget.bottom_navigation_bar.create_element();
         {
             let childs = &mut childs;
-            bottom_navigation_bar.node().map(|child| {
-                let child_style = LayoutSystem::style(child).unwrap();
-                LayoutSystem::set_style(
-                    child,
-                    style::Style {
-                        align_self: style::AlignSelf::FlexEnd,
-                        size: geometry::Size {
-                            width: style::Dimension::Percent(1.0),
-                            height: style::Dimension::Points(64.0),
-                        },
-                        ..child_style
-                    },
-                )
-                .unwrap();
+            if let Some(child) = bottom_navigation_bar.node() {
                 childs.push(child);
-            });
+            }
         }
 
         // Not in Nodes tree
@@ -191,7 +181,6 @@ impl ScaffoldElement {
             bottom_sheet,
 
             captured: None,
-            state: Default::default(),
             focus_invalid: true,
             focused: None,
             marked: None,
@@ -200,7 +189,9 @@ impl ScaffoldElement {
             onmarkedchange: Signal::new(),
             onscalechange: Signal::new(),
             scale: 1.0,
-            render: WidgetRenderFactory::global().get::<Self>(),
+            background_color: widget.background_color,
+            state: Default::default(),
+            renderer: WidgetRenderFactory::global().get::<Self>(),
             node,
         }
     }
@@ -223,7 +214,7 @@ impl ScaffoldElement {
             }
         }
 
-        return None;
+        None
     }
 
     //Internal
@@ -488,13 +479,13 @@ impl Element for ScaffoldElement {
     }
 
     fn set_size(&self, w: f32, h: f32) {
-        // log::info!("Set Size Scaffold {}x{}", w, h);
+        log::info!("Set Size ScaffoldElement {}x{}", w, h);
 
         let (dw, dh) = {
             let mut comp = self.as_ref().borrow_mut();
 
             assert!(
-                comp.destroyed == false,
+                !comp.destroyed,
                 "Widget was already destroyed but is being interacted with"
             );
 
@@ -563,12 +554,11 @@ impl Element for ScaffoldElement {
     }
 
     fn render(&self) {
-        log::info!("Render Scaffold");
         {
             let mut comp = self.component.borrow_mut();
 
             assert!(
-                comp.destroyed == false,
+                !comp.destroyed,
                 "Widget was already destroyed but is being interacted with"
             );
 
@@ -577,7 +567,7 @@ impl Element for ScaffoldElement {
             }
         }
 
-        if let Some(ref render) = self.render {
+        if let Some(ref render) = self.renderer {
             render.render(self);
         }
 

@@ -202,6 +202,7 @@ pub struct Layout {
     sizers: HashSet<Sizer>,
 }
 
+#[derive(Default)]
 pub struct Margins {
     observed: HashMap<Id, Layout>,
 }
@@ -221,12 +222,12 @@ impl Margins {
         target: SizeTarget,
         value: f32,
     ) {
-        if let Some(other) = other.or(primary.parent()) {
+        if let Some(other) = other.or_else(|| primary.parent()) {
             let layout = self.get(other);
 
             let sizer: Sizer = Sizer {
-                target: target,
-                value: value,
+                target,
+                value,
                 primary: primary.id(),
                 other: other.id(),
             };
@@ -252,12 +253,12 @@ impl Margins {
         other_anchor: AnchorType,
         offset: Option<i32>,
     ) {
-        if let Some(other) = other.or(primary.parent()) {
+        if let Some(other) = other.or_else(|| primary.parent()) {
             let layout = self.get(other);
 
             let anchor: Anchor = Anchor {
                 primary_anchor: self_anchor,
-                other_anchor: other_anchor,
+                other_anchor,
                 primary: primary.id(),
                 other: other.id(),
                 offset,
@@ -284,13 +285,13 @@ impl Margins {
         margin_type: MarginType,
         value: f32,
     ) {
-        if let Some(other) = other.or(primary.parent()) {
+        if let Some(other) = other.or_else(|| primary.parent()) {
             let layout = self.get(other);
 
             let margin: Margin = Margin {
-                target: target,
+                target,
                 margin_type,
-                value: value,
+                value,
                 primary: primary.id(),
                 other: other.id(),
             };

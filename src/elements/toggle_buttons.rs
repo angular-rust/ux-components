@@ -44,7 +44,7 @@ pub struct ToggleButtonsElement {
 
 impl Debug for ToggleButtonsElement {
     fn fmt(&self, f: &mut Formatter<'_>) -> Result {
-        f.debug_struct("CheckboxElement").finish()
+        f.debug_struct("ToggleButtonsElement").finish()
     }
 }
 
@@ -125,13 +125,6 @@ impl Element for ToggleButtonsElement {
                 comp.w = layout.size.width;
                 comp.h = layout.size.height;
 
-                log::warn!(
-                    "Relayout ToggleButtonsElement {}x{} {}x{}",
-                    comp.x,
-                    comp.y,
-                    comp.w,
-                    comp.h
-                );
                 true
             }
             Err(e) => {

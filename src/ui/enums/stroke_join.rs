@@ -4,3 +4,9 @@ pub enum StrokeJoin {
     Round = 1,
     Bevel = 2,
 }
+
+impl Default for StrokeJoin {
+    fn default() -> Self {
+        Self::Miter
+    }
+}

@@ -1,7 +1,7 @@
 use crate::{
     elements::{Element, RefreshIndicatorElement},
     foundation::{colorspace::Color, Id, Key, WidgetProperties},
-    widgets::{NullWidget, Widget},
+    widgets::{NoneWidget, Widget},
 };
 
 pub struct RefreshIndicator {
@@ -23,7 +23,7 @@ impl Default for RefreshIndicator {
     fn default() -> Self {
         Self {
             key: Default::default(),
-            child: box NullWidget,
+            child: box NoneWidget,
             displacement: Default::default(),
             edge_offset: Default::default(),
             // on_refresh: Default::default(),
@@ -40,7 +40,6 @@ impl Default for RefreshIndicator {
 
 impl Widget for RefreshIndicator {
     fn create_element(&self) -> Box<dyn Element> {
-        log::info!("Create RefreshIndicatorElement");
         box RefreshIndicatorElement::new(self)
     }
 }

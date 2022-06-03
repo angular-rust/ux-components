@@ -44,7 +44,7 @@ pub struct RawMaterialButtonElement {
 
 impl Debug for RawMaterialButtonElement {
     fn fmt(&self, f: &mut Formatter<'_>) -> Result {
-        f.debug_struct("CheckboxElement").finish()
+        f.debug_struct("RawMaterialButtonElement").finish()
     }
 }
 
@@ -125,13 +125,6 @@ impl Element for RawMaterialButtonElement {
                 comp.w = layout.size.width;
                 comp.h = layout.size.height;
 
-                log::warn!(
-                    "Relayout RawMaterialButtonElement {}x{} {}x{}",
-                    comp.x,
-                    comp.y,
-                    comp.w,
-                    comp.h
-                );
                 true
             }
             Err(e) => {

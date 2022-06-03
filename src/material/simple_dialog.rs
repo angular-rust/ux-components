@@ -1,48 +1,47 @@
 use crate::{
     elements::{Element, SimpleDialogElement},
     foundation::{colorspace::Color, Id, Key, WidgetProperties},
-    painting::{EdgeInsetsGeometry, ShapeBorder, TextStyle},
+    painting::{EdgeInsetsGeometry, ShapeBorder, TextStyle, NoneEdgeInsetsGeometry, NoneShapeBorder},
     ui::Clip,
-    widgets::{NullWidget, Widget},
+    widgets::{NoneWidget, Widget},
 };
 
 pub struct SimpleDialog {
     pub key: Key,
     pub title: Box<dyn Widget>,
-    pub title_padding: EdgeInsetsGeometry,
+    pub title_padding: Box<dyn EdgeInsetsGeometry>,
     pub title_text_style: TextStyle,
     pub children: Vec<Box<dyn Widget>>,
-    pub content_padding: EdgeInsetsGeometry,
+    pub content_padding: Box<dyn EdgeInsetsGeometry>,
     pub background_color: Color,
     pub elevation: f32,
     pub semantic_label: String,
     // pub inset_padding: EdgeInsets,
     pub clip_behavior: Clip,
-    pub shape: ShapeBorder,
+    pub shape: Box<dyn ShapeBorder>,
 }
 
 impl Default for SimpleDialog {
     fn default() -> Self {
         Self {
             key: Default::default(),
-            title: box NullWidget,
-            title_padding: Default::default(),
+            title: box NoneWidget,
+            title_padding: box NoneEdgeInsetsGeometry,
             title_text_style: Default::default(),
             children: Default::default(),
-            content_padding: Default::default(),
+            content_padding: box NoneEdgeInsetsGeometry,
             background_color: Default::default(),
             elevation: Default::default(),
             semantic_label: Default::default(),
             // inset_padding: Default::default(),
             clip_behavior: Default::default(),
-            shape: Default::default(),
+            shape: box NoneShapeBorder,
         }
     }
 }
 
 impl Widget for SimpleDialog {
     fn create_element(&self) -> Box<dyn Element> {
-        log::info!("Create SimpleDialogElement");
         box SimpleDialogElement::new(self)
     }
 }

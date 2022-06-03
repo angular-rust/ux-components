@@ -3,19 +3,22 @@ use std::time::Duration;
 use crate::{
     elements::{Element, MaterialButtonElement},
     foundation::{colorspace::Color, Id, Key, ValueChanged, WidgetProperties},
-    painting::{EdgeInsetsGeometry, ShapeBorder},
+    painting::{EdgeInsetsGeometry, NoneEdgeInsetsGeometry, NoneShapeBorder, ShapeBorder},
     services::MouseCursor,
     ui::{Brightness, Clip, VoidCallback},
-    widgets::{FocusNode, NullWidget, Widget},
+    widgets::{FocusNode, NoneWidget, Widget},
 };
 
 use super::{ButtonTextTheme, MaterialTapTargetSize, VisualDensity};
 
+// #[deprecated(since = "5.2", note = "foo was rarely used. Users should instead use bar")]
+
+#[deprecated(note = "This class is obsolete. FlatButton, RaisedButton, and OutlineButton have been replaced by TextButton, ElevatedButton, and OutlinedButton respectively.")]
 pub struct MaterialButton {
     pub key: Key,
-    pub on_pressed: Option<Box<dyn VoidCallback>>,
-    pub on_long_press: Option<Box<dyn VoidCallback>>,
-    pub on_highlight_changed: Option<Box<dyn ValueChanged<bool>>>,
+    pub on_pressed: Option<VoidCallback>,
+    pub on_long_press: Option<VoidCallback>,
+    pub on_highlight_changed: Option<ValueChanged<bool>>,
     pub mouse_cursor: MouseCursor,
     pub text_theme: ButtonTextTheme,
     pub text_color: Color,
@@ -32,9 +35,9 @@ pub struct MaterialButton {
     pub hover_elevation: f32,
     pub highlight_elevation: f32,
     pub disabled_elevation: f32,
-    pub padding: EdgeInsetsGeometry,
+    pub padding: Box<dyn EdgeInsetsGeometry>,
     pub visual_density: VisualDensity,
-    pub shape: ShapeBorder,
+    pub shape: Box<dyn ShapeBorder>,
     pub clip_behavior: Clip,
     pub focus_node: FocusNode,
     pub autofocus: bool,
@@ -46,6 +49,7 @@ pub struct MaterialButton {
     pub child: Box<dyn Widget>,
 }
 
+#[allow(deprecated)]
 impl Default for MaterialButton {
     fn default() -> Self {
         Self {
@@ -69,9 +73,9 @@ impl Default for MaterialButton {
             hover_elevation: Default::default(),
             highlight_elevation: Default::default(),
             disabled_elevation: Default::default(),
-            padding: Default::default(),
+            padding: box NoneEdgeInsetsGeometry,
             visual_density: Default::default(),
-            shape: Default::default(),
+            shape: box NoneShapeBorder,
             clip_behavior: Default::default(),
             focus_node: Default::default(),
             autofocus: Default::default(),
@@ -80,18 +84,19 @@ impl Default for MaterialButton {
             min_width: Default::default(),
             height: Default::default(),
             enable_feedback: Default::default(),
-            child: box NullWidget,
+            child: box NoneWidget,
         }
     }
 }
 
+#[allow(deprecated)]
 impl Widget for MaterialButton {
     fn create_element(&self) -> Box<dyn Element> {
-        log::info!("Create MaterialButtonElement");
         box MaterialButtonElement::new(self)
     }
 }
 
+#[allow(deprecated)]
 impl WidgetProperties for MaterialButton {
     fn key(&self) -> &Key {
         &self.key

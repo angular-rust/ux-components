@@ -45,10 +45,10 @@ impl OutlinedButtonElement {
         let node = LayoutSystem::new_node(
             style::Style {
                 padding: geometry::Rect {
-                    start: style::Dimension::Points(20.0),
-                    end: style::Dimension::Points(20.0),
-                    top: style::Dimension::Points(20.0),
-                    bottom: style::Dimension::Points(20.0),
+                    start: style::Dimension::Points(5.0),
+                    end: style::Dimension::Points(5.0),
+                    top: style::Dimension::Points(5.0),
+                    bottom: style::Dimension::Points(5.0),
                 },
                 size: geometry::Size {
                     width: style::Dimension::Percent(1.0),
@@ -67,7 +67,7 @@ impl OutlinedButtonElement {
         // }
 
         let child = widget.child.create_element();
-        child.node().map(|child| {
+        if let Some(child) = child.node() {
             let child_style = LayoutSystem::style(child).unwrap();
             LayoutSystem::set_style(
                 child,
@@ -81,7 +81,7 @@ impl OutlinedButtonElement {
             )
             .unwrap();
             LayoutSystem::set_children(node, vec![child]).unwrap()
-        });
+        }
 
         Self {
             component,
@@ -149,12 +149,11 @@ impl Element for OutlinedButtonElement {
     }
 
     fn render(&self) {
-        // log::info!("Render Default Element Impl");
         // {
         //     let comp = self.component.borrow();
 
         //     assert!(
-        //         comp.destroyed == false,
+        //         !comp.destroyed,
         //         "Widget was already destroyed but is being interacted with"
         //     );
 
@@ -168,8 +167,6 @@ impl Element for OutlinedButtonElement {
         //         widget.render();
         //     }
         // }
-
-        log::warn!("Render OutlinedButtonElement");
 
         // center do not have a render, so we render the child
         self.child.render();
@@ -188,13 +185,6 @@ impl Element for OutlinedButtonElement {
                 comp.w = layout.size.width;
                 comp.h = layout.size.height;
 
-                log::warn!(
-                    "Relayout OutlinedButtonElement {}x{} {}x{}",
-                    comp.x,
-                    comp.y,
-                    comp.w,
-                    comp.h
-                );
                 true
             }
             Err(e) => {

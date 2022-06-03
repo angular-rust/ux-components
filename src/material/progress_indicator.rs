@@ -30,7 +30,6 @@ impl Default for ProgressIndicator {
 
 impl Widget for ProgressIndicator {
     fn create_element(&self) -> Box<dyn Element> {
-        log::info!("Create ProgressIndicatorElement");
         box ProgressIndicatorElement::new(self)
     }
 }

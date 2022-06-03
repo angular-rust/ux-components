@@ -2,12 +2,12 @@ use crate::{
     elements::{Element, ScaffoldElement},
     foundation::{colorspace::Color, Id, Key, WidgetProperties},
     gestures::DragStartBehavior,
-    widgets::{NullWidget, PreferredSizeWidget, Widget},
+    widgets::{NoneWidget, PreferredSizeWidget, Widget},
 };
 
 use super::{DrawerCallback, FloatingActionButtonAnimator, FloatingActionButtonLocation};
 
-pub struct Scaffold {
+pub struct Scaffold { 
     pub key: Key,
     pub app_bar: Box<dyn PreferredSizeWidget>,
     pub body: Box<dyn Widget>,
@@ -38,18 +38,18 @@ impl Default for Scaffold {
     fn default() -> Self {
         Self {
             key: Default::default(),
-            app_bar: box NullWidget,
-            body: box NullWidget,
-            floating_action_button: box NullWidget,
+            app_bar: box NoneWidget,
+            body: box NoneWidget,
+            floating_action_button: box NoneWidget,
             floating_action_button_location: Default::default(),
             floating_action_button_animator: Default::default(),
             persistent_footer_buttons: Default::default(),
-            drawer: box NullWidget,
+            drawer: box NoneWidget,
             on_drawer_changed: Default::default(),
-            end_drawer: box NullWidget,
+            end_drawer: box NoneWidget,
             on_end_drawer_changed: Default::default(),
-            bottom_navigation_bar: box NullWidget,
-            bottom_sheet: box NullWidget,
+            bottom_navigation_bar: box NoneWidget,
+            bottom_sheet: box NoneWidget,
             background_color: Default::default(),
             resize_to_avoid_bottom_inset: Default::default(),
             primary: Default::default(),
@@ -67,7 +67,6 @@ impl Default for Scaffold {
 
 impl Widget for Scaffold {
     fn create_element(&self) -> Box<dyn Element> {
-        log::info!("Create ScaffoldElement");
         box ScaffoldElement::new(self)
     }
 }

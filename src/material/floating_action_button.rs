@@ -1,15 +1,15 @@
 use crate::{
     elements::{Element, FloatingActionButtonElement},
     foundation::{colorspace::Color, Id, Key, WidgetProperties},
-    painting::ShapeBorder,
+    painting::{NoneShapeBorder, ShapeBorder},
     services::MouseCursor,
     ui::{Clip, VoidCallback},
-    widgets::{FocusNode, NullWidget, Widget},
+    widgets::{FocusNode, NoneWidget, Widget},
 };
 
 use super::MaterialTapTargetSize;
 
-pub struct FloatingActionButton {
+pub struct FloatingActionButton { 
     pub key: Key,
     pub child: Box<dyn Widget>,
     pub tooltip: String,
@@ -24,10 +24,10 @@ pub struct FloatingActionButton {
     pub hover_elevation: f32,
     pub highlight_elevation: f32,
     pub disabled_elevation: f32,
-    pub on_pressed: Option<Box<dyn VoidCallback>>,
+    pub on_pressed: Option<VoidCallback>,
     pub mouse_cursor: MouseCursor,
     pub mini: bool,
-    pub shape: ShapeBorder,
+    pub shape: Box<dyn ShapeBorder>,
     pub clip_behavior: Clip,
     pub focus_node: FocusNode,
     pub autofocus: bool,
@@ -40,7 +40,7 @@ impl Default for FloatingActionButton {
     fn default() -> Self {
         Self {
             key: Default::default(),
-            child: box NullWidget,
+            child: box NoneWidget,
             tooltip: Default::default(),
             foreground_color: Default::default(),
             background_color: Default::default(),
@@ -56,7 +56,7 @@ impl Default for FloatingActionButton {
             on_pressed: Default::default(),
             mouse_cursor: Default::default(),
             mini: Default::default(),
-            shape: Default::default(),
+            shape: box NoneShapeBorder,
             clip_behavior: Default::default(),
             focus_node: Default::default(),
             autofocus: Default::default(),
@@ -69,7 +69,6 @@ impl Default for FloatingActionButton {
 
 impl Widget for FloatingActionButton {
     fn create_element(&self) -> Box<dyn Element> {
-        log::info!("Create FloatingActionButtonElement");
         box FloatingActionButtonElement::new(self)
     }
 }

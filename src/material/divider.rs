@@ -28,7 +28,6 @@ impl Default for Divider {
 
 impl Widget for Divider {
     fn create_element(&self) -> Box<dyn Element> {
-        log::info!("Create DividerElement");
         box DividerElement::new(self)
     }
 }

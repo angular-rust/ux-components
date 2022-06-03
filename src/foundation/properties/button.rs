@@ -1,4 +1,6 @@
-use crate::foundation::{Id, Key, MouseSignal, TextAlign, WidgetProperties};
+use crate::prelude::TextAlign;
+
+use crate::foundation::{Id, Key, MouseSignal, WidgetProperties};
 
 /// Options for constructing a Button
 #[derive(Debug, Clone)]

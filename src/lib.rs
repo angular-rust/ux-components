@@ -4,7 +4,13 @@
     clippy::from_over_into,
     clippy::if_same_then_else,
     clippy::float_cmp,
-    clippy::collapsible_if
+    clippy::collapsible_if,
+    clippy::derivable_impls, // for custom default structs
+    clippy::type_complexity,
+    clippy::borrowed_box,
+    clippy::module_inception,
+    clippy::let_unit_value,
+    clippy::map_entry,
 )]
 #![feature(async_closure)]
 #![feature(const_type_id)]
@@ -12,14 +18,17 @@
 #![feature(default_free_fn)]
 #![doc(html_logo_url = "https://dudochkin-victor.github.io/assets/ux-components/logo.svg")]
 
+#![allow(unused_variables)]
 // pub use animate::*;
 
+pub mod animation;
 pub mod elements;
 pub mod foundation;
 pub mod gestures;
 pub mod material;
 pub mod painting;
 pub mod rendering;
+pub mod rx;
 pub mod services;
 pub mod ui;
 pub mod widgets;

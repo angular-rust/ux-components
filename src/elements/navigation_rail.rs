@@ -7,12 +7,11 @@ use std::{
 };
 use stretch::{geometry, node::Node, style};
 
-use crate::prelude::Singleton;
+use crate::prelude::{OnDemand, Singleton};
 
 use crate::{
     foundation::{Helper, Id, KeyEvent, MouseEvent, ScaleChangeEvent, Signal, TextEvent},
     material::NavigationRail,
-    prelude::OnDemand,
     rendering::backend::{WidgetRenderFactory, WidgetRenderHolder, WidgetRenderer},
     services::LayoutSystem,
     widgets::Widget,
@@ -27,13 +26,13 @@ struct NavigationRailState {
     mouse_down: bool, // = false;
 }
 
-struct ThreeColumnsLayout {
+struct ThreeRowsLayout {
     /// leading section
     pub leading: Node,
     /// central section
     pub central: Node,
     /// closing/ending section
-    pub tail: Node,
+    pub trailing: Node,
 }
 
 /// A canvas is a root object::
@@ -46,7 +45,6 @@ pub struct NavigationRailElement {
 
     pub leading: Box<dyn Element>,
     pub trailing: Box<dyn Element>,
-    // pub flexible_space: Box<dyn Element>,
     pub destinations: Vec<Box<dyn Element>>,
 
     // TODO: actions
@@ -74,13 +72,13 @@ pub struct NavigationRailElement {
 
     state: RefCell<NavigationRailState>,
     // The concrete renderer for this control instance
-    pub render: Option<Rc<WidgetRenderHolder<Self>>>,
+    pub renderer: Option<Rc<WidgetRenderHolder<Self>>>,
 
     // The node in layout system
     pub node: Node,
 
     /// Layout places
-    topline: ThreeColumnsLayout,
+    layout: ThreeRowsLayout,
 }
 
 impl Debug for NavigationRailElement {
@@ -93,13 +91,19 @@ impl NavigationRailElement {
     pub fn new(widget: &NavigationRail) -> Self {
         let node = LayoutSystem::new_node(
             style::Style {
-                flex_direction: style::FlexDirection::Row,
-                justify_content: style::JustifyContent::SpaceEvenly,
-                align_content: style::AlignContent::Stretch,
-                align_items: style::AlignItems::Center,
+                flex_direction: style::FlexDirection::Column,
+                align_items: style::AlignItems::Stretch,
+                // align_content: style::AlignContent::FlexStart,
+                // justify_content: style::JustifyContent::Center,
+                // padding: geometry::Rect {
+                //     start: style::Dimension::Points(5.0),
+                //     end: style::Dimension::Points(5.0),
+                //     top: style::Dimension::Points(5.0),
+                //     bottom: style::Dimension::Points(5.0),
+                // },
                 size: geometry::Size {
-                    width: style::Dimension::Percent(1.0),
-                    height: style::Dimension::Points(64.0),
+                    width: style::Dimension::Points(34.0),
+                    height: style::Dimension::Percent(1.0),
                 },
                 ..default()
             },
@@ -107,17 +111,19 @@ impl NavigationRailElement {
         )
         .unwrap();
 
-        let topline = {
+        let layout = {
             let leading = LayoutSystem::new_node(
                 style::Style {
-                    flex_direction: style::FlexDirection::Row,
-                    justify_content: style::JustifyContent::FlexStart,
-                    align_content: style::AlignContent::Stretch,
-                    align_items: style::AlignItems::Center,
-                    size: geometry::Size {
-                        width: style::Dimension::Percent(1.0),
-                        height: style::Dimension::Points(64.0),
-                    },
+                    // flex_direction: style::FlexDirection::Row,
+                    // justify_content: style::JustifyContent::FlexEnd,
+                    // align_content: style::AlignContent::Stretch,
+                    // align_items: style::AlignItems::Center,
+                    // size: geometry::Size { // TODO: should deal with height
+                    //     // width: style::Dimension::Points(34.0),
+                    //     // height: style::Dimension::Points(34.0),
+                    //     width: style::Dimension::Percent(1.0),
+                    //     height: style::Dimension::Percent(1.0),
+                    // },
                     ..default()
                 },
                 vec![],
@@ -126,13 +132,21 @@ impl NavigationRailElement {
 
             let central = LayoutSystem::new_node(
                 style::Style {
-                    flex_direction: style::FlexDirection::Row,
-                    justify_content: style::JustifyContent::Center,
-                    align_content: style::AlignContent::Stretch,
+                    flex_direction: style::FlexDirection::Column,
                     align_items: style::AlignItems::Center,
+                    // flex_direction: style::FlexDirection::Row,
+                    // justify_content: style::JustifyContent::Center,
+                    // align_content: style::AlignContent::Stretch,
+                    // align_items: style::AlignItems::Center,
+                    padding: geometry::Rect {
+                        start: style::Dimension::Points(1.0),
+                        end: style::Dimension::Points(1.0),
+                        top: style::Dimension::Points(1.0),
+                        bottom: style::Dimension::Points(1.0),
+                    },
                     size: geometry::Size {
                         width: style::Dimension::Percent(1.0),
-                        height: style::Dimension::Points(64.0),
+                        height: style::Dimension::Percent(1.0),
                     },
                     ..default()
                 },
@@ -142,13 +156,13 @@ impl NavigationRailElement {
 
             let tail = LayoutSystem::new_node(
                 style::Style {
-                    flex_direction: style::FlexDirection::Row,
-                    justify_content: style::JustifyContent::FlexEnd,
-                    align_content: style::AlignContent::Stretch,
-                    align_items: style::AlignItems::Center,
+                    // flex_direction: style::FlexDirection::Row,
+                    // justify_content: style::JustifyContent::FlexEnd,
+                    // align_content: style::AlignContent::Stretch,
+                    // align_items: style::AlignItems::Center,
                     size: geometry::Size {
                         width: style::Dimension::Percent(1.0),
-                        height: style::Dimension::Points(64.0),
+                        height: style::Dimension::Points(34.0),
                     },
                     ..default()
                 },
@@ -156,10 +170,10 @@ impl NavigationRailElement {
             )
             .unwrap();
 
-            ThreeColumnsLayout {
+            ThreeRowsLayout {
                 leading,
                 central,
-                tail,
+                trailing: tail,
             }
         };
 
@@ -171,21 +185,7 @@ impl NavigationRailElement {
         // let scale = widget.scale;
 
         let leading = widget.leading.create_element();
-        leading.node().map(|child| {
-            let child_style = LayoutSystem::style(child).unwrap();
-            LayoutSystem::set_style(
-                child,
-                style::Style {
-                    align_self: style::AlignSelf::FlexStart,
-                    ..child_style
-                },
-            )
-            .unwrap();
-            LayoutSystem::set_children(topline.leading, vec![child]).unwrap();
-        });
-
-        let trailing = widget.trailing.create_element();
-        trailing.node().map(|child| {
+        if let Some(child) = leading.node() {
             let child_style = LayoutSystem::style(child).unwrap();
             LayoutSystem::set_style(
                 child,
@@ -195,61 +195,56 @@ impl NavigationRailElement {
                 },
             )
             .unwrap();
-            LayoutSystem::set_children(topline.central, vec![child]).unwrap();
-        });
+            LayoutSystem::set_children(layout.leading, vec![child]).unwrap();
+        }
 
-        // let flexible_space = widget.flexible_space.create_element();
-        // flexible_space.node().map(|child| {
-        //     let child_style = LayoutSystem::style(child).unwrap();
-        //     LayoutSystem::set_style(
-        //         child,
-        //         style::Style {
-        //             align_self: style::AlignSelf::FlexEnd,
-        //             size: geometry::Size {
-        //                 width: style::Dimension::Percent(1.0),
-        //                 height: style::Dimension::Points(64.0),
-        //             },
-        //             ..child_style
-        //         },
-        //     )
-        //     .unwrap();
-        //     LayoutSystem::set_children(node, vec![child]).unwrap();
-        // });
+        let trailing = widget.trailing.create_element();
+        if let Some(child) = trailing.node() {
+            let child_style = LayoutSystem::style(child).unwrap();
+            LayoutSystem::set_style(
+                child,
+                style::Style {
+                    align_self: style::AlignSelf::Center,
+                    ..child_style
+                },
+            )
+            .unwrap();
+            LayoutSystem::set_children(layout.trailing, vec![child]).unwrap();
+        }
 
         let mut destinations = Vec::new();
 
         // toplne tail nodes
-        let mut tail = Vec::new();
+        let mut central = Vec::new();
 
         for el in widget.destinations.iter() {
-            let action = el.create_element();
-            let tail = &mut tail;
+            let destination = el.create_element();
+            let central = &mut central;
 
-            action.node().map(|child| {
-                // let child_style = LayoutSystem::style(child).unwrap();
-                // LayoutSystem::set_style(
-                //     child,
-                //     style::Style {
-                //         align_self: style::AlignSelf::Center,
-                //         ..child_style
-                //     },
-                // )
-                // .unwrap();
-                tail.push(child);
-            });
-            destinations.push(action);
+            if let Some(child) = destination.node() { 
+                let child_style = LayoutSystem::style(child).unwrap();
+                LayoutSystem::set_style(
+                    child,
+                    style::Style {
+                        align_self: style::AlignSelf::Center,
+                        ..child_style
+                    },
+                )
+                .unwrap();
+                central.push(child);
+            }
+            destinations.push(destination);
         }
 
-        LayoutSystem::set_children(topline.tail, tail).unwrap();
+        LayoutSystem::set_children(layout.central, central).unwrap();
 
-        LayoutSystem::set_children(node, vec![topline.leading, topline.central, topline.tail])
+        LayoutSystem::set_children(node, vec![layout.leading, layout.central, layout.trailing])
             .unwrap();
 
         Self {
             component,
             leading,
             trailing,
-            // flexible_space,
             destinations,
             captured: None,
             state: Default::default(),
@@ -261,9 +256,9 @@ impl NavigationRailElement {
             onmarkedchange: Signal::new(),
             onscalechange: Signal::new(),
             scale: 1.0,
-            render: WidgetRenderFactory::global().get::<Self>(),
+            renderer: WidgetRenderFactory::global().get::<Self>(),
             node,
-            topline,
+            layout,
         }
     }
 
@@ -285,7 +280,7 @@ impl NavigationRailElement {
             }
         }
 
-        return None;
+        None
     }
 
     //Internal
@@ -455,11 +450,6 @@ impl Element for NavigationRailElement {
                 self.trailing.mousedown(e);
             }
 
-            // if self.flexible_space.contains(x, y) {
-            //     // log::info!("Is an FAB");
-            //     self.flexible_space.mousedown(e);
-            // }
-
             for action in self.destinations.iter() {
                 if action.contains(x, y) {
                     log::info!("Is an ACTION");
@@ -541,13 +531,6 @@ impl Element for NavigationRailElement {
                 comp.w = layout.size.width;
                 comp.h = layout.size.height;
 
-                log::warn!(
-                    "Relayout NavigationRail {}x{} {}x{}",
-                    comp.x,
-                    comp.y,
-                    comp.w,
-                    comp.h
-                );
                 true
             }
             Err(e) => {
@@ -561,33 +544,34 @@ impl Element for NavigationRailElement {
 
             // there some magic with three column layout internals
             // so lets just get layouts aobaout topline
-            let leading = LayoutSystem::layout(self.topline.leading).unwrap();
-            let central = LayoutSystem::layout(self.topline.central).unwrap();
-            let tail = LayoutSystem::layout(self.topline.tail).unwrap();
+            let leading = LayoutSystem::layout(self.layout.leading).unwrap();
+
+            let central = LayoutSystem::layout(self.layout.central).unwrap();
+            let trailing = LayoutSystem::layout(self.layout.trailing).unwrap();
 
             self.leading.relayout(Point2 {
                 x: comp.x + leading.location.x,
-                y: comp.y + tail.location.y,
+                y: comp.y + leading.location.y,
             });
-            self.trailing.relayout(Point2 {
+
+            let destination_origin = Point2 {
                 x: comp.x + central.location.x,
                 y: comp.y + central.location.y,
-            });
-
-            let tail_origin = Point2 {
-                x: comp.x + tail.location.x,
-                y: comp.y + tail.location.y,
             };
 
-            for action in self.destinations.iter() {
-                action.relayout(tail_origin);
+            for destination in self.destinations.iter() {
+                destination.relayout(destination_origin);
             }
 
-            // flefible space is a middle line which should in other layout
-            // self.flexible_space.relayout(Point2 {
-            //     x: comp.x + tail.location.x,
-            //     y: comp.y + tail.location.y,
-            // });
+            // println!("Comp {}x{} {}x{}", comp.x, comp.y, comp.w, comp.h);
+            // println!("Leading {}x{} {}x{}", leading.location.x, leading.location.y, leading.size.width, leading.size.height);
+            // println!("Central {}x{} {}x{}", central.location.x, central.location.y, central.size.width, central.size.height);
+            // println!("Trailing {}x{} {}x{}", trailing.location.x, trailing.location.y, trailing.size.width, trailing.size.height);
+
+            self.trailing.relayout(Point2 {
+                x: comp.x + trailing.location.x,
+                y: comp.y + trailing.location.y,
+            });
         }
     }
 
@@ -603,12 +587,11 @@ impl Element for NavigationRailElement {
     }
 
     fn render(&self) {
-        log::info!("Render NavigationRail");
         {
             let mut comp = self.component.borrow_mut();
 
             assert!(
-                comp.destroyed == false,
+                !comp.destroyed,
                 "Widget was already destroyed but is being interacted with"
             );
 
@@ -617,16 +600,15 @@ impl Element for NavigationRailElement {
             }
         }
 
-        if let Some(ref render) = self.render {
+        if let Some(ref render) = self.renderer {
             render.render(self);
         }
 
-        self.leading.render();
-        self.trailing.render();
-        // self.flexible_space.render();
+        // self.leading.render();
+        // self.trailing.render();
 
-        for action in self.destinations.iter() {
-            action.render();
+        for destination in self.destinations.iter() {
+            destination.render();
         }
 
         {

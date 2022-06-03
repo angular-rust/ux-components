@@ -5,3 +5,9 @@ pub enum BlurStyle {
     Outer = 2,
     Inner = 3,
 }
+
+impl Default for BlurStyle {
+    fn default() -> Self {
+        Self::Normal
+    }
+}

@@ -36,7 +36,6 @@ impl Default for CalendarDatePicker {
 
 impl Widget for CalendarDatePicker {
     fn create_element(&self) -> Box<dyn Element> {
-        log::info!("Create CalendarDatePickerElement");
         box CalendarDatePickerElement::new(self)
     }
 }

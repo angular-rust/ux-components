@@ -1,8 +1,8 @@
 use crate::{
     elements::{Element, NavigationRailDestinationElement},
     foundation::{Id, Key, WidgetProperties},
-    painting::EdgeInsetsGeometry,
-    widgets::{NullWidget, Widget},
+    painting::{EdgeInsetsGeometry, NoneEdgeInsetsGeometry},
+    widgets::{NoneWidget, Widget},
 };
 
 pub struct NavigationRailDestination {
@@ -10,24 +10,23 @@ pub struct NavigationRailDestination {
     pub icon: Box<dyn Widget>,
     pub selected_icon: Box<dyn Widget>,
     pub label: Box<dyn Widget>,
-    pub padding: EdgeInsetsGeometry,
+    pub padding: Box<dyn EdgeInsetsGeometry>,
 }
 
 impl Default for NavigationRailDestination {
     fn default() -> Self {
         Self {
             key: Default::default(),
-            icon: box NullWidget,
-            selected_icon: box NullWidget,
-            label: box NullWidget,
-            padding: Default::default(),
+            icon: box NoneWidget,
+            selected_icon: box NoneWidget,
+            label: box NoneWidget,
+            padding: box NoneEdgeInsetsGeometry,
         }
     }
 }
 
 impl Widget for NavigationRailDestination {
     fn create_element(&self) -> Box<dyn Element> {
-        log::info!("Create NavigationRailDestinationElement");
         box NavigationRailDestinationElement::new(self)
     }
 }

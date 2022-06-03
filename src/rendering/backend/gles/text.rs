@@ -19,11 +19,22 @@ impl WidgetRenderer<TextElement> for TextRender {
         let comp = widget.as_ref().borrow();
 
         // println!("Node {:?}", widget.node);
-        println!("TextRender {}x{} {}x{}", comp.x, comp.y, comp.w, comp.h);
+        // println!("TextRender {}x{} {}x{}", comp.x, comp.y, comp.w, comp.h);
 
-        self.painter.set_color(color::TEAL_5);
+        // self.painter.set_color(color::RED_5);
 
-        self.painter.fill_rect(comp.x, comp.y, comp.w, comp.h);
+        // self.painter.fill_rect(comp.x, comp.y, comp.w, comp.h);
+
+        let font_size = 18.0;
+        self.painter.set_color(color::WHITE);
+        self.painter.set_font_size(font_size);
+
+        // if let Some((w, h)) = self.painter.measure(widget.text().as_str()) {
+        //     println!("Text {}x{}", w, h);
+        // }
+        let dy = (comp.h - font_size) / 2.0;
+
+        self.painter.draw_string(widget.text().as_str(), comp.x, comp.y + dy);
     }
 }
 

@@ -1,6 +1,8 @@
 use std::char;
 
-use crate::foundation::{Id, Key, TextAlign, WidgetProperties};
+use crate::prelude::TextAlign;
+
+use crate::foundation::{Id, Key, WidgetProperties};
 
 /// Options for constructing a TextEdit
 pub struct TextEditProperties {

@@ -7,9 +7,10 @@ use std::{
 };
 use stretch::{geometry, node::Node, style};
 
+use crate::{prelude::OnDemand, rendering::MainAxisSize};
+
 use crate::{
     foundation::{Helper, Id, KeyEvent, MouseEvent, ScaleChangeEvent, Signal, TextEvent},
-    prelude::OnDemand,
     services::LayoutSystem,
     widgets::Column,
 };
@@ -67,22 +68,6 @@ impl Debug for ColumnElement {
 
 impl ColumnElement {
     pub fn new(widget: &Column) -> Self {
-        let node = LayoutSystem::new_node(
-            style::Style {
-                flex_direction: style::FlexDirection::Column,
-                align_items: style::AlignItems::Stretch,
-                // align_content: style::AlignContent::FlexStart,
-                // justify_content: style::JustifyContent::Center,
-                size: geometry::Size {
-                    width: style::Dimension::Percent(1.0),
-                    height: style::Dimension::Percent(1.0),
-                },
-                ..default()
-            },
-            vec![],
-        )
-        .unwrap();
-
         // assert!(options.rendering.is_some(), "No Rendering given to Canvas, cannot create a canvas without one.");
 
         let component = WidgetComponent::get(widget.key.id());
@@ -97,10 +82,13 @@ impl ColumnElement {
         let mut children = Vec::new();
 
         let mut child_nodes = Vec::new();
+        let mut children_height = 0.0;
+        let mut children_height_correct = true;
+
         for child in widget.children.iter() {
             let element = child.create_element();
             let child_nodes = &mut child_nodes;
-            element.node().map(|child| {
+            if let Some(child) = element.node() {
                 // let child_style = LayoutSystem::style(child).unwrap();
                 // LayoutSystem::set_style(
                 //     child,
@@ -110,11 +98,54 @@ impl ColumnElement {
                 //     },
                 // )
                 // .unwrap();
+
+                // calculate row height
+                let child_style = LayoutSystem::style(child).unwrap();
+                if let style::Dimension::Points(height) = child_style.size.height {
+                    children_height += height;
+                } else {
+                    children_height_correct = false;
+                }
+
                 child_nodes.push(child);
-            });
+            }
 
             children.push(element);
         }
+
+        // The height of the Column is determined by the mainAxisSize property.
+        // If the mainAxisSize property is MainAxisSize.max, then the height of the Column is the max height of the incoming constraints.
+        // If the mainAxisSize property is MainAxisSize.min, then the height of the Column is the sum of heights of the children (subject to the incoming constraints).
+
+        let height = match widget.main_axis_size {
+            MainAxisSize::Min => {
+                // should use calculated sum of childs height
+                if children_height_correct {
+                    style::Dimension::Points(children_height)
+                } else {
+                    style::Dimension::Percent(1.0)
+                }
+            },
+            MainAxisSize::Max => style::Dimension::Percent(1.0)
+        };
+
+
+
+        let node = LayoutSystem::new_node(
+            style::Style {
+                flex_direction: style::FlexDirection::Column,
+                align_items: style::AlignItems::Stretch,
+                // align_content: style::AlignContent::FlexStart,
+                // justify_content: style::JustifyContent::Center,
+                size: geometry::Size {
+                    width: style::Dimension::Percent(1.0),
+                    height,
+                },
+                ..default()
+            },
+            vec![],
+        )
+        .unwrap();
 
         LayoutSystem::set_children(node, child_nodes).unwrap();
 
@@ -153,7 +184,7 @@ impl ColumnElement {
             }
         }
 
-        return None;
+        None
     }
 
     //Internal
@@ -409,11 +440,10 @@ impl Element for ColumnElement {
     }
 
     fn render(&self) {
-        log::info!("Render ColumnElement");
         let comp = self.as_ref().borrow();
 
         assert!(
-            comp.destroyed == false,
+            !comp.destroyed,
             "Widget was already destroyed but is being interacted with"
         );
 
@@ -453,13 +483,6 @@ impl Element for ColumnElement {
                 comp.w = layout.size.width;
                 comp.h = layout.size.height;
 
-                log::warn!(
-                    "Relayout ColumnElement {}x{} {}x{}",
-                    comp.x,
-                    comp.y,
-                    comp.w,
-                    comp.h
-                );
                 true
             }
             Err(e) => {

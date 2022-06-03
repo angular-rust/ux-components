@@ -7,10 +7,11 @@ use std::{
 };
 use stretch::{geometry, node::Node, style};
 
+use crate::prelude::OnDemand;
+
 use crate::{
     foundation::{Helper, Id, KeyEvent, MouseEvent, ScaleChangeEvent, Signal, TextEvent},
     material::Drawer,
-    prelude::OnDemand,
     services::LayoutSystem,
 };
 
@@ -70,10 +71,10 @@ impl DrawerElement {
         let node = LayoutSystem::new_node(
             style::Style {
                 padding: geometry::Rect {
-                    start: style::Dimension::Points(20.0),
-                    end: style::Dimension::Points(20.0),
-                    top: style::Dimension::Points(20.0),
-                    bottom: style::Dimension::Points(20.0),
+                    start: style::Dimension::Points(5.0),
+                    end: style::Dimension::Points(5.0),
+                    top: style::Dimension::Points(5.0),
+                    bottom: style::Dimension::Points(5.0),
                 },
                 size: geometry::Size {
                     width: style::Dimension::Percent(1.0),
@@ -98,7 +99,7 @@ impl DrawerElement {
 
         let child = widget.child.create_element();
 
-        child.node().map(|child| {
+        if let Some(child) = child.node() {
             let child_style = LayoutSystem::style(child).unwrap();
             LayoutSystem::set_style(
                 child,
@@ -112,7 +113,7 @@ impl DrawerElement {
             )
             .unwrap();
             LayoutSystem::set_children(node, vec![child]).unwrap()
-        });
+        }
 
         Self {
             captured: None,
@@ -149,7 +150,7 @@ impl DrawerElement {
             }
         }
 
-        return None;
+        None
     }
 
     //Internal
@@ -411,12 +412,11 @@ impl Element for DrawerElement {
     }
 
     fn render(&self) {
-        // log::info!("Render Default Element Impl");
         // {
         //     let comp = self.component.borrow();
 
         //     assert!(
-        //         comp.destroyed == false,
+        //         !comp.destroyed,
         //         "Widget was already destroyed but is being interacted with"
         //     );
 
@@ -430,8 +430,6 @@ impl Element for DrawerElement {
         //         widget.render();
         //     }
         // }
-
-        log::warn!("Render DrawerElement");
 
         // center do not have a render, so we render the child
         self.child.render();
@@ -459,13 +457,6 @@ impl Element for DrawerElement {
                 comp.w = layout.size.width;
                 comp.h = layout.size.height;
 
-                log::warn!(
-                    "Relayout DrawerElement {}x{} {}x{}",
-                    comp.x,
-                    comp.y,
-                    comp.w,
-                    comp.h
-                );
                 true
             }
             Err(e) => {

@@ -1,7 +1,7 @@
 use crate::{
     elements::{Element, StepElement},
     foundation::{Id, Key, WidgetProperties},
-    widgets::{NullWidget, Widget},
+    widgets::{NoneWidget, Widget},
 };
 
 use super::StepState;
@@ -19,9 +19,9 @@ impl Default for Step {
     fn default() -> Self {
         Self {
             key: Default::default(),
-            title: box NullWidget,
-            subtitle: box NullWidget,
-            content: box NullWidget,
+            title: box NoneWidget,
+            subtitle: box NoneWidget,
+            content: box NoneWidget,
             state: Default::default(),
             is_active: Default::default(),
         }
@@ -30,7 +30,6 @@ impl Default for Step {
 
 impl Widget for Step {
     fn create_element(&self) -> Box<dyn Element> {
-        log::info!("Create StepElement");
         box StepElement::new(self)
     }
 }

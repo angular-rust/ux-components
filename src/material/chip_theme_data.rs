@@ -1,6 +1,9 @@
 use crate::{
     foundation::colorspace::Color,
-    painting::{BorderSide, EdgeInsetsGeometry, OutlinedBorder, TextStyle},
+    painting::{
+        BorderSide, EdgeInsetsGeometry, NoneEdgeInsetsGeometry, NoneOutlinedBorder, OutlinedBorder,
+        TextStyle,
+    },
     ui::Brightness,
 };
 
@@ -14,10 +17,10 @@ pub struct ChipThemeData {
     pub selected_shadow_color: Color,
     pub show_checkmark: bool,
     pub checkmark_color: Color,
-    pub label_padding: EdgeInsetsGeometry,
-    pub padding: EdgeInsetsGeometry,
+    pub label_padding: Box<dyn EdgeInsetsGeometry>,
+    pub padding: Box<dyn EdgeInsetsGeometry>,
     pub side: BorderSide,
-    pub shape: OutlinedBorder,
+    pub shape: Box<dyn OutlinedBorder>,
     pub label_style: TextStyle,
     pub secondary_label_style: TextStyle,
     pub brightness: Brightness,
@@ -37,10 +40,10 @@ impl Default for ChipThemeData {
             selected_shadow_color: Default::default(),
             show_checkmark: Default::default(),
             checkmark_color: Default::default(),
-            label_padding: Default::default(),
-            padding: Default::default(),
+            label_padding: box NoneEdgeInsetsGeometry,
+            padding: box NoneEdgeInsetsGeometry,
             side: Default::default(),
-            shape: Default::default(),
+            shape: box NoneOutlinedBorder,
             label_style: Default::default(),
             secondary_label_style: Default::default(),
             brightness: Default::default(),

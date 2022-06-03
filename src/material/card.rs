@@ -1,9 +1,9 @@
 use crate::{
     elements::{CardElement, Element},
     foundation::{colorspace::Color, Id, Key, WidgetProperties},
-    painting::{EdgeInsetsGeometry, ShapeBorder},
+    painting::{EdgeInsetsGeometry, NoneEdgeInsetsGeometry, NoneShapeBorder, ShapeBorder},
     ui::Clip,
-    widgets::{NullWidget, Widget},
+    widgets::{NoneWidget, Widget},
 };
 
 pub struct Card {
@@ -11,9 +11,9 @@ pub struct Card {
     pub color: Color,
     pub shadow_color: Color,
     pub elevation: f32,
-    pub shape: ShapeBorder,
+    pub shape: Box<dyn ShapeBorder>,
     pub border_on_foreground: bool,
-    pub margin: EdgeInsetsGeometry,
+    pub margin: Box<dyn EdgeInsetsGeometry>,
     pub clip_behavior: Clip,
     pub child: Box<dyn Widget>,
     pub semantic_container: bool,
@@ -26,11 +26,11 @@ impl Default for Card {
             color: Default::default(),
             shadow_color: Default::default(),
             elevation: Default::default(),
-            shape: Default::default(),
+            shape: box NoneShapeBorder,
             border_on_foreground: Default::default(),
-            margin: Default::default(),
+            margin: box NoneEdgeInsetsGeometry,
             clip_behavior: Default::default(),
-            child: box NullWidget,
+            child: box NoneWidget,
             semantic_container: Default::default(),
         }
     }
@@ -38,7 +38,6 @@ impl Default for Card {
 
 impl Widget for Card {
     fn create_element(&self) -> Box<dyn Element> {
-        log::info!("Create CardElement");
         box CardElement::new(self)
     }
 }

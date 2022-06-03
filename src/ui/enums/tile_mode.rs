@@ -5,3 +5,9 @@ pub enum TileMode {
     Mirror = 2,
     Repeated = 1,
 }
+
+impl Default for TileMode {
+    fn default() -> Self {
+        Self::Clamp
+    }
+}

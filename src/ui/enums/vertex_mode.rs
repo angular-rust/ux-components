@@ -4,3 +4,9 @@ pub enum VertexMode {
     TriangleStrip = 1,
     TriangleFan = 2,
 }
+
+impl Default for VertexMode {
+    fn default() -> Self {
+        Self::Triangles
+    }
+}

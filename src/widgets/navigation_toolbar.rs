@@ -3,7 +3,7 @@ use crate::{
     foundation::{Id, Key, WidgetProperties},
 };
 
-use super::{NullWidget, Widget};
+use super::{NoneWidget, Widget};
 
 pub struct NavigationToolbar {
     pub key: Key,
@@ -18,9 +18,9 @@ impl Default for NavigationToolbar {
     fn default() -> Self {
         Self {
             key: Default::default(),
-            leading: box NullWidget,
-            middle: box NullWidget,
-            trailing: box NullWidget,
+            leading: box NoneWidget,
+            middle: box NoneWidget,
+            trailing: box NoneWidget,
             center_middle: Default::default(),
             middle_spacing: Default::default(),
         }
@@ -29,7 +29,6 @@ impl Default for NavigationToolbar {
 
 impl Widget for NavigationToolbar {
     fn create_element(&self) -> Box<dyn Element> {
-        log::info!("Create NavigationToolbarElement");
         box NavigationToolbarElement::new(self)
     }
 }

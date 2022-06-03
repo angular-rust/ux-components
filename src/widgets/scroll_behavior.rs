@@ -6,7 +6,7 @@ buildScrollbar(BuildContext context, Widget child, ScrollableDetails details) ->
 Applies a RawScrollbar to the child widget on desktop platforms.
 
 buildViewportChrome(BuildContext context, Widget child, AxisDirection axisDirection) -> Widget
-Wraps the given widget, which scrolls in the given AxisDirection. [...]
+Wraps the given widget, which scrolls in the given AxisDirection.
 
 @Deprecated("Migrate to buildOverscrollIndicator. " "This feature was deprecated after v2.1.0-11.0.pre.")
 copyWith({bool scrollbars = true, bool overscroll = true, Set<PointerDeviceKind>? dragDevices, ScrollPhysics? physics, TargetPlatform? platform}) -> ScrollBehavior
@@ -22,7 +22,7 @@ shouldNotify(covariant ScrollBehavior oldDelegate) -> bool
 Called whenever a ScrollConfiguration is rebuilt with a new ScrollBehavior of the same runtimeType.
 
 toString() -> String
-A string representation of this object. [...]
+A string representation of this object.
 override
 
 velocityTrackerBuilder(BuildContext context) -> GestureVelocityTrackerBuilder

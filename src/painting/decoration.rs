@@ -23,10 +23,22 @@
 // A brief description of this object, usually just the runtimeType and the hashCode.
 // override
 
-pub struct Decoration;
+pub trait Decoration {
+    // Whether this decoration is complex enough to benefit from caching its painting.
+    // isComplex: bool
 
-impl Default for Decoration {
+    // Returns the insets to apply when using this decoration on a box that has contents,
+    // so that the contents do not overlap the edges of the decoration. For example, if the decoration draws a frame around its edge,
+    // the padding would return the distance by which to inset the children so as to not overlap the frame.
+    // padding: EdgeInsetsGeometry?
+}
+
+pub struct NoneDecoration;
+
+impl Decoration for NoneDecoration {}
+
+impl Default for NoneDecoration {
     fn default() -> Self {
-        Self {}
+        Self
     }
 }

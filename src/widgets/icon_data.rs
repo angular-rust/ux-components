@@ -1,6 +1,6 @@
 /// A description of an icon fulfilled by a font glyph.
 ///
-/// See [Icons] for a number of predefined icons available for material design applications.
+/// See Icons for a number of predefined icons available for material design applications.
 ///
 /// Originally it contain additional fields like a fontFamily, fontPackage and matchTextDirection.
 /// We do not use them becouse we use different rendering model

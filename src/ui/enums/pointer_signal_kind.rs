@@ -4,3 +4,9 @@ pub enum PointerSignalKind {
     Scroll = 1,
     Unknown = 2,
 }
+
+impl Default for PointerSignalKind {
+    fn default() -> Self {
+        Self::None
+    }
+}

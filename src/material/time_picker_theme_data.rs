@@ -1,6 +1,8 @@
 use crate::{
     foundation::colorspace::Color,
-    painting::{BorderSide, OutlinedBorder, ShapeBorder, TextStyle},
+    painting::{
+        BorderSide, NoneOutlinedBorder, NoneShapeBorder, OutlinedBorder, ShapeBorder, TextStyle,
+    },
 };
 
 use super::InputDecorationTheme;
@@ -18,9 +20,9 @@ pub struct TimePickerThemeData {
     pub hour_minute_text_style: TextStyle,
     pub day_period_text_style: TextStyle,
     pub help_text_style: TextStyle,
-    pub shape: ShapeBorder,
-    pub hour_minute_shape: ShapeBorder,
-    pub day_period_shape: OutlinedBorder,
+    pub shape: Box<dyn ShapeBorder>,
+    pub hour_minute_shape: Box<dyn ShapeBorder>,
+    pub day_period_shape: Box<dyn OutlinedBorder>,
     pub day_period_border_side: BorderSide,
     pub input_decoration_theme: InputDecorationTheme,
 }
@@ -40,9 +42,9 @@ impl Default for TimePickerThemeData {
             hour_minute_text_style: Default::default(),
             day_period_text_style: Default::default(),
             help_text_style: Default::default(),
-            shape: Default::default(),
-            hour_minute_shape: Default::default(),
-            day_period_shape: Default::default(),
+            shape: box NoneShapeBorder,
+            hour_minute_shape: box NoneShapeBorder,
+            day_period_shape: box NoneOutlinedBorder,
             day_period_border_side: Default::default(),
             input_decoration_theme: Default::default(),
         }

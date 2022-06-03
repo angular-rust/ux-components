@@ -12,7 +12,7 @@ use crate::{
 use super::{
     Action, GenerateAppTitle, GlobalKey, InitialRouteListFactory, Intent,
     LocaleListResolutionCallback, LocaleResolutionCallback, NavigatorObserver, NavigatorState,
-    NullWidget, RouteFactory, ShortcutActivator, TransitionBuilder, Widget, WidgetBuilder,
+    NoneWidget, RouteFactory, ShortcutActivator, TransitionBuilder, Widget, WidgetBuilder,
 };
 
 pub struct WidgetsApp {
@@ -25,7 +25,7 @@ pub struct WidgetsApp {
     pub initial_route: String,
     // pub page_route_builder: PageRouteFactory,
     pub home: Box<dyn Widget>,
-    pub routes: HashMap<String, Box<dyn WidgetBuilder>>,
+    pub routes: HashMap<String, Box<WidgetBuilder>>,
     pub builder: Option<Box<dyn TransitionBuilder>>,
     pub title: String,
     pub on_generate_title: Option<Box<dyn GenerateAppTitle>>,
@@ -60,7 +60,7 @@ impl Default for WidgetsApp {
             navigator_observers: Default::default(),
             initial_route: Default::default(),
             // page_route_builder: Default::default(),
-            home: box NullWidget,
+            home: box NoneWidget,
             routes: Default::default(),
             builder: Default::default(),
             title: Default::default(),
@@ -89,7 +89,6 @@ impl Default for WidgetsApp {
 
 impl Widget for WidgetsApp {
     fn create_element(&self) -> Box<dyn Element> {
-        log::info!("Create WidgetsAppElement");
         box WidgetsAppElement::new(self)
     }
 }

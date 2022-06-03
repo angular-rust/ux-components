@@ -29,18 +29,7 @@
 
 **UX Components** is a free, open source, cross-platform widget toolkit for building a GUI for Rust. This project is inspired by Mx GUI Library, Clutter Project, Meego and Moblin. 
 
-> **work in progress**
-
-**Angular Rust** is a high productivity, `platform-agnostic` frontend framework for the [Rust language](https://www.rust-lang.org/). It now supports desktop and web development. Angular Rust currently uses Clutter for desktop development and WebAssembly for web development. We are planning to add support for mobile development.
-
-![Angular Rust structure](https://dudochkin-victor.github.io/assets/angular-rust/structure.svg)
-
-## Features
-
-![UX Components structure](https://dudochkin-victor.github.io/assets/ux-components/structure.svg)
-
-- [x] Graphic abstraction for cairo and web canvas, implemented in [UX Animate](https://github.com/angular-rust/ux-animate)
-
+**Angular Rust** is a high productivity, `platform-agnostic` frontend framework for the [Rust language](https://www.rust-lang.org/). It now supports desktop and web development. Angular Rust currently uses OpenGL ES 2.0+ for desktop development and WebAssembly for web development. We are planning to add support for mobile development.
 
 ## Quick Start
 

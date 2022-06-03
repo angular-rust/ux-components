@@ -32,7 +32,6 @@ impl Default for CircularProgressIndicator {
 
 impl Widget for CircularProgressIndicator {
     fn create_element(&self) -> Box<dyn Element> {
-        log::info!("Create CircularProgressIndicatorElement");
         box CircularProgressIndicatorElement::new(self)
     }
 }

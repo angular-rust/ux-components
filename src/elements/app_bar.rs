@@ -7,12 +7,11 @@ use std::{
 };
 use stretch::{geometry, node::Node, style};
 
-use crate::prelude::Singleton;
+use crate::prelude::{OnDemand, Singleton};
 
 use crate::{
     foundation::{Helper, Id, KeyEvent, MouseEvent, ScaleChangeEvent, Signal, TextEvent},
     material::AppBar,
-    prelude::OnDemand,
     rendering::backend::{WidgetRenderFactory, WidgetRenderHolder, WidgetRenderer},
     services::LayoutSystem,
 };
@@ -74,7 +73,7 @@ pub struct AppBarElement {
 
     state: RefCell<AppBarState>,
     // The concrete renderer for this control instance
-    pub render: Option<Rc<WidgetRenderHolder<Self>>>,
+    pub renderer: Option<Rc<WidgetRenderHolder<Self>>>,
 
     // The node in layout system
     pub node: Node,
@@ -99,7 +98,7 @@ impl AppBarElement {
                 align_items: style::AlignItems::Center,
                 size: geometry::Size {
                     width: style::Dimension::Percent(1.0),
-                    height: style::Dimension::Points(64.0),
+                    height: style::Dimension::Percent(64.0),
                 },
                 ..default()
             },
@@ -171,7 +170,7 @@ impl AppBarElement {
         // let scale = widget.scale;
 
         let leading = widget.leading.create_element();
-        leading.node().map(|child| {
+        if let Some(child) = leading.node() {
             let child_style = LayoutSystem::style(child).unwrap();
             LayoutSystem::set_style(
                 child,
@@ -182,10 +181,10 @@ impl AppBarElement {
             )
             .unwrap();
             LayoutSystem::set_children(topline.leading, vec![child]).unwrap();
-        });
+        }
 
         let title = widget.title.create_element();
-        title.node().map(|child| {
+        if let Some(child) = title.node() {
             let child_style = LayoutSystem::style(child).unwrap();
             LayoutSystem::set_style(
                 child,
@@ -196,7 +195,7 @@ impl AppBarElement {
             )
             .unwrap();
             LayoutSystem::set_children(topline.central, vec![child]).unwrap();
-        });
+        }
 
         let flexible_space = widget.flexible_space.create_element();
         // flexible_space.node().map(|child| {
@@ -225,7 +224,7 @@ impl AppBarElement {
             let action = el.create_element();
             let tail = &mut tail;
 
-            action.node().map(|child| {
+            if let Some(child) = action.node() {
                 // let child_style = LayoutSystem::style(child).unwrap();
                 // LayoutSystem::set_style(
                 //     child,
@@ -236,7 +235,8 @@ impl AppBarElement {
                 // )
                 // .unwrap();
                 tail.push(child);
-            });
+            }
+            
             actions.push(action);
         }
 
@@ -261,7 +261,7 @@ impl AppBarElement {
             onmarkedchange: Signal::new(),
             onscalechange: Signal::new(),
             scale: 1.0,
-            render: WidgetRenderFactory::global().get::<Self>(),
+            renderer: WidgetRenderFactory::global().get::<Self>(),
             node,
             topline,
         }
@@ -285,7 +285,7 @@ impl AppBarElement {
             }
         }
 
-        return None;
+        None
     }
 
     //Internal
@@ -541,13 +541,6 @@ impl Element for AppBarElement {
                 comp.w = layout.size.width;
                 comp.h = layout.size.height;
 
-                log::warn!(
-                    "Relayout AppBar {}x{} {}x{}",
-                    comp.x,
-                    comp.y,
-                    comp.w,
-                    comp.h
-                );
                 true
             }
             Err(e) => {
@@ -603,12 +596,11 @@ impl Element for AppBarElement {
     }
 
     fn render(&self) {
-        log::info!("Render AppBar");
         {
             let mut comp = self.component.borrow_mut();
 
             assert!(
-                comp.destroyed == false,
+                !comp.destroyed,
                 "Widget was already destroyed but is being interacted with"
             );
 
@@ -617,7 +609,7 @@ impl Element for AppBarElement {
             }
         }
 
-        if let Some(ref render) = self.render {
+        if let Some(ref render) = self.renderer {
             render.render(self);
         }
 

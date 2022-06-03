@@ -11,12 +11,12 @@ pub struct AdjustmentProps {
     pub clamp_value: bool,
     pub elastic: bool,
 
-    pub lower: f64,
-    pub upper: f64,
-    pub value: f64,
-    pub step_increment: f64,
-    pub page_increment: f64,
-    pub page_size: f64,
+    pub lower: f32,
+    pub upper: f32,
+    pub value: f32,
+    pub step_increment: f32,
+    pub page_increment: f32,
+    pub page_size: f32,
 
     // For signal emission/notification
     pub lower_source: u32,
@@ -28,8 +28,8 @@ pub struct AdjustmentProps {
     pub changed_source: u32,
 
     // For interpolation
-    pub old_position: f64,
-    pub new_position: f64,
+    pub old_position: f32,
+    pub new_position: f32,
     pub interpolation: Option<Timeline>,
 }
 
@@ -46,12 +46,12 @@ impl Adjustment {
     }
 
     pub fn with_values(
-        value: f64,
-        lower: f64,
-        upper: f64,
-        step_increment: f64,
-        page_increment: f64,
-        page_size: f64,
+        value: f32,
+        lower: f32,
+        upper: f32,
+        step_increment: f32,
+        page_increment: f32,
+        page_size: f32,
     ) -> Adjustment {
         // assert_initialized_main_thread!();
         // unsafe {
@@ -73,7 +73,7 @@ impl Adjustment {
     ///
     /// Set the value of the #Adjustment:lower property.
     ///
-    fn set_lower(&self, lower: f64) -> bool {
+    fn set_lower(&self, lower: f32) -> bool {
         let mut props = self.props.borrow_mut();
 
         if props.lower != lower {
@@ -106,7 +106,7 @@ impl Adjustment {
     ///
     /// Set the value of the #Adjustment:upper property.
     ///
-    fn set_upper(&self, upper: f64) -> bool {
+    fn set_upper(&self, upper: f32) -> bool {
         let adjustment = self;
         let mut props = self.props.borrow_mut();
 
@@ -140,7 +140,7 @@ impl Adjustment {
     ///
     /// Set the value of the #Adjustment:step-increment property.
     ///
-    fn set_step_increment(&self, increment: f64) -> bool {
+    fn set_step_increment(&self, increment: f32) -> bool {
         let adjustment = self;
         let mut props = self.props.borrow_mut();
 
@@ -169,7 +169,7 @@ impl Adjustment {
     ///
     /// Set the #Adjustment:page-size property.
     ///
-    fn set_page_size(&self, page_size: f64) -> bool {
+    fn set_page_size(&self, page_size: f32) -> bool {
         let adjustment = self;
         let mut props = self.props.borrow_mut();
 
@@ -203,7 +203,7 @@ impl Adjustment {
     ///
     /// Set the value of the #Adjustment:page-increment property.
     ///
-    fn set_page_increment(&self, increment: f64) -> bool {
+    fn set_page_increment(&self, increment: f32) -> bool {
         let mut props = self.props.borrow_mut();
 
         if props.page_increment != increment {
@@ -267,7 +267,7 @@ pub trait AdjustmentExt: 'static {
     ///
     /// Returns: the current value of the "lower" property.
     ///
-    fn get_lower(&self) -> f64;
+    fn get_lower(&self) -> f32;
 
     /// get_page_increment:
     /// @adjustment: A #Adjustment
@@ -276,7 +276,7 @@ pub trait AdjustmentExt: 'static {
     ///
     /// Returns: the current value of the "page-increment" property.
     ///
-    fn get_page_increment(&self) -> f64;
+    fn get_page_increment(&self) -> f32;
 
     /// get_page_size:
     /// @adjustment: A #Adjustment
@@ -285,7 +285,7 @@ pub trait AdjustmentExt: 'static {
     ///
     /// Returns: the current value of the "page-size" property.
     ///
-    fn get_page_size(&self) -> f64;
+    fn get_page_size(&self) -> f32;
 
     /// get_step_increment:
     /// @adjustment: A #Adjustment
@@ -294,7 +294,7 @@ pub trait AdjustmentExt: 'static {
     ///
     /// Returns: the current value of the "step-increment" property.
     ///
-    fn get_step_increment(&self) -> f64;
+    fn get_step_increment(&self) -> f32;
 
     /// get_upper:
     /// @adjustment: A #Adjustment
@@ -303,7 +303,7 @@ pub trait AdjustmentExt: 'static {
     ///
     /// Returns: the current value of the "upper" property.
     ///
-    fn get_upper(&self) -> f64;
+    fn get_upper(&self) -> f32;
 
     /// get_value:
     /// @adjustment: An #Adjustment
@@ -312,7 +312,7 @@ pub trait AdjustmentExt: 'static {
     ///
     /// Returns: the current value of the "value" property
     ///
-    fn get_value(&self) -> f64;
+    fn get_value(&self) -> f32;
 
     /// get_values:
     /// @adjustment: A #Adjustment
@@ -325,7 +325,7 @@ pub trait AdjustmentExt: 'static {
     ///
     /// Get the various properties of Adjustment.
     ///
-    fn get_values(&self) -> (f64, f64, f64, f64, f64, f64);
+    fn get_values(&self) -> (f32, f32, f32, f32, f32, f32);
 
     /// interpolate:
     /// @adjustment: A #Adjustment
@@ -336,7 +336,7 @@ pub trait AdjustmentExt: 'static {
     /// Interpolate #Adjustment:value to the new value specified by @value, using
     /// the mode and duration given.
     ///
-    fn interpolate(&self, value: f64, duration: u32, mode: u64);
+    fn interpolate(&self, value: f32, duration: u32, mode: u64);
 
     /// interpolate_relative:
     /// @adjustment: A #Adjustment
@@ -347,7 +347,7 @@ pub trait AdjustmentExt: 'static {
     /// Interpolate the value of #Adjustment:value to a new value calculated from
     /// @offset.
     ///
-    fn interpolate_relative(&self, offset: f64, duration: u32, mode: u64);
+    fn interpolate_relative(&self, offset: f32, duration: u32, mode: u64);
 
     /// set_clamp_value:
     /// @adjustment: A #Adjustment
@@ -371,7 +371,7 @@ pub trait AdjustmentExt: 'static {
     ///
     /// Set the value of the #Adjustment:lower property.
     ///
-    fn set_lower(&self, lower: f64);
+    fn set_lower(&self, lower: f32);
 
     /// set_page_increment:
     /// @adjustment: A #Adjustment
@@ -379,7 +379,7 @@ pub trait AdjustmentExt: 'static {
     ///
     /// Set the value of the #Adjustment:page-increment property.
     ///
-    fn set_page_increment(&self, increment: f64);
+    fn set_page_increment(&self, increment: f32);
 
     /// set_page_size:
     /// @adjustment: A #Adjustment
@@ -387,7 +387,7 @@ pub trait AdjustmentExt: 'static {
     ///
     /// Set the #Adjustment:page-size property.
     ///
-    fn set_page_size(&self, page_size: f64);
+    fn set_page_size(&self, page_size: f32);
 
     /// set_step_increment:
     /// @adjustment: A #Adjustment
@@ -395,7 +395,7 @@ pub trait AdjustmentExt: 'static {
     ///
     /// Set the value of the #Adjustment:step-increment property.
     ///
-    fn set_step_increment(&self, increment: f64);
+    fn set_step_increment(&self, increment: f32);
 
     /// set_upper:
     /// @adjustment: A #Adjustment
@@ -403,7 +403,7 @@ pub trait AdjustmentExt: 'static {
     ///
     /// Set the value of the #Adjustment:upper property.
     ///
-    fn set_upper(&self, upper: f64);
+    fn set_upper(&self, upper: f32);
 
     /// set_value:
     /// @adjustment: An #Adjustment
@@ -411,7 +411,7 @@ pub trait AdjustmentExt: 'static {
     ///
     /// Set the value of the #Adjustment:value property.
     ///
-    fn set_value(&self, value: f64);
+    fn set_value(&self, value: f32);
 
     /// set_values:
     /// @adjustment: A #Adjustment
@@ -426,12 +426,12 @@ pub trait AdjustmentExt: 'static {
     ///
     fn set_values(
         &self,
-        value: f64,
-        lower: f64,
-        upper: f64,
-        step_increment: f64,
-        page_increment: f64,
-        page_size: f64,
+        value: f32,
+        lower: f32,
+        upper: f32,
+        step_increment: f32,
+        page_increment: f32,
+        page_size: f32,
     );
 
     fn connect_changed<F: Fn(&Self) + 'static>(&self, f: F) -> HandlerId;
@@ -489,7 +489,7 @@ impl<O: Is<Adjustment>> AdjustmentExt for O {
     ///
     /// Returns: the current value of the "lower" property.
     ///
-    fn get_lower(&self) -> f64 {
+    fn get_lower(&self) -> f32 {
         let adjustment = self.as_ref();
         adjustment.props.borrow().lower
     }
@@ -501,7 +501,7 @@ impl<O: Is<Adjustment>> AdjustmentExt for O {
     ///
     /// Returns: the current value of the "page-increment" property.
     ///
-    fn get_page_increment(&self) -> f64 {
+    fn get_page_increment(&self) -> f32 {
         let adjustment = self.as_ref();
         adjustment.props.borrow().page_increment
     }
@@ -513,7 +513,7 @@ impl<O: Is<Adjustment>> AdjustmentExt for O {
     ///
     /// Returns: the current value of the "page-size" property.
     ///
-    fn get_page_size(&self) -> f64 {
+    fn get_page_size(&self) -> f32 {
         let adjustment = self.as_ref();
         adjustment.props.borrow().page_size
     }
@@ -525,7 +525,7 @@ impl<O: Is<Adjustment>> AdjustmentExt for O {
     ///
     /// Returns: the current value of the "step-increment" property.
     ///
-    fn get_step_increment(&self) -> f64 {
+    fn get_step_increment(&self) -> f32 {
         let adjustment = self.as_ref();
         adjustment.props.borrow().step_increment
     }
@@ -537,7 +537,7 @@ impl<O: Is<Adjustment>> AdjustmentExt for O {
     ///
     /// Returns: the current value of the "upper" property.
     ///
-    fn get_upper(&self) -> f64 {
+    fn get_upper(&self) -> f32 {
         let adjustment = self.as_ref();
         adjustment.props.borrow().upper
     }
@@ -549,7 +549,7 @@ impl<O: Is<Adjustment>> AdjustmentExt for O {
     ///
     /// Returns: the current value of the "value" property
     ///
-    fn get_value(&self) -> f64 {
+    fn get_value(&self) -> f32 {
         let adjustment = self.as_ref();
         adjustment.props.borrow().value
     }
@@ -565,7 +565,7 @@ impl<O: Is<Adjustment>> AdjustmentExt for O {
     ///
     /// Get the various properties of Adjustment.
     ///
-    fn get_values(&self) -> (f64, f64, f64, f64, f64, f64) {
+    fn get_values(&self) -> (f32, f32, f32, f32, f32, f32) {
         let adjustment = self.as_ref();
         let props = adjustment.props.borrow();
         (
@@ -587,7 +587,7 @@ impl<O: Is<Adjustment>> AdjustmentExt for O {
     /// Interpolate #Adjustment:value to the new value specified by @value, using
     /// the mode and duration given.
     ///
-    fn interpolate(&self, value: f64, duration: u32, mode: u64) {
+    fn interpolate(&self, value: f32, duration: u32, mode: u64) {
         let adjustment = self.as_ref();
 
         // g_return_if_fail (isfinite (value));
@@ -638,7 +638,7 @@ impl<O: Is<Adjustment>> AdjustmentExt for O {
     /// Interpolate the value of #Adjustment:value to a new value calculated from
     /// @offset.
     ///
-    fn interpolate_relative(&self, offset: f64, duration: u32, mode: u64) {
+    fn interpolate_relative(&self, offset: f32, duration: u32, mode: u64) {
         let adjustment = self.as_ref();
         let props = adjustment.props.borrow();
 
@@ -681,7 +681,7 @@ impl<O: Is<Adjustment>> AdjustmentExt for O {
     ///
     /// Set the value of the #Adjustment:lower property.
     ///
-    fn set_lower(&self, lower: f64) {
+    fn set_lower(&self, lower: f32) {
         let adjustment = self.as_ref();
         Adjustment::set_lower(adjustment, lower);
     }
@@ -692,7 +692,7 @@ impl<O: Is<Adjustment>> AdjustmentExt for O {
     ///
     /// Set the value of the #Adjustment:page-increment property.
     ///
-    fn set_page_increment(&self, increment: f64) {
+    fn set_page_increment(&self, increment: f32) {
         let adjustment = self.as_ref();
         Adjustment::set_page_increment(adjustment, increment);
     }
@@ -703,7 +703,7 @@ impl<O: Is<Adjustment>> AdjustmentExt for O {
     ///
     /// Set the #Adjustment:page-size property.
     ///
-    fn set_page_size(&self, page_size: f64) {
+    fn set_page_size(&self, page_size: f32) {
         let adjustment = self.as_ref();
         Adjustment::set_page_size(adjustment, page_size);
     }
@@ -714,7 +714,7 @@ impl<O: Is<Adjustment>> AdjustmentExt for O {
     ///
     /// Set the value of the #Adjustment:step-increment property.
     ///
-    fn set_step_increment(&self, increment: f64) {
+    fn set_step_increment(&self, increment: f32) {
         let adjustment = self.as_ref();
         Adjustment::set_step_increment(adjustment, increment);
     }
@@ -725,7 +725,7 @@ impl<O: Is<Adjustment>> AdjustmentExt for O {
     ///
     /// Set the value of the #Adjustment:upper property.
     ///
-    fn set_upper(&self, upper: f64) {
+    fn set_upper(&self, upper: f32) {
         let adjustment = self.as_ref();
         Adjustment::set_upper(adjustment, upper);
     }
@@ -736,7 +736,7 @@ impl<O: Is<Adjustment>> AdjustmentExt for O {
     ///
     /// Set the value of the #Adjustment:value property.
     ///
-    fn set_value(&self, value: f64) {
+    fn set_value(&self, value: f32) {
         let adjustment = self.as_ref();
         let mut props = adjustment.props.borrow_mut();
 
@@ -772,12 +772,12 @@ impl<O: Is<Adjustment>> AdjustmentExt for O {
     ///
     fn set_values(
         &self,
-        value: f64,
-        lower: f64,
-        upper: f64,
-        step_increment: f64,
-        page_increment: f64,
-        page_size: f64,
+        value: f32,
+        lower: f32,
+        upper: f32,
+        step_increment: f32,
+        page_increment: f32,
+        page_size: f32,
     ) {
         // let adjustment = self.as_ref();
 
