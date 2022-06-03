@@ -45,7 +45,7 @@ pub mod winit {
     pub use dx::winit::*;
 }
 
-#[doc(hidden)]
+// #[doc(hidden)]
 pub mod prelude {
     // pub use super::AppBarExt;
     // pub use super::BackdropExt;
