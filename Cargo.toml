@@ -1,6 +1,6 @@
 [package]
 name = "ux-components"
-version = "0.1.2"
+version = "0.1.3"
 authors = ["Victor Dudochkin <dudochkin.victor@gmail.com>"]
 readme = "README.md"
 homepage = "https://angular-rust.github.io/ux-components"
@@ -22,32 +22,35 @@ name = "components"
 features = ["dox"]
 
 [features]
-dox = ["ux-animate/dox", "ux-charts/dox", "ux-dx/dox", "gobject-sys/dox", "pango/dox"]
-# , "x11/dox"
+dox = ["ux-dx/dox"]
+# "ux-charts/dox"
+# "ux-animate/dox", "x11/dox", "gobject-sys/dox", , "pango/dox"
 
 [dependencies]
 log = "0.4"
 bitflags = "1.0"
-ruex = "0.1"
+rand = "0.8"
 ux-macro = "0.1"
-ux-dx = "0.1"
+ux-dx = "0.2"
 ux-dataflow = "0.1"
-ux-animate = "0.1"
-ux-charts = "0.1"
-once_cell = "1.7.2"
-intmap = "0.7.0"
-url = "2.2.1"
-fontdue = "0.5.0"
+# ux-animate = "0.1"
+# ux-charts = "0.1"
+once_cell = "1.7"
+intmap = "0.7"
+url = "2.2"
+fontdue = "0.7.2"
+cgmath = "0.18"
+structopt = "0.3"
+stretch = "0.3.2"
 # ux-css = "0"
+crossbeam = "0.8.1"
+bytes = "1.1.0"
+futures = "0.3.21"
 
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies]
-png = "0.16"
-gobject-sys = "0.10"
-glib = "0.10"
-pango = "0.9"
-# x11 = "2.18"
-cairo-rs = { version = "0.9", features = ["png"] }
-gio = { version = "0.9", features = ["v2_58"] }
+# png = "0.16"
+# pango = "0.9"
+# cairo-rs = { version = "0.9", features = ["png"] }
 
 # starup notifications
 notify-rust = "4"
@@ -57,7 +60,7 @@ wasm-bindgen = "0.2"
 js-sys = "0.3"
 wasm-bindgen-futures = "0.4"
 wasm-logger = "0.2"
-gloo = "0.2"
+gloo = "0.3"
 wasm-bindgen-test = "0.3"
 
 [target.'cfg(target_arch = "wasm32")'.dependencies.web-sys]

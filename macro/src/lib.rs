@@ -1,10 +1,14 @@
 use proc_macro::TokenStream;
 use syn::{parse_macro_input, DeriveInput};
-
 use quote::quote;
 
-mod macros;
-use macros::getters::expand_getters;
+mod application;
+
+use application::getters::expand_getters;
+
+//
+// Application related things
+//
 
 #[proc_macro_derive(Getters)]
 pub fn getters(input: TokenStream) -> TokenStream {
@@ -46,6 +50,10 @@ pub fn writable_template_derive(input: TokenStream) -> TokenStream {
 
     TokenStream::from(expanded)
 }
+
+//
+// Inspect related things
+//
 
 #[cfg(test)]
 mod tests {
